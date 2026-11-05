@@ -213,7 +213,7 @@ public:
     };
 
     sk_sp<SkShader> makeShader(sk_sp<const SkData> uniforms,
-                               sk_sp<SkShader> children[],
+                               SkSpan<sk_sp<SkShader>> children,
                                size_t childCount,
                                const SkMatrix* localMatrix = nullptr) const;
     sk_sp<SkShader> makeShader(sk_sp<const SkData> uniforms,

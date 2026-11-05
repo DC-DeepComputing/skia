@@ -8,6 +8,7 @@
 #include "include/private/chromium/GrVkSecondaryCBDrawContext.h"
 
 #include "include/core/SkImageInfo.h"
+#include "include/gpu/ganesh/GrBackendSemaphore.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/vk/GrVkBackendSurface.h"
@@ -121,7 +122,7 @@ GrDirectContext::FlushResult GrVkSecondaryCBDrawContext::flush() {
 bool GrVkSecondaryCBDrawContext::wait(int numSemaphores,
                                       const GrBackendSemaphore waitSemaphores[],
                                       bool deleteSemaphoresAfterWait) {
-    return fDevice->wait(numSemaphores, waitSemaphores, deleteSemaphoresAfterWait);
+    return fDevice->wait(numSemaphores, SkSpan(waitSemaphores, numSemaphores), deleteSemaphoresAfterWait);
 }
 
 void GrVkSecondaryCBDrawContext::releaseResources() {

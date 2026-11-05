@@ -1635,7 +1635,7 @@ public:
         @param scaleFactors  storage for minimum and maximum scale factors
         @return              true if scale factors were computed correctly
     */
-    [[nodiscard]] bool getMinMaxScales(SkScalar scaleFactors[2]) const;
+    [[nodiscard]] bool getMinMaxScales(SkSpan<SkScalar, 2> scaleFactors) const;
 
     /** Decomposes SkMatrix into scale components and whatever remains. Returns false if
         SkMatrix could not be decomposed.

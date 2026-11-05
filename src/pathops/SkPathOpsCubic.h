@@ -10,6 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
@@ -62,7 +63,7 @@ struct SkDCubic {
     double binarySearch(double min, double max, double axisIntercept, SearchAxis xAxis) const;
     double calcPrecision() const;
     SkDCubicPair chopAt(double t) const;
-    static void Coefficients(const double* cubic, double* A, double* B, double* C, double* D);
+    static void Coefficients(SkSpan<const double> cubic, double* A, double* B, double* C, double* D);
     static int ComplexBreak(const SkPoint pts[4], SkScalar* t);
     int convexHull(char order[kPointCount]) const;
 
@@ -77,7 +78,7 @@ struct SkDCubic {
     void dumpInner() const;
     SkDVector dxdyAtT(double t) const;
     bool endsAreExtremaInXOrY() const;
-    static int FindExtrema(const double src[], double tValue[2]);
+    static int FindExtrema(SkSpan<const double> src, double tValue[2]);
     int findInflections(double tValues[2]) const;
 
     static int FindInflections(const SkPoint a[kPointCount], double tValues[2]) {

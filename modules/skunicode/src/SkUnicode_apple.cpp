@@ -198,10 +198,10 @@ public:
         return true;
     }
 
-    bool setText(const char16_t utftext16[], int utf16Units) override {
+    bool setText(SkSpan<const char16_t> utftext16, int utf16Units) override {
         this->reset();
         // Reject negative lengths or null non-empty buffers
-        if (utf16Units < 0 || (utf16Units > 0 && !utftext16)) {
+        if (utf16Units < 0 || (utf16Units > 0 && !utftext16.data())) {
             return false;
         }
         // Empty inputs still emit a boundary at 0 to match ICU BreakIterator::first() and
@@ -213,7 +213,7 @@ public:
             return true;
         }
 
-        SkUniqueCFRef<CFStringRef> str = MakeCFStringNoCopy(utftext16, utf16Units);
+        SkUniqueCFRef<CFStringRef> str = MakeCFStringNoCopy(utftext16.data(), utf16Units);
         if (!str) {
             return false;
         }
@@ -519,13 +519,13 @@ public:
         return true;
     }
 
-    bool computeCodeUnitFlags(char16_t utf16[],
+    bool computeCodeUnitFlags(SkSpan<char16_t> utf16,
                               int utf16Units,
                               bool replaceTabs,
                               TArray<CodeUnitFlags, true>* results) override {
         results->clear();
         // Reject negative lengths or null non-empty buffers
-        if (utf16Units < 0 || (utf16Units > 0 && !utf16)) {
+        if (utf16Units < 0 || (utf16Units > 0 && !utf16.data())) {
             return false;
         }
         results->push_back_n(utf16Units + 1, CodeUnitFlags::kNoCodeUnitFlag);

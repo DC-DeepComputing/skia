@@ -87,7 +87,7 @@ private:
     void onSync() override {
         // TODO: support for HSL sources will require a custom color filter.
 
-        static constexpr float gSourceCoeffs[][5] = {
+        static constexpr auto gSourceCoeffs = std::to_array<std::array<float, 5>>({
             {             0,              0,              0, 1, 0}, // kAlpha
             {             1,              0,              0, 0, 0}, // kRed
             {             0,              1,              0, 0, 0}, // kGreen
@@ -98,7 +98,7 @@ private:
             {             0,              0,              0, 0, 0}, // TODO: kSaturation
             {             0,              0,              0, 0, 1}, // kFullOn
             {             0,              0,              0, 0, 0}, // kFullOff
-        };
+        });
         static_assert(std::size(gSourceCoeffs) == static_cast<size_t>(Source::kMax), "");
 
         auto coeffs = [](float src) {
@@ -108,10 +108,10 @@ private:
             return gSourceCoeffs[static_cast<size_t>(src) - 1];
         };
 
-        const float* rc = coeffs(fR);
-        const float* gc = coeffs(fG);
-        const float* bc = coeffs(fB);
-        const float* ac = coeffs(fA);
+        const auto rc = coeffs(fR);
+        const auto gc = coeffs(fG);
+        const auto bc = coeffs(fB);
+        const auto ac = coeffs(fA);
 
         const float cm[] = {
             rc[0], rc[1], rc[2], rc[3], rc[4],

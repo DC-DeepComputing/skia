@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkCubicClipper.h"
@@ -997,8 +998,8 @@ static int winding_cubic(SkSpan<const SkPoint> pts, SkScalar x, SkScalar y, int*
     return w;
 }
 
-static double conic_eval_numerator(const SkScalar src[], SkScalar w, SkScalar t) {
-    SkASSERT(src);
+static double conic_eval_numerator(SkSpan<const SkScalar> src, SkScalar w, SkScalar t) {
+    SkASSERT(!src.empty());
     SkASSERT(t >= 0 && t <= 1);
     SkScalar src2w = src[2] * w;
     SkScalar C = src[0];
@@ -1054,7 +1055,7 @@ static int winding_mono_conic(const SkConic& conic, SkScalar x, SkScalar y, int*
         xt = pts[1 - dir].fX;
     } else {
         SkScalar t = roots[0];
-        xt = conic_eval_numerator(&pts[0].fX, conic.fW, t) / conic_eval_denominator(conic.fW, t);
+        xt = conic_eval_numerator(SkSpan(&pts[0].fX, 6), conic.fW, t) / conic_eval_denominator(conic.fW, t);
     }
     if (SkScalarNearlyEqual(xt, x)) {
         if (x != pts[2].fX || y != pts[2].fY) {  // don't test end points; they're start points
@@ -1248,7 +1249,7 @@ static void tangent_conic(SkSpan<const SkPoint> pts, SkScalar x, SkScalar y, SkS
     int n = SkFindUnitQuadRoots(A, 2 * B, C, roots.data());
     for (int index = 0; index < n; ++index) {
         SkScalar t = roots[index];
-        SkScalar xt = conic_eval_numerator(&pts[0].fX, w, t) / conic_eval_denominator(w, t);
+        SkScalar xt = conic_eval_numerator(SkSpan(&pts[0].fX, 6), w, t) / conic_eval_denominator(w, t);
         if (!SkScalarNearlyEqual(x, xt)) {
             continue;
         }

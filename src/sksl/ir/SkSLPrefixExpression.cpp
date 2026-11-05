@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/sksl/ir/SkSLPrefixExpression.h"
 
 #include "include/core/SkTypes.h"
@@ -46,7 +47,7 @@ static std::unique_ptr<Expression> apply_to_elements(const Context& context,
                                                      double (*fn)(double)) {
     const Type& elementType = expr.type().componentType();
 
-    double values[16];
+    std::array<double, 16> values;
     size_t numSlots = expr.type().slotCount();
     if (numSlots > std::size(values)) {
         // The expression has more slots than we expected.

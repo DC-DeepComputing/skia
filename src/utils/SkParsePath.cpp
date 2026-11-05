@@ -10,6 +10,7 @@
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -61,7 +62,7 @@ static const char* skip_sep(const char str[]) {
 
 // If unable to read count points from str into value, this will return nullptr
 // to signal the failure. Otherwise, it will return the next offset to read from.
-static const char* find_points(const char str[], SkPoint value[], int count,
+static const char* find_points(const char str[], SkSpan<SkPoint> value, int count,
                                bool isRelative, SkPoint* relative) {
     str = SkParse::FindScalars(str, &value[0].fX, count * 2);
     if (isRelative) {
@@ -180,7 +181,7 @@ std::optional<SkPath> SkParsePath::FromSVGString(const char data[]) {
                 data = find_points(data, points, 3, relative, &c);
                 goto cubicCommon;
             case 'S':  // Continued "Smooth" Cubic Bezier Curve
-                data = find_points(data, &points[1], 2, relative, &c);
+                data = find_points(data, SkSpan<SkPoint>(points).subspan(1u), 2, relative, &c);
                 points[0] = c;
                 if (previousOp == 'C' || previousOp == 'S') {
                     points[0].fX -= lastc.fX - c.fX;
@@ -195,7 +196,7 @@ std::optional<SkPath> SkParsePath::FromSVGString(const char data[]) {
                 data = find_points(data, points, 2, relative, &c);
                 goto quadraticCommon;
             case 'T':  // Continued Quadratic Bezier Curve
-                data = find_points(data, &points[1], 1, relative, &c);
+                data = find_points(data, SkSpan<SkPoint>(points).subspan(1u), 1, relative, &c);
                 points[0] = c;
                 if (previousOp == 'Q' || previousOp == 'T') {
                     points[0].fX -= lastc.fX - c.fX;
@@ -210,7 +211,7 @@ std::optional<SkPath> SkParsePath::FromSVGString(const char data[]) {
                 SkPoint radii;
                 SkScalar angle;
                 bool largeArc, sweep;
-                if ((data = find_points(data, &radii, 1, false, nullptr))
+                if ((data = find_points(data, SkSpanFromRef(radii), 1, false, nullptr))
                         && (data = skip_sep(data))
                         && (data = find_scalar(data, &angle, false, 0))
                         && (data = skip_sep(data))
@@ -218,7 +219,7 @@ std::optional<SkPath> SkParsePath::FromSVGString(const char data[]) {
                         && (data = skip_sep(data))
                         && (data = find_flag(data, &sweep))
                         && (data = skip_sep(data))
-                        && (data = find_points(data, &points[0], 1, relative, &c))) {
+                        && (data = find_points(data, points, 1, relative, &c))) {
                     builder.arcTo(radii, angle, (SkPathBuilder::ArcSize) largeArc,
                             (SkPathDirection) !sweep, points[0]);
                     c = builder.points().back();

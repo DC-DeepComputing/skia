@@ -1,5 +1,6 @@
 // Copyright 2019 Google LLC
 
+#include "include/core/SkSpan.h"
 #include "modules/skparagraph/src/TextLine.h"
 
 #include "include/core/SkBlurTypes.h"
@@ -216,9 +217,9 @@ TextLine::TextLine(ParagraphImpl* owner,
     }
 
     // TODO: This is the fix for flutter. Must be removed...
-    for (auto cluster = &start; cluster <= &end; ++cluster) {
-        if (!cluster->run().isPlaceholder() && !cluster->run().isCursiveScript()) {
-            fShift += cluster->getHalfLetterSpacing();
+    for (SkSpan<Cluster> cluster(&start, static_cast<size_t>(&end - &start + 1)); !cluster.empty(); cluster = cluster.subspan(1u)) {
+        if (!cluster[0].run().isPlaceholder() && !cluster[0].run().isCursiveScript()) {
+            fShift += cluster[0].getHalfLetterSpacing();
             break;
         }
     }

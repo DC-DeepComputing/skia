@@ -10,6 +10,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 
 #include <cstring>
@@ -126,12 +127,12 @@ struct SK_API SkV4 {
     SkScalar dot(const SkV4& v) const { return Dot(*this, v); }
     SkV4 normalize()            const { return Normalize(*this); }
 
-    const float* ptr() const { return &x; }
+    SkSpan<const float> ptr() const { return SkSpan(&x, 4); }
     float* ptr() { return &x; }
 
     float operator[](int i) const {
         SkASSERT(i >= 0 && i < 4);
-        return this->ptr()[i];
+        return this->ptr()[static_cast<size_t>(i)];
     }
     float& operator[](int i) {
         SkASSERT(i >= 0 && i < 4);
@@ -287,7 +288,7 @@ public:
     }
     void setCol(int i, const SkV4& v) {
         SkASSERT(i >= 0 && i <= 3);
-        memcpy(&fMat[i*4], v.ptr(), sizeof(v));
+        memcpy(&fMat[i*4], v.ptr().data(), sizeof(v));
     }
 
     SkM44& setIdentity() {

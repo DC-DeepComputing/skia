@@ -10,6 +10,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/SkMacros.h"
@@ -137,7 +138,7 @@ static SkPoint left_edge(const SkPoint pts[4], SkPathVerb verb, SkScalar weight)
         SkDQuad quad;
         quad.set(pts);
         if (!quad.monotonicInX()) {
-            roots = SkDQuad::FindExtrema(&quad[0].fX, &t);
+            roots = SkDQuad::FindExtrema(SkSpan(&quad[0].fX, 6), &t);
         }
         if (roots) {
             result = quad.ptAtT(t).asSkPoint();
@@ -148,7 +149,7 @@ static SkPoint left_edge(const SkPoint pts[4], SkPathVerb verb, SkScalar weight)
         SkDConic conic;
         conic.set(pts, weight);
         if (!conic.monotonicInX()) {
-            roots = SkDConic::FindExtrema(&conic[0].fX, weight, &t);
+            roots = SkDConic::FindExtrema(SkSpan(&conic[0].fX, 6), weight, SkSpanFromRef(t).first<1>());
         }
         if (roots) {
             result = conic.ptAtT(t).asSkPoint();
@@ -161,7 +162,7 @@ static SkPoint left_edge(const SkPoint pts[4], SkPathVerb verb, SkScalar weight)
         cubic.set(pts);
         if (!cubic.monotonicInX()) {
             double tValues[2];
-            roots = SkDCubic::FindExtrema(&cubic[0].fX, tValues);
+            roots = SkDCubic::FindExtrema(SkSpan(&cubic[0].fX, 8), tValues);
             SkASSERT(roots <= 2);
             for (int index = 0; index < roots; ++index) {
                 SkPoint temp = cubic.ptAtT(tValues[index]).asSkPoint();

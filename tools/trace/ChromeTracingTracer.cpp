@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkThreadID.h"
 #include "src/core/SkOSFile.h"
@@ -83,7 +84,7 @@ SkEventTracer::Handle ChromeTracingTracer::addTraceEvent(char            phase,
                                                          const char*     name,
                                                          uint64_t        id,
                                                          int             numArgs,
-                                                         const char**    argNames,
+                                                         SkSpan<const char *>argNames,
                                                          const uint8_t*  argTypes,
                                                          const uint64_t* argValues,
                                                          uint8_t         flags) {

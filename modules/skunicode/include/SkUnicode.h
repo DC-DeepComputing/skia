@@ -78,7 +78,7 @@ public:
     virtual Status status() = 0;
     virtual bool isDone() = 0;
     virtual bool setText(const char utftext8[], int utf8Units) = 0;
-    virtual bool setText(const char16_t utftext16[], int utf16Units) = 0;
+    virtual bool setText(SkSpan<const char16_t> utftext16, int utf16Units) = 0;
 };
 
 class SKUNICODE_API SkUnicode : public SkRefCnt {
@@ -189,7 +189,7 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
                 char utf8[], int utf8Units, bool replaceTabs,
                 skia_private::TArray<SkUnicode::CodeUnitFlags, true>* results) = 0;
         virtual bool computeCodeUnitFlags(
-                char16_t utf16[], int utf16Units, bool replaceTabs,
+                SkSpan<char16_t> utf16, int utf16Units, bool replaceTabs,
                 skia_private::TArray<SkUnicode::CodeUnitFlags, true>* results) = 0;
 
         static SkString convertUtf16ToUtf8(const char16_t * utf16, int utf16Units);
@@ -307,7 +307,7 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
         }
 
         template <typename Callback>
-        void forEachBreak(const char16_t utf16[], int utf16Units, SkUnicode::BreakType type, Callback&& callback) {
+        void forEachBreak(SkSpan<const char16_t> utf16, int utf16Units, SkUnicode::BreakType type, Callback&& callback) {
             auto iter = makeBreakIterator(type);
             iter->setText(utf16, utf16Units);
             auto pos = iter->first();

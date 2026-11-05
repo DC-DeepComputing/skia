@@ -42,7 +42,7 @@ std::vector<SkTextBlobTrace::Record> SkTextBlobTrace::CreateBlobTrace(
     }
     sk_sp<SkData> data = SkData::MakeFromStream(stream, restOfFile);
     SkReadBuffer readBuffer{data->data(), data->size()};
-    readBuffer.setTypefaceArray(typefaceArray.data(), typefaceArray.size());
+    readBuffer.setTypefaceArray(typefaceArray, typefaceArray.size());
 
     while (!readBuffer.eof()) {
         SkTextBlobTrace::Record record;

@@ -2769,7 +2769,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
                           OptionalMatrix localMatrix(mPtr);
                           return self.makeShader(
-                                  uniforms, nullptr, 0, mPtr ? &localMatrix : nullptr);
+                                  uniforms, {}, 0, mPtr ? &localMatrix : nullptr);
                       }))
             .function("_makeShaderWithChildren",
                       optional_override([](SkRuntimeEffect& self,
@@ -2798,7 +2798,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                           }
                           OptionalMatrix localMatrix(mPtr);
                           auto s = self.makeShader(
-                                  uniforms, children, cLen, mPtr ? &localMatrix : nullptr);
+                                  uniforms, SkSpan(children, cLen), cLen, mPtr ? &localMatrix : nullptr);
                           delete[] children;
                           return s;
                       }))

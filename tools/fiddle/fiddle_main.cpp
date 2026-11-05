@@ -217,7 +217,7 @@ static bool setup_backend_objects(GrDirectContext* dContext,
                                                 skgpu::Budgeted::kNo,
                                                 skgpu::Mipmapped::kNo,
                                                 GrProtected::kNo,
-                                                &level0,
+                                                SkSpanFromRef(level0),
                                                 /*label=*/"Fiddle_SetupBackendObjects");
         if (!tmp || !tmp->asRenderTarget()) {
             fputs("GrTexture is invalid.\n", stderr);

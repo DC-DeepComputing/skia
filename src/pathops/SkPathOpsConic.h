@@ -10,6 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkDebug.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/pathops/SkPathOpsDebug.h"
@@ -77,7 +78,7 @@ struct SkDConic {
     }
 
     SkDVector dxdyAtT(double t) const;
-    static int FindExtrema(const double src[], SkScalar weight, double tValue[1]);
+    static int FindExtrema(SkSpan<const double> src, SkScalar weight, SkSpan<double, 1> tValue);
 
     bool hullIntersects(const SkDQuad& quad, bool* isLinear) const {
         return fPts.hullIntersects(quad, isLinear);

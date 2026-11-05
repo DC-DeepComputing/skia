@@ -9,6 +9,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextureCompressionType.h"
 #include "include/core/SkTraceMemoryDump.h"
@@ -603,7 +604,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap& srcData,
                                                        GrGpuFinishedProc finishedProc,
                                                        GrGpuFinishedContext finishedContext,
                                                        std::string_view label) {
-     return this->createBackendTexture(&srcData, 1, textureOrigin, renderable, isProtected,
+     return this->createBackendTexture(SkSpanFromRef(srcData), 1, textureOrigin, renderable, isProtected,
                                        finishedProc, finishedContext, label);
 }
 
@@ -613,7 +614,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap& srcData,
                                                        GrGpuFinishedProc finishedProc,
                                                        GrGpuFinishedContext finishedContext,
                                                        std::string_view label) {
-    return this->createBackendTexture(&srcData,
+    return this->createBackendTexture(SkSpanFromRef(srcData),
                                       1,
                                       renderable,
                                       isProtected,
@@ -622,7 +623,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap& srcData,
                                       label);
 }
 
-GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
+GrBackendTexture GrDirectContext::createBackendTexture(SkSpan<const SkPixmap> srcData,
                                                        int numLevels,
                                                        GrRenderable renderable,
                                                        GrProtected isProtected,
@@ -683,7 +684,7 @@ static GrBackendTexture create_and_clear_backend_texture(
 }
 
 static bool update_texture_with_pixmaps(GrDirectContext* context,
-                                        const SkPixmap src[],
+                                        SkSpan<const SkPixmap> src,
                                         int numLevels,
                                         const GrBackendTexture& backendTexture,
                                         GrSurfaceOrigin textureOrigin,
@@ -786,7 +787,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width,
                                             label);
 }
 
-GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
+GrBackendTexture GrDirectContext::createBackendTexture(SkSpan<const SkPixmap> srcData,
                                                        int numProvidedLevels,
                                                        GrSurfaceOrigin textureOrigin,
                                                        GrRenderable renderable,
@@ -802,7 +803,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
         return {};
     }
 
-    if (!srcData || numProvidedLevels <= 0) {
+    if (srcData.empty() || numProvidedLevels <= 0) {
         return {};
     }
 
@@ -837,7 +838,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
 }
 
 bool GrDirectContext::updateBackendTexture(const GrBackendTexture& texture,
-                                           const SkPixmap srcData[],
+                                           SkSpan<const SkPixmap> srcData,
                                            int numLevels,
                                            GrGpuFinishedProc finishedProc,
                                            GrGpuFinishedContext finishedContext) {
@@ -889,7 +890,7 @@ bool GrDirectContext::updateBackendTexture(const GrBackendTexture& backendTextur
 }
 
 bool GrDirectContext::updateBackendTexture(const GrBackendTexture& backendTexture,
-                                           const SkPixmap srcData[],
+                                           SkSpan<const SkPixmap> srcData,
                                            int numLevels,
                                            GrSurfaceOrigin textureOrigin,
                                            GrGpuFinishedProc finishedProc,
@@ -900,7 +901,7 @@ bool GrDirectContext::updateBackendTexture(const GrBackendTexture& backendTextur
         return false;
     }
 
-    if (!srcData || numLevels <= 0) {
+    if (srcData.empty() || numLevels <= 0) {
         return false;
     }
 

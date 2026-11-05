@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkColor.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkYUVAInfo.h"
 #include "src/core/SkYUVAInfoLocation.h" // IWYU pragma: keep
 #include "tests/Test.h"
@@ -72,7 +73,7 @@ DEF_TEST(SkYUVAInfoPackedYUYV, reporter) {
     // and V is channel 3 (A) of the pair's texel; the odd pixel shares U and V and takes its Y from
     // channel 2 (B) at sampling time. There is no alpha.
     const uint32_t rgbaFlags = kRGBA_SkColorChannelFlags;
-    auto locations = info.toYUVALocations(&rgbaFlags);
+    auto locations = info.toYUVALocations(SkSpanFromRef(rgbaFlags));
     REPORTER_ASSERT(reporter, locations[SkYUVAInfo::YUVAChannels::kY].fPlane == 0);
     REPORTER_ASSERT(reporter, locations[SkYUVAInfo::YUVAChannels::kY].fChannel ==
                                  SkColorChannel::kR);
@@ -102,7 +103,7 @@ DEF_TEST(SkYUVAInfoSinglePlaneConfigs, reporter) {
     }
 
     const uint32_t rgbaFlags = kRGBA_SkColorChannelFlags;
-    auto locations = y410.toYUVALocations(&rgbaFlags);
+    auto locations = y410.toYUVALocations(SkSpanFromRef(rgbaFlags));
     REPORTER_ASSERT(reporter, locations[SkYUVAInfo::YUVAChannels::kY].fChannel ==
                                  SkColorChannel::kG);
     REPORTER_ASSERT(reporter, locations[SkYUVAInfo::YUVAChannels::kU].fChannel ==

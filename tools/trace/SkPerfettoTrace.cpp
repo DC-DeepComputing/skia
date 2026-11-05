@@ -111,7 +111,7 @@ SkEventTracer::Handle SkPerfettoTrace::addTraceEvent(char phase,
                                                      const char* name,
                                                      uint64_t id,
                                                      int numArgs,
-                                                     const char** argNames,
+                                                     SkSpan<const char*> argNames,
                                                      const uint8_t* argTypes,
                                                      const uint64_t* argValues,
                                                      uint8_t flags) {
