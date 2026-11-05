@@ -1065,6 +1065,8 @@ private:
     Result handleFrameIndex(const SkImageInfo&, void* pixels, size_t rowBytes, const Options&,
                             GetPixelsCallback = nullptr);
 
+    bool dstHasPriorFrame() const;
+
     // Methods for scanline decoding.
     virtual Result onStartScanlineDecode(const SkImageInfo& /*dstInfo*/,
             const Options& /*options*/) {

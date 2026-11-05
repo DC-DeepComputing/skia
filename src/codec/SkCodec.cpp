@@ -476,6 +476,12 @@ SkCodec::Result SkCodec::handleFrameIndex(const SkImageInfo& info, void* pixels,
         ? kSuccess : kInvalidConversion;
 }
 
+bool SkCodec::dstHasPriorFrame() const {
+    return fOptions.fPriorFrame != kNoFrame ||
+           (fOptions.fFrameIndex > 0 &&
+            this->getFrameHolder()->getFrame(fOptions.fFrameIndex)->getRequiredFrame() != kNoFrame);
+}
+
 bool SkCodec::allocateFromBudget(size_t numBytes) {
     if (numBytes > fDecodeBudget) SK_UNLIKELY {
         return false;
@@ -534,11 +540,14 @@ SkCodec::Result SkCodec::getPixelsBudgeted(const SkImageInfo& info,
 
     fDstInfo = info;
     fOptions = *options;
+    if (this->dstHasPriorFrame()) {
+        fOptions.fZeroInitialized = kNo_ZeroInitialized;
+    }
 
     // On an incomplete decode, the subclass will specify the number of scanlines that it decoded
     // successfully.
     int rowsDecoded = 0;
-    const Result result = this->onGetPixels(info, pixels, rowBytes, *options, &rowsDecoded);
+    const Result result = this->onGetPixels(info, pixels, rowBytes, fOptions, &rowsDecoded);
 
     // A return value of kIncompleteInput indicates a truncated image stream.
     // In this case, we will fill any uninitialized memory with a default value.
@@ -552,8 +561,8 @@ SkCodec::Result SkCodec::getPixelsBudgeted(const SkImageInfo& info,
         // differenty from the other codecs, and it needs to use the width specified by the info.
         // Set the subset to null so SkWebpCodec uses the correct width.
         fOptions.fSubset = nullptr;
-        this->fillIncompleteImage(info, pixels, rowBytes, options->fZeroInitialized, info.height(),
-                rowsDecoded);
+        this->fillIncompleteImage(
+                info, pixels, rowBytes, fOptions.fZeroInitialized, info.height(), rowsDecoded);
     }
 
     return result;
@@ -657,6 +666,9 @@ SkCodec::Result SkCodec::startIncrementalDecode(const SkImageInfo& info, void* p
 
     fDstInfo = info;
     fOptions = *options;
+    if (this->dstHasPriorFrame()) {
+        fOptions.fZeroInitialized = kNo_ZeroInitialized;
+    }
 
     const Result result = this->onStartIncrementalDecode(info, pixels, rowBytes, fOptions);
     if (kSuccess == result) {
