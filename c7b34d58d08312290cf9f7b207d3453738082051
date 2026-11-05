@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f51374ca_011338ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-11-05T18:02:10Z",
+      "side": 1,
+      "message": "PTAL, thanks! Quick note on GrGeometryProcessor.cpp: in TextureSampler::reset(), I switched to copy assignment and removed clamp_filter() since it became unused (clamp_filter() always returned the requestedFilter input as a no-op).",
+      "revId": "c7b34d58d08312290cf9f7b207d3453738082051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
