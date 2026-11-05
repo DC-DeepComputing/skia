@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "251743edd0f9db2f990094acb7fe62a7067ba0da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4477cf6d_5f55e7be",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-05T16:41:25Z",
+      "side": 1,
+      "message": "nit line length",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 101
+      },
+      "revId": "251743edd0f9db2f990094acb7fe62a7067ba0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
