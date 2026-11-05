@@ -16,6 +16,24 @@
       "message": "Optional, not blocking this CL: since ce0b85b46d, TextLine::justify calls isSoftHyphen up to three times for every cluster of a justified line, and each call decodes UTF-8 from the paragraph text. I bisected a slowdown to that commit: 3500 justified paragraphs of 621 characters, laid out from the ParagraphCache, take 110 ms before it and 130 ms after it (+18%; nanobench, Linux x86_64 Release, median of 3 interleaved rounds).\n\nU+00AD has one valid UTF-8 form, the two bytes C2 AD, so most clusters can skip the text:\n\n```\nbool Cluster::isSoftHyphen(const ParagraphImpl* owner) const {\n    if (fTextRange.width() !\u003d 2) {\n        return false;\n    }\n    const char* p \u003d owner-\u003etext().begin() + fTextRange.start;\n    return static_cast\u003cuint8_t\u003e(p[0]) \u003d\u003d 0xC2 \u0026\u0026 static_cast\u003cuint8_t\u003e(p[1]) \u003d\u003d 0xAD;\n}\n```\n\nThe same check on top of current main (still with fOwner) takes the bench from 127 ms to 114 ms, and the SkParagraph tests pass there (231/231). One difference: SkUTF::NextUTF8 accepts overlong forms, so an invalid 3- or 4-byte U+00AD used to count as a soft hyphen and now does not. Flutter cannot produce such bytes, because it converts its text from UTF-16.\n\nSince this CL already changes the signature, would you like to fold this in here or in a follow-up? Otherwise I can upload it on top of your chain.",
       "revId": "41fe459166f760d55560a18e4c35526af47b593b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7e55846_445282f3",
+        "filename": "modules/skparagraph/src/Run.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-11-05T19:04:57Z",
+      "side": 1,
+      "message": "Thanks, I checked it. The fast path gives the same result as the old check for all valid UTF-8, and only the two overlong forms differ. It does not depend on this chain, so I uploaded it as a separate change on main: https://skia-review.googlesource.com/c/skia/+/1418836",
+      "parentUuid": "bd8b2346_5552f138",
+      "revId": "41fe459166f760d55560a18e4c35526af47b593b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
