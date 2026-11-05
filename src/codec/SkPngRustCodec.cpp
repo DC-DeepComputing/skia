@@ -1207,12 +1207,9 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState) 
     }
 }
 
-void SkPngRustCodec::reportRowsDecoded(Result result,
-                                       const std::optional<DecodingState>& decodingState,
+void SkPngRustCodec::reportRowsDecoded(const std::optional<DecodingState>& decodingState,
                                        int* rowsDecoded) const {
-    // TODO(b/562804783): Consider setting `*rowsDecoded` unconditionally (including on `kSuccess`),
-    // aligning with `SkBmpRustCodec`, `SkJpegRustCodec`, and `SkWuffsCodec`.
-    if ((result != kIncompleteInput && result != kErrorInInput) || !rowsDecoded) {
+    if (!rowsDecoded) {
         return;
     }
     const SkFrame* frame = fFrameHolder.getFrame(this->options().fFrameIndex);
@@ -1249,7 +1246,7 @@ SkCodec::Result SkPngRustCodec::onGetPixels(const SkImageInfo& dstInfo,
             }
         }
     }
-    this->reportRowsDecoded(result, decodingState, rowsDecoded);
+    this->reportRowsDecoded(decodingState, rowsDecoded);
     return result;
 }
 
@@ -1276,7 +1273,7 @@ SkCodec::Result SkPngRustCodec::onIncrementalDecode(int* rowsDecoded) {
             result = this->incrementalDecodeXForm(*fIncrementalDecodingState);
         }
     }
-    this->reportRowsDecoded(result, fIncrementalDecodingState, rowsDecoded);
+    this->reportRowsDecoded(fIncrementalDecodingState, rowsDecoded);
     if (result != kIncompleteInput) {
         // After successfully reading the whole row (`kSuccess`), and after a
         // fatal error (only recoverable error is `kIncompleteInput`) our client

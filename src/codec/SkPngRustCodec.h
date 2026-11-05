@@ -169,11 +169,9 @@ private:
     // for interlaced subset/sampled decodes both on halt and at end-of-frame.
     void writeSubsetOrSampleToOutput(DecodingState& decodingState);
 
-    // Populates `rowsDecoded` after a failed decode (`kIncompleteInput` or
-    // `kErrorInInput`) with the number of destination rows initialized so far,
-    // matching `SkPngCodec` so callers only fill the remaining rows.
-    void reportRowsDecoded(Result result,
-                           const std::optional<DecodingState>& decodingState,
+    // Populates `rowsDecoded` with the number of destination rows initialized
+    // so far.
+    void reportRowsDecoded(const std::optional<DecodingState>& decodingState,
                            int* rowsDecoded) const;
 
     // Helper for reading until the start of the next `fdAT` sequence.
