@@ -22,6 +22,30 @@
       },
       "revId": "142b87c09588d0cec2ebbe3047c79258ec52d019",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d67215_4f890d3b",
+        "filename": "src/text/gpu/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-05T15:46:40Z",
+      "side": 1,
+      "message": "Good question, and the answer is worse than I thought. It is not a no-op, and removing the strike is not safe on either path.\n\n1. mergeFromBuffer is not a no-op on the findStrike path. The server sends only glyphs that are not in RemoteStrike::fSentGlyphs yet, so a found strike gets a delta. mergeFromBuffer adds glyphs one by one (SkStrike.cpp:120-165), so the glyphs read before the bad one stay in the strike.\n\n2. Removal does not corrupt memory. Slugs that were already deserialized hold sk_sp\u003cSkStrike\u003e through SkStrikePromise, and the glyphs live in the strike\u0027s arena.\n\n3. But removal breaks the server/client protocol, on both paths. removeStrike skips DiscardableStrikePinner::canDelete, so the GPU never deletes the handle. On top of that, when Deserialize fails, raster_decoder.cc returns before it records locked_handles_, so these handles are never unlocked. The renderer\u0027s lockHandle keeps succeeding, so it reuses its RemoteStrike and never sends the metrics or the old glyphs again. Then:\n   - the next delta for that descriptor has fontMetricsInitialized \u003d\u003d true, findStrike returns null, readStrikeData fails, and the whole RasterCHROMIUM is dropped;\n   - the next Slug for that descriptor fails in SkStrikePromise::MakeFromBuffer (SkASSERT at StrikeCache.cpp:190 in debug, a failed validate in release).\n   This lasts for the life of the renderer\u0027s strike. Today the same strike only misses the glyphs from the bad buffer: NOTREACHED in DCHECK builds, a rare DumpWithoutCrashing and a blank glyph in release.\n\nKeeping the removal only for new strikes does not fix this, because a new strike has the same handle problem. Strikes after the failure point in the same buffer are already in this state today, without this CL.\n\nSo I think a read failure leaves the channel out of sync, and patching the client cache cannot fix that. A real fix needs a resync, e.g. Chromium treating a font Deserialize failure as context loss, or deleting the handles so the renderer rebuilds its strikes. That would also fix the handles that stay locked forever. I plan to drop removeStrike from this CL and move the fix to the Chromium side. WDYT?",
+      "parentUuid": "d52bcad4_8522f321",
+      "range": {
+        "startLine": 745,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 53
+      },
+      "revId": "142b87c09588d0cec2ebbe3047c79258ec52d019",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
