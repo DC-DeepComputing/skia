@@ -4,12 +4,15 @@
 
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMetrics.h"
+#include "include/core/SkFontParameters.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
+#include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -26,6 +29,7 @@
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
 #include "modules/skshaper/include/SkShaper_skunicode.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "src/core/SkUTF.h"
 
 #include <algorithm>
 #include <iterator>
@@ -139,6 +143,20 @@ std::pair<size_t, size_t> isolateClusterGlyphs(const ParagraphImpl* owner,
     size_t fallback =
             (isStart == run->leftToRight()) ? cluster->endPos() : cluster->startPos();
     return {fallback, fallback};
+}
+
+// Reads big-endian scalars from raw TrueType tables without unaligned pointer casts
+uint16_t readU16BE(const uint8_t* p) {
+    return static_cast<uint16_t>((uint16_t(p[0]) << 8) | uint16_t(p[1]));
+}
+
+int16_t readS16BE(const uint8_t* p) {
+    return static_cast<int16_t>(readU16BE(p));
+}
+
+uint32_t readU32BE(const uint8_t* p) {
+    return (uint32_t(p[0]) << 24) | (uint32_t(p[1]) << 16) | (uint32_t(p[2]) << 8) |
+           uint32_t(p[3]);
 }
 
 }  // namespace
@@ -384,7 +402,690 @@ SkRect TextLine::extendHeight(const ClipContext& context) const {
     return result;
 }
 
-void TextLine::buildTextBlob(TextRange textRange, const TextStyle& style, const ClipContext& context) {
+// Decomposes a 1-glyph single-grapheme cluster into TrueType glyf composite sub-glyphs mapped to
+// visible code points, caching the result on the line so paint and shadow share one parse
+int TextLine::decomposeClusterComponents(const Run* run, const Cluster* cluster) const {
+    if (cluster->size() != 1 || cluster->isHardBreak() || cluster->isSoftHyphen() ||
+        !shouldIsolateCluster(fOwner, cluster)) {
+        return -1;
+    }
+    ClusterIndex clusterIdx = fOwner->clusterIndex(cluster->textRange().start);
+    for (int i = 0; i < fDecomposedClusters.size(); ++i) {
+        if (fDecomposedClusters[i].fClusterIndex == clusterIdx) {
+            return fDecomposedClusters[i].fValid ? i : -1;
+        }
+    }
+    int entryIdx = fDecomposedClusters.size();
+    fDecomposedClusters.push_back({clusterIdx, false, {}});
+
+    SkUnicode* unicode = fOwner->getUnicode().get();
+    if (!unicode) {
+        return -1;
+    }
+    constexpr int kMaxComponents = 8;
+    struct VisibleCP {
+        SkUnichar fCP;
+        TextIndex fStart;
+    };
+    STArray<kMaxComponents, VisibleCP, true> visibleCPs;
+    const char* textBase = fOwner->text().data();
+    const char* ptr = textBase + cluster->textRange().start;
+    const char* endPtr = textBase + cluster->textRange().end;
+    while (ptr < endPtr) {
+        TextIndex cpStart = SkToSizeT(ptr - textBase);
+        SkUnichar cp = SkUTF::NextUTF8(&ptr, endPtr);
+        if (cp < 0 || unicode->isRegionalIndicator(cp)) {
+            return -1;
+        }
+        // Skip hidden joiners, variation selectors, skin-tone modifiers, and controls so
+        // 1-codepoint composites like '±' + ZWJ do not masquerade as base + diacritic
+        if (unicode->isDefaultIgnorable(cp) || unicode->isControl(cp) ||
+            unicode->isEmojiModifier(cp)) {
+            continue;
+        }
+        if (visibleCPs.size() >= kMaxComponents) {
+            return -1;
+        }
+        visibleCPs.push_back({cp, cpStart});
+    }
+    if (visibleCPs.size() < 2) {
+        return -1;
+    }
+
+    const SkTypeface* typeface = run->font().getTypeface();
+    if (!typeface) {
+        return -1;
+    }
+    // Color fonts draw multi-layer palettes or bitmaps rather than monochrome glyf components
+    if (typeface->getTableSize(SkSetFourByteTag('C', 'O', 'L', 'R')) > 0 ||
+        typeface->getTableSize(SkSetFourByteTag('S', 'V', 'G', ' ')) > 0 ||
+        typeface->getTableSize(SkSetFourByteTag('s', 'b', 'i', 'x')) > 0 ||
+        typeface->getTableSize(SkSetFourByteTag('C', 'B', 'D', 'T')) > 0) {
+        return -1;
+    }
+    // Non-default variable-font instances can move composite components via gvar deltas
+    int posCount = typeface->getVariationDesignPosition({});
+    if (posCount > 0) {
+        AutoSTArray<8, SkFontArguments::VariationPosition::Coordinate> coords(posCount);
+        int paramCount = typeface->getVariationDesignParameters({});
+        if (paramCount <= 0 || typeface->getVariationDesignPosition(coords) != posCount) {
+            return -1;
+        }
+        AutoSTArray<8, SkFontParameters::Variation::Axis> axes(paramCount);
+        if (typeface->getVariationDesignParameters(axes) != paramCount) {
+            return -1;
+        }
+        for (int i = 0; i < posCount; ++i) {
+            bool atDefault = false;
+            for (int j = 0; j < paramCount; ++j) {
+                if (axes[j].tag == coords[i].axis) {
+                    atDefault = SkScalarNearlyEqual(coords[i].value, axes[j].def);
+                    break;
+                }
+            }
+            if (!atDefault) {
+                return -1;
+            }
+        }
+    } else if (posCount < 0 && typeface->getTableSize(SkSetFourByteTag('g', 'v', 'a', 'r')) > 0) {
+        return -1;
+    }
+
+    int upem = typeface->getUnitsPerEm();
+    int numGlyphs = typeface->countGlyphs();
+    if (upem <= 0 || numGlyphs <= 0) {
+        return -1;
+    }
+    SkGlyphID compositeGid = run->glyphs()[cluster->startPos()];
+    if (compositeGid == 0 || compositeGid >= SkToUInt(numGlyphs)) {
+        return -1;
+    }
+    uint8_t headFmt[2];
+    if (typeface->getTableData(SkSetFourByteTag('h', 'e', 'a', 'd'), 50, 2, headFmt) != 2) {
+        return -1;
+    }
+    int16_t locaFmt = readS16BE(headFmt);
+    if (locaFmt != 0 && locaFmt != 1) {
+        return -1;
+    }
+    constexpr SkFontTableTag kLocaTag = SkSetFourByteTag('l', 'o', 'c', 'a');
+    constexpr SkFontTableTag kGlyfTag = SkSetFourByteTag('g', 'l', 'y', 'f');
+    const size_t locaSize = typeface->getTableSize(kLocaTag);
+    const size_t glyfSize = typeface->getTableSize(kGlyfTag);
+    const size_t requiredLoca = (SkToSizeT(numGlyphs) + 1) * (locaFmt == 0 ? 2 : 4);
+    if (glyfSize == 0 || locaSize < requiredLoca) {
+        return -1;
+    }
+
+    // Read small loca/glyf slices into stack buffers to avoid heap-copying full font tables
+    auto readGlyphSpan = [&](SkGlyphID gid, uint32_t* outOff0, uint32_t* outOff1) -> bool {
+        if (gid == 0 || gid >= SkToUInt(numGlyphs)) {
+            return false;
+        }
+        if (locaFmt == 0) {
+            uint8_t pair[4];
+            if (typeface->getTableData(kLocaTag, size_t(gid) * 2, 4, pair) != 4) {
+                return false;
+            }
+            *outOff0 = uint32_t(readU16BE(pair)) * 2;
+            *outOff1 = uint32_t(readU16BE(pair + 2)) * 2;
+        } else {
+            uint8_t pair[8];
+            if (typeface->getTableData(kLocaTag, size_t(gid) * 4, 8, pair) != 8) {
+                return false;
+            }
+            *outOff0 = readU32BE(pair);
+            *outOff1 = readU32BE(pair + 4);
+        }
+        return *outOff0 < *outOff1 && *outOff1 <= glyfSize && *outOff1 - *outOff0 >= 10;
+    };
+
+    auto readGlyphHeader = [&](SkGlyphID gid,
+                               int16_t* outContours,
+                               int16_t* outYMin,
+                               int16_t* outYMax) -> bool {
+        uint32_t off0 = 0;
+        uint32_t off1 = 0;
+        uint8_t hdr[10];
+        if (!readGlyphSpan(gid, &off0, &off1) ||
+            typeface->getTableData(kGlyfTag, off0, sizeof(hdr), hdr) != sizeof(hdr)) {
+            return false;
+        }
+        *outContours = readS16BE(hdr);
+        if (outYMin) {
+            *outYMin = readS16BE(hdr + 4);
+        }
+        if (outYMax) {
+            *outYMax = readS16BE(hdr + 8);
+        }
+        return true;
+    };
+
+    auto isCompositeGlyph = [&](SkGlyphID gid) -> bool {
+        int16_t contours = 0;
+        return readGlyphHeader(gid, &contours, nullptr, nullptr) && contours < 0;
+    };
+
+    struct RawComp {
+        SkGlyphID fGlyphId;
+        uint16_t fFlags;
+        int32_t fDx;
+        int32_t fDy;
+    };
+    constexpr uint16_t kArg1And2AreWords = 0x0001;
+    constexpr uint16_t kArgsAreXYValues = 0x0002;
+    constexpr uint16_t kWeHaveAScale = 0x0008;
+    constexpr uint16_t kMoreComponents = 0x0020;
+    constexpr uint16_t kWeHaveAnXAndYScale = 0x0040;
+    constexpr uint16_t kWeHaveATwoByTwo = 0x0080;
+    constexpr uint16_t kUseMyMetrics = 0x0200;
+
+    auto parseComposite = [&](SkGlyphID gid,
+                              STArray<kMaxComponents, RawComp, true>* out) -> bool {
+        uint32_t off0 = 0;
+        uint32_t off1 = 0;
+        if (!readGlyphSpan(gid, &off0, &off1)) {
+            return false;
+        }
+        uint8_t glyfBuf[10 + kMaxComponents * 8];
+        const size_t sliceLen = std::min<size_t>(off1 - off0, sizeof(glyfBuf));
+        if (typeface->getTableData(kGlyfTag, off0, sliceLen, glyfBuf) != sliceLen ||
+            readS16BE(glyfBuf) >= 0) {
+            return false;
+        }
+        size_t pos = 10;
+        for (int step = 0; step < kMaxComponents; ++step) {
+            if (pos + 4 > sliceLen) {
+                return false;
+            }
+            uint16_t flags = readU16BE(glyfBuf + pos);
+            SkGlyphID subGid = readU16BE(glyfBuf + pos + 2);
+            pos += 4;
+            if (subGid == 0 || subGid >= SkToUInt(numGlyphs)) {
+                return false;
+            }
+            // SkTextBlob positions glyphs by (x, y) translation only, so reject point-matched
+            // or scaled/sheared sub-glyphs
+            if ((flags & kArgsAreXYValues) == 0 ||
+                (flags & (kWeHaveAScale | kWeHaveAnXAndYScale | kWeHaveATwoByTwo)) != 0) {
+                return false;
+            }
+            int32_t dx = 0;
+            int32_t dy = 0;
+            if ((flags & kArg1And2AreWords) != 0) {
+                if (pos + 4 > sliceLen) {
+                    return false;
+                }
+                dx = readS16BE(glyfBuf + pos);
+                dy = readS16BE(glyfBuf + pos + 2);
+                pos += 4;
+            } else {
+                if (pos + 2 > sliceLen) {
+                    return false;
+                }
+                dx = static_cast<int8_t>(glyfBuf[pos]);
+                dy = static_cast<int8_t>(glyfBuf[pos + 1]);
+                pos += 2;
+            }
+            out->push_back({subGid, flags, dx, dy});
+            if ((flags & kMoreComponents) == 0) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    STArray<kMaxComponents, RawComp, true> comps;
+    if (!parseComposite(compositeGid, &comps)) {
+        return -1;
+    }
+    if (comps.size() < visibleCPs.size()) {
+        STArray<kMaxComponents, RawComp, true> flatComps;
+        bool overflow = false;
+        for (int i = 0; i < comps.size(); ++i) {
+            const RawComp& c = comps[i];
+            STArray<kMaxComponents, RawComp, true> subComps;
+            if (c.fGlyphId != compositeGid && parseComposite(c.fGlyphId, &subComps)) {
+                if (flatComps.size() + subComps.size() > kMaxComponents) {
+                    overflow = true;
+                    break;
+                }
+                bool anySubMetrics = false;
+                for (int j = 0; j < subComps.size(); ++j) {
+                    anySubMetrics |= (subComps[j].fFlags & kUseMyMetrics) != 0;
+                }
+                for (int j = 0; j < subComps.size(); ++j) {
+                    uint16_t mergedFlags = subComps[j].fFlags;
+                    if (!anySubMetrics && j == 0 && (c.fFlags & kUseMyMetrics) != 0) {
+                        mergedFlags |= kUseMyMetrics;
+                    }
+                    flatComps.push_back(
+                            {subComps[j].fGlyphId, mergedFlags, c.fDx + subComps[j].fDx,
+                             c.fDy + subComps[j].fDy});
+                }
+            } else {
+                if (flatComps.size() >= kMaxComponents) {
+                    overflow = true;
+                    break;
+                }
+                flatComps.push_back(c);
+            }
+        }
+        if (!overflow && flatComps.size() == visibleCPs.size()) {
+            comps = std::move(flatComps);
+        }
+    }
+    if (comps.size() != visibleCPs.size()) {
+        return -1;
+    }
+
+    int baseCompIdx = -1;
+    SkGlyphID baseCmap = typeface->unicharToGlyph(visibleCPs[0].fCP);
+    // Soft-dotted 'i' and 'j' replace their base glyph with dotless 'ı' (U+0131) or 'ȷ' (U+0237)
+    SkGlyphID altBaseCmap = 0;
+    if (visibleCPs[0].fCP == 'i') {
+        altBaseCmap = typeface->unicharToGlyph(0x0131);
+    } else if (visibleCPs[0].fCP == 'j') {
+        altBaseCmap = typeface->unicharToGlyph(0x0237);
+    }
+    int matches = 0;
+    for (int i = 0; i < comps.size(); ++i) {
+        SkGlyphID gid = comps[i].fGlyphId;
+        if ((baseCmap != 0 && gid == baseCmap) || (altBaseCmap != 0 && gid == altBaseCmap)) {
+            baseCompIdx = i;
+            ++matches;
+        }
+    }
+    if (matches != 1) {
+        baseCompIdx = -1;
+        int candIdx = -1;
+        int metricMatches = 0;
+        for (int i = 0; i < comps.size(); ++i) {
+            if ((comps[i].fFlags & kUseMyMetrics) != 0) {
+                candIdx = i;
+                ++metricMatches;
+            }
+        }
+        if (metricMatches != 1) {
+            candIdx = -1;
+        }
+        if (candIdx < 0 && comps.size() == 2 && comps[0].fGlyphId != comps[1].fGlyphId &&
+            comps[0].fDx == 0 && comps[0].fDy == 0 && (comps[1].fDx != 0 || comps[1].fDy != 0)) {
+            candIdx = 0;
+        }
+        // Reject heuristic base selection when either visibleCPs[0] or candIdx is itself a
+        // composite (e.g. precomposed 'ẹ' + U+0302 -> nested [gid('ê'), gid(dotbelow)])
+        if (candIdx >= 0 && (baseCmap == 0 || !isCompositeGlyph(baseCmap)) &&
+            !isCompositeGlyph(comps[candIdx].fGlyphId)) {
+            baseCompIdx = candIdx;
+        }
+    }
+    if (baseCompIdx < 0) {
+        return -1;
+    }
+
+    int markToComp[kMaxComponents];
+    bool compUsed[kMaxComponents] = {};
+    for (int i = 0; i < kMaxComponents; ++i) {
+        markToComp[i] = -1;
+    }
+    compUsed[baseCompIdx] = true;
+
+    if (comps.size() == 2) {
+        markToComp[1] = 1 - baseCompIdx;
+    } else {
+        // Fonts often store spacing modifier clones (e.g. U+02C6 for U+0302) as composite parts
+        auto markGlyphCandidates = [&](SkUnichar cp, SkGlyphID out[3]) -> int {
+            int n = 0;
+            auto addCp = [&](SkUnichar c) {
+                if (c == 0) return;
+                SkGlyphID g = typeface->unicharToGlyph(c);
+                if (g != 0) {
+                    for (int k = 0; k < n; ++k) {
+                        if (out[k] == g) return;
+                    }
+                    out[n++] = g;
+                }
+            };
+            addCp(cp);
+            switch (cp) {
+                case 0x0300: addCp(0x0060); addCp(0x02CB); break;
+                case 0x0301: addCp(0x00B4); addCp(0x02CA); break;
+                case 0x0302: addCp(0x02C6); addCp(0x005E); break;
+                case 0x0303: addCp(0x02DC); addCp(0x007E); break;
+                case 0x0304: addCp(0x00AF); addCp(0x02C9); break;
+                case 0x0306: addCp(0x02D8); break;
+                case 0x0307: addCp(0x02D9); break;
+                case 0x0308: addCp(0x00A8); break;
+                case 0x030A: addCp(0x02DA); addCp(0x00B0); break;
+                case 0x030B: addCp(0x02DD); break;
+                case 0x030C: addCp(0x02C7); break;
+                case 0x0327: addCp(0x00B8); break;
+                case 0x0328: addCp(0x02DB); break;
+                default: break;
+            }
+            return n;
+        };
+
+        auto compMatchesMark = [&](SkGlyphID gid, SkUnichar cp) {
+            SkGlyphID cands[3];
+            int n = markGlyphCandidates(cp, cands);
+            for (int k = 0; k < n; ++k) {
+                if (cands[k] == gid) return true;
+            }
+            return false;
+        };
+
+        for (int round = 0; round < kMaxComponents; ++round) {
+            bool progressed = false;
+            for (int m = 1; m < visibleCPs.size(); ++m) {
+                if (markToComp[m] >= 0) continue;
+                int hitComp = -1;
+                int hitCount = 0;
+                for (int i = 0; i < comps.size(); ++i) {
+                    if (!compUsed[i] && compMatchesMark(comps[i].fGlyphId, visibleCPs[m].fCP)) {
+                        hitComp = i;
+                        ++hitCount;
+                    }
+                }
+                if (hitCount != 1) continue;
+                bool rival = false;
+                for (int m2 = 1; m2 < visibleCPs.size(); ++m2) {
+                    if (m2 != m && markToComp[m2] < 0 &&
+                        compMatchesMark(comps[hitComp].fGlyphId, visibleCPs[m2].fCP)) {
+                        rival = true;
+                        break;
+                    }
+                }
+                if (!rival) {
+                    markToComp[m] = hitComp;
+                    compUsed[hitComp] = true;
+                    progressed = true;
+                }
+            }
+            if (!progressed) break;
+        }
+
+        int remMarks[kMaxComponents];
+        int remComps[kMaxComponents];
+        int remM = 0;
+        int remC = 0;
+        for (int m = 1; m < visibleCPs.size(); ++m) {
+            if (markToComp[m] < 0) remMarks[remM++] = m;
+        }
+        for (int i = 0; i < comps.size(); ++i) {
+            if (!compUsed[i]) remComps[remC++] = i;
+        }
+        if (remM == 1 && remC == 1) {
+            markToComp[remMarks[0]] = remComps[0];
+            remM = 0;
+        } else if (remM == 2 && remC == 2) {
+            // Pair two unencoded marks only when they occupy strictly distinct vertical tiers
+            // (below-base vs above-base, or Thai above-vowel vs upper tone mark)
+            auto markVerticalTier = [](SkUnichar cp) -> int {
+                if ((cp >= 0x0316 && cp <= 0x0333) || (cp >= 0x0339 && cp <= 0x033C) ||
+                    cp == 0x0345 || (cp >= 0x0E38 && cp <= 0x0E3A)) {
+                    return 0;
+                }
+                if ((cp >= 0x0300 && cp <= 0x0314) || (cp >= 0x033D && cp <= 0x0344) ||
+                    cp == 0x0346 || (cp >= 0x034A && cp <= 0x034C) || cp == 0x0E31 ||
+                    (cp >= 0x0E34 && cp <= 0x0E37) || cp == 0x0E47 ||
+                    (cp >= 0x0E4D && cp <= 0x0E4E)) {
+                    return 1;
+                }
+                if (cp >= 0x0E48 && cp <= 0x0E4C) {
+                    return 2;
+                }
+                return -1;
+            };
+            int tier0 = markVerticalTier(visibleCPs[remMarks[0]].fCP);
+            int tier1 = markVerticalTier(visibleCPs[remMarks[1]].fCP);
+            int16_t cont0 = 0, yMin0 = 0, yMax0 = 0;
+            int16_t cont1 = 0, yMin1 = 0, yMax1 = 0;
+            if (tier0 >= 0 && tier1 >= 0 && tier0 != tier1 &&
+                readGlyphHeader(comps[remComps[0]].fGlyphId, &cont0, &yMin0, &yMax0) &&
+                readGlyphHeader(comps[remComps[1]].fGlyphId, &cont1, &yMin1, &yMax1) &&
+                cont0 >= 0 && cont1 >= 0) {
+                float y0 = 0.5f * float(yMin0 + yMax0) + float(comps[remComps[0]].fDy);
+                float y1 = 0.5f * float(yMin1 + yMax1) + float(comps[remComps[1]].fDy);
+                if (std::abs(y0 - y1) > 1.0f) {
+                    bool firstCompLower = y0 < y1;
+                    bool firstMarkLower = tier0 < tier1;
+                    markToComp[remMarks[0]] =
+                            (firstMarkLower == firstCompLower) ? remComps[0] : remComps[1];
+                    markToComp[remMarks[1]] =
+                            (firstMarkLower == firstCompLower) ? remComps[1] : remComps[0];
+                    remM = 0;
+                }
+            }
+        }
+        if (remM != 0) {
+            return -1;
+        }
+    }
+
+    const SkFont& font = run->font();
+    SkScalar unitScale = font.getSize() / SkIntToScalar(upem);
+    auto makeOffset = [&](const RawComp& c) {
+        // TrueType y-up component offsets also shift horizontally under synthetic oblique skewX
+        SkScalar sx = SkIntToScalar(c.fDx) * unitScale;
+        SkScalar sy = SkIntToScalar(c.fDy) * unitScale;
+        return SkPoint::Make(sx * font.getScaleX() - sy * font.getSkewX(), -sy);
+    };
+
+    DecomposedCluster& outEntry = fDecomposedClusters[entryIdx];
+    outEntry.fComponents.push_back(
+            {comps[baseCompIdx].fGlyphId, makeOffset(comps[baseCompIdx]), visibleCPs[0].fStart});
+    for (int m = 1; m < visibleCPs.size(); ++m) {
+        const RawComp& mc = comps[markToComp[m]];
+        outEntry.fComponents.push_back({mc.fGlyphId, makeOffset(mc), visibleCPs[m].fStart});
+    }
+    outEntry.fValid = true;
+    return entryIdx;
+}
+
+// Replaces boundary 1-glyph composite clusters in builder with the sub-glyphs owned by
+// textRange; returns false without touching builder when no boundary composite is split
+bool TextLine::buildDecomposedBlob(const Run* run,
+                                   TextRange textRange,
+                                   const ClipContext& context,
+                                   SkScalar correctedBaseline,
+                                   SkTextBlobBuilder& builder,
+                                   TArray<uint32_t, true>* outClusterIndexes,
+                                   SkRect* inoutLocalClip) const {
+    if (textRange.empty() || run->placeholderStyle() != nullptr || run->isEllipsis()) {
+        return false;
+    }
+    const Cluster* startCluster = &fOwner->cluster(fOwner->clusterIndex(textRange.start));
+    const Cluster* endCluster = &fOwner->cluster(fOwner->clusterIndex(textRange.end - 1));
+    if (startCluster->runIndex() != run->index() || endCluster->runIndex() != run->index()) {
+        return false;
+    }
+    bool startSplit = textRange.start > startCluster->textRange().start;
+    bool endSplit = textRange.end < endCluster->textRange().end;
+    if (!startSplit && !endSplit) {
+        return false;
+    }
+
+    int startIdx = -1;
+    int endIdx = -1;
+    if (startCluster == endCluster) {
+        startIdx = this->decomposeClusterComponents(run, startCluster);
+        if (startIdx < 0) {
+            return false;
+        }
+    } else {
+        if (startSplit) {
+            startIdx = this->decomposeClusterComponents(run, startCluster);
+        }
+        if (endSplit) {
+            endIdx = this->decomposeClusterComponents(run, endCluster);
+        }
+        if (startIdx < 0 && endIdx < 0) {
+            return false;
+        }
+    }
+
+    const bool ltr = run->leftToRight();
+    const Cluster* leftCluster = nullptr;
+    const DecomposedCluster* leftDecomp = nullptr;
+    const Cluster* rightCluster = nullptr;
+    const DecomposedCluster* rightDecomp = nullptr;
+    if (startCluster == endCluster) {
+        leftCluster = startCluster;
+        leftDecomp = &fDecomposedClusters[startIdx];
+    } else {
+        int leftIdx = ltr ? startIdx : endIdx;
+        int rightIdx = ltr ? endIdx : startIdx;
+        if (leftIdx >= 0) {
+            leftCluster = ltr ? startCluster : endCluster;
+            leftDecomp = &fDecomposedClusters[leftIdx];
+        }
+        if (rightIdx >= 0) {
+            rightCluster = ltr ? endCluster : startCluster;
+            rightDecomp = &fDecomposedClusters[rightIdx];
+        }
+    }
+
+    size_t midPos = context.pos;
+    size_t midEnd = context.pos + context.size;
+    if (leftCluster != nullptr && midPos < midEnd && midPos == leftCluster->startPos()) {
+        ++midPos;
+    }
+    if (rightCluster != nullptr && midPos < midEnd && midEnd - 1 == rightCluster->startPos()) {
+        --midEnd;
+    }
+
+    auto computeBasePos = [&](const Cluster* c) {
+        size_t cg = c->startPos();
+        SkASSERT(cg < run->size());
+        SkPoint basePos = run->positions()[cg];
+        if (!run->fJustificationShifts.empty()) {
+            // When isolateClusterGlyphs advances context.pos to cg + 1, fTextShift subtracts
+            // fJustificationShifts[cg + 1].fY instead of fJustificationShifts[cg].fX
+            basePos.fX += (context.pos == cg + 1) ? run->fJustificationShifts[cg + 1].fY
+                                                  : run->fJustificationShifts[cg].fX;
+        }
+        if (!run->offsets().empty()) {
+            basePos += run->offsets()[cg];
+        }
+        return basePos;
+    };
+
+    struct EmittedComp {
+        SkGlyphID fGlyphId;
+        SkPoint fPos;
+        uint32_t fClusterIndex;
+    };
+    STArray<8, EmittedComp, true> leftEmitted;
+    STArray<8, EmittedComp, true> rightEmitted;
+    auto collectDecomp = [&](const Cluster* c,
+                             const DecomposedCluster* d,
+                             STArray<8, EmittedComp, true>* out) {
+        if (!d) {
+            return;
+        }
+        SkPoint basePos = computeBasePos(c);
+        int n = d->fComponents.size();
+        for (int step = 0; step < n; ++step) {
+            int idx = ltr ? step : (n - 1 - step);
+            const DecomposedComponent& comp = d->fComponents[idx];
+            if (comp.fTextStart >= textRange.start && comp.fTextStart < textRange.end) {
+                out->push_back({comp.fGlyphId, basePos + comp.fGlyphOffset,
+                                SkToU32(comp.fTextStart)});
+            }
+        }
+    };
+    collectDecomp(leftCluster, leftDecomp, &leftEmitted);
+    collectDecomp(rightCluster, rightDecomp, &rightEmitted);
+
+    const size_t midCount = midEnd - midPos;
+    const size_t totalGlyphs =
+            SkToSizeT(leftEmitted.size()) + midCount + SkToSizeT(rightEmitted.size());
+    if (totalGlyphs == 0) {
+        return true;
+    }
+
+    const auto& blobBuf = builder.allocRunPos(run->font(), SkToInt(totalGlyphs));
+    if (outClusterIndexes) {
+        outClusterIndexes->reset(SkToInt(totalGlyphs + 1));
+    }
+    size_t outIdx = 0;
+    for (int i = 0; i < leftEmitted.size(); ++i) {
+        blobBuf.glyphs[outIdx] = leftEmitted[i].fGlyphId;
+        blobBuf.points()[outIdx] = leftEmitted[i].fPos;
+        if (outClusterIndexes) {
+            (*outClusterIndexes)[SkToInt(outIdx)] = leftEmitted[i].fClusterIndex;
+        }
+        ++outIdx;
+    }
+    const SkSpan<const SkGlyphID> runGlyphs = run->glyphs();
+    const SkSpan<const SkPoint> runPositions = run->positions();
+    const SkSpan<const SkPoint> runOffsets = run->offsets();
+    for (size_t g = midPos; g < midEnd; ++g) {
+        blobBuf.glyphs[outIdx] = runGlyphs[g];
+        SkPoint pt = runPositions[g];
+        if (!run->fJustificationShifts.empty()) {
+            pt.fX += run->fJustificationShifts[g].fX;
+        }
+        if (!runOffsets.empty()) {
+            pt += runOffsets[g];
+        }
+        blobBuf.points()[outIdx] = pt;
+        if (outClusterIndexes) {
+            (*outClusterIndexes)[SkToInt(outIdx)] = SkToU32(run->globalClusterIndex(g));
+        }
+        ++outIdx;
+    }
+    for (int i = 0; i < rightEmitted.size(); ++i) {
+        blobBuf.glyphs[outIdx] = rightEmitted[i].fGlyphId;
+        blobBuf.points()[outIdx] = rightEmitted[i].fPos;
+        if (outClusterIndexes) {
+            (*outClusterIndexes)[SkToInt(outIdx)] = rightEmitted[i].fClusterIndex;
+        }
+        ++outIdx;
+    }
+    if (outClusterIndexes) {
+        (*outClusterIndexes)[SkToInt(totalGlyphs)] =
+                SkToU32(ltr ? textRange.end : textRange.start);
+    }
+
+    if (context.clippingNeeded && inoutLocalClip != nullptr) {
+        // Keep active multi-grapheme ligature cuts intact while expanding the opposite edge so
+        // overhanging decomposed diacritic ink (e.g. negative-dx 'Î') is not clipped away
+        const bool leftLigatureCut =
+                startCluster != endCluster &&
+                (ltr ? (startSplit && leftDecomp == nullptr)
+                     : (endSplit && leftDecomp == nullptr));
+        const bool rightLigatureCut =
+                startCluster != endCluster &&
+                (ltr ? (endSplit && rightDecomp == nullptr)
+                     : (startSplit && rightDecomp == nullptr));
+        auto expandClip = [&](const STArray<8, EmittedComp, true>& emitted) {
+            for (int i = 0; i < emitted.size(); ++i) {
+                SkRect gb = run->font().getBounds(emitted[i].fGlyphId, nullptr);
+                gb.outset(1.0f, 1.0f);
+                gb.offset(context.fTextShift + emitted[i].fPos.fX,
+                          correctedBaseline + emitted[i].fPos.fY);
+                if (!leftLigatureCut) {
+                    inoutLocalClip->fLeft = std::min(inoutLocalClip->fLeft, gb.fLeft);
+                }
+                if (!rightLigatureCut) {
+                    inoutLocalClip->fRight = std::max(inoutLocalClip->fRight, gb.fRight);
+                }
+                inoutLocalClip->fTop = std::min(inoutLocalClip->fTop, gb.fTop);
+                inoutLocalClip->fBottom = std::max(inoutLocalClip->fBottom, gb.fBottom);
+            }
+        };
+        expandClip(leftEmitted);
+        expandClip(rightEmitted);
+    }
+    return true;
+}
+
+void TextLine::buildTextBlob(TextRange textRange,
+                             const TextStyle& style,
+                             const ClipContext& context) {
     if (context.run->placeholderStyle() != nullptr) {
         return;
     }
@@ -400,18 +1101,21 @@ void TextLine::buildTextBlob(TextRange textRange, const TextStyle& style, const 
     record.fVisitor_Run = context.run;
     record.fVisitor_Pos = context.pos;
 
+    SkASSERT(nearlyEqual(context.run->baselineShift(), style.getBaselineShift()));
+    SkScalar correctedBaseline =
+            SkScalarFloorToScalar(this->baseline() + style.getBaselineShift() + 0.5);
+
     // TODO: This is the change for flutter, must be removed later
     SkTextBlobBuilder builder;
-    context.run->copyTo(builder, SkToU32(context.pos), context.size);
-    record.fClippingNeeded = context.clippingNeeded;
-    if (context.clippingNeeded) {
-        record.fClipRect = extendHeight(context).makeOffset(this->offset());
-    } else {
-        record.fClipRect = context.clip.makeOffset(this->offset());
+    SkRect localClip = context.clippingNeeded ? extendHeight(context) : context.clip;
+    // Split 1-glyph TrueType composites emit per-style sub-glyphs; all other runs copy as-is
+    if (!this->buildDecomposedBlob(context.run, textRange, context, correctedBaseline, builder,
+                                   &record.fClusterIndexes, &localClip)) {
+        context.run->copyTo(builder, SkToU32(context.pos), context.size);
     }
+    record.fClippingNeeded = context.clippingNeeded;
+    record.fClipRect = localClip.makeOffset(this->offset());
 
-    SkASSERT(nearlyEqual(context.run->baselineShift(), style.getBaselineShift()));
-    SkScalar correctedBaseline = SkScalarFloorToScalar(this->baseline() + style.getBaselineShift() +  0.5);
     record.fBlob = builder.make();
     if (record.fBlob != nullptr) {
         record.fBounds.joinPossiblyEmptyRect(record.fBlob->bounds());
@@ -450,20 +1154,26 @@ void TextLine::paintShadow(ParagraphPainter* painter,
                            TextRange textRange,
                            const TextStyle& style,
                            const ClipContext& context) const {
-    SkScalar correctedBaseline = SkScalarFloorToScalar(this->baseline() + style.getBaselineShift() + 0.5);
+    SkScalar correctedBaseline =
+            SkScalarFloorToScalar(this->baseline() + style.getBaselineShift() + 0.5);
 
     for (TextShadow shadow : style.getShadows()) {
         if (!shadow.hasShadow()) continue;
 
         SkTextBlobBuilder builder;
-        context.run->copyTo(builder, context.pos, context.size);
+        SkRect localClip = context.clippingNeeded ? extendHeight(context) : SkRect::MakeEmpty();
+        // Match buildTextBlob composite splitting so per-style mark shadows draw at mark offsets
+        if (!this->buildDecomposedBlob(
+                    context.run, textRange, context, correctedBaseline, builder, nullptr,
+                    &localClip)) {
+            context.run->copyTo(builder, context.pos, context.size);
+        }
 
         if (context.clippingNeeded) {
             painter->save();
-            SkRect clip = extendHeight(context);
-            clip.offset(x, y);
-            clip.offset(this->offset());
-            painter->clipRect(clip);
+            localClip.offset(x, y);
+            localClip.offset(this->offset());
+            painter->clipRect(localClip);
         }
         auto blob = builder.make();
         painter->drawTextShadow(blob,
