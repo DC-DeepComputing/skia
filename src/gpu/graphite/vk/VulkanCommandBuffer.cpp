@@ -428,6 +428,11 @@ std::optional<ImageStateUpdateInfo> get_state_update_info(const VulkanCaps& caps
         return std::nullopt;
     }
 
+    if (isSpecialQueue(newQueueFamilyIndex)) {
+        return ImageStateUpdateInfo{
+                newLayout, 0, VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, newQueueFamilyIndex};
+    }
+
     return ImageStateUpdateInfo{
             newLayout,
             VkImageLayoutToSrcAccessMask(newLayout, usageFlags),
@@ -490,9 +495,18 @@ void VulkanCommandBuffer::prepareBackendTextureForStateUpdate(
         return;
     }
 
+    auto isSpecialQueue = [&](uint32_t queueFamilyIndex) {
+        return ((queueFamilyIndex == VK_QUEUE_FAMILY_EXTERNAL ||
+                 queueFamilyIndex == VK_QUEUE_FAMILY_FOREIGN_EXT) &&
+                queueFamilyIndex != imageMemoryBarrier->dstQueueFamilyIndex);
+    };
+
     VkPipelineStageFlags srcStageMask =
-            VkImageLayoutToPipelineSrcStageFlags(currentLayout,
-                                                 fSharedContext->vulkanCaps());
+            isSpecialQueue(currentQueueIndex)
+                    ? VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT
+                    : VkImageLayoutToPipelineSrcStageFlags(currentLayout,
+                                                           fSharedContext->vulkanCaps());
+
     this->addImageMemoryBarrier(srcStageMask, update->fDstStage,
                                 /*byRegion=*/false, &imageMemoryBarrier.value());
 
