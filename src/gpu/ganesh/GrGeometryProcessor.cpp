@@ -68,10 +68,19 @@ GrGeometryProcessor::TextureSampler::TextureSampler(GrSamplerState samplerState,
 void GrGeometryProcessor::TextureSampler::reset(GrSamplerState samplerState,
                                                 const GrBackendFormat& backendFormat,
                                                 const skgpu::Swizzle& swizzle) {
-    fSamplerState = GrSamplerState(samplerState.wrapModeX(),
-                                   samplerState.wrapModeY(),
-                                   clamp_filter(backendFormat.textureType(), samplerState.filter()),
-                                   samplerState.mipmapMode());
+    if (samplerState.isAniso()) {
+        fSamplerState = GrSamplerState::Aniso(samplerState.wrapModeX(),
+                                              samplerState.wrapModeY(),
+                                              samplerState.maxAniso(),
+                                              samplerState.mipmapped());
+    } else {
+        fSamplerState = GrSamplerState(samplerState.wrapModeX(),
+                                       samplerState.wrapModeY(),
+                                       clamp_filter(backendFormat.textureType(),
+                                                    samplerState.filter()),
+                                       samplerState.mipmapMode());
+    }
+
     fBackendFormat = backendFormat;
     fSwizzle = swizzle;
     fIsInitialized = true;
