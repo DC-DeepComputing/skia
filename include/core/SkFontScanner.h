@@ -40,6 +40,17 @@ public:
     virtual sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                              const SkFontArguments& args) const = 0;
     virtual SkFourByteTag getFactoryId() const = 0;
+    /** Computes the style MakeFromStream(stream, args) would report, without creating a
+     *  typeface. Returns false when that is not cheaper than MakeFromStream or the style could
+     *  differ; callers must then use MakeFromStream. May return true for a malformed font that
+     *  MakeFromStream later rejects (such as a corrupt 'gvar' table), so callers must handle a
+     *  null typeface. Does not change the stream position.
+     */
+    virtual bool scanStyle(SkStreamAsset* /*stream*/,
+                           const SkFontArguments& /*args*/,
+                           SkFontStyle* /*style*/) const {
+        return false;
+    }
 };
 
 #endif // SKFONTSCANNER_H_
