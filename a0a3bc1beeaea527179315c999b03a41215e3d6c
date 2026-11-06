@@ -16,6 +16,24 @@
       "message": "Is this an unrelated fix? If so, it\u0027d be better to land separately with a test.",
       "revId": "a0a3bc1beeaea527179315c999b03a41215e3d6c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c271b822_63fde133",
+        "filename": "modules/skparagraph/src/Run.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-06T21:29:36Z",
+      "side": 1,
+      "message": "Related, but it is also a pre-existing bug. On main, a space-less font with a trailing ignorable already double-moves the run end on the per-cluster path (two styles or word spacing: \"ab\" box 34.23 instead of 28.23 at letterSpacing 3). This CL sends single-style text with ignorables to that path, so without the fix it would regress and assert in TextLine.cpp. I will split it into a separate CL below this one with its own test.",
+      "parentUuid": "abe271c9_95427de7",
+      "revId": "a0a3bc1beeaea527179315c999b03a41215e3d6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
