@@ -34,6 +34,24 @@
       "parentUuid": "74a7b1f4_156348d5",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42825f87_3557171b",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3405028
+      },
+      "writtenOn": "2026-11-06T14:54:03Z",
+      "side": 1,
+      "message": "Does Skia guarantee no work is pending in this (or another) queue? Then TOP is fine, yes.",
+      "parentUuid": "2d4f559f_dea5d9bd",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
