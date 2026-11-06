@@ -111,6 +111,30 @@
       },
       "revId": "7a3b85ca9d28908b0839f84cd87ffb2e7df15807",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f44cb6d8_ce0f9362",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-06T20:18:41Z",
+      "side": 1,
+      "message": "That\u0027s a pile of worms that I feel like could improve; if blitters already have restrictions on coordinate space size for what rasterize, it should also expect clips to be on the same order.  But that\u0027s my soapbox and that\u0027s clearly not the state of the system, so we can leave it as a 64 bit int, but maybe add a comment that clarifies that the clip can be unconstrained?",
+      "parentUuid": "4cbaac6e_306f712a",
+      "range": {
+        "startLine": 364,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 61
+      },
+      "revId": "7a3b85ca9d28908b0839f84cd87ffb2e7df15807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
