@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "7a3b85ca9d28908b0839f84cd87ffb2e7df15807",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1d41653_e9d7a1c5",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-06T18:51:54Z",
+      "side": 1,
+      "message": "SkBitmapDevice tiles over anything that is 8192 or bigger. This doesn\u0027t impose any limit on the values in `x`, since that\u0027s the geometry coming in.  We shouldn\u0027t need 64-bits if we flip the test around to be `clip.fLeft - width \u003e\u003d *x`, although this also then begs the question of what ensures that `width` doesn\u0027t need to be 64 bits?",
+      "range": {
+        "startLine": 364,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 61
+      },
+      "revId": "7a3b85ca9d28908b0839f84cd87ffb2e7df15807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
