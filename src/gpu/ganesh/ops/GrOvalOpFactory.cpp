@@ -1886,12 +1886,17 @@ public:
         params.fCenter = viewMatrix.mapPoint(ellipse.center());
         float ellipseXRadius = ellipse.width() / 2.f;
         float ellipseYRadius = ellipse.height() / 2.f;
+        // This computes `|viewMatrix * (ellipseXRadius, ellipseYRadius)|`.
         params.fXRadius = SkScalarAbs(viewMatrix[SkMatrix::kMScaleX] * ellipseXRadius +
                                       viewMatrix[SkMatrix::kMSkewX] * ellipseYRadius);
         params.fYRadius = SkScalarAbs(viewMatrix[SkMatrix::kMSkewY] * ellipseXRadius +
                                       viewMatrix[SkMatrix::kMScaleY] * ellipseYRadius);
 
-        // do (potentially) anisotropic mapping of stroke
+        // do (potentially) anisotropic mapping of stroke; since `viewMatrix` is axis-aligned, the
+        // lengths of `viewMatrix*(strokeWidth, 0)` and `viewMatrix*(0, strokeWidth)` simplify to
+        // the length of `strokeWidth*(sx, ky)` and `strokeWidth*(kx, sy)`. One each of (sx,ky) and
+        // one of (kx, sy) are 0, so the vector length calculation is just a sum + abs.
+        SkASSERT(viewMatrix.rectStaysRect());
         SkVector scaledStroke;
         SkScalar strokeWidth = stroke.getWidth();
         scaledStroke.fX = SkScalarAbs(
@@ -3110,9 +3115,17 @@ private:
 
             const SkRect& bounds = rrect.fDevBounds.makeOutset(aaBloat, aaBloat);
 
+            // Pin insets to avoid crossing over and possibly extending beyond the outer edge.
+            const float leftInset = bounds.fLeft + xOuterRadius;
+            const float rightInset = bounds.fRight - xOuterRadius;
+            const float xCenter = bounds.centerX();
+
+            const float topInset = bounds.fTop + yOuterRadius;
+            const float botInset = bounds.fBottom - yOuterRadius;
+            const float yCenter = bounds.centerY();
             std::array<SkScalar, 4> yCoords = {bounds.fTop,
-                                               bounds.fTop + yOuterRadius,
-                                               bounds.fBottom - yOuterRadius,
+                                               std::min(topInset, yCenter),
+                                               std::max(botInset, yCenter),
                                                bounds.fBottom};
             std::array<SkScalar, 4> yOuterOffsets = {
                     yMaxOffset,
@@ -3129,13 +3142,13 @@ private:
                       << maybeScale
                       << reciprocalRadii;
 
-                verts << (bounds.fLeft + xOuterRadius) << yCoords[i]
+                verts << std::min(leftInset, xCenter) << yCoords[i]
                       << color
                       << SK_ScalarNearlyZero << yOuterOffsets[i]
                       << maybeScale
                       << reciprocalRadii;
 
-                verts << (bounds.fRight - xOuterRadius) << yCoords[i]
+                verts << std::max(rightInset, xCenter) << yCoords[i]
                       << color
                       << SK_ScalarNearlyZero << yOuterOffsets[i]
                       << maybeScale
@@ -3239,6 +3252,9 @@ GrOp::Owner GrOvalOpFactory::MakeCircularRRectOp(GrRecordingContext* context,
     SkRect bounds;
     viewMatrix.mapRect(&bounds, rrectBounds);
 
+    // Since this op requires the matrix to be a similarity matrix, `scaledRadius` is computed as
+    // the length of `viewMatrix * (radius, 0) = radius * (sx, ky)`. Since rectStaysRect is true,
+    // one of sx or ky is 0, so |sx + sy| is the same as the length.
     SkScalar radius = SkRRectPriv::GetSimpleRadii(rrect).fX;
     SkScalar scaledRadius = SkScalarAbs(radius * (viewMatrix[SkMatrix::kMScaleX] +
                                                   viewMatrix[SkMatrix::kMSkewY]));
@@ -3289,10 +3305,15 @@ GrOp::Owner make_rrect_op(GrRecordingContext* context,
     SkRect bounds;
     viewMatrix.mapRect(&bounds, rrectBounds);
 
+    // Map the local radii to device space. viewMatrix.rectStaysRect() guarantees that either the
+    // scale terms or the skew terms are zero, so this yields |scaleX*rx| / |scaleY*ry| for an
+    // axis-aligned matrix and |skewX*ry| / |skewY*rx| for a 90-degree rotation (local y maps to
+    // device x through kMSkewX and local x maps to device y through kMSkewY). This matches
+    // EllipseOp and needs no later swap.
     SkVector radii = SkRRectPriv::GetSimpleRadii(rrect);
     SkScalar xRadius = SkScalarAbs(viewMatrix[SkMatrix::kMScaleX] * radii.fX +
-                                   viewMatrix[SkMatrix::kMSkewY] * radii.fY);
-    SkScalar yRadius = SkScalarAbs(viewMatrix[SkMatrix::kMSkewX] * radii.fX +
+                                   viewMatrix[SkMatrix::kMSkewX] * radii.fY);
+    SkScalar yRadius = SkScalarAbs(viewMatrix[SkMatrix::kMSkewY] * radii.fX +
                                    viewMatrix[SkMatrix::kMScaleY] * radii.fY);
 
     SkStrokeRec::Style style = stroke.getStyle();
@@ -3309,10 +3330,12 @@ GrOp::Owner make_rrect_op(GrRecordingContext* context,
         if (SkStrokeRec::kHairline_Style == style) {
             scaledStroke.set(1, 1);
         } else {
+            // viewMatrix * (strokeWidth, 0)
             scaledStroke.fX = SkScalarAbs(
-                    strokeWidth * (viewMatrix[SkMatrix::kMScaleX] + viewMatrix[SkMatrix::kMSkewY]));
+                    strokeWidth * (viewMatrix[SkMatrix::kMScaleX] + viewMatrix[SkMatrix::kMSkewX]));
+            // viewMatrix * (0, strokeWidth)
             scaledStroke.fY = SkScalarAbs(
-                    strokeWidth * (viewMatrix[SkMatrix::kMSkewX] + viewMatrix[SkMatrix::kMScaleY]));
+                    strokeWidth * (viewMatrix[SkMatrix::kMSkewY] + viewMatrix[SkMatrix::kMScaleY]));
         }
 
         // if half of strokewidth is greater than radius, we don't handle that right now
@@ -3320,12 +3343,6 @@ GrOp::Owner make_rrect_op(GrRecordingContext* context,
              SK_ScalarHalf * scaledStroke.fY > yRadius)) {
             return nullptr;
         }
-    }
-
-    // The matrix may have a rotation by an odd multiple of 90 degrees.
-    if (viewMatrix.getScaleX() == 0) {
-        std::swap(xRadius, yRadius);
-        std::swap(scaledStroke.fX, scaledStroke.fY);
     }
 
     // The way the effect interpolates the offset-to-ellipse/circle-center attribute only works on
