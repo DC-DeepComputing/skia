@@ -10,6 +10,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
+#include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -243,16 +244,8 @@ TextLine::TextLine(ParagraphImpl* owner,
 
 void TextLine::paint(ParagraphPainter* painter, SkScalar x, SkScalar y) {
     if (fHasBackground) {
-        this->iterateThroughVisualRuns(false,
-            [painter, x, y, this]
-            (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
-                *runWidthInLine = this->iterateThroughSingleRunByStyles(
-                TextAdjustment::GlyphCluster, run, runOffsetInLine, textRange, StyleType::kBackground,
-                [painter, x, y, this](TextRange textRange, const TextStyle& style, const ClipContext& context) {
-                    this->paintBackground(painter, x, y, textRange, style, context);
-                });
-            return true;
-            });
+        // Backgrounds unify vertical bounds across runs on the line before drawing
+        this->paintBackground(painter, x, y);
     }
 
     if (fHasShadows) {
@@ -449,15 +442,143 @@ void TextLine::TextBlobRecord::paint(ParagraphPainter* painter, SkScalar x, SkSc
     }
 }
 
-void TextLine::paintBackground(ParagraphPainter* painter,
-                               SkScalar x,
-                               SkScalar y,
-                               TextRange textRange,
-                               const TextStyle& style,
-                               const ClipContext& context) const {
-    if (style.hasBackground()) {
-        painter->drawRect(context.clip.makeOffset(this->offset() + SkPoint::Make(x, y)),
-                          style.getBackgroundPaintOrID());
+// Draws background highlights for the line, unifying vertical bounds across font-fallback runs
+// and visually abutting font-matched spans, and coalescing abutting same-paint rects
+void TextLine::paintBackground(ParagraphPainter* painter, SkScalar x, SkScalar y) const {
+    struct BackgroundPiece {
+        SkRect fRect;
+        BlockRange fBlocks;
+        const TextStyle* fStyle;
+        int fBand;
+    };
+    STArray<16, BackgroundPiece, true> pieces;
+
+    // Collect visible background pieces in left-to-right visual order across the line
+    this->iterateThroughVisualRuns(
+            false,
+            [&](const Run* run,
+                SkScalar runOffsetInLine,
+                TextRange textRange,
+                SkScalar* runWidthInLine) {
+                *runWidthInLine = this->iterateThroughSingleRunByStyles(
+                        TextAdjustment::GlyphCluster,
+                        run,
+                        runOffsetInLine,
+                        textRange,
+                        StyleType::kBackground,
+                        [&](TextRange styleTextRange,
+                            const TextStyle& style,
+                            const ClipContext& context) {
+                            // Zero-area fallback slices (such as ZWSP) draw nothing and must not
+                            // stretch visible text backgrounds on the line
+                            if (!style.hasBackground() || context.clip.isEmpty()) {
+                                return;
+                            }
+                            // Placeholders keep their own box height and stay out of text bands
+                            if (context.run->isPlaceholder() || style.isPlaceholder()) {
+                                pieces.push_back({context.clip, EMPTY_RANGE, &style, -1});
+                                return;
+                            }
+                            // Ellipsis passes a 3-byte synthetic range from fClusterStart that can
+                            // spill into a truncated next block; pin lookup to its source byte
+                            const TextRange range =
+                                    context.run->isEllipsis()
+                                            ? TextRange(context.run->fClusterStart,
+                                                        context.run->fClusterStart + 1)
+                                            : styleTextRange;
+                            const BlockRange blocks =
+                                    intersected(fOwner->findAllBlocks(range), fBlockRange);
+                            pieces.push_back({context.clip, blocks, &style, pieces.size()});
+                        });
+                return true;
+            });
+
+    if (pieces.empty()) {
+        return;
+    }
+
+    // Single-piece lines already have final bounds; unify vertical bands only when runs split
+    if (pieces.size() > 1) {
+        // Path halving stays bounded by pieces.size() because parent indices strictly decrease
+        auto findBand = [&](int i) {
+            SkASSERT(i >= 0 && i < pieces.size());
+            for (int step = 0; step < pieces.size() && pieces[i].fBand != i; ++step) {
+                const int parent = pieces[i].fBand;
+                pieces[i].fBand = pieces[parent].fBand;
+                i = pieces[i].fBand;
+            }
+            return i;
+        };
+        // Root each merged band at the lower piece index and widen its [fTop, fBottom] in place
+        auto unifyBands = [&](int a, int b) {
+            a = findBand(a);
+            b = findBand(b);
+            if (a > b) {
+                std::swap(a, b);
+            }
+            if (a != b) {
+                pieces[b].fBand = a;
+                pieces[a].fRect.fTop = std::min(pieces[a].fRect.fTop, pieces[b].fRect.fTop);
+                pieces[a].fRect.fBottom =
+                        std::max(pieces[a].fRect.fBottom, pieces[b].fRect.fBottom);
+            }
+        };
+
+        // Fallback or BiDi runs carved out of the same styled block share one vertical band
+        AutoSTArray<16, int> blockOwner(SkToInt(fBlockRange.width()));
+        std::fill(blockOwner.begin(), blockOwner.end(), -1);
+        for (int i = 0; i < pieces.size(); ++i) {
+            if (pieces[i].fBand < 0) {
+                continue;
+            }
+            for (BlockIndex b = pieces[i].fBlocks.start; b < pieces[i].fBlocks.end; ++b) {
+                // Text pieces come from kBackground slices disjoint from placeholder blocks
+                SkASSERT(fOwner->block(b).fStyle.hasBackground() &&
+                         !fOwner->block(b).fStyle.isPlaceholder());
+                const int slot = SkToInt(b - fBlockRange.start);
+                if (blockOwner[slot] < 0) {
+                    blockOwner[slot] = i;
+                } else {
+                    unifyBands(blockOwner[slot], i);
+                }
+            }
+        }
+
+        // Clients like Flutter push a new style block per span even when font metrics match;
+        // unify visually abutting pieces that share typeface and kFont attributes
+        for (int i = 0; i + 1 < pieces.size(); ++i) {
+            const BackgroundPiece& cur = pieces[i];
+            const BackgroundPiece& next = pieces[i + 1];
+            if (cur.fBand >= 0 && next.fBand >= 0 &&
+                nearlyEqual(cur.fRect.fRight, next.fRect.fLeft) &&
+                SkTypeface::Equal(cur.fStyle->getTypeface(), next.fStyle->getTypeface()) &&
+                cur.fStyle->matchOneAttribute(StyleType::kFont, *next.fStyle)) {
+                unifyBands(i, i + 1);
+            }
+        }
+
+        // Copy each band's unified [fTop, fBottom] back to its member pieces before coalescing
+        for (int i = 0; i < pieces.size(); ++i) {
+            if (pieces[i].fBand >= 0) {
+                const BackgroundPiece& root = pieces[findBand(i)];
+                pieces[i].fRect.fTop = root.fRect.fTop;
+                pieces[i].fRect.fBottom = root.fRect.fBottom;
+            }
+        }
+    }
+
+    // Coalesce visually abutting rects sharing height and background paint to avoid AA seams
+    const SkPoint lineOrigin = this->offset() + SkPoint::Make(x, y);
+    for (int i = 0; i < pieces.size(); ++i) {
+        SkRect merged = pieces[i].fRect;
+        const TextStyle* style = pieces[i].fStyle;
+        while (i + 1 < pieces.size() && nearlyEqual(merged.fRight, pieces[i + 1].fRect.fLeft) &&
+               nearlyEqual(merged.fTop, pieces[i + 1].fRect.fTop) &&
+               nearlyEqual(merged.fBottom, pieces[i + 1].fRect.fBottom) &&
+               style->matchOneAttribute(StyleType::kBackground, *pieces[i + 1].fStyle)) {
+            merged.fRight = pieces[++i].fRect.fRight;
+        }
+        painter->drawRect(merged.makeOffset(lineOrigin), style->getBackgroundPaintOrID());
     }
 }
 

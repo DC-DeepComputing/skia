@@ -11,6 +11,7 @@
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -21,6 +22,7 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/encode/SkPngEncoder.h"
+#include "include/utils/SkCustomTypeface.h"
 #include "modules/skparagraph/include/DartTypes.h"
 #include "modules/skparagraph/include/FontCollection.h"
 #include "modules/skparagraph/include/Paragraph.h"
@@ -12888,4 +12890,400 @@ DEF_TEST(SkParagraph_LetterSpacingStaysInsideLineWidth, reporter) {
                        1);
     mixed->layout(1000);
     checkInside(mixed.get(), mixed->getMaxIntrinsicWidth());
+}
+
+namespace {
+sk_sp<SkTypeface> make_space_digits_typeface() {
+    SkCustomTypefaceBuilder builder;
+    SkFontMetrics fm = {};
+    fm.fAscent = -0.75f;
+    fm.fDescent = 0.15f;
+    fm.fCapHeight = 0.7f;
+    fm.fXHeight = 0.5f;
+    builder.setMetrics(fm, 1.0f);
+    builder.setFontStyle(SkFontStyle::Normal());
+    builder.setGlyph(0, 0.6f, SkPath());
+    builder.setGlyph(' ', 0.32f, SkPath());
+    for (char c = '0'; c <= '9'; ++c) {
+        SkPathBuilder path(SkPathFillType::kEvenOdd);
+        path.addRect(SkRect::MakeLTRB(0.08f, -0.70f, 0.52f, 0.0f));
+        path.addRect(SkRect::MakeLTRB(0.16f, -0.62f, 0.44f, -0.08f));
+        builder.setGlyph(c, 0.6f, path.detach());
+    }
+    return builder.detach();
+}
+
+class BackgroundRectRecorder final : public ParagraphPainter {
+public:
+    std::vector<SkRect> fRects;
+    void drawTextBlob(const sk_sp<SkTextBlob>&, SkScalar, SkScalar, const SkPaintOrID&) override {}
+    void drawTextShadow(const sk_sp<SkTextBlob>&,
+                        SkScalar,
+                        SkScalar,
+                        SkColor,
+                        SkScalar) override {}
+    void drawRect(const SkRect& rect, const SkPaintOrID&) override {
+        fRects.push_back(rect.makeOffset(fOrigin));
+    }
+    void drawFilledRect(const SkRect&, const DecorationStyle&) override {}
+    void drawPath(const SkPath&, const DecorationStyle&) override {}
+    void drawLine(SkScalar, SkScalar, SkScalar, SkScalar, const DecorationStyle&) override {}
+    void clipRect(const SkRect&) override {}
+    void translate(SkScalar dx, SkScalar dy) override { fOrigin += {dx, dy}; }
+    void save() override { fStack.push_back(fOrigin); }
+    void restore() override {
+        fOrigin = fStack.back();
+        fStack.pop_back();
+    }
+
+private:
+    SkPoint fOrigin = {0, 0};
+    std::vector<SkPoint> fStack;
+};
+
+int max_distinct_heights_per_line(Paragraph* paragraph, const std::vector<SkRect>& rects) {
+    std::vector<LineMetrics> lines;
+    paragraph->getLineMetrics(lines);
+    int maxDistinct = 0;
+    for (const auto& lm : lines) {
+        const SkScalar lineTop = SkDoubleToScalar(lm.fBaseline - lm.fAscent);
+        const SkScalar lineBottom = SkDoubleToScalar(lm.fBaseline + lm.fDescent);
+        std::vector<std::pair<SkScalar, SkScalar>> distinct;
+        for (const auto& rc : rects) {
+            const SkScalar cy = rc.centerY();
+            if (cy < lineTop || cy > lineBottom) {
+                continue;
+            }
+            bool found = false;
+            for (const auto& d : distinct) {
+                if (SkScalarNearlyEqual(d.first, rc.fTop, EPSILON20) &&
+                    SkScalarNearlyEqual(d.second, rc.fBottom, EPSILON20)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                distinct.emplace_back(rc.fTop, rc.fBottom);
+            }
+        }
+        maxDistinct = std::max(maxDistinct, SkToInt(distinct.size()));
+    }
+    return maxDistinct;
+}
+
+int count_background_holes(Paragraph* paragraph, SkScalar width, SkColor bgColor) {
+    SkBitmap bm;
+    bm.allocN32Pixels(SkScalarCeilToInt(width) + 4,
+                      SkScalarCeilToInt(paragraph->getHeight()) + 4);
+    SkCanvas canvas(bm);
+    canvas.clear(SK_ColorWHITE);
+    paragraph->paint(&canvas, 0, 0);
+
+    std::vector<LineMetrics> lines;
+    paragraph->getLineMetrics(lines);
+    int totalHoles = 0;
+    for (const auto& lm : lines) {
+        const int y0 = std::max(0, SkScalarCeilToInt(SkDoubleToScalar(lm.fBaseline - lm.fAscent)));
+        const int y1 = std::min(bm.height() - 1,
+                                SkScalarFloorToInt(SkDoubleToScalar(lm.fBaseline + lm.fDescent)) -
+                                        1);
+        int minTop = bm.height();
+        int maxBottom = -1;
+        int firstX = -1;
+        int lastX = -1;
+        for (int x = 0; x < bm.width(); ++x) {
+            int colTop = -1;
+            int colBottom = -1;
+            for (int y = y0; y <= y1; ++y) {
+                if (bm.getColor(x, y) == bgColor) {
+                    if (colTop < 0) {
+                        colTop = y;
+                    }
+                    colBottom = y;
+                }
+            }
+            if (colTop >= 0) {
+                if (firstX < 0) {
+                    firstX = x;
+                }
+                lastX = x;
+                minTop = std::min(minTop, colTop);
+                maxBottom = std::max(maxBottom, colBottom);
+            }
+        }
+        if (firstX >= 0) {
+            for (int x = firstX; x <= lastX; ++x) {
+                for (int y = minTop; y <= maxBottom; ++y) {
+                    if (bm.getColor(x, y) == SK_ColorWHITE) {
+                        ++totalHoles;
+                    }
+                }
+            }
+        }
+    }
+    return totalHoles;
+}
+}  // namespace
+
+// Fallback font switches within a styled span or across abutting kFont-matching spans must
+// share a single vertical background band on each line and coalesce abutting same-paint rects
+DEF_TEST(SkParagraph_BackgroundFallbackRunsAndStyles, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    auto customProvider = sk_make_sp<TypefaceFontProvider>();
+    customProvider->registerTypeface(make_space_digits_typeface(), SkString("SpaceDigits"));
+    fontCollection->setDynamicFontManager(customProvider);
+    fontCollection->disableFontFallback();
+    sk_sp<SkUnicode> unicode = get_unicode();
+
+    const SkColor kBg = 0xFF81D4FA;
+    SkPaint bgPaint;
+    bgPaint.setColor(kBg);
+    bgPaint.setAntiAlias(true);
+
+    const std::vector<SkString> mixedFamilies = {
+        SkString("SpaceDigits"),
+        SkString("Roboto"),
+        SkString("Noto Naskh Arabic"),
+    };
+
+    // Mixed SpaceDigits + Roboto in a single LTR span coalesces to 1 rect with no white notches
+    {
+        ParagraphStyle ps;
+        ps.setTextAlign(TextAlign::kCenter);
+        TextStyle ts;
+        ts.setColor(SK_ColorBLACK);
+        ts.setFontSize(30);
+        ts.setFontFamilies(mixedFamilies);
+        ts.setBackgroundPaint(bgPaint);
+        ps.setTextStyle(ts);
+
+        ParagraphBuilderImpl builder(ps, fontCollection, unicode);
+        builder.pushStyle(ts);
+        builder.addText("Order 66 of 1138 units then 2026 more");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(900);
+
+        BackgroundRectRecorder rec;
+        paragraph->paint(&rec, 0, 0);
+        REPORTER_ASSERT(reporter, rec.fRects.size() == 1);
+        REPORTER_ASSERT(reporter, max_distinct_heights_per_line(paragraph.get(), rec.fRects) == 1);
+        REPORTER_ASSERT(reporter, count_background_holes(paragraph.get(), 900, kBg) == 0);
+
+        ParagraphBuilderImpl fallbackOnlyBuilder(ps, fontCollection, unicode);
+        TextStyle robotoOnly = ts;
+        robotoOnly.setFontFamilies({SkString("Roboto")});
+        fallbackOnlyBuilder.pushStyle(robotoOnly);
+        fallbackOnlyBuilder.addText("Order");
+        fallbackOnlyBuilder.pop();
+        auto fallbackOnly = fallbackOnlyBuilder.Build();
+        fallbackOnly->layout(900);
+        BackgroundRectRecorder fallbackRec;
+        fallbackOnly->paint(&fallbackRec, 0, 0);
+        REPORTER_ASSERT(reporter, fallbackRec.fRects.size() == 1);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(rec.fRects[0].height(),
+                                            fallbackRec.fRects[0].height(),
+                                            EPSILON20));
+    }
+
+    // RTL vocalized Arabic across 3 wrapping spans has uniform height per line and zero holes
+    {
+        ParagraphStyle ps;
+        ps.setTextDirection(TextDirection::kRtl);
+        TextStyle base;
+        base.setColor(SK_ColorBLACK);
+        base.setFontSize(30);
+        base.setFontFamilies(mixedFamilies);
+        ps.setTextStyle(base);
+
+        const char* spans[] = {
+            "\u0627\u0644\u062c\u064e\u0627\u0631\u064f "
+            "\u0627\u0644\u0645\u064f\u0633\u0644\u0650\u0645\u064f ",
+            "\u064a\u064f\u0633\u0627\u0639\u0650\u062f\u064f "
+            "\u062c\u0627\u0631\u064e\u0647\u064f ",
+            "\u0648\u064e\u0623\u064e\u0646\u0652\u0635\u064e\u0627\u0631\u064f\u0647\u064f "
+            "\u0627\u0644\u0643\u064e\u062b\u0650\u064a\u0631\u064f\u0648\u0646\u064e",
+        };
+        ParagraphBuilderImpl builder(ps, fontCollection, unicode);
+        for (const char* span : spans) {
+            TextStyle ts = base;
+            ts.setBackgroundPaint(bgPaint);
+            builder.pushStyle(ts);
+            builder.addText(span);
+            builder.pop();
+        }
+        auto paragraph = builder.Build();
+        paragraph->layout(380);
+
+        BackgroundRectRecorder rec;
+        paragraph->paint(&rec, 0, 0);
+        REPORTER_ASSERT(reporter, max_distinct_heights_per_line(paragraph.get(), rec.fRects) == 1);
+        REPORTER_ASSERT(reporter, count_background_holes(paragraph.get(), 380, kBg) == 0);
+    }
+
+    // Distinct PaintIDs on abutting child spans sharing kFont (Flutter pushStyle pattern)
+    // still unify vertical height across Roboto and Noto Naskh Arabic
+    {
+        ParagraphStyle ps;
+        TextStyle spanA;
+        spanA.setFontSize(24);
+        spanA.setFontFamilies({SkString("Roboto"), SkString("Noto Naskh Arabic")});
+        spanA.setColor(SK_ColorRED);
+        spanA.setBackgroundPaintID(0);
+        TextStyle spanB = spanA;
+        spanB.setColor(SK_ColorBLUE);
+        spanB.setBackgroundPaintID(2);
+        ps.setTextStyle(spanA);
+
+        ParagraphBuilderImpl builder(ps, fontCollection, unicode);
+        builder.pushStyle(spanA);
+        builder.addText("EN ");
+        builder.pop();
+        builder.pushStyle(spanB);
+        builder.addText("\u0627\u0644\u0639\u0631\u0628\u064a\u0629");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(600);
+
+        BackgroundRectRecorder rec;
+        paragraph->paint(&rec, 0, 0);
+        REPORTER_ASSERT(reporter, rec.fRects.size() == 2);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(rec.fRects[0].fTop, rec.fRects[1].fTop, EPSILON20));
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(rec.fRects[0].fBottom,
+                                            rec.fRects[1].fBottom,
+                                            EPSILON20));
+    }
+
+    // Different fontSize, Placeholder, StrutStyle, and baselineShift stay vertically isolated,
+    // while heightOverride inside one fallback-split span unifies baseline-ratio shifts
+    {
+        ParagraphStyle ps;
+        StrutStyle strut;
+        strut.setFontFamilies({SkString("Roboto")});
+        strut.setFontSize(60);
+        strut.setStrutEnabled(true);
+        strut.setForceStrutHeight(true);
+        ps.setStrutStyle(strut);
+
+        TextStyle smallStyle;
+        smallStyle.setFontFamilies({SkString("Roboto")});
+        smallStyle.setFontSize(14);
+        smallStyle.setBackgroundPaint(bgPaint);
+
+        TextStyle largeStyle = smallStyle;
+        largeStyle.setFontSize(40);
+
+        TextStyle shiftedStyle = smallStyle;
+        shiftedStyle.setBaselineShift(-8);
+
+        ParagraphBuilderImpl builder(ps, fontCollection, unicode);
+        builder.pushStyle(smallStyle);
+        builder.addText("small ");
+        PlaceholderStyle placeholder(
+                30, 100, PlaceholderAlignment::kBottom, TextBaseline::kAlphabetic, 0);
+        builder.addPlaceholder(placeholder);
+        builder.addText("tail ");
+        builder.pop();
+        builder.pushStyle(largeStyle);
+        builder.addText("LARGE ");
+        builder.pop();
+        builder.pushStyle(shiftedStyle);
+        builder.addText("up ");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(800);
+
+        BackgroundRectRecorder rec;
+        paragraph->paint(&rec, 0, 0);
+        REPORTER_ASSERT(reporter, rec.fRects.size() == 5);
+        REPORTER_ASSERT(reporter, rec.fRects[0].height() < rec.fRects[3].height() - 10.0f);
+        REPORTER_ASSERT(reporter, rec.fRects[0].height() < paragraph->getHeight() - 20.0f);
+        REPORTER_ASSERT(reporter, rec.fRects[1].height() > 90.0f);
+        REPORTER_ASSERT(
+                reporter,
+                SkScalarNearlyEqual(rec.fRects[2].height(), rec.fRects[0].height(), EPSILON20));
+        REPORTER_ASSERT(reporter, rec.fRects[4].fTop < rec.fRects[0].fTop - 4.0f);
+
+        for (bool halfLeading : {false, true}) {
+            ParagraphStyle hPs;
+            TextStyle hTs;
+            hTs.setFontFamilies(mixedFamilies);
+            hTs.setFontSize(20);
+            hTs.setHeightOverride(true);
+            hTs.setHeight(2.0f);
+            hTs.setHalfLeading(halfLeading);
+            hTs.setBackgroundPaint(bgPaint);
+            hPs.setTextStyle(hTs);
+
+            ParagraphBuilderImpl hBuilder(hPs, fontCollection, unicode);
+            hBuilder.pushStyle(hTs);
+            hBuilder.addText("123 Arabic \u0627\u0644\u062c\u064e\u0627\u0631\u064f");
+            hBuilder.pop();
+            auto hp = hBuilder.Build();
+            hp->layout(600);
+
+            BackgroundRectRecorder hRec;
+            hp->paint(&hRec, 0, 0);
+            REPORTER_ASSERT(reporter, max_distinct_heights_per_line(hp.get(), hRec.fRects) == 1);
+        }
+    }
+
+    // BiDi non-contiguous pieces of one span keep unhighlighted gap unpainted, Line 0 is not
+    // inflated by fallback on Line 1, and a 0-width fallback run (ZWSP) does not inflate height
+    {
+        ParagraphStyle ps;
+        TextStyle plain;
+        plain.setFontFamilies(mixedFamilies);
+        plain.setFontSize(24);
+        ps.setTextStyle(plain);
+        TextStyle highlighted = plain;
+        highlighted.setBackgroundPaint(bgPaint);
+
+        ParagraphBuilderImpl bidiBuilder(ps, fontCollection, unicode);
+        bidiBuilder.pushStyle(highlighted);
+        bidiBuilder.addText("123 \u0627\u0644\u062c\u064e\u0627\u0631\u064f");
+        bidiBuilder.pop();
+        bidiBuilder.pushStyle(plain);
+        bidiBuilder.addText(" \u0645\u0631\u062d\u0628\u0627");
+        bidiBuilder.pop();
+        auto bidiP = bidiBuilder.Build();
+        bidiP->layout(600);
+        BackgroundRectRecorder bidiRec;
+        bidiP->paint(&bidiRec, 0, 0);
+        REPORTER_ASSERT(reporter, bidiRec.fRects.size() == 2);
+        REPORTER_ASSERT(reporter, bidiRec.fRects[0].fRight < bidiRec.fRects[1].fLeft - 5.0f);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(bidiRec.fRects[0].height(),
+                                            bidiRec.fRects[1].height(),
+                                            EPSILON20));
+
+        ParagraphBuilderImpl linesBuilder(ps, fontCollection, unicode);
+        linesBuilder.pushStyle(highlighted);
+        linesBuilder.addText("123 456\n123 \u0627\u0644\u062c\u064e\u0627\u0631\u064f");
+        linesBuilder.pop();
+        auto linesP = linesBuilder.Build();
+        linesP->layout(600);
+        BackgroundRectRecorder linesRec;
+        linesP->paint(&linesRec, 0, 0);
+        REPORTER_ASSERT(reporter, linesRec.fRects.size() == 2);
+        REPORTER_ASSERT(reporter, linesRec.fRects[0].height() < linesRec.fRects[1].height());
+
+        ParagraphBuilderImpl zwspBuilder(ps, fontCollection, unicode);
+        zwspBuilder.pushStyle(highlighted);
+        zwspBuilder.addText("123\u200B456");
+        zwspBuilder.pop();
+        auto zwspP = zwspBuilder.Build();
+        zwspP->layout(600);
+        BackgroundRectRecorder zwspRec;
+        zwspP->paint(&zwspRec, 0, 0);
+        REPORTER_ASSERT(reporter, zwspRec.fRects.size() == 1);
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(zwspRec.fRects[0].height(),
+                                            linesRec.fRects[0].height(),
+                                            EPSILON20));
+    }
 }

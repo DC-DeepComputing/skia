@@ -161,12 +161,8 @@ private:
     void justify(SkScalar maxWidth);
 
     void buildTextBlob(TextRange textRange, const TextStyle& style, const ClipContext& context);
-    void paintBackground(ParagraphPainter* painter,
-                         SkScalar x,
-                         SkScalar y,
-                         TextRange textRange,
-                         const TextStyle& style,
-                         const ClipContext& context) const;
+    // Draws line-level background bands unified across fallback runs and coalesced across spans
+    void paintBackground(ParagraphPainter* painter, SkScalar x, SkScalar y) const;
     void paintShadow(ParagraphPainter* painter,
                      SkScalar x,
                      SkScalar y,
