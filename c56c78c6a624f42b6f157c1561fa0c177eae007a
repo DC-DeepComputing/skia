@@ -116,6 +116,24 @@
       "parentUuid": "42825f87_3557171b",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83d6752e_7a909fe1",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3376992
+      },
+      "writtenOn": "2026-11-06T22:07:53Z",
+      "side": 1,
+      "message": "Leaving this as `srcStage \u003d VkImageLayoutToPipelineSrcStageFlags(currentLayout,..)` would ideally solve the RAW hazard and is technically the same the Ganesh Vk is doing",
+      "parentUuid": "70c281cc_44ec1660",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
