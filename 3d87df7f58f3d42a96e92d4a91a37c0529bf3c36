@@ -22,6 +22,30 @@
       },
       "revId": "3d87df7f58f3d42a96e92d4a91a37c0529bf3c36",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca1175bf_72287623",
+        "filename": "src/gpu/ganesh/GrGeometryProcessor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5209525
+      },
+      "writtenOn": "2026-11-06T18:56:05Z",
+      "side": 0,
+      "message": "Done, thanks for pointing that out! Updated reset() to check GrTextureTypeHasRestrictedSampling(backendFormat.textureType()):\n- For restricted textures (kRectangle / kExternal), it constructs GrSamplerState(WrapMode::kClamp, samplerState.filter(), MipmapMode::kNone), clamping wrap modes and disabling mipmaps and anisotropic filtering (preserving kNearest/kLinear).\n- Otherwise, it copy-assigns fSamplerState \u003d samplerState to preserve fMaxAniso and the rest of the sampler state.\n\nPTAL!",
+      "parentUuid": "13a371a3_57872856",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 42
+      },
+      "revId": "3d87df7f58f3d42a96e92d4a91a37c0529bf3c36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
