@@ -11895,6 +11895,167 @@ DEF_TEST(SkParagraph_ZeroWidthClusterSplit, reporter) {
     }
 }
 
+// Fonts with a space glyph shape default-ignorable codepoints into zero-advance glyphs, which must
+// not receive letter spacing (flutter#160251)
+DEF_TEST(SkParagraph_LetterSpacingSkipsDefaultIgnorables, reporter) {
+    sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+    auto robotoTypeface = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    if (!robotoTypeface) {
+        return;
+    }
+    auto fontCollection = sk_make_sp<FontCollection>();
+    auto fontProvider = sk_make_sp<TypefaceFontProvider>();
+    fontProvider->registerTypeface(robotoTypeface, SkString("Roboto"));
+    fontCollection->setAssetFontManager(fontProvider);
+    fontCollection->disableFontFallback();
+
+    // A differently colored last character forces the per-cluster spacing path
+    auto layout = [&](const std::string& text, bool twoStyles, SkScalar letterSpacing = 3.0f) {
+        ParagraphStyle paragraphStyle;
+        TextStyle style;
+        style.setFontFamilies({SkString("Roboto")});
+        style.setFontSize(20.0f);
+        style.setColor(SK_ColorBLACK);
+        style.setLetterSpacing(letterSpacing);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style);
+        const size_t split = twoStyles ? text.size() - 1 : text.size();
+        builder.addText(text.c_str(), split);
+        if (twoStyles) {
+            style.setColor(SK_ColorRED);
+            builder.pushStyle(style);
+            builder.addText(text.c_str() + split, text.size() - split);
+            builder.pop();
+        }
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(1000.0f);
+        return paragraph;
+    };
+
+    constexpr const char* kIgnorables[] = {"\u200B", "\u200C", "\u200D", "\u2060", "\uFEFF"};
+    for (bool twoStyles : {false, true}) {
+        const SkScalar expected = layout("OneTwo", twoStyles)->getLongestLine();
+        for (const char* ignorable : kIgnorables) {
+            const std::string once = std::string("One") + ignorable + "Two";
+            const std::string many = std::string("One") + ignorable + ignorable + ignorable + "Two";
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            layout(once, twoStyles)->getLongestLine(), expected, EPSILON100));
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            layout(many, twoStyles)->getLongestLine(), expected, EPSILON100));
+        }
+
+        // A leading ignorable must not take the line's half letter spacing from the first letter
+        auto plain = layout("One", twoStyles);
+        auto leading = layout("\u200BOne", twoStyles);
+        auto plainRects =
+                plain->getRectsForRange(0, 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        auto leadingRects =
+                leading->getRectsForRange(1, 2, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        REPORTER_ASSERT(reporter, plainRects.size() == 1 && leadingRects.size() == 1);
+        if (plainRects.size() == 1 && leadingRects.size() == 1) {
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            plainRects[0].rect.fLeft, leadingRects[0].rect.fLeft, EPSILON100));
+        }
+        auto impl = static_cast<ParagraphImpl*>(leading.get());
+        REPORTER_ASSERT(reporter, impl->cluster(impl->clusterIndex(0)).isDefaultIgnorable());
+        REPORTER_ASSERT(reporter, !impl->cluster(impl->clusterIndex(3)).isDefaultIgnorable());
+    }
+
+    // Space-less fonts delete default-ignorables in HarfBuzz, leaving a 0-glyph [size(), size())
+    // sub-cluster that must not shift the end-of-run position sentinel a second time
+    auto abcTypeface = mgr->makeFromStream(GetResourceAsStream("fonts/abc/abc.ttf"), {});
+    if (abcTypeface) {
+        fontProvider->registerTypeface(abcTypeface, SkString("AbcFont"));
+        auto layoutAbc = [&](const char* text, TextDirection dir, SkScalar letterSpacing) {
+            ParagraphStyle paragraphStyle;
+            paragraphStyle.setTextDirection(dir);
+            TextStyle style;
+            style.setFontFamilies({SkString("AbcFont")});
+            style.setFontSize(20.0f);
+            style.setLetterSpacing(letterSpacing);
+            ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+            builder.pushStyle(style);
+            builder.addText(text);
+            builder.pop();
+            auto paragraph = builder.Build();
+            paragraph->layout(1000.0f);
+            return paragraph;
+        };
+        for (SkScalar spacing : {3.0f, -2.0f}) {
+            auto ab = layoutAbc("ab", TextDirection::kLtr, spacing);
+            auto abIgn = layoutAbc("ab\u200B", TextDirection::kLtr, spacing);
+            auto abRects =
+                    ab->getRectsForRange(0, 2, RectHeightStyle::kTight, RectWidthStyle::kTight);
+            auto abIgnRects =
+                    abIgn->getRectsForRange(0, 2, RectHeightStyle::kTight, RectWidthStyle::kTight);
+            REPORTER_ASSERT(reporter, abRects.size() == 1 && abIgnRects.size() == 1);
+            if (abRects.size() == 1 && abIgnRects.size() == 1) {
+                REPORTER_ASSERT(
+                        reporter,
+                        SkScalarNearlyEqual(
+                                abRects[0].rect.width(), abIgnRects[0].rect.width(), EPSILON100));
+            }
+            std::vector<LineMetrics> metrics;
+            abIgn->getLineMetrics(metrics);
+            REPORTER_ASSERT(reporter, metrics.size() == 1);
+
+            auto rtlPlain = layoutAbc("b", TextDirection::kRtl, spacing);
+            auto rtlIgn = layoutAbc("\u200Fb", TextDirection::kRtl, spacing);
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            rtlPlain->getLongestLine(), rtlIgn->getLongestLine(), EPSILON100));
+            metrics.clear();
+            rtlIgn->getLineMetrics(metrics);
+            REPORTER_ASSERT(reporter, metrics.size() == 1);
+        }
+    }
+
+    // Hangul fillers have Default_Ignorable_Code_Point=true in Unicode, yet shape into visible
+    // positive-advance blank syllables that must retain letter spacing and leading half-spacing
+    auto extraFonts = sk_make_sp<ResourceFontCollection>(true);
+    if (extraFonts->fontsFound()) {
+        auto layoutHangul = [&](const char* text, SkScalar letterSpacing) {
+            ParagraphStyle paragraphStyle;
+            TextStyle style;
+            style.setFontFamilies({SkString("Noto Sans CJK JP")});
+            style.setFontSize(20.0f);
+            style.setLetterSpacing(letterSpacing);
+            ParagraphBuilderImpl builder(paragraphStyle, extraFonts, get_unicode());
+            builder.pushStyle(style);
+            builder.addText(text);
+            builder.pop();
+            auto paragraph = builder.Build();
+            paragraph->layout(1000.0f);
+            return paragraph;
+        };
+        const SkScalar unspaced = layoutHangul("\uAC00\u115F\u1160\uAC00", 0.0f)->getLongestLine();
+        const SkScalar spaced = layoutHangul("\uAC00\u115F\u1160\uAC00", 4.0f)->getLongestLine();
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(spaced, unspaced + 12.0f, EPSILON100));
+
+        auto plainHangul = layoutHangul("\uAC00\uAC00", 4.0f);
+        auto leadingFiller = layoutHangul("\u3164\uAC00", 4.0f);
+        auto plainRects = plainHangul->getRectsForRange(
+                0, 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        auto fillerRects = leadingFiller->getRectsForRange(
+                0, 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        REPORTER_ASSERT(reporter, plainRects.size() == 1 && fillerRects.size() == 1);
+        if (plainRects.size() == 1 && fillerRects.size() == 1) {
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            plainRects[0].rect.fLeft, fillerRects[0].rect.fLeft, EPSILON100));
+        }
+    }
+}
+
 // Verify that a BiDi isolate starting a styled block with a space-less primary font
 // preserves a 0-width cluster for the isolate and does not trap during style measurement
 DEF_TEST(SkParagraph_BidiIsolateStyledBlockNoSpaceFont, reporter) {

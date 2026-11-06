@@ -271,8 +271,9 @@ void Run::shift(const Cluster* cluster, SkScalar offset) {
     for (size_t i = cluster->startPos(); i < cluster->endPos(); ++i) {
         this->addX(i, offset);
     }
-    if (this->size() == cluster->endPos()) {
-        // To make calculations easier
+    // A 0-glyph trailing sub-cluster at [size(), size()) shares the sentinel already shifted with
+    // the last glyph; only a 0-glyph run has no glyph-bearing cluster to shift its sentinel
+    if (this->size() == cluster->endPos() && (cluster->size() > 0 || this->size() == 0)) {
         this->addX(cluster->endPos(), offset);
     }
 }
