@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "10161594_a53e1962",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-06T15:16:41Z",
+      "side": 1,
+      "message": "Drive by, but we now have 3 places that have a variation of `isSpecialQueue`, I\u0027d vote to add this as a helper in `VulkanGraphiteUtils.h`.",
+      "range": {
+        "startLine": 421,
+        "startChar": 5,
+        "endLine": 424,
+        "endChar": 6
+      },
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9ac0dc1_af50a1c2",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-06T15:16:41Z",
+      "side": 1,
+      "message": "This extra condition as well as the branch to select `VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT` could be moved into `VkImageLayoutToPipelineSrcStageFlags` if it was provided the current queue index.  Then this logic can be shared between the backend texture and the VulkanTexture codepaths.\n\nPotentially, if it could also detect the to-FQ direction and select BOTTOM it, that would be ideal.",
+      "range": {
+        "startLine": 501,
+        "startChar": 16,
+        "endLine": 501,
+        "endChar": 76
+      },
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74a7b1f4_156348d5",
         "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
         "patchSetId": 2
