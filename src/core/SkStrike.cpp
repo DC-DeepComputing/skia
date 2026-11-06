@@ -11,6 +11,7 @@
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypeface.h"
@@ -25,6 +26,7 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/text/StrikeForGPU.h"
 
+#include <algorithm>
 #include <cctype>
 #include <new>
 #include <optional>
@@ -224,21 +226,29 @@ SkSpan<const SkGlyph*> SkStrike::metrics(
     return this->internalPrepare(glyphIDs, kMetricsOnly, results);
 }
 
-void SkStrike::getWidthsStrided(unsigned count,
-                                const uint32_t* first_glyph,
+void SkStrike::getWidthsStrided(SkSpan<const uint32_t> first_glyph,
                                 unsigned glyph_stride_32,
-                                SkScalar* first_advance,
+                                SkSpan<SkScalar> first_advance,
                                 unsigned advance_stride_32,
                                 SkScalar scale) {
+    if (first_glyph.empty() || first_advance.empty()) {
+        return;
+    }
+    size_t count = 1;
+    if (glyph_stride_32 > 0 && advance_stride_32 > 0) {
+        count = std::min((first_glyph.size() - 1) / glyph_stride_32 + 1,
+                         (first_advance.size() - 1) / advance_stride_32 + 1);
+    } else if (glyph_stride_32 > 0) {
+        count = (first_glyph.size() - 1) / glyph_stride_32 + 1;
+    } else if (advance_stride_32 > 0) {
+        count = (first_advance.size() - 1) / advance_stride_32 + 1;
+    }
     Monitor m{this};
-    const uint32_t* g_ptr = first_glyph;
-    SkScalar* a_ptr = first_advance;
-    for (unsigned i = 0; i < count; ++i) {
-      // TODO(https://crbug.com/skia/521216502): Handle large glyph ids.
-        SkGlyph* glyph = this->glyph(SkPackedGlyphID{static_cast<SkGlyphID>(*g_ptr)});
-        *a_ptr = glyph->advanceX() * scale;
-        g_ptr += glyph_stride_32;
-        a_ptr += advance_stride_32;
+    for (size_t i = 0; i < count; ++i) {
+        // TODO(https://crbug.com/skia/521216502): Handle large glyph ids.
+        const uint32_t id = first_glyph[i * glyph_stride_32];
+        SkGlyph* glyph = this->glyph(SkPackedGlyphID{static_cast<SkGlyphID>(id)});
+        first_advance[i * advance_stride_32] = glyph->advanceX() * scale;
     }
 }
 
