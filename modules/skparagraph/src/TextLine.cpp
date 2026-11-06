@@ -217,7 +217,9 @@ TextLine::TextLine(ParagraphImpl* owner,
 
     // TODO: This is the fix for flutter. Must be removed...
     for (auto cluster = &start; cluster <= &end; ++cluster) {
-        if (!cluster->run().isPlaceholder() && !cluster->run().isCursiveScript()) {
+        // An invisible leading cluster carries no letter spacing of its own
+        if (!cluster->run().isPlaceholder() && !cluster->run().isCursiveScript() &&
+            !cluster->isDefaultIgnorable()) {
             fShift += cluster->getHalfLetterSpacing();
             break;
         }
