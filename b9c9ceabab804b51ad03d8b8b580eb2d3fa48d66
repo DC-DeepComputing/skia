@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12d718f6_ef9361e0",
+        "filename": "AUTHORS",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5069412
+      },
+      "writtenOn": "2026-11-06T15:48:45Z",
+      "side": 1,
+      "message": "LGTM. Correct service account address for the internal autoroller bot; matches sibling autoroller entries.",
+      "isAi": true,
+      "revId": "b9c9ceabab804b51ad03d8b8b580eb2d3fa48d66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
