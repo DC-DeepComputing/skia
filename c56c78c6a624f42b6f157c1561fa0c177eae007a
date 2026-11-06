@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8dfe20a_b213013c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 3376992
+      },
+      "writtenOn": "2026-11-06T22:12:55Z",
+      "side": 1,
+      "message": "It might get difficult to differentiate between TOP_OF_PIPE and BOTTOM_OF_PIPE bits unless we\u0027re passing a bool to indicate acquire - is that OK?",
+      "parentUuid": "e9ac0dc1_af50a1c2",
+      "range": {
+        "startLine": 501,
+        "startChar": 16,
+        "endLine": 501,
+        "endChar": 76
+      },
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74a7b1f4_156348d5",
         "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
         "patchSetId": 2
