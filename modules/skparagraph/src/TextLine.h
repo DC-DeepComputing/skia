@@ -161,12 +161,7 @@ private:
     void justify(SkScalar maxWidth);
 
     void buildTextBlob(TextRange textRange, const TextStyle& style, const ClipContext& context);
-    void paintBackground(ParagraphPainter* painter,
-                         SkScalar x,
-                         SkScalar y,
-                         TextRange textRange,
-                         const TextStyle& style,
-                         const ClipContext& context) const;
+    void paintBackground(ParagraphPainter* painter, SkScalar x, SkScalar y) const;
     void paintShadow(ParagraphPainter* painter,
                      SkScalar x,
                      SkScalar y,
