@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a854be00_ffac1899",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 3376992
+      },
+      "writtenOn": "2026-11-06T22:49:12Z",
+      "side": 1,
+      "message": "I\u0027ve uploaded a new patchset that doesn\u0027t set top_of_pipe bit (which matches ganesh vk) which doesn\u0027t use isSpecialQueue any more. Hence leaving it as is.",
+      "parentUuid": "10161594_a53e1962",
+      "range": {
+        "startLine": 421,
+        "startChar": 5,
+        "endLine": 424,
+        "endChar": 6
+      },
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e9ac0dc1_af50a1c2",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 2
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "It might get difficult to differentiate between TOP_OF_PIPE and BOTTOM_OF_PIPE bits unless we\u0027re passing a bool to indicate acquire - is that OK?",
       "parentUuid": "e9ac0dc1_af50a1c2",
+      "range": {
+        "startLine": 501,
+        "startChar": 16,
+        "endLine": 501,
+        "endChar": 76
+      },
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "458e5870_a2b7656e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 3376992
+      },
+      "writtenOn": "2026-11-06T22:49:12Z",
+      "side": 1,
+      "message": "I\u0027ve uploaded a new patchset that doesn\u0027t set top_of_pipe bit ~ so these changes are eliminated.",
+      "parentUuid": "e8dfe20a_b213013c",
       "range": {
         "startLine": 501,
         "startChar": 16,
@@ -156,6 +204,24 @@
       "side": 1,
       "message": "Leaving this as `srcStage \u003d VkImageLayoutToPipelineSrcStageFlags(currentLayout,..)` would ideally solve the RAW hazard and is technically the same the Ganesh Vk is doing",
       "parentUuid": "70c281cc_44ec1660",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67bb40ac_6646e474",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3376992
+      },
+      "writtenOn": "2026-11-06T22:49:12Z",
+      "side": 1,
+      "message": "I\u0027ve uploaded a new patchset that doesn\u0027t set top_of_pipe bit (which matches ganesh vk). More than happy to revert back to this patch as setting the top bit is the complete way to handle (in an ideal world perhaps?) but it seems like the correct approach would be to skip setting the top of pipe bit.",
+      "parentUuid": "83d6752e_7a909fe1",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
