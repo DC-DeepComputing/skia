@@ -36,6 +36,8 @@ public:
       SkRect clip;
       SkScalar fExcludedTrailingSpaces;
       bool clippingNeeded;
+      // Signed advance of the measured slice before non-negative clip clamping
+      SkScalar fTextAdvance = 0.0f;
     };
 
     enum TextAdjustment {
@@ -136,7 +138,8 @@ public:
                                         SkScalar runOffsetInLine,
                                         SkScalar textOffsetInRunInLine,
                                         bool includeGhostSpaces,
-                                        TextAdjustment textAdjustment) const;
+                                        TextAdjustment textAdjustment,
+                                        bool isolateCursiveLigatures = false) const;
 
     LineMetrics getMetrics() const;
 
