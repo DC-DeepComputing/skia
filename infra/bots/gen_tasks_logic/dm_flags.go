@@ -250,6 +250,10 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 			glPrefix = "gles"
 		}
 
+		if b.ExtraConfig("StandaloneWasm") {
+			glPrefix = "webgl"
+		}
+
 		if b.ExtraConfig("NativeFonts") {
 			configs = append(configs, glPrefix)
 		} else {
@@ -1103,15 +1107,6 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 		removeFromArgs("skp")
 	} else {
 		removeFromArgs("lottie")
-	}
-
-	if b.ExtraConfig("StandaloneWasm") && b.GPU() {
-		// TODO(denniston.t@gmail.com): until there is a StandaloneWasm WebGL sink,
-		// we can only run the unit tests.
-		removeFromArgs("gm")
-		removeFromArgs("image")
-		removeFromArgs("colorImage")
-		removeFromArgs("svg")
 	}
 
 	if b.ExtraConfig("TSAN") {
