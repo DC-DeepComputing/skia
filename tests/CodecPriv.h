@@ -18,6 +18,7 @@
 #include "tools/flags/CommandLineFlags.h"
 
 #include <cstdint>
+#include <cstring>
 #include <utility>
 #include <vector>
 
@@ -118,6 +119,46 @@ inline sk_sp<SkData> make_ico_from_png_resource(skiatest::Reporter* r, const cha
     sk_sp<SkData> icoData = make_ico_with_png(pngData->data(), pngData->size());
     REPORTER_ASSERT(r, icoData);
     return icoData;
+}
+
+// Returns a copy of `data` with the first `fcTL` chunk's `dispose_op` byte set
+// to `disposeOp` and its CRC-32 updated.
+inline sk_sp<SkData> with_first_fctl_dispose_op(const SkData* data, uint8_t disposeOp) {
+    constexpr size_t kSignatureSize = 8;
+    constexpr size_t kChunkHeaderSize = 8;  // 4-byte length + 4-byte type.
+    constexpr size_t kFctlPayloadSize = 26;
+    constexpr size_t kDisposeOpOffset = 24;
+    constexpr size_t kCrcSize = 4;
+
+    sk_sp<SkData> copy = SkData::MakeWithCopy(data->data(), data->size());
+    uint8_t* bytes = static_cast<uint8_t*>(copy->writable_data());
+    size_t offset = kSignatureSize;
+    while (offset + kChunkHeaderSize <= copy->size()) {
+        const size_t length = (size_t{bytes[offset]} << 24) | (size_t{bytes[offset + 1]} << 16) |
+                              (size_t{bytes[offset + 2]} << 8) | size_t{bytes[offset + 3]};
+        const size_t crcOffset = offset + kChunkHeaderSize + length;
+        if (crcOffset + kCrcSize > copy->size()) {
+            break;
+        }
+        if (length == kFctlPayloadSize && std::memcmp(bytes + offset + 4, "fcTL", 4) == 0) {
+            bytes[offset + kChunkHeaderSize + kDisposeOpOffset] = disposeOp;
+            uint32_t crc = 0xFFFFFFFFu;
+            for (size_t i = offset + 4; i < crcOffset; ++i) {
+                crc ^= bytes[i];
+                for (int bit = 0; bit < 8; ++bit) {
+                    crc = (crc >> 1) ^ ((crc & 1u) ? 0xEDB88320u : 0u);
+                }
+            }
+            crc = ~crc;
+            bytes[crcOffset] = static_cast<uint8_t>((crc >> 24) & 0xFFu);
+            bytes[crcOffset + 1] = static_cast<uint8_t>((crc >> 16) & 0xFFu);
+            bytes[crcOffset + 2] = static_cast<uint8_t>((crc >> 8) & 0xFFu);
+            bytes[crcOffset + 3] = static_cast<uint8_t>(crc & 0xFFu);
+            return copy;
+        }
+        offset = crcOffset + kCrcSize;
+    }
+    return nullptr;
 }
 
 #endif  // CodecPriv_DEFINED
