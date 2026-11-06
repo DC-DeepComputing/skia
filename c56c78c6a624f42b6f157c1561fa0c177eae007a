@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74a7b1f4_156348d5",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3405028
+      },
+      "writtenOn": "2026-11-06T08:14:55Z",
+      "side": 1,
+      "message": "TOP_OF_PIPE bit as src doesn\u0027t wait for completion of any operation which may be pending on this resource. I am not sure this is what we want (from a correctness point of view).\nAs we are currently not observing issues by not transferring the resource testing with this patch will also not reveal potential issues.\nFrom my PoV this must include all stages Skia could have used to modify the resource (fragment|transfer ?).",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
