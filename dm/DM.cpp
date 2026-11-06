@@ -14,6 +14,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
 #include "include/core/SkGraphics.h"
+#include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/private/SkLog.h"
 #include "src/core/SkChecksum.h"
 #include "src/core/SkColorPriv.h"
@@ -1685,6 +1686,9 @@ int main(int argc, char** argv) {
 #if defined(SK_GANESH)
     GrContextOptions grCtxOptions;
     CommonFlags::SetCtxOptions(&grCtxOptions);
+#if defined(SK_BUILD_FOR_WASM)
+    grCtxOptions.fSkipGLErrorChecks = GrContextOptions::Enable::kNo;
+#endif
 #endif
 
     dump_json();  // It's handy for the bots to assume this is ~never missing.
