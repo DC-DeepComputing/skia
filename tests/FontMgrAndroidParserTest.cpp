@@ -8,6 +8,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkData.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
@@ -23,11 +24,13 @@
 #include "include/ports/SkFontMgr_android.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkFixed.h"
+#include "include/private/SkSemaphore.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTHash.h"
 #include "src/ports/SkFontMgr_android_parser.h"
+#include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/flags/CommandLineFlags.h"
@@ -46,6 +49,7 @@
 #include <cstdio>
 #include <memory>
 #include <string>
+#include <thread>
 #include <vector>
 
 DECLARE_bool(verboseFontMgr)
@@ -489,3 +493,308 @@ DEF_TEST_SCANNERS(FontMgrAndroidSystemFallbackFor, reporter) {
 
     REPORTER_ASSERT(reporter, typeface->fontStyle() == SkFontStyle::Bold());
 }
+
+static void check_lazy_matches_eager(skiatest::Reporter* reporter,
+                                     std::unique_ptr<SkFontScanner> (*makeScanner)()) {
+    // Host builds have no /system/etc/fonts.xml, so a null config would compare two empty managers
+    SkString basePath = GetResourcePath("fonts/");
+    SkString fontsXml = GetResourcePath("fonts/fonts.xml");
+    SkFontMgr_Android_CustomFonts custom;
+    custom.fSystemFontUse = SkFontMgr_Android_CustomFonts::kOnlyCustom;
+    custom.fBasePath = basePath.c_str();
+    custom.fFontsXml = fontsXml.c_str();
+    custom.fFallbackFontsXml = nullptr;
+    custom.fIsolated = false;
+    sk_sp<SkFontMgr> eager =
+            SkFontMgr_New_Android(&custom, makeScanner(), SkFontMgr_Android_FontLoading::kEager);
+    sk_sp<SkFontMgr> lazy =
+            SkFontMgr_New_Android(&custom, makeScanner(), SkFontMgr_Android_FontLoading::kLazy);
+    REPORTER_ASSERT(reporter, eager->countFamilies() > 0);
+    REPORTER_ASSERT(reporter, eager->countFamilies() == lazy->countFamilies());
+    for (int i = 0; i < eager->countFamilies(); ++i) {
+        SkString eagerName, lazyName;
+        eager->getFamilyName(i, &eagerName);
+        lazy->getFamilyName(i, &lazyName);
+        REPORTER_ASSERT(reporter, eagerName == lazyName);
+        sk_sp<SkFontStyleSet> e = eager->createStyleSet(i);
+        sk_sp<SkFontStyleSet> l = lazy->createStyleSet(i);
+        REPORTER_ASSERT(reporter, e->count() > 0, "%s", eagerName.c_str());
+        REPORTER_ASSERT(reporter, e->count() == l->count(), "%s", eagerName.c_str());
+        for (int j = 0; j < std::min(e->count(), l->count()); ++j) {
+            SkFontStyle es, ls;
+            e->getStyle(j, &es, nullptr);
+            l->getStyle(j, &ls, nullptr);
+            REPORTER_ASSERT(reporter, es == ls, "%s[%d]", eagerName.c_str(), j);
+            sk_sp<SkTypeface> et = e->createTypeface(j);
+            sk_sp<SkTypeface> lt = l->createTypeface(j);
+            REPORTER_ASSERT(reporter, lt && et->fontStyle() == lt->fontStyle());
+            REPORTER_ASSERT(reporter, et->isFixedPitch() == lt->isFixedPitch());
+        }
+    }
+    // Same resource name means the same file and index were picked
+    static constexpr SkUnichar kChars[] = {'A',
+                                           0x0905 /* Devanagari A */,
+                                           0x4E2D /* CJK */,
+                                           0x1F600 /* emoji */,
+                                           0x0627 /* Arabic */,
+                                           0x10FFFD /* not covered by any font */};
+    const char* families[] = {nullptr, "sans-serif", "serif", "monospace"};
+    const char* locales[] = {"en-US", "hi-IN", "ja-JP", "zh-Hans", "zh-Hant", "ko-KR"};
+    for (const char* family : families) {
+        for (const char* locale : locales) {
+            for (SkUnichar c : kChars) {
+                sk_sp<SkTypeface> et =
+                        eager->matchFamilyStyleCharacter(family, SkFontStyle(), &locale, 1, c);
+                sk_sp<SkTypeface> lt =
+                        lazy->matchFamilyStyleCharacter(family, SkFontStyle(), &locale, 1, c);
+                if (et && lt) {
+                    SkString en, ln;
+                    et->getFamilyName(&en);
+                    lt->getFamilyName(&ln);
+                    REPORTER_ASSERT(reporter, en == ln);
+                } else {
+                    REPORTER_ASSERT(reporter, !et && !lt);
+                }
+            }
+        }
+    }
+}
+
+static bool write_bytes_to_file(const SkString& path, const void* bytes, size_t size) {
+    FILE* f = fopen(path.c_str(), "wb");
+    if (!f) {
+        return false;
+    }
+    const bool ok = fwrite(bytes, 1, size, f) == size;
+    fclose(f);
+    return ok;
+}
+
+static void check_lazy_auto_style_and_missing_file(skiatest::Reporter* reporter,
+                                                   std::unique_ptr<SkFontScanner> (*makeScanner)(),
+                                                   const char* prefix) {
+    SkString baseDir = skiatest::GetTmpDir();
+    REPORTER_ASSERT(reporter, !baseDir.isEmpty());
+    if (baseDir.isEmpty()) {
+        return;
+    }
+    if (!baseDir.endsWith("/")) {
+        baseDir.append("/");
+    }
+
+    sk_sp<SkData> ttcData = GetResourceAsData("fonts/test.ttc");
+    sk_sp<SkData> cbdtData = GetResourceAsData("fonts/cbdt.ttf");
+    REPORTER_ASSERT(reporter, ttcData && cbdtData);
+    if (!ttcData || !cbdtData) {
+        return;
+    }
+
+    // Per-scanner file names keep parallel dm test workers from unlinking each other's fixtures
+    const SkString primaryFile = SkStringPrintf("%sPrimary.ttc", prefix);
+    const SkString secondaryFile = SkStringPrintf("%sSecondary.ttc", prefix);
+    const SkString bitmapFile = SkStringPrintf("%sColorBitmap.ttf", prefix);
+    const SkString primaryPath = SkOSPath::Join(baseDir.c_str(), primaryFile.c_str());
+    const SkString secondaryPath = SkOSPath::Join(baseDir.c_str(), secondaryFile.c_str());
+    const SkString bitmapPath = SkOSPath::Join(baseDir.c_str(), bitmapFile.c_str());
+    const SkString xmlPath =
+            SkOSPath::Join(baseDir.c_str(), SkStringPrintf("%slazy_edge.xml", prefix).c_str());
+    const SkString jbXmlPath =
+            SkOSPath::Join(baseDir.c_str(), SkStringPrintf("%sjb_nameless.xml", prefix).c_str());
+
+    // Omitting weight/style exercises apply_xml_style's kAuto/fWeight==0 path; ColorBitmap.ttf
+    // exercises scanStyle's eager fallback when a font lacks scalable outlines
+    const SkString xml = SkStringPrintf(
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+            "<familyset version=\"22\">\n"
+            "  <family name=\"sans-serif\"><font index=\"0\">%s</font></family>\n"
+            "  <family name=\"ttc-auto\">\n"
+            "    <font index=\"0\">%s</font>\n"
+            "    <font index=\"1\">%s</font>\n"
+            "  </family>\n"
+            "  <family><font index=\"1\">%s</font></family>\n"
+            "  <family><font>%s</font></family>\n"
+            "</familyset>\n",
+            primaryFile.c_str(),
+            secondaryFile.c_str(),
+            secondaryFile.c_str(),
+            secondaryFile.c_str(),
+            bitmapFile.c_str());
+    // Legacy JB <family> without <nameset> parses with fIsFallbackFont==false and empty fNames
+    const SkString jbXml = SkStringPrintf(
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+            "<familyset>\n"
+            "  <family><fileset><file>%s</file></fileset></family>\n"
+            "</familyset>\n",
+            bitmapFile.c_str());
+
+    struct Cleanup {
+        std::vector<SkString> paths;
+        ~Cleanup() {
+            for (const SkString& p : paths) {
+                std::remove(p.c_str());
+            }
+        }
+    } cleanup{{primaryPath, secondaryPath, bitmapPath, xmlPath, jbXmlPath}};
+
+    REPORTER_ASSERT(reporter, write_bytes_to_file(primaryPath, ttcData->data(), ttcData->size()));
+    REPORTER_ASSERT(reporter, write_bytes_to_file(secondaryPath, ttcData->data(), ttcData->size()));
+    REPORTER_ASSERT(reporter, write_bytes_to_file(bitmapPath, cbdtData->data(), cbdtData->size()));
+    REPORTER_ASSERT(reporter, write_bytes_to_file(xmlPath, xml.c_str(), xml.size()));
+    REPORTER_ASSERT(reporter, write_bytes_to_file(jbXmlPath, jbXml.c_str(), jbXml.size()));
+
+    SkFontMgr_Android_CustomFonts custom;
+    custom.fSystemFontUse = SkFontMgr_Android_CustomFonts::kOnlyCustom;
+    custom.fBasePath = baseDir.c_str();
+    custom.fFontsXml = xmlPath.c_str();
+    custom.fFallbackFontsXml = nullptr;
+    custom.fIsolated = false;
+
+    sk_sp<SkFontMgr> eager =
+            SkFontMgr_New_Android(&custom, makeScanner(), SkFontMgr_Android_FontLoading::kEager);
+    sk_sp<SkFontMgr> lazy =
+            SkFontMgr_New_Android(&custom, makeScanner(), SkFontMgr_Android_FontLoading::kLazy);
+    sk_sp<SkFontStyleSet> eagerAuto = eager->matchFamily("ttc-auto");
+    sk_sp<SkFontStyleSet> lazyAuto = lazy->matchFamily("ttc-auto");
+    REPORTER_ASSERT(reporter, eagerAuto && lazyAuto && eagerAuto->count() == 2);
+    REPORTER_ASSERT(reporter, lazyAuto->count() == 2);
+    for (int i = 0; i < 2; ++i) {
+        SkFontStyle es, ls;
+        eagerAuto->getStyle(i, &es, nullptr);
+        lazyAuto->getStyle(i, &ls, nullptr);
+        REPORTER_ASSERT(reporter, es == ls);
+    }
+    SkFontStyle s0, s1;
+    lazyAuto->getStyle(0, &s0, nullptr);
+    lazyAuto->getStyle(1, &s1, nullptr);
+    REPORTER_ASSERT(reporter, s0 == SkFontStyle::Normal() && s1 == SkFontStyle::Bold());
+
+    // Unlink Primary.ttc after kLazy construction so first materialization fails inside SkOnce
+    sk_sp<SkFontMgr> brokenLazy =
+            SkFontMgr_New_Android(&custom, makeScanner(), SkFontMgr_Android_FontLoading::kLazy);
+    REPORTER_ASSERT(reporter, std::remove(primaryPath.c_str()) == 0);
+
+    // Materialize face 0 of Secondary.ttc, unlink Secondary.ttc, and verify face 1 reuses the
+    // shared stream mapping rather than re-opening the file per TTC entry
+    REPORTER_ASSERT(reporter, lazyAuto->createTypeface(0) != nullptr);
+    REPORTER_ASSERT(reporter, std::remove(secondaryPath.c_str()) == 0);
+    sk_sp<SkTypeface> sharedTtcFace1 = lazyAuto->createTypeface(1);
+    REPORTER_ASSERT(reporter, sharedTtcFace1 && sharedTtcFace1->fontStyle() == SkFontStyle::Bold());
+
+    sk_sp<SkFontStyleSet> sansSet = brokenLazy->matchFamily("sans-serif");
+    REPORTER_ASSERT(reporter, sansSet && sansSet->count() == 1);
+    SkFontStyle brokenStyle;
+    sansSet->getStyle(0, &brokenStyle, nullptr);
+    REPORTER_ASSERT(reporter, brokenStyle == SkFontStyle::Normal());
+    REPORTER_ASSERT(reporter, sansSet->createTypeface(0) == nullptr);
+    REPORTER_ASSERT(reporter, sansSet->createTypeface(0) == nullptr);
+    REPORTER_ASSERT(reporter, brokenLazy->matchFamilyStyle("sans-serif", SkFontStyle()) == nullptr);
+    REPORTER_ASSERT(reporter,
+                    brokenLazy->legacyMakeTypeface("sans-serif", SkFontStyle()) == nullptr);
+    REPORTER_ASSERT(reporter, brokenLazy->legacyMakeTypeface(nullptr, SkFontStyle()) != nullptr);
+
+    // Restore Secondary.ttc before brokenLazy resolves fallback character '!' from it
+    REPORTER_ASSERT(reporter, write_bytes_to_file(secondaryPath, ttcData->data(), ttcData->size()));
+    sk_sp<SkTypeface> fallback =
+            brokenLazy->matchFamilyStyleCharacter("sans-serif", SkFontStyle(), nullptr, 0, '!');
+    REPORTER_ASSERT(reporter, fallback && fallback->fontStyle() == SkFontStyle::Bold());
+
+    SkFontMgr_Android_CustomFonts jbCustom = custom;
+    jbCustom.fFontsXml = jbXmlPath.c_str();
+    sk_sp<SkFontMgr> jbEager =
+            SkFontMgr_New_Android(&jbCustom, makeScanner(), SkFontMgr_Android_FontLoading::kEager);
+    sk_sp<SkFontMgr> jbLazy =
+            SkFontMgr_New_Android(&jbCustom, makeScanner(), SkFontMgr_Android_FontLoading::kLazy);
+    sk_sp<SkTypeface> jbEagerTf = jbEager->legacyMakeTypeface(nullptr, SkFontStyle());
+    sk_sp<SkTypeface> jbLazyTf = jbLazy->legacyMakeTypeface(nullptr, SkFontStyle());
+    REPORTER_ASSERT(reporter, jbEagerTf && jbLazyTf);
+    if (jbEagerTf && jbLazyTf) {
+        SkString en, ln;
+        jbEagerTf->getFamilyName(&en);
+        jbLazyTf->getFamilyName(&ln);
+        REPORTER_ASSERT(reporter, !en.isEmpty() && en == ln);
+    }
+}
+
+static void check_lazy_concurrent_access(skiatest::Reporter* reporter,
+                                         std::unique_ptr<SkFontScanner> (*makeScanner)()) {
+    SkString basePath = GetResourcePath("fonts/");
+    SkString fontsXml = GetResourcePath("fonts/fonts.xml");
+    SkFontMgr_Android_CustomFonts custom;
+    custom.fSystemFontUse = SkFontMgr_Android_CustomFonts::kOnlyCustom;
+    custom.fBasePath = basePath.c_str();
+    custom.fFontsXml = fontsXml.c_str();
+    custom.fFallbackFontsXml = nullptr;
+    custom.fIsolated = false;
+
+    sk_sp<SkFontMgr> lazy =
+            SkFontMgr_New_Android(&custom, makeScanner(), SkFontMgr_Android_FontLoading::kLazy);
+    const int families = lazy->countFamilies();
+    REPORTER_ASSERT(reporter, families > 0);
+
+    constexpr int kThreads = 8;
+    SkSemaphore ready;
+    SkSemaphore start;
+    struct Results {
+        sk_sp<SkTypeface> sansNormal;
+        sk_sp<SkTypeface> sansBold;
+        sk_sp<SkTypeface> bangFallback;
+    } results[kThreads];
+
+    std::vector<std::thread> threads;
+    threads.reserve(kThreads);
+    for (int t = 0; t < kThreads; ++t) {
+        threads.emplace_back([&, t] {
+            ready.signal();
+            start.wait();
+            results[t].sansNormal = lazy->matchFamilyStyle("sans-serif", SkFontStyle::Normal());
+            results[t].sansBold = lazy->matchFamilyStyle("sans-serif", SkFontStyle::Bold());
+            results[t].bangFallback =
+                    lazy->matchFamilyStyleCharacter("sans-serif", SkFontStyle(), nullptr, 0, '!');
+            for (int i = 0; i < families; ++i) {
+                sk_sp<SkFontStyleSet> set = lazy->createStyleSet(i);
+                for (int j = 0; j < set->count(); ++j) {
+                    (void)set->createTypeface(j);
+                }
+            }
+        });
+    }
+    for (int t = 0; t < kThreads; ++t) {
+        ready.wait();
+    }
+    start.signal(kThreads);
+    for (std::thread& th : threads) {
+        th.join();
+    }
+
+    REPORTER_ASSERT(reporter, results[0].sansNormal && results[0].sansBold);
+    REPORTER_ASSERT(reporter, results[0].bangFallback);
+    for (int t = 1; t < kThreads; ++t) {
+        REPORTER_ASSERT(reporter, results[t].sansNormal.get() == results[0].sansNormal.get());
+        REPORTER_ASSERT(reporter, results[t].sansBold.get() == results[0].sansBold.get());
+        REPORTER_ASSERT(reporter, results[t].bangFallback.get() == results[0].bangFallback.get());
+    }
+}
+
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
+DEF_TEST(FontMgrAndroid_LazyParity_FreeType, reporter) {
+    check_lazy_matches_eager(reporter, SkFontScanner_Make_FreeType);
+}
+DEF_TEST(FontMgrAndroid_LazyAutoStyleAndMissingFile_FreeType, reporter) {
+    check_lazy_auto_style_and_missing_file(reporter, SkFontScanner_Make_FreeType, "ft_");
+}
+DEF_TEST(FontMgrAndroid_LazyConcurrentAccess_FreeType, reporter) {
+    check_lazy_concurrent_access(reporter, SkFontScanner_Make_FreeType);
+}
+#endif
+
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+DEF_TEST(FontMgrAndroid_LazyParity_Fontations, reporter) {
+    check_lazy_matches_eager(reporter, SkFontScanner_Make_Fontations);
+}
+DEF_TEST(FontMgrAndroid_LazyAutoStyleAndMissingFile_Fontations, reporter) {
+    check_lazy_auto_style_and_missing_file(reporter, SkFontScanner_Make_Fontations, "fn_");
+}
+DEF_TEST(FontMgrAndroid_LazyConcurrentAccess_Fontations, reporter) {
+    check_lazy_concurrent_access(reporter, SkFontScanner_Make_Fontations);
+}
+#endif
