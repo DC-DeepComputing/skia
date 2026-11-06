@@ -980,7 +980,7 @@ private:
     }
 
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
-        if (!fDesc->fVertexBuffer) {
+        if (!fDesc || !fDesc->fVertexBuffer) {
             return;
         }
 
