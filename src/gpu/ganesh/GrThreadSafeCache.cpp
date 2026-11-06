@@ -64,7 +64,7 @@ void GrThreadSafeCache::VertexData::setGpuBuffer(sk_sp<GrGpuBuffer> gpuBuffer) {
 }
 
 void GrThreadSafeCache::VertexData::reset() {
-    sk_free(const_cast<void*>(fVertices));
+    sk_free(const_cast<void*>(fVertices.get()));
     fVertices = nullptr;
     fNumVertices = 0;
     fVertexSize = 0;
