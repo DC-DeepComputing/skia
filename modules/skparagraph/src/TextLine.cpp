@@ -226,16 +226,7 @@ TextLine::TextLine(ParagraphImpl* owner,
 
 void TextLine::paint(ParagraphPainter* painter, SkScalar x, SkScalar y) {
     if (fHasBackground) {
-        this->iterateThroughVisualRuns(false,
-            [painter, x, y, this]
-            (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
-                *runWidthInLine = this->iterateThroughSingleRunByStyles(
-                TextAdjustment::GlyphCluster, run, runOffsetInLine, textRange, StyleType::kBackground,
-                [painter, x, y, this](TextRange textRange, const TextStyle& style, const ClipContext& context) {
-                    this->paintBackground(painter, x, y, textRange, style, context);
-                });
-            return true;
-            });
+        this->paintBackground(painter, x, y);
     }
 
     if (fHasShadows) {
@@ -432,16 +423,145 @@ void TextLine::TextBlobRecord::paint(ParagraphPainter* painter, SkScalar x, SkSc
     }
 }
 
-void TextLine::paintBackground(ParagraphPainter* painter,
-                               SkScalar x,
-                               SkScalar y,
-                               TextRange textRange,
-                               const TextStyle& style,
-                               const ClipContext& context) const {
-    if (style.hasBackground()) {
-        painter->drawRect(context.clip.makeOffset(this->offset() + SkPoint::Make(x, y)),
-                          style.getBackgroundPaintOrID());
+// Unifies vertical background bounds across fallback runs and visually abutting spans that share
+// font metrics on this line, then coalesces abutting rects sharing the same background paint
+void TextLine::paintBackground(ParagraphPainter* painter, SkScalar x, SkScalar y) const {
+    const size_t numBlocks = fBlockRange.width();
+    if (numBlocks == 0) {
+        return;
     }
+
+    struct BlockGroup {
+        int32_t fParent;
+        SkScalar fTop;
+        SkScalar fBottom;
+    };
+    AutoSTArray<16, BlockGroup> groups(SkToInt(numBlocks));
+    for (size_t i = 0; i < numBlocks; ++i) {
+        const TextStyle& style = fOwner->block(fBlockRange.start + i).fStyle;
+        // Placeholders keep their own box bounds and must not inflate adjacent text backgrounds
+        groups[SkToInt(i)] = {
+            style.hasBackground() && !style.isPlaceholder() ? SkToS32(i) : -1,
+            SK_ScalarMax,
+            SK_ScalarMin,
+        };
+    }
+
+    auto findRoot = [&](int32_t g) {
+        SkASSERT(g >= 0 && g < SkToS32(numBlocks));
+        for (size_t step = 0; step < numBlocks && groups[g].fParent != g; ++step) {
+            groups[g].fParent = groups[groups[g].fParent].fParent;
+            g = groups[g].fParent;
+        }
+        return g;
+    };
+
+    auto unionGroups = [&](int32_t a, int32_t b) {
+        a = findRoot(a);
+        b = findRoot(b);
+        if (a != b) {
+            groups[b].fParent = a;
+            groups[a].fTop = std::min(groups[a].fTop, groups[b].fTop);
+            groups[a].fBottom = std::max(groups[a].fBottom, groups[b].fBottom);
+        }
+        return a;
+    };
+
+    struct BackgroundPiece {
+        SkRect fRect;
+        const TextStyle* fStyle;
+        int32_t fGroup;
+    };
+    STArray<16, BackgroundPiece, true> pieces;
+
+    this->iterateThroughVisualRuns(
+            false,
+            [&](const Run* run,
+                SkScalar runOffsetInLine,
+                TextRange textRange,
+                SkScalar* runWidthInLine) {
+                *runWidthInLine = this->iterateThroughSingleRunByStyles(
+                        TextAdjustment::GlyphCluster,
+                        run,
+                        runOffsetInLine,
+                        textRange,
+                        StyleType::kBackground,
+                        [&](TextRange styleTextRange,
+                            const TextStyle& style,
+                            const ClipContext& context) {
+                            // Zero-width fallback runs (such as ZWSP) draw nothing and must not
+                            // stretch visible text backgrounds on the line
+                            if (!style.hasBackground() ||
+                                context.clip.width() <= 0 ||
+                                context.clip.height() <= 0) {
+                                return;
+                            }
+                            int32_t group = -1;
+                            if (!context.run->isPlaceholder() && !style.isPlaceholder()) {
+                                for (size_t i = 0; i < numBlocks; ++i) {
+                                    const Block& block = fOwner->block(fBlockRange.start + i);
+                                    if (groups[SkToInt(i)].fParent >= 0 &&
+                                        intersected(block.fRange, styleTextRange).width() > 0) {
+                                        group = group < 0 ? findRoot(SkToS32(i))
+                                                          : unionGroups(group, SkToS32(i));
+                                    }
+                                }
+                                if (group >= 0) {
+                                    groups[group].fTop =
+                                            std::min(groups[group].fTop, context.clip.fTop);
+                                    groups[group].fBottom =
+                                            std::max(groups[group].fBottom, context.clip.fBottom);
+                                }
+                            }
+                            pieces.push_back({context.clip, &style, group});
+                        });
+                return true;
+            });
+
+    if (pieces.empty()) {
+        return;
+    }
+
+    // Clients like Flutter allocate a fresh PaintID per pushStyle even when child or sibling
+    // spans inherit identical font metrics; unify visually abutting pieces that match kFont
+    for (int i = 0; i + 1 < pieces.size(); ++i) {
+        if (pieces[i].fGroup >= 0 &&
+            pieces[i + 1].fGroup >= 0 &&
+            nearlyEqual(pieces[i].fRect.fRight, pieces[i + 1].fRect.fLeft) &&
+            pieces[i].fStyle->getTypeface() == pieces[i + 1].fStyle->getTypeface() &&
+            pieces[i].fStyle->matchOneAttribute(StyleType::kFont, *pieces[i + 1].fStyle)) {
+            unionGroups(pieces[i].fGroup, pieces[i + 1].fGroup);
+        }
+    }
+
+    for (int i = 0; i < pieces.size(); ++i) {
+        if (pieces[i].fGroup >= 0) {
+            const int32_t root = findRoot(pieces[i].fGroup);
+            SkASSERT(groups[root].fTop <= groups[root].fBottom);
+            pieces[i].fRect.fTop = groups[root].fTop;
+            pieces[i].fRect.fBottom = groups[root].fBottom;
+        }
+    }
+
+    // Coalesce abutting rects sharing a background paint or PaintID to avoid anti-aliased seams
+    const SkPoint lineOrigin = this->offset() + SkPoint::Make(x, y);
+    SkRect merged = pieces[0].fRect;
+    const TextStyle* mergedStyle = pieces[0].fStyle;
+    for (int i = 1; i < pieces.size(); ++i) {
+        const BackgroundPiece& next = pieces[i];
+        if (nearlyEqual(merged.fRight, next.fRect.fLeft) &&
+            nearlyEqual(merged.fTop, next.fRect.fTop) &&
+            nearlyEqual(merged.fBottom, next.fRect.fBottom) &&
+            mergedStyle->matchOneAttribute(StyleType::kBackground, *next.fStyle)) {
+            merged.fRight = next.fRect.fRight;
+        } else {
+            painter->drawRect(merged.makeOffset(lineOrigin),
+                              mergedStyle->getBackgroundPaintOrID());
+            merged = next.fRect;
+            mergedStyle = next.fStyle;
+        }
+    }
+    painter->drawRect(merged.makeOffset(lineOrigin), mergedStyle->getBackgroundPaintOrID());
 }
 
 void TextLine::paintShadow(ParagraphPainter* painter,
