@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a708299_6a6676e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-06T13:01:06Z",
+      "side": 1,
+      "message": "LGTM. The byte compare gives the same result as the old decode for all valid UTF-8: U+00AD has only the C2 AD form, width() \u003d\u003d 2 keeps p[1] inside the cluster, and placeholder clusters are 3 bytes. The only change is for overlong 3- and 4-byte forms that SkUTF::NextUTF8 accepted, and the commit message already covers that.\n\nI ran the Flutter paragraph test corpus (2409 tests, Linux x64, ICU) and the google3 SkParagraph clients (1151 test targets) with this patch: no regressions.\n\nFlutter txt_benchmarks on Linux x64 Release (40 interleaved rounds, patch/base median ratio, 95% CI): JustifyLayout 0.985 [0.978, 0.991], LongLayout 0.996 [0.988, 1.003], TextBigO/1024 0.997 [0.988, 1.006], ShortLayout 1.020 [1.008, 1.037]. So the justify path gets about 1.5% faster here; these benchmarks do not repeat your 3500-paragraph ParagraphCache case, so they neither confirm nor contradict the 11% you measured on macOS.",
+      "revId": "0f04f77bc2aceb0cb0e0aa3d0d3d2df8719ab777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
