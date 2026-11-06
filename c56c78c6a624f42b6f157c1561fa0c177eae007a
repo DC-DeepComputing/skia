@@ -52,6 +52,24 @@
       "parentUuid": "2d4f559f_dea5d9bd",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70c281cc_44ec1660",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-06T15:07:56Z",
+      "side": 1,
+      "message": "In the past Skia has only use one queue but Nathan has been moving to a place we can use both a protected and unprotected queue inside Skia if needed. So he would be the best to answer the multiple queue part of the question. When we\u0027re just dealing with one queue I think in \"normal\" expected use this should be fine because someone importing this from foreign should be synchronizing things with semaphores and such (access masks are still all get set so memory availablity/visibility should be fine). However, I\u0027m trying to think through a scenario where some first exports to foreign from Skia after drawing to a VkImage, so `srcStage \u003d COLOR_WRITE and dstStage \u003d BOTTOM`. Then they just immediately import it back to Skia\u0027s graphics queue without doing anything outside Skia and want to be use it for sampling in a shader, so `srcStage \u003d TOP and dstStage \u003d SHADER_READ`. Would those barriers be able to protect the RAW hazard?",
+      "parentUuid": "42825f87_3557171b",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
