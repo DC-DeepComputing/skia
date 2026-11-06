@@ -224,11 +224,13 @@ static std::optional<SkBitmap> DecodeIncrementalOneShot(
     if (!codec) {
         return std::nullopt;
     }
-    SkCodec::Result result = codec->incrementalDecode();
+    int rowsDecoded = -1;
+    SkCodec::Result result = codec->incrementalDecode(&rowsDecoded);
     REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
     if (result != SkCodec::kSuccess) {
         return std::nullopt;
     }
+    REPORTER_ASSERT(r, rowsDecoded == bm.height());
     return bm;
 }
 
@@ -1063,7 +1065,7 @@ DEF_TEST(RustPngCodec_apng_dispose_op_none_basic_incomplete_input2, r) {
     rowsDecoded = -1;
     result = codec->incrementalDecode(&rowsDecoded);
     REPORTER_ASSERT(r, result == SkCodec::kSuccess);
-    REPORTER_ASSERT(r, rowsDecoded == -1);  // Not set when `kSuccess`.
+    REPORTER_ASSERT(r, rowsDecoded == 64, "actual rowsDecoded = %d", rowsDecoded);
     AssertRedPixel(r, pixmap, 0, 0);
     AssertRedPixel(r, pixmap, 40, 29);
     AssertRedPixel(r, pixmap, 80, 35);
@@ -1473,13 +1475,22 @@ DEF_TEST(RustPngCodec_interlaced_animated_blending, r) {
     bm.allocPixels(info);
     REPORTER_ASSERT(r, codec->getFrameCount() == 4);
     for (int i = 0; i < codec->getFrameCount(); ++i) {
+        SkCodec::FrameInfo frameInfo;
+        REPORTER_ASSERT(r, codec->getFrameInfo(i, &frameInfo));
         SkCodec::Options options;
         options.fFrameIndex = i;
         options.fPriorFrame = i - 1;
         SkCodec::Result result;
         result = codec->startIncrementalDecode(info, bm.getPixels(), bm.rowBytes(), &options);
         REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
-        std::ignore = codec->incrementalDecode();
+        int rowsDecoded = -1;
+        result = codec->incrementalDecode(&rowsDecoded);
+        REPORTER_ASSERT(r, i != 2 || result == SkCodec::kSuccess);
+        if (result == SkCodec::kSuccess) {
+            REPORTER_ASSERT(r, rowsDecoded == frameInfo.fFrameRect.height());
+        } else {
+            REPORTER_ASSERT(r, rowsDecoded >= 0 && rowsDecoded <= frameInfo.fFrameRect.height());
+        }
     }
 #else
     AssertAndroidStaticApng(r, kResource);
@@ -1767,7 +1778,9 @@ DEF_TEST(RustPngCodec_subset_halting, r) {
     REPORTER_ASSERT(r, rowsDecoded > 0 && rowsDecoded < subset.height());
     REPORTER_ASSERT(r, CountWrittenRows(r, bmHalting) == rowsDecoded);
     retainedStream->addNewData(data->size() - initialLimit);
-    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, codec->incrementalDecode());
+    rowsDecoded = -1;
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, codec->incrementalDecode(&rowsDecoded));
+    REPORTER_ASSERT(r, rowsDecoded == subset.height());
 
     CompareBitmaps(r, *bmOneShot, bmHalting);
 }
@@ -2387,8 +2400,10 @@ static int AssertInterlacedIncrementalDecodeHalting(
     }
 
     retainedStream->addNewData(data->size() - limit);
-    result = codec->incrementalDecode();
+    int rowsDecodedAfterResume = -1;
+    result = codec->incrementalDecode(&rowsDecodedAfterResume);
     REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, rowsDecodedAfterResume == bm.height());
 
     if (std::optional<SkBitmap> refBm = DecodeIncrementalOneShot(r, data, makeDstInfo, options)) {
         CompareBitmaps(r, *refBm, bm);
