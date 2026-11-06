@@ -16,6 +16,24 @@
       "message": "TOP_OF_PIPE bit as src doesn\u0027t wait for completion of any operation which may be pending on this resource. I am not sure this is what we want (from a correctness point of view).\nAs we are currently not observing issues by not transferring the resource testing with this patch will also not reveal potential issues.\nFrom my PoV this must include all stages Skia could have used to modify the resource (fragment|transfer ?).",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d4f559f_dea5d9bd",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-06T14:42:18Z",
+      "side": 1,
+      "message": "I believe that when doing a queue transfer from foreign/external to the graphics queue top is the correct thing to use. My understanding is that the src stages are about protecting work between same queue operations. So since this is being imported externally, there is no work on the current queue we need to block on. The same logic applies for why we can use Bottom on the export call. But maybe I am misunderstanding something about the spec.",
+      "parentUuid": "74a7b1f4_156348d5",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
