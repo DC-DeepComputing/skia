@@ -35,7 +35,10 @@ public:
     sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                      const SkFontArguments& args) const override;
     SkFourByteTag getFactoryId() const override;
-private:
+    // Runs only the style part of SkTypeface_Fontations::MakeFromData
+    bool scanStyle(SkStreamAsset* stream,
+                   const SkFontArguments& args,
+                   SkFontStyle* style) const override;
 };
 
 #endif // SKFONTSCANNER_FONTATIONS_PRIV_H_

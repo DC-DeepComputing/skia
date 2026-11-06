@@ -31,6 +31,10 @@ public:
     sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                      const SkFontArguments& args) const override;
     SkTypeface::FactoryId getFactoryId() const override;
+    // Reads OS/2 and fvar from a memory-backed stream instead of opening an FT_Face
+    bool scanStyle(SkStreamAsset* stream,
+                   const SkFontArguments& args,
+                   SkFontStyle* style) const override;
     static void computeAxisValues(
             const AxisDefinitions& axisDefinitions,
             const SkFontArguments::VariationPosition currentPosition,
