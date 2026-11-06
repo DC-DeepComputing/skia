@@ -340,6 +340,7 @@ public:
     bool isIntraWordBreak() const { return fIsIntraWordBreak; }
     bool isHardBreak() const { return fIsHardBreak; }
     bool isIdeographic() const { return fIsIdeographic; }
+    bool isDefaultIgnorable() const { return fIsDefaultIgnorable; }
 
     bool isSoftBreak() const;
     bool isSoftHyphen() const;
@@ -387,10 +388,13 @@ private:
     SkScalar fWidth;
     SkScalar fHalfLetterSpacing;
 
-    bool fIsWhiteSpaceBreak;
-    bool fIsIntraWordBreak;
-    bool fIsHardBreak;
-    bool fIsIdeographic;
+    // Pack cluster flags into one byte rather than spilling past a 4-byte boundary on 32-bit builds
+    bool fIsWhiteSpaceBreak : 1;
+    bool fIsIntraWordBreak : 1;
+    bool fIsHardBreak : 1;
+    bool fIsIdeographic : 1;
+    // Cluster text consists solely of Default_Ignorable_Code_Point codepoints (U+200B, U+FEFF...)
+    bool fIsDefaultIgnorable : 1;
 };
 
 class InternalLineMetrics {
