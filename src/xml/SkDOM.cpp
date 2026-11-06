@@ -26,6 +26,7 @@ bool SkXMLParser::parse(const SkDOM& dom, const SkDOMNode* node) {
     while ((name = iter.next(&value)) != nullptr) {
         this->addAttribute(name, value);
     }
+    this->attributesDone();
 
     if ((node = dom.getFirstChild(node)) != nullptr) {
         do {
@@ -315,6 +316,7 @@ static void walk_dom(const SkDOM& dom, const SkDOM::Node* node, SkXMLParser* par
     const char*     value;
     while ((name = iter.next(&value)) != nullptr)
         parser->addAttribute(name, value);
+    parser->attributesDone();
 
     node = dom.getFirstChild(node, nullptr);
     while (node)

@@ -10,7 +10,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkRandom.h"
@@ -89,12 +88,18 @@ const XML_Memory_Handling_Suite sk_XML_alloc = {
     sk_free
 };
 
-struct ParsingContext {
-    SK_ONLY_STACK_ALLOCATABLE;
+} // anonymous namespace
 
-    ParsingContext(SkXMLParser* parser)
+struct SkXMLParser::ParsingContext {
+    explicit ParsingContext(SkXMLParser* parser)
         : fParser(parser)
-        , fXMLParser(XML_ParserCreate_MM(nullptr, &sk_XML_alloc, nullptr)) { }
+        , fXMLParser(XML_ParserCreate_MM(nullptr, &sk_XML_alloc, nullptr)) {
+        fParser->fParser = this;
+    }
+
+    ~ParsingContext() {
+        fParser->fParser = nullptr;
+    }
 
     void flushText() {
         if (!fBufferedText.empty()) {
@@ -107,14 +112,17 @@ struct ParsingContext {
         fBufferedText.insert(fBufferedText.end(), txt, &txt[len]);
     }
 
-    SkXMLParser* fParser;
+    raw_ptr<SkXMLParser> fParser;
     SkAutoTCallVProc<std::remove_pointer_t<XML_Parser>, XML_ParserFree> fXMLParser;
 
 private:
     std::vector<char> fBufferedText;
 };
 
-#define HANDLER_CONTEXT(arg, name) ParsingContext* name = static_cast<ParsingContext*>(arg)
+namespace {
+
+#define HANDLER_CONTEXT(arg, name) \
+    SkXMLParser::ParsingContext* name = static_cast<SkXMLParser::ParsingContext*>(arg)
 
 void XMLCALL start_element_handler(void *data, const char* tag, const char** attributes) {
     HANDLER_CONTEXT(data, ctx);
@@ -125,6 +133,8 @@ void XMLCALL start_element_handler(void *data, const char* tag, const char** att
     for (size_t i = 0; attributes[i]; i += 2) {
         ctx->fParser->addAttribute(attributes[i], attributes[i + 1]);
     }
+
+    ctx->fParser->attributesDone();
 }
 
 void XMLCALL end_element_handler(void* data, const char* tag) {
@@ -233,6 +243,14 @@ bool SkXMLParser::parse(const char doc[], size_t len)
     return this->parse(docStream);
 }
 
+int SkXMLParser::getCurrentLineNumber() const {
+    return fParser ? SkToInt(XML_GetCurrentLineNumber(fParser->fXMLParser)) : -1;
+}
+
+int SkXMLParser::getCurrentColumnNumber() const {
+    return fParser ? SkToInt(XML_GetCurrentColumnNumber(fParser->fXMLParser)) : -1;
+}
+
 void SkXMLParser::GetNativeErrorString(int error, SkString* str)
 {
 
@@ -244,6 +262,10 @@ void SkXMLParser::startElement(const char elem[]) {
 
 void SkXMLParser::addAttribute(const char name[], const char value[]) {
     this->onAddAttribute(name, value);
+}
+
+void SkXMLParser::attributesDone() {
+    this->onAttributesDone();
 }
 
 void SkXMLParser::endElement(const char elem[]) {
@@ -258,5 +280,6 @@ void SkXMLParser::text(const char text[], int len) {
 
 void SkXMLParser::onStartElement(const char elem[]) {}
 void SkXMLParser::onAddAttribute(const char name[], const char value[]) {}
+void SkXMLParser::onAttributesDone() {}
 void SkXMLParser::onEndElement(const char elem[]) {}
 void SkXMLParser::onText(const char text[], int len) {}
