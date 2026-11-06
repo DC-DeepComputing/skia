@@ -30,7 +30,12 @@ sk_sp<const SkData> make_data_avoiding_copy(SkStreamAsset* stream) {
         return SkData::MakeWithoutCopy(stream->getMemoryBase(), stream->getLength());
     }
 
-    return SkData::MakeFromStream(stream, stream->getLength());
+    // Rewind before reading so non-memory streams at a non-zero cursor do not fail short
+    if (!stream->rewind()) {
+        return SkData::MakeEmpty();
+    }
+    sk_sp<SkData> data = SkData::MakeFromStream(stream, stream->getLength());
+    return data ? sk_sp<const SkData>(std::move(data)) : SkData::MakeEmpty();
 }
 }  // namespace
 
@@ -212,6 +217,34 @@ sk_sp<SkTypeface> SkFontScanner_Fontations::MakeFromStream(std::unique_ptr<SkStr
 
 SkTypeface::FactoryId SkFontScanner_Fontations::getFactoryId() const {
     return SkTypeface_Fontations::FactoryId;
+}
+
+bool SkFontScanner_Fontations::scanStyle(SkStreamAsset* stream,
+                                         const SkFontArguments& args,
+                                         SkFontStyle* style) const {
+    SkASSERT(stream && style);
+    // Named instances prepend instance coordinates in MakeFromData; not mirrored here
+    if (args.getCollectionIndex() & 0xFFFF0000) {
+        return false;
+    }
+    sk_sp<const SkData> fontData = make_data_avoiding_copy(stream);
+    rust::Box<fontations_ffi::BridgeFontRef> fontRef =
+            make_bridge_font_ref(fontData.get(), args.getCollectionIndex());
+    stream->rewind();
+    if (!fontations_ffi::font_ref_is_valid(*fontRef)) {
+        return false;
+    }
+    rust::Box<fontations_ffi::BridgeNormalizedCoords> coords =
+            make_normalized_coords(*fontRef, args.getVariationDesignPosition());
+    // Same fallback as MakeFromData: a default style when the font reports none
+    *style = SkFontStyle();
+    fontations_ffi::BridgeFontStyle fontStyle;
+    if (fontations_ffi::get_font_style(*fontRef, *coords, fontStyle)) {
+        *style = SkFontStyle(fontStyle.weight,
+                             fontStyle.width,
+                             static_cast<SkFontStyle::Slant>(fontStyle.slant));
+    }
+    return true;
 }
 
 std::unique_ptr<SkFontScanner> SkFontScanner_Make_Fontations() {
