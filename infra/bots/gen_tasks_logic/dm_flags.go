@@ -250,8 +250,12 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 			glPrefix = "gles"
 		}
 
+
 		if b.ExtraConfig("NativeFonts") {
 			configs = append(configs, glPrefix)
+		} else if b.ExtraConfig("StandaloneWasm") {
+			// Currently only plain webgl config works for wasm (no dft, msaa, etc).
+			configs = []string{glPrefix}
 		} else {
 			configs = append(configs, glPrefix, glPrefix+"dft")
 			if sampleCount > 0 {
@@ -822,7 +826,7 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 		// Test 1010102 on our Linux/NVIDIA tasks and the persistent cache config
 		// on the GL tasks.
 		if b.GPU("QuadroP400") && !b.ExtraConfig("PreAbandonGpuContext") && !b.ExtraConfig("TSAN") && b.IsLinux() &&
-			!b.ExtraConfig("FailFlushTimeCallbacks") && !b.ExtraConfig("Graphite") {
+			!b.ExtraConfig("FailFlushTimeCallbacks") && !b.ExtraConfig("Graphite") && !b.ExtraConfig("StandaloneWasm") {
 			if b.ExtraConfig("Vulkan") {
 				configs = append(configs, "vk1010102")
 				// Decoding transparent images to 1010102 just looks bad
@@ -1103,15 +1107,6 @@ func (b *TaskBuilder) dmFlags(internalHardwareLabel string) {
 		removeFromArgs("skp")
 	} else {
 		removeFromArgs("lottie")
-	}
-
-	if b.ExtraConfig("StandaloneWasm") && b.GPU() {
-		// TODO(denniston.t@gmail.com): until there is a StandaloneWasm WebGL sink,
-		// we can only run the unit tests.
-		removeFromArgs("gm")
-		removeFromArgs("image")
-		removeFromArgs("colorImage")
-		removeFromArgs("svg")
 	}
 
 	if b.ExtraConfig("TSAN") {
