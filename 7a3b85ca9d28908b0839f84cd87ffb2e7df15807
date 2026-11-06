@@ -87,6 +87,30 @@
       },
       "revId": "7a3b85ca9d28908b0839f84cd87ffb2e7df15807",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cbaac6e_306f712a",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-06T19:53:44Z",
+      "side": 1,
+      "message": "\"\nOn a root SkBitmap, the device clip starts at {0, 0, width, height}, so clip.fLeft \u003e\u003d 0. Negative or near-limit clip.fLeft values enter when callers work in signed coordinate spaces rather than (0, 0)-anchored bitmap space:\n\n\n\nSkAAClip::setPath(path, clip, /*doAA\u003d*/true)\n: setPath accepts any SkIRect clip as long as !clip.isEmpty() (i.e. width64() \u003c\u003d INT32_MAX). If passed e.g. clip \u003d {-2147483640, 0, -2147483600, 10}, \n\nBuilder::blitPath\n calls SkScan::AntiFillPath(raw, SkRegion(fBounds), \u0026blitter, true), which initializes \n\nSkRectClipBlitter\n directly with fClipRect.fLeft \u003d -2,147,483,640.\nStandalone \n\nSkRegion\n / \n\nSkRasterClip\n passed to SkScan: SkRegion and SkRasterClip(const SkIRect\u0026) support full signed int32_t coordinates (including negative origins via rgn.translate(dx, dy)). Internal callers, tests, and fuzzers that invoke SkScan::AntiFillRect, SkScan::AntiFrameRect, SkScan::AntiHairLineRgn, or SkScan::AntiFillPath with a translated SkRegion pass fRgn-\u003egetBounds().fLeft near INT32_MIN straight into clip_anti_span.\nPositive clip.fLeft near INT32_MAX: Even without negative coordinates, a positive-only clip like clip \u003d {2147483640, 0, 2147483645, 10} (valid !clip.isEmpty()) breaks the *x + width \u003c\u003d clip.fLeft form when *x \u003d 2,147,483,600 and width \u003d 100.\nBecause SkRectClipBlitter and SkRgnClipBlitter only assert !clip.isEmpty() in init(), using int64_t in \n\nclip_anti_span\n makes their contract safe for every legal SkIRect without relying on callers upstream to have shifted the origin to (0, 0).\n\"",
+      "parentUuid": "26d8a785_54b7d010",
+      "range": {
+        "startLine": 364,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 61
+      },
+      "revId": "7a3b85ca9d28908b0839f84cd87ffb2e7df15807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
