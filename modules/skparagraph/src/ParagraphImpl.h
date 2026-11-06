@@ -301,6 +301,7 @@ private:
     sk_sp<SkUnicode> fUnicode;
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
+    bool fHasDefaultIgnorables;
     TextIndex fTrailingSpaces;
 };
 }  // namespace textlayout

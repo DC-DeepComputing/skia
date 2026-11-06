@@ -91,6 +91,7 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fUnicode(std::move(unicode))
         , fHasLineBreaks(false)
         , fHasWhitespacesInside(false)
+        , fHasDefaultIgnorables(false)
         , fTrailingSpaces(0)
 {
     SkASSERT(fUnicode);
@@ -312,6 +313,9 @@ bool ParagraphImpl::computeCodeUnitProperties() {
         if (SkUnicode::hasHardLineBreakFlag(flags)) {
             fHasLineBreaks = true;
         }
+        if (flags & SkUnicode::kDefaultIgnorable) {
+            fHasDefaultIgnorables = true;
+        }
     }
 
     if (firstWhitespace < fTrailingSpaces) {
@@ -354,7 +358,8 @@ Cluster::Cluster(ParagraphImpl* owner,
         , fEnd(end)
         , fWidth(width)
         , fHalfLetterSpacing(0.0)
-        , fIsIdeographic(false) {
+        , fIsIdeographic(false)
+        , fIsDefaultIgnorable(false) {
     size_t whiteSpacesBreakLen = 0;
     size_t intraWordBreakLen = 0;
 
@@ -426,8 +431,9 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
     // which is treated as a common case down below
     if (letterSpacingStyles == 1 && !hasWordSpacing && fTextStyles.size() == 1 &&
         fTextStyles[0].fRange.width() == fText.size() && fRuns.size() == 1 &&
-        !(this->fHasWhitespacesInside && this->fParagraphStyle.getLetterSpacingByCSSSpec())
-        ) {
+        !(this->fHasWhitespacesInside && this->fParagraphStyle.getLetterSpacingByCSSSpec()) &&
+        // Spacing every glyph would also widen invisible default-ignorables
+        !fHasDefaultIgnorables) {
         auto& run = fRuns[0];
         auto& style = fTextStyles[0].fStyle;
         if (!run.isCursiveScript()) {
@@ -500,7 +506,9 @@ void ParagraphImpl::applySpacingAndBuildClusterTable() {
             }
             // We do not apply letter spacing for script languages
             // except for one case (cluster is whitespace, and we have to follow CSS spec)
-            if ((currentStyle->fStyle.getLetterSpacing() != 0)) {
+            // Invisible default-ignorable clusters must not widen the text
+            if (!SkScalarNearlyZero(currentStyle->fStyle.getLetterSpacing()) &&
+                !cluster->isDefaultIgnorable()) {
                 if (!run.isCursiveScript() ||
                     (cluster->isWhitespaceBreak() &&
                      this->fParagraphStyle.getLetterSpacingByCSSSpec())) {
@@ -583,6 +591,9 @@ void ParagraphImpl::buildClusterTable() {
                     }
                     SkSpan<const char> text(fText.c_str() + charStart, charEnd - charStart);
                     fClusters.emplace_back(this, runIndex, glyphStart, glyphEnd, text, width);
+                    // Hangul fillers and GSUB-substituted ignorables advance the pen and must space
+                    fClusters.back().fIsDefaultIgnorable =
+                            hasZeroWidth && !hasVisible && SkScalarNearlyZero(width);
                     fCodeUnitProperties[charStart] |= SkUnicode::CodeUnitFlags::kGlyphClusterStart;
                     return;
                 }
@@ -653,6 +664,8 @@ void ParagraphImpl::buildClusterTable() {
                     }
                     SkSpan<const char> subText(fText.c_str() + sub.range.start, sub.range.width());
                     fClusters.emplace_back(this, runIndex, gStart, gEnd, subText, subWidth);
+                    // Zero-width split sub-clusters own no glyphs and zero advance, so skip spacing
+                    fClusters.back().fIsDefaultIgnorable = sub.isZeroWidth;
                     fCodeUnitProperties[sub.range.start] |=
                             SkUnicode::CodeUnitFlags::kGlyphClusterStart;
                 }
