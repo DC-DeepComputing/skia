@@ -453,10 +453,14 @@ DEF_TEST(Codec_frames, r) {
                 SkCodec::Options opts;
                 opts.fFrameIndex = index;
                 opts.fPriorFrame = cachedIndex;
+                if (cachedIndex != SkCodec::kNoFrame) {
+                    opts.fZeroInitialized = SkCodec::kYes_ZeroInitialized;
+                }
                 const auto result = codec->getPixels(decodeInfo, bm->getPixels(), bm->rowBytes(),
                                                      &opts);
                 if (cachedIndex != SkCodec::kNoFrame &&
-                        restore_previous(frameInfos[cachedIndex])) {
+                    frameInfos[index].fRequiredFrame != SkCodec::kNoFrame &&
+                    restore_previous(frameInfos[cachedIndex])) {
                     if (result == SkCodec::kInvalidParameters) {
                         return true;
                     }
@@ -476,13 +480,9 @@ DEF_TEST(Codec_frames, r) {
                     continue;
                 }
                 const auto reqFrame = frameInfos[i].fRequiredFrame;
-                if (reqFrame == SkCodec::kNoFrame) {
-                    // Nothing to compare against.
-                    continue;
-                }
-                for (int j = reqFrame; j < i; j++) {
+                for (int j = reqFrame == SkCodec::kNoFrame ? 0 : reqFrame; j < i; j++) {
                     SkBitmap frame;
-                    if (restore_previous(frameInfos[j])) {
+                    if (reqFrame != SkCodec::kNoFrame && restore_previous(frameInfos[j])) {
                         (void) decode(&frame, i, j);
                         continue;
                     }
@@ -586,6 +586,85 @@ DEF_TEST(AndroidCodec_animated, r) {
 
 DEF_TEST(AndroidCodec_animated_gif, r) {
     test_animated_AndroidCodec(r, "images/required.gif");
+}
+
+// Regression test for b/581301904: an independent full-canvas Frame 1 (`128x64`
+// green) truncated either with 0 rows decoded (`302` bytes) or mid-decode
+// (`390` bytes) with `fPriorFrame = 0` and `kYes_ZeroInitialized` must still
+// have its undecoded rows cleared to `SK_ColorTRANSPARENT` by
+// `SkCodec::fillIncompleteImage` in `getPixels`.
+DEF_TEST(Codec_incompleteIndependentFullFrame, r) {
+    sk_sp<SkData> disposeNoneData =
+            GetResourceAsData("images/apng-test-suite--dispose-ops--none-basic.png");
+    if (!disposeNoneData) {
+        return;
+    }
+    sk_sp<SkData> independentFullCanvas =
+            with_first_fctl_dispose_op(disposeNoneData.get(), /*disposeOp=*/1);  // kRestoreBGColor
+    REPORTER_ASSERT(r, independentFullCanvas);
+    if (!independentFullCanvas) {
+        return;
+    }
+    for (size_t limit : {size_t{302}, size_t{390}}) {
+        auto codec =
+                SkCodec::MakeFromData(SkData::MakeSubset(independentFullCanvas.get(), 0, limit));
+        if (!codec || codec->getFrameCount() < 2) {
+            return;
+        }
+        const SkImageInfo dstInfo = codec->getInfo().makeColorType(kN32_SkColorType);
+        SkBitmap bm;
+        bm.allocPixels(dstInfo);
+        bm.eraseColor(SK_ColorMAGENTA);
+
+        SkCodec::Options options;
+        options.fFrameIndex = 1;
+        options.fPriorFrame = 0;
+        options.fZeroInitialized = SkCodec::kYes_ZeroInitialized;
+        REPORTER_ASSERT(r, codec->getPixels(bm.pixmap(), &options) == SkCodec::kIncompleteInput);
+        int greenRows = 0;
+        for (int y = 0; y < bm.height(); ++y) {
+            const SkColor rowColor = bm.getColor(0, y);
+            REPORTER_ASSERT(r, rowColor == SK_ColorGREEN || rowColor == SK_ColorTRANSPARENT);
+            if (rowColor == SK_ColorGREEN) {
+                ++greenRows;
+            }
+            for (int x = 0; x < bm.width(); ++x) {
+                REPORTER_ASSERT(r, bm.getColor(x, y) == rowColor);
+            }
+        }
+        if (limit == 302) {
+            REPORTER_ASSERT(r, greenRows == 0);
+        } else {
+            REPORTER_ASSERT(r, greenRows > 0 && greenRows < bm.height());
+        }
+        REPORTER_ASSERT(r, bm.getColor(0, bm.height() - 1) == SK_ColorTRANSPARENT);
+    }
+}
+
+// Regression test for b/581301904: a dependent frame (`fRequiredFrame != kNoFrame`)
+// truncated right at the start (`440`, 0 rows decoded) or mid-stream (`480`)
+// must not have the prior frame's bottom rows wiped out by
+// `SkCodec::fillIncompleteImage`.
+DEF_TEST(Codec_incompleteDependentFrame, r) {
+    sk_sp<SkData> regionsData =
+            GetResourceAsData("images/apng-test-suite--regions--dispose-op-none.png");
+    if (!regionsData) {
+        return;
+    }
+    for (size_t limit : {size_t{440}, size_t{480}}) {
+        auto codec = SkCodec::MakeFromData(SkData::MakeSubset(regionsData.get(), 0, limit));
+        if (!codec || codec->getFrameCount() < 2) {
+            return;
+        }
+        SkBitmap bm;
+        bm.allocPixels(codec->getInfo().makeColorType(kN32_SkColorType));
+        bm.eraseColor(SK_ColorMAGENTA);
+        SkCodec::Options options;
+        options.fFrameIndex = 1;
+        REPORTER_ASSERT(r, codec->getPixels(bm.pixmap(), &options) == SkCodec::kIncompleteInput);
+        REPORTER_ASSERT(r, bm.getColor(0, 0) == SK_ColorGREEN);
+        REPORTER_ASSERT(r, bm.getColor(127, 63) == SK_ColorGREEN);
+    }
 }
 
 DEF_TEST(EncodedOriginToMatrixTest, r) {
