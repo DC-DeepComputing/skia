@@ -111,11 +111,14 @@ std::pair<size_t, size_t> isolateClusterGlyphs(const ParagraphImpl* owner,
                                                const Run* run,
                                                const Cluster* cluster,
                                                TextRange originalTextRange,
-                                               bool isStart) {
+                                               bool isStart,
+                                               bool singleGrapheme) {
     const char* textStr = owner->text().data();
     const char* ptr = textStr + cluster->textRange().start;
     const char* endPtr = textStr + cluster->textRange().end;
-    if (cluster->size() > 1 &&
+    // Multi-grapheme cursive ligatures (such as Arabic Lam + Alef-Madda) merge graphemes into one
+    // cluster owned as a unit by its starting span even when glyph count equals code point count
+    if (singleGrapheme && cluster->size() > 1 &&
         cluster->size() == SkToSizeT(SkUTF::CountUTF8(ptr, cluster->textRange().width()))) {
         size_t g0 = cluster->endPos();
         size_t g1 = cluster->startPos();
@@ -303,10 +306,11 @@ void TextLine::ensureTextBlobCachePopulated() {
         ClipContext context = {/*run=*/&run,
                                /*pos=*/glyphs.start,
                                /*size=*/glyphs.width(),
-                               /*fTextShift=*/-run.positionX(glyphs.start), // starting position
-                               /*clip=*/clip,                               // entire line
-                               /*fExcludedTrailingSpaces=*/0.0f,            // no need for that
-                               /*clippingNeeded=*/false};                   // no need for that
+                               /*fTextShift=*/-run.positionX(glyphs.start),  // starting position
+                               /*clip=*/clip,                                // entire line
+                               /*fExcludedTrailingSpaces=*/0.0f,             // no need for that
+                               /*clippingNeeded=*/false,                     // no need for that
+                               /*fTextAdvance=*/fAdvance.fX};
         this->buildTextBlob(fTextExcludingSpaces, style, context);
     } else {
         this->iterateThroughVisualRuns(false,
@@ -890,12 +894,14 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
                                                         SkScalar runOffsetInLine,
                                                         SkScalar textOffsetInRunInLine,
                                                         bool includeGhostSpaces,
-                                                        TextAdjustment textAdjustment) const {
-    ClipContext result = { run, 0, run->size(), 0, SkRect::MakeEmpty(), 0, false };
+                                                        TextAdjustment textAdjustment,
+                                                        bool isolateCursiveLigatures) const {
+    ClipContext result = {run, 0, run->size(), 0, SkRect::MakeEmpty(), 0, false, 0.0f};
 
     if (run->fEllipsis) {
         // Both ellipsis and placeholders can only be measured as one glyph
         result.fTextShift = runOffsetInLine;
+        result.fTextAdvance = run->advance().fX;
         result.clip = SkRect::MakeXYWH(runOffsetInLine,
                                        sizes().runTop(run, this->fAscentStyle),
                                        run->advance().fX,
@@ -905,6 +911,7 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         // Placeholder glyph positions retain their origin from shaping. Translate
         // that origin to the visual run position, just as for regular text runs.
         result.fTextShift = runOffsetInLine - run->positionX(0);
+        result.fTextAdvance = run->advance().fX;
         if (SkIsFinite(run->fFontMetrics.fAscent)) {
           result.clip = SkRect::MakeXYWH(runOffsetInLine,
                                          sizes().runTop(run, this->fAscentStyle),
@@ -997,9 +1004,12 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         bool isolated = false;
 
         if (startSplit) {
-            if (shouldIsolateCluster(fOwner, start)) {
-                std::tie(startG0, startG1) =
-                        isolateClusterGlyphs(fOwner, run, start, originalTextRange, true);
+            const bool singleGrapheme = shouldIsolateCluster(fOwner, start);
+            // Cursive ligatures paint unclipped in their starting span's style rather than slicing
+            // diagonal strokes vertically; proportional clipping stays for non-cursive ligatures
+            if (singleGrapheme || (isolateCursiveLigatures && run->isCursiveScript())) {
+                std::tie(startG0, startG1) = isolateClusterGlyphs(
+                        fOwner, run, start, originalTextRange, true, singleGrapheme);
                 isolated = true;
             } else {
                 leftCorrection = start->sizeToChar(originalTextRange.start);
@@ -1009,12 +1019,15 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
             if (start == end && isolated) {
                 endG0 = startG0;
                 endG1 = startG1;
-            } else if (shouldIsolateCluster(fOwner, end)) {
-                std::tie(endG0, endG1) =
-                        isolateClusterGlyphs(fOwner, run, end, originalTextRange, false);
-                isolated = true;
             } else {
-                rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
+                const bool singleGrapheme = shouldIsolateCluster(fOwner, end);
+                if (singleGrapheme || (isolateCursiveLigatures && run->isCursiveScript())) {
+                    std::tie(endG0, endG1) = isolateClusterGlyphs(
+                            fOwner, run, end, originalTextRange, false, singleGrapheme);
+                    isolated = true;
+                } else {
+                    rightCorrection = end->sizeFromChar(originalTextRange.end - 1);
+                }
             }
         }
 
@@ -1051,18 +1064,20 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     result.clip.offset(textStartInLine, 0);
     //SkDebugf("@%f[%f:%f)\n", textStartInLine, result.clip.fLeft, result.clip.fRight);
 
-    if (compareRound(result.clip.fRight, fAdvance.fX, fOwner->getApplyRoundingHack()) > 0 && !includeGhostSpaces) {
-        // There are few cases when we need it.
-        // The most important one: we measure the text with spaces at the end (or at the beginning in RTL)
-        // and we should ignore these spaces
-        if (fOwner->paragraphStyle().getTextDirection() == TextDirection::kLtr) {
-            // We only use this member for LTR
+    if (compareRound(result.clip.fRight, fAdvance.fX, fOwner->getApplyRoundingHack()) > 0 &&
+        !includeGhostSpaces) {
+        // Only trim when the measured slice extends into trailing ghost spaces or a trailing soft
+        // hyphen; otherwise a negative-advance cluster can put fAdvance.fX left of a span's edge
+        if (fOwner->paragraphStyle().getTextDirection() == TextDirection::kLtr &&
+            (textRange.end > fTextExcludingSpaces.end || end->isSoftHyphen())) {
             result.fExcludedTrailingSpaces = std::max(result.clip.fRight - fAdvance.fX, 0.0f);
             result.clippingNeeded = true;
             result.clip.fRight = fAdvance.fX;
         }
     }
 
+    // Preserve signed horizontal advance for subsequent span offsets before clamping clip width
+    result.fTextAdvance = result.clip.width();
     if (result.clip.width() < 0) {
         // Weird situation when glyph offsets move the glyph to the left
         // (happens with zalgo texts, for instance)
@@ -1118,9 +1133,17 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(TextAdjustment textAdjustment
                                                    TextRange textRange,
                                                    StyleType styleType,
                                                    const RunStyleVisitor& visitor) const {
+    // Keep backgrounds, decorations, and selection split per character while glyph ink stays whole
+    const bool isolateCursiveLigatures =
+            styleType == StyleType::kForeground || styleType == StyleType::kShadow;
     auto correctContext = [&](TextRange textRange, SkScalar textOffsetInRun) -> ClipContext {
-        auto result = this->measureTextInsideOneRun(
-                textRange, run, runOffset, textOffsetInRun, false, textAdjustment);
+        auto result = this->measureTextInsideOneRun(textRange,
+                                                    run,
+                                                    runOffset,
+                                                    textOffsetInRun,
+                                                    false,
+                                                    textAdjustment,
+                                                    isolateCursiveLigatures);
         if (styleType == StyleType::kDecorations) {
             // Decorations are drawn based on the real font metrics (regardless of styles and strut)
             result.clip.fTop = this->sizes().runTop(run, LineMetricStyle::CSS);
@@ -1148,9 +1171,9 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(TextAdjustment textAdjustment
     if (styleType == StyleType::kNone) {
         ClipContext clipContext = correctContext(textRange, 0.0f);
         // The placehoder can have height=0 or (exclusively) width=0 and still be a thing
-        if (clipContext.clip.height() > 0.0f || clipContext.clip.width() > 0.0f) {
+        if (clipContext.clip.height() > 0.0f || clipContext.fTextAdvance != 0.0f) {
             visitor(textRange, TextStyle(), clipContext);
-            return clipContext.clip.width();
+            return clipContext.fTextAdvance;
         } else {
             return 0;
         }
@@ -1207,7 +1230,8 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(TextAdjustment textAdjustment
         // We have the style and the text
         auto runStyleTextRange = TextRange(start, start + size);
         ClipContext clipContext = correctContext(runStyleTextRange, textOffsetInRun);
-        textOffsetInRun += clipContext.clip.width();
+        // Advance by signed width so a negative-advance span shifts subsequent spans
+        textOffsetInRun += clipContext.fTextAdvance;
         if (clipContext.clip.height() == 0) {
             continue;
         }
@@ -1262,7 +1286,11 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
             TextRange whitespaces = intersected(
                     TextRange(fTextExcludingSpaces.end, fTextIncludingNewlines.end), run->fTextRange);
             if (whitespaces.width() > 0) {
-                auto whitespacesLen = measureTextInsideOneRun(whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster).clip.width();
+                // Use signed advance in case negative spacing makes trailing whitespace negative
+                auto whitespacesLen =
+                        measureTextInsideOneRun(
+                                whitespaces, run, runOffset, 0, true, TextAdjustment::GlyphCluster)
+                                .fTextAdvance;
                 runOffset -= whitespacesLen;
             }
         }
@@ -1734,7 +1762,8 @@ void TextLine::getRectsForPlaceholders(std::vector<TextBox>& boxes) {
                     const Run* run, SkScalar runOffset, TextRange textRange, SkScalar* width) {
                 auto context = this->measureTextInsideOneRun(
                         textRange, run, runOffset, 0, true, TextAdjustment::GraphemeGluster);
-                *width = context.clip.width();
+                // Propagate signed run advance so placeholders after negative-advance runs align
+                *width = context.fTextAdvance;
 
                 if (textRange.width() == 0) {
                     return true;
