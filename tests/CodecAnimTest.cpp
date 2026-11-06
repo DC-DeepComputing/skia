@@ -588,6 +588,63 @@ DEF_TEST(AndroidCodec_animated_gif, r) {
     test_animated_AndroidCodec(r, "images/required.gif");
 }
 
+// Regression test for b/581301904: an independent sub-rectangle frame at
+// `fFrameIndex > 0` (after a `kRestoreBGColor` Frame 0) with both horizontal
+// and vertical offsets must initialize all surrounding margins to transparent
+// black, even when `fPriorFrame` and `kYes_ZeroInitialized` are set.
+DEF_TEST(Codec_independentSubrectLaterFrame, r) {
+    sk_sp<SkData> regionsData =
+            GetResourceAsData("images/apng-test-suite--regions--dispose-op-none.png");
+    if (!regionsData) {
+        return;
+    }
+    sk_sp<SkData> independentRegions =
+            with_first_fctl_dispose_op(regionsData.get(), /*disposeOp=*/1);  // kRestoreBGColor
+    REPORTER_ASSERT(r, independentRegions);
+    if (!independentRegions) {
+        return;
+    }
+    for (bool withPriorFrameAndZeroInit : {false, true}) {
+        auto codec = SkCodec::MakeFromData(independentRegions);
+        if (!codec || codec->getFrameCount() < 3) {
+            return;
+        }
+        SkCodec::FrameInfo info;
+        REPORTER_ASSERT(r, codec->getFrameInfo(1, &info));
+        REPORTER_ASSERT(r, info.fRequiredFrame == SkCodec::kNoFrame);
+        REPORTER_ASSERT(r, info.fBlend == SkCodecAnimation::Blend::kSrcOver);
+        const SkIRect kFrameRect = SkIRect::MakeXYWH(32, 16, 64, 32);
+        REPORTER_ASSERT(r, info.fFrameRect == kFrameRect);
+
+        SkBitmap bm;
+        bm.allocPixels(codec->getInfo().makeColorType(kN32_SkColorType));
+        bm.eraseColor(SK_ColorMAGENTA);
+
+        SkCodec::Options options;
+        options.fFrameIndex = 1;
+        if (withPriorFrameAndZeroInit) {
+            options.fPriorFrame = 0;
+            options.fZeroInitialized = SkCodec::kYes_ZeroInitialized;
+        }
+        REPORTER_ASSERT(r, codec->getPixels(bm.pixmap(), &options) == SkCodec::kSuccess);
+        for (int y = 0; y < bm.height(); ++y) {
+            for (int x = 0; x < bm.width(); ++x) {
+                const SkColor expected =
+                        kFrameRect.contains(x, y) ? SK_ColorGREEN : SK_ColorTRANSPARENT;
+                if (bm.getColor(x, y) != expected) {
+                    ERRORF(r,
+                           "Unexpected pixel 0x%08X (expected 0x%08X) at (%d, %d)",
+                           bm.getColor(x, y),
+                           expected,
+                           x,
+                           y);
+                    return;
+                }
+            }
+        }
+    }
+}
+
 // Regression test for b/581301904: an independent full-canvas Frame 1 (`128x64`
 // green) truncated either with 0 rows decoded (`302` bytes) or mid-decode
 // (`390` bytes) with `fPriorFrame = 0` and `kYes_ZeroInitialized` must still
