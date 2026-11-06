@@ -10,7 +10,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkRandom.h"
@@ -89,13 +88,64 @@ const XML_Memory_Handling_Suite sk_XML_alloc = {
     sk_free
 };
 
-struct ParsingContext {
-    SK_ONLY_STACK_ALLOCATABLE;
+} // anonymous namespace
 
-    ParsingContext(SkXMLParser* parser)
+struct SkXMLParser::ParsingContext {
+    explicit ParsingContext(SkXMLParser* parser)
         : fParser(parser)
-        , fXMLParser(XML_ParserCreate_MM(nullptr, &sk_XML_alloc, nullptr)) { }
+        , fXMLParser(XML_ParserCreate_MM(nullptr, &sk_XML_alloc, nullptr)) {
+        fParser->fParser = this;
+    }
 
+    ~ParsingContext() {
+        fParser->fParser = nullptr;
+    }
+
+    static void XMLCALL start_element_handler(void* data,
+                                              const char* tag,
+                                              const char** attributes) {
+        auto* ctx = static_cast<ParsingContext*>(data);
+        ctx->flushText();
+
+        ctx->fParser->startElement(tag);
+
+        for (size_t i = 0; attributes[i]; i += 2) {
+            ctx->fParser->addAttribute(attributes[i], attributes[i + 1]);
+        }
+
+        ctx->fParser->attributesDone();
+    }
+
+    static void XMLCALL end_element_handler(void* data, const char* tag) {
+        auto* ctx = static_cast<ParsingContext*>(data);
+        ctx->flushText();
+
+        ctx->fParser->endElement(tag);
+    }
+
+    static void XMLCALL text_handler(void* data, const char* txt, int len) {
+        auto* ctx = static_cast<ParsingContext*>(data);
+        ctx->appendText(txt, SkTo<size_t>(len));
+    }
+
+    static void XMLCALL entity_decl_handler(void* data,
+                                            const XML_Char* entityName,
+                                            int is_parameter_entity,
+                                            const XML_Char* value,
+                                            int value_length,
+                                            const XML_Char* base,
+                                            const XML_Char* systemId,
+                                            const XML_Char* publicId,
+                                            const XML_Char* notationName) {
+        auto* ctx = static_cast<ParsingContext*>(data);
+        SkDEBUGF("'%s' entity declaration found, stopping processing", entityName);
+        XML_StopParser(ctx->fXMLParser, XML_FALSE);
+    }
+
+    raw_ptr<SkXMLParser> fParser;
+    SkAutoTCallVProc<std::remove_pointer_t<XML_Parser>, XML_ParserFree> fXMLParser;
+
+private:
     void flushText() {
         if (!fBufferedText.empty()) {
             fParser->text(fBufferedText.data(), SkTo<int>(fBufferedText.size()));
@@ -107,57 +157,10 @@ struct ParsingContext {
         fBufferedText.insert(fBufferedText.end(), txt, &txt[len]);
     }
 
-    SkXMLParser* fParser;
-    SkAutoTCallVProc<std::remove_pointer_t<XML_Parser>, XML_ParserFree> fXMLParser;
-
-private:
     std::vector<char> fBufferedText;
 };
 
-#define HANDLER_CONTEXT(arg, name) ParsingContext* name = static_cast<ParsingContext*>(arg)
-
-void XMLCALL start_element_handler(void *data, const char* tag, const char** attributes) {
-    HANDLER_CONTEXT(data, ctx);
-    ctx->flushText();
-
-    ctx->fParser->startElement(tag);
-
-    for (size_t i = 0; attributes[i]; i += 2) {
-        ctx->fParser->addAttribute(attributes[i], attributes[i + 1]);
-    }
-}
-
-void XMLCALL end_element_handler(void* data, const char* tag) {
-    HANDLER_CONTEXT(data, ctx);
-    ctx->flushText();
-
-    ctx->fParser->endElement(tag);
-}
-
-void XMLCALL text_handler(void *data, const char* txt, int len) {
-    HANDLER_CONTEXT(data, ctx);
-
-    ctx->appendText(txt, SkTo<size_t>(len));
-}
-
-void XMLCALL entity_decl_handler(void *data,
-                                 const XML_Char *entityName,
-                                 int is_parameter_entity,
-                                 const XML_Char *value,
-                                 int value_length,
-                                 const XML_Char *base,
-                                 const XML_Char *systemId,
-                                 const XML_Char *publicId,
-                                 const XML_Char *notationName) {
-    HANDLER_CONTEXT(data, ctx);
-
-    SkDEBUGF("'%s' entity declaration found, stopping processing", entityName);
-    XML_StopParser(ctx->fXMLParser, XML_FALSE);
-}
-
-} // anonymous namespace
-
-SkXMLParser::SkXMLParser(SkXMLParserError* parserError) : fParser(nullptr), fError(parserError)
+SkXMLParser::SkXMLParser(SkXMLParserError* parserError) : fError(parserError), fParser(nullptr)
 {
 }
 
@@ -182,11 +185,13 @@ bool SkXMLParser::parse(SkStream& docStream)
     XML_SetHashSalt(ctx.fXMLParser, get_hash_salt());
 
     XML_SetUserData(ctx.fXMLParser, &ctx);
-    XML_SetElementHandler(ctx.fXMLParser, start_element_handler, end_element_handler);
-    XML_SetCharacterDataHandler(ctx.fXMLParser, text_handler);
+    XML_SetElementHandler(ctx.fXMLParser,
+                          ParsingContext::start_element_handler,
+                          ParsingContext::end_element_handler);
+    XML_SetCharacterDataHandler(ctx.fXMLParser, ParsingContext::text_handler);
 
     // Disable entity processing, to inhibit internal entity expansion. See expat CVE-2013-0340.
-    XML_SetEntityDeclHandler(ctx.fXMLParser, entity_decl_handler);
+    XML_SetEntityDeclHandler(ctx.fXMLParser, ParsingContext::entity_decl_handler);
 
     XML_Status status = XML_STATUS_OK;
     if (docStream.getMemoryBase() && docStream.hasLength()) {
@@ -233,6 +238,14 @@ bool SkXMLParser::parse(const char doc[], size_t len)
     return this->parse(docStream);
 }
 
+int SkXMLParser::getCurrentLineNumber() const {
+    return fParser ? SkToInt(XML_GetCurrentLineNumber(fParser->fXMLParser)) : -1;
+}
+
+int SkXMLParser::getCurrentColumnNumber() const {
+    return fParser ? SkToInt(XML_GetCurrentColumnNumber(fParser->fXMLParser)) : -1;
+}
+
 void SkXMLParser::GetNativeErrorString(int error, SkString* str)
 {
 
@@ -244,6 +257,10 @@ void SkXMLParser::startElement(const char elem[]) {
 
 void SkXMLParser::addAttribute(const char name[], const char value[]) {
     this->onAddAttribute(name, value);
+}
+
+void SkXMLParser::attributesDone() {
+    this->onAttributesDone();
 }
 
 void SkXMLParser::endElement(const char elem[]) {
@@ -258,5 +275,6 @@ void SkXMLParser::text(const char text[], int len) {
 
 void SkXMLParser::onStartElement(const char elem[]) {}
 void SkXMLParser::onAddAttribute(const char name[], const char value[]) {}
+void SkXMLParser::onAttributesDone() {}
 void SkXMLParser::onEndElement(const char elem[]) {}
 void SkXMLParser::onText(const char text[], int len) {}

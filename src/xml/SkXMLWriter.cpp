@@ -287,16 +287,26 @@ void SkXMLParserWriter::onAddAttributeLen(const char name[], const char value[],
 }
 
 void SkXMLParserWriter::onAddText(const char text[], size_t length) {
+    Elem* elem = fElems.back();
+    if (!elem->fHasChildren && !elem->fHasText) {
+        fParser->attributesDone();
+    }
     fParser->text(text, SkToInt(length));
 }
 
 void SkXMLParserWriter::onEndElement() {
     Elem* elem = this->getEnd();
+    if (!elem->fHasChildren && !elem->fHasText) {
+        fParser->attributesDone();
+    }
     fParser->endElement(elem->fName.c_str());
     this->doEnd(elem);
 }
 
 void SkXMLParserWriter::onStartElementLen(const char name[], size_t length) {
+    if (!fElems.empty() && !fElems.back()->fHasChildren && !fElems.back()->fHasText) {
+        fParser->attributesDone();
+    }
     (void)this->doStart(name, length);
     SkString str(name, length);
     fParser->startElement(str.c_str());

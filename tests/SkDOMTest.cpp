@@ -10,6 +10,8 @@
 #if defined(SK_XML)
 #include "include/core/SkStream.h"
 #include "src/xml/SkDOM.h"
+#include "src/xml/SkXMLParser.h"
+#include "src/xml/SkXMLWriter.h"
 #include "tests/Test.h"
 
 static const SkDOM::Node* check_node(skiatest::Reporter* r, const SkDOM& dom,
@@ -81,6 +83,101 @@ DEF_TEST(SkDOM_test, r) {
         check_node(r, dom, dom.getNextSibling(elem3),
                    "elem4", SkDOM::kElement_Type);
     }
+}
+
+DEF_TEST(SkXMLParser_CallbacksAndPosition, r) {
+    class RecordingParser : public SkXMLParser {
+    public:
+        int fAttrsDoneCount = 0;
+        int fMaxLine = -1;
+        int fMaxCol = -1;
+        int fAttrsDoneMaxLine = -1;
+        int fAttrsDoneMaxCol = -1;
+        int fStartCount = 0;
+        bool fInOpenTag = false;
+        bool fOrderValid = true;
+
+    protected:
+        void onStartElement(const char elem[]) override {
+            if (fInOpenTag) {
+                fOrderValid = false;
+            }
+            fInOpenTag = true;
+            ++fStartCount;
+            fMaxLine = std::max(fMaxLine, this->getCurrentLineNumber());
+            fMaxCol = std::max(fMaxCol, this->getCurrentColumnNumber());
+        }
+        void onAddAttribute(const char name[], const char value[]) override {
+            if (!fInOpenTag) {
+                fOrderValid = false;
+            }
+        }
+        void onAttributesDone() override {
+            if (!fInOpenTag) {
+                fOrderValid = false;
+            }
+            fInOpenTag = false;
+            ++fAttrsDoneCount;
+            fAttrsDoneMaxLine = std::max(fAttrsDoneMaxLine, this->getCurrentLineNumber());
+            fAttrsDoneMaxCol = std::max(fAttrsDoneMaxCol, this->getCurrentColumnNumber());
+        }
+        void onText(const char text[], int len) override {
+            if (fInOpenTag) {
+                fOrderValid = false;
+            }
+        }
+        void onEndElement(const char elem[]) override {
+            if (fInOpenTag) {
+                fOrderValid = false;
+            }
+        }
+    };
+
+    static const char kDoc[] =
+        "<root a='1' b='2'>\n"
+        "  <child c='3'/>\n"
+        "</root>";
+
+    RecordingParser parser;
+    REPORTER_ASSERT(r, parser.parse(kDoc, sizeof(kDoc) - 1));
+    REPORTER_ASSERT(r, parser.fStartCount == 2);
+    REPORTER_ASSERT(r, parser.fAttrsDoneCount == 2);
+    REPORTER_ASSERT(r, !parser.fInOpenTag && parser.fOrderValid);
+    REPORTER_ASSERT(r, parser.fMaxLine >= 2);
+    REPORTER_ASSERT(r, parser.fMaxCol >= 1);
+    REPORTER_ASSERT(r, parser.fAttrsDoneMaxLine >= 2);
+    REPORTER_ASSERT(r, parser.fAttrsDoneMaxCol >= 1);
+    REPORTER_ASSERT(r, parser.getCurrentLineNumber() == -1);
+    REPORTER_ASSERT(r, parser.getCurrentColumnNumber() == -1);
+
+    SkMemoryStream domStream(kDoc, sizeof(kDoc) - 1);
+    SkDOM dom;
+    const SkDOM::Node* root = dom.build(domStream);
+    REPORTER_ASSERT(r, root);
+
+    RecordingParser domParser;
+    REPORTER_ASSERT(r, domParser.parse(dom, root));
+    REPORTER_ASSERT(r, domParser.fStartCount == 2);
+    REPORTER_ASSERT(r, domParser.fAttrsDoneCount == 2);
+    REPORTER_ASSERT(r, !domParser.fInOpenTag && domParser.fOrderValid);
+
+    RecordingParser writerParser;
+    {
+        SkXMLParserWriter writer(&writerParser);
+        writer.startElement("root");
+        writer.addAttribute("a", "1");
+        writer.startElement("textElem");
+        writer.addAttribute("b", "2");
+        writer.addText("hello", 5);
+        writer.endElement();
+        writer.startElement("leaf");
+        writer.addAttribute("c", "3");
+        writer.endElement();
+        writer.endElement();
+    }
+    REPORTER_ASSERT(r, writerParser.fStartCount == 3);
+    REPORTER_ASSERT(r, writerParser.fAttrsDoneCount == 3);
+    REPORTER_ASSERT(r, !writerParser.fInOpenTag && writerParser.fOrderValid);
 }
 
 #endif // SK_XML

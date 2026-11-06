@@ -17,6 +17,11 @@
 
 bool SkXMLParser::parse(const SkDOM& dom, const SkDOMNode* node) {
     const char* elemName = dom.getName(node);
+    if (dom.getType(node) == SkDOM::kText_Type) {
+        SkASSERT(dom.countChildren(node) == 0);
+        this->text(elemName, SkToInt(strlen(elemName)));
+        return true;
+    }
 
     this->startElement(elemName);
 
@@ -26,6 +31,7 @@ bool SkXMLParser::parse(const SkDOM& dom, const SkDOMNode* node) {
     while ((name = iter.next(&value)) != nullptr) {
         this->addAttribute(name, value);
     }
+    this->attributesDone();
 
     if ((node = dom.getFirstChild(node)) != nullptr) {
         do {
@@ -300,36 +306,10 @@ const SkDOM::Node* SkDOM::build(SkStream& docStream, int* errorOnLineNumber) {
 
 ///////////////////////////////////////////////////////////////////////////
 
-static void walk_dom(const SkDOM& dom, const SkDOM::Node* node, SkXMLParser* parser) {
-    const char* elem = dom.getName(node);
-    if (dom.getType(node) == SkDOM::kText_Type) {
-        SkASSERT(dom.countChildren(node) == 0);
-        parser->text(elem, SkToInt(strlen(elem)));
-        return;
-    }
-
-    parser->startElement(elem);
-
-    SkDOM::AttrIter iter(dom, node);
-    const char*     name;
-    const char*     value;
-    while ((name = iter.next(&value)) != nullptr)
-        parser->addAttribute(name, value);
-
-    node = dom.getFirstChild(node, nullptr);
-    while (node)
-    {
-        walk_dom(dom, node, parser);
-        node = dom.getNextSibling(node, nullptr);
-    }
-
-    parser->endElement(elem);
-}
-
 const SkDOM::Node* SkDOM::copy(const SkDOM& dom, const SkDOM::Node* node) {
     SkDOMParser parser(&fAlloc);
 
-    walk_dom(dom, node, &parser);
+    parser.parse(dom, node);
 
     fRoot = parser.getRoot();
     return fRoot;
