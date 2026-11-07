@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include <array>
 #include "src/pdf/SkPDFGradientShader.h"
 
 #include "include/core/SkAlphaType.h"
@@ -27,6 +26,7 @@
 #include "src/pdf/SkPDFTypes.h"
 #include "src/pdf/SkPDFUtils.h"
 
+#include <array>
 #include <cmath>
 #include <cstddef>
 #include <utility>
@@ -58,7 +58,7 @@ static uint32_t hash(const SkPDFGradientShader::Key& k) {
     return SkChecksum::Hash32(buffer, sizeof(buffer));
 }
 
-static void unit_to_points_matrix(const SkPoint pts[2], SkMatrix* matrix) {
+static void unit_to_points_matrix(SkSpan<const SkPoint, 2> pts, SkMatrix* matrix) {
     SkVector    vec = pts[1] - pts[0];
     SkScalar    mag = vec.length();
     SkScalar    inv = mag ? SkScalarInvert(mag) : 0;

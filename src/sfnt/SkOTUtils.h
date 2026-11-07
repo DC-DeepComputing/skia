@@ -8,6 +8,7 @@
 #ifndef SkOTUtils_DEFINED
 #define SkOTUtils_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "src/sfnt/SkOTTableTypes.h"
 #include "src/sfnt/SkOTTable_OS_2_V4.h"
@@ -44,21 +45,19 @@ struct SkOTUtils {
     class LocalizedStrings_NameTable : public SkTypeface::LocalizedStrings {
     public:
         /** Takes ownership of the nameTableData and will free it with SK_DELETE. */
-        LocalizedStrings_NameTable(std::unique_ptr<uint8_t[]> nameTableData, size_t size,
-                                   SK_OT_USHORT types[],
-                                   int typesCount)
-            : fTypes(types), fTypesCount(typesCount), fTypesIndex(0)
-            , fNameTableData(std::move(nameTableData))
-            , fFamilyNameIter(fNameTableData.get(), size, fTypes[fTypesIndex])
-        { }
+        LocalizedStrings_NameTable(std::unique_ptr<uint8_t[]> nameTableData,
+                                   size_t size,
+                                   SkSpan<const SK_OT_USHORT> types)
+                : fTypes(types)
+                , fTypesIndex(0)
+                , fNameTableData(std::move(nameTableData))
+                , fFamilyNameIter(fNameTableData.get(), size, fTypes[fTypesIndex]) {}
 
         /** Creates an iterator over all data in the 'name' table of a typeface.
          *  If no valid 'name' table can be found, returns nullptr.
          */
-        static sk_sp<LocalizedStrings_NameTable> Make(
-            const SkTypeface& typeface,
-            SK_OT_USHORT types[],
-            int typesCount);
+        static sk_sp<LocalizedStrings_NameTable> Make(const SkTypeface& typeface,
+                                                      SkSpan<const SK_OT_USHORT> types);
 
         /** Creates an iterator over all the family names in the 'name' table of a typeface.
          *  If no valid 'name' table can be found, returns nullptr.
@@ -67,11 +66,10 @@ struct SkOTUtils {
 
         bool next(SkTypeface::LocalizedString* localizedString) override;
     private:
-        static SK_OT_USHORT familyNameTypes[3];
+        static const SK_OT_USHORT familyNameTypes[3];
 
-        SK_OT_USHORT* fTypes;
-        int fTypesCount;
-        int fTypesIndex;
+        SkSpan<const SK_OT_USHORT> fTypes;
+        size_t fTypesIndex;
         std::unique_ptr<uint8_t[]> fNameTableData;
         SkOTTableName::Iterator fFamilyNameIter;
     };

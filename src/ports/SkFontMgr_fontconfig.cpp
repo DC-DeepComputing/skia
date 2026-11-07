@@ -5,7 +5,6 @@
  * found in the LICENSE file.
  */
 #include "include/ports/SkFontMgr_fontconfig.h"
-#include "src/ports/SkFontMgr_fontconfig_priv.h"
 
 #include "include/core/SkDataTable.h"
 #include "include/core/SkFontArguments.h"
@@ -15,6 +14,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
@@ -33,14 +33,15 @@
 #include "src/core/SkTHash.h"
 #include "src/core/SkTSort.h"
 #include "src/core/SkTypefaceCache.h"
+#include "src/ports/SkFontMgr_fontconfig_priv.h"
 #include "src/ports/SkTypeface_proxy.h"
 
+#include <fontconfig/fontconfig.h>
+#include <string.h>
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <fontconfig/fontconfig.h>
 #include <memory>
-#include <string.h>
 #include <utility>
 
 class SkData;
@@ -216,14 +217,14 @@ struct MapRanges {
     SkScalar new_val;
 };
 
-static SkScalar map_ranges(SkScalar val, MapRanges const ranges[], int rangesCount) {
+static SkScalar map_ranges(SkScalar val, SkSpan<const MapRanges> ranges) {
     // -Inf to [0]
     if (val < ranges[0].old_val) {
         return ranges[0].new_val;
     }
 
     // Linear from [i] to [i+1]
-    for (int i = 0; i < rangesCount - 1; ++i) {
+    for (size_t i = 0; i + 1 < ranges.size(); ++i) {
         if (val < ranges[i+1].old_val) {
             return map_range(val, ranges[i].old_val, ranges[i+1].old_val,
                                   ranges[i].new_val, ranges[i+1].new_val);
@@ -232,7 +233,7 @@ static SkScalar map_ranges(SkScalar val, MapRanges const ranges[], int rangesCou
 
     // From [n] to +Inf
     // if (fcweight < Inf)
-    return ranges[rangesCount-1].new_val;
+    return ranges.back().new_val;
 }
 
 #ifndef FC_WEIGHT_DEMILIGHT
@@ -257,8 +258,7 @@ static SkFontStyle skfontstyle_from_fcpattern(FcPattern* pattern) {
         { FC_WEIGHT_BLACK,      SkFS::kBlack_Weight },
         { FC_WEIGHT_EXTRABLACK, SkFS::kExtraBlack_Weight },
     };
-    SkScalar weight = map_ranges(get_int(pattern, FC_WEIGHT, FC_WEIGHT_REGULAR),
-                                 weightRanges, std::size(weightRanges));
+    SkScalar weight = map_ranges(get_int(pattern, FC_WEIGHT, FC_WEIGHT_REGULAR), weightRanges);
 
     static constexpr MapRanges widthRanges[] = {
         { FC_WIDTH_ULTRACONDENSED, SkFS::kUltraCondensed_Width },
@@ -271,8 +271,7 @@ static SkFontStyle skfontstyle_from_fcpattern(FcPattern* pattern) {
         { FC_WIDTH_EXTRAEXPANDED,  SkFS::kExtraExpanded_Width },
         { FC_WIDTH_ULTRAEXPANDED,  SkFS::kUltraExpanded_Width },
     };
-    SkScalar width = map_ranges(get_int(pattern, FC_WIDTH, FC_WIDTH_NORMAL),
-                                widthRanges, std::size(widthRanges));
+    SkScalar width = map_ranges(get_int(pattern, FC_WIDTH, FC_WIDTH_NORMAL), widthRanges);
 
     SkFS::Slant slant = SkFS::kUpright_Slant;
     switch (get_int(pattern, FC_SLANT, FC_SLANT_ROMAN)) {
@@ -305,7 +304,7 @@ static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {
         { SkFS::kBlack_Weight,      FC_WEIGHT_BLACK },
         { SkFS::kExtraBlack_Weight, FC_WEIGHT_EXTRABLACK },
     };
-    int weight = map_ranges(style.weight(), weightRanges, std::size(weightRanges));
+    int weight = map_ranges(style.weight(), weightRanges);
 
     static constexpr MapRanges widthRanges[] = {
         { SkFS::kUltraCondensed_Width, FC_WIDTH_ULTRACONDENSED },
@@ -318,7 +317,7 @@ static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {
         { SkFS::kExtraExpanded_Width,  FC_WIDTH_EXTRAEXPANDED },
         { SkFS::kUltraExpanded_Width,  FC_WIDTH_ULTRAEXPANDED },
     };
-    int width = map_ranges(style.width(), widthRanges, std::size(widthRanges));
+    int width = map_ranges(style.width(), widthRanges);
 
     int slant = FC_SLANT_ROMAN;
     switch (style.slant()) {
@@ -982,10 +981,10 @@ protected:
         maps.push_back_n(fCoverage.fFonts.size(), std::array<FcChar32, FC_CHARSET_MAP_SIZE>{});
         bool found = false;
         for (const Coverage::CharSet& charSet : fCoverage.fCharSets) {
-            FcChar32 map[FC_CHARSET_MAP_SIZE];
+            std::array<FcChar32, FC_CHARSET_MAP_SIZE> map;
             // Gives the first page from 'next' on.
             FcChar32 next = page << 8;
-            if (FcCharSetNextPage(charSet.fCharSet, map, &next) == page << 8) {
+            if (FcCharSetNextPage(charSet.fCharSet, map.data(), &next) == page << 8) {
                 found = true;
                 for (int i = 0; i < FC_CHARSET_MAP_SIZE; ++i) {
                     maps[charSet.fFont][i] |= map[i];

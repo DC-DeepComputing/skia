@@ -94,8 +94,13 @@ DEF_TEST(SkPDF_ToUnicode, reporter) {
     for (auto&& [gid, str] : glyphToUnicodeEx) {
         subset.set(gid);
     }
-    SkPDFAppendCmapSections(glyphToUnicode.data(), glyphToUnicodeEx, &subset, &buffer, true, 0,
-                            std::min<SkGlyphID>(0xFFFF,  lastGlyphID));
+    SkPDFAppendCmapSections(glyphToUnicode,
+                            glyphToUnicodeEx,
+                            &subset,
+                            &buffer,
+                            true,
+                            0,
+                            std::min<SkGlyphID>(0xFFFF, lastGlyphID));
 
     char expectedResult[] =
 "4 beginbfchar\n\
@@ -120,7 +125,12 @@ endbfrange\n";
     // Remove characters and ranges.
     buffer.reset();
 
-    SkPDFAppendCmapSections(glyphToUnicode.data(), glyphToUnicodeEx, &subset, &buffer, true, 8,
+    SkPDFAppendCmapSections(glyphToUnicode,
+                            glyphToUnicodeEx,
+                            &subset,
+                            &buffer,
+                            true,
+                            8,
                             std::min<SkGlyphID>(0x00FF, lastGlyphID));
 
     char expectedResultChop1[] =
@@ -142,7 +152,12 @@ endbfrange\n";
     // Remove characters from range to downdrade it to one char.
     buffer.reset();
 
-    SkPDFAppendCmapSections(glyphToUnicode.data(), glyphToUnicodeEx, &subset, &buffer, true, 0x00D,
+    SkPDFAppendCmapSections(glyphToUnicode,
+                            glyphToUnicodeEx,
+                            &subset,
+                            &buffer,
+                            true,
+                            0x00D,
                             std::min<SkGlyphID>(0x00FE, lastGlyphID));
 
     char expectedResultChop2[] =
@@ -159,7 +174,12 @@ endbfchar\n";
 
     buffer.reset();
 
-    SkPDFAppendCmapSections(glyphToUnicode.data(), glyphToUnicodeEx, &subset, &buffer, false, 0xFC,
+    SkPDFAppendCmapSections(glyphToUnicode,
+                            glyphToUnicodeEx,
+                            &subset,
+                            &buffer,
+                            false,
+                            0xFC,
                             std::min<SkGlyphID>(0x110, lastGlyphID));
 
     char expectedResultSingleBytes[] =
@@ -197,7 +217,12 @@ endbfrange\n";
     for (SkGlyphID v : glyphsInSubset) {
         subset2.set(v);
     }
-    SkPDFAppendCmapSections(glyphToUnicode.data(), glyphToUnicodeEx, &subset2, &buffer2, true, 0,
+    SkPDFAppendCmapSections(glyphToUnicode,
+                            glyphToUnicodeEx,
+                            &subset2,
+                            &buffer2,
+                            true,
+                            0,
                             std::min<SkGlyphID>(0xFFFF, lastGlyphID));
 
     char expectedResult2[] =

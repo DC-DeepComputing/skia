@@ -5,13 +5,10 @@
  * found in the LICENSE file.
  */
 
-#include <array>
-#include <cstdint>
-#include <limits>
-
 #include "src/sfnt/SkOTUtils.h"
 
 #include "include/core/SkData.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAdvancedTypefaceMetrics.h"
@@ -20,6 +17,10 @@
 #include "src/sfnt/SkOTTable_head.h"
 #include "src/sfnt/SkOTTable_name.h"
 #include "src/sfnt/SkSFNTHeader.h"
+
+#include <array>
+#include <cstdint>
+#include <limits>
 
 uint32_t SkOTUtils::CalcTableChecksum(SK_OT_ULONG *data, size_t length) {
     uint32_t sum = 0;
@@ -215,11 +216,8 @@ SkData* SkOTUtils::RenameFont(SkStreamAsset* fontData, const char* fontName, int
     return rewrittenFontData.release();
 }
 
-sk_sp<SkOTUtils::LocalizedStrings_NameTable>
-SkOTUtils::LocalizedStrings_NameTable::Make(const SkTypeface& typeface,
-                                            SK_OT_USHORT types[],
-                                            int typesCount)
-{
+sk_sp<SkOTUtils::LocalizedStrings_NameTable> SkOTUtils::LocalizedStrings_NameTable::Make(
+        const SkTypeface& typeface, SkSpan<const SK_OT_USHORT> types) {
     static const SkFontTableTag nameTag = SkSetFourByteTag('n','a','m','e');
     size_t nameTableSize = typeface.getTableSize(nameTag);
     if (0 == nameTableSize) {
@@ -231,16 +229,13 @@ SkOTUtils::LocalizedStrings_NameTable::Make(const SkTypeface& typeface,
         return nullptr;
     }
 
-    return sk_sp<SkOTUtils::LocalizedStrings_NameTable>(
-        new SkOTUtils::LocalizedStrings_NameTable(std::move(nameTableData), nameTableSize,
-                                                  types, typesCount));
+    return sk_sp<SkOTUtils::LocalizedStrings_NameTable>(new SkOTUtils::LocalizedStrings_NameTable(
+            std::move(nameTableData), nameTableSize, types));
 }
 
 sk_sp<SkOTUtils::LocalizedStrings_NameTable>
 SkOTUtils::LocalizedStrings_NameTable::MakeForFamilyNames(const SkTypeface& typeface) {
-    return Make(typeface,
-                SkOTUtils::LocalizedStrings_NameTable::familyNameTypes,
-                std::size(SkOTUtils::LocalizedStrings_NameTable::familyNameTypes));
+    return Make(typeface, SkOTUtils::LocalizedStrings_NameTable::familyNameTypes);
 }
 
 bool SkOTUtils::LocalizedStrings_NameTable::next(SkTypeface::LocalizedString* localizedString) {
@@ -251,7 +246,7 @@ bool SkOTUtils::LocalizedStrings_NameTable::next(SkTypeface::LocalizedString* lo
             localizedString->fLanguage = record.language;
             return true;
         }
-        if (fTypesCount == fTypesIndex + 1) {
+        if (fTypesIndex + 1 == fTypes.size()) {
             return false;
         }
         ++fTypesIndex;
@@ -259,10 +254,10 @@ bool SkOTUtils::LocalizedStrings_NameTable::next(SkTypeface::LocalizedString* lo
     } while (true);
 }
 
-SK_OT_USHORT SkOTUtils::LocalizedStrings_NameTable::familyNameTypes[3] = {
-    SkOTTableName::Record::NameID::Predefined::FontFamilyName,
-    SkOTTableName::Record::NameID::Predefined::PreferredFamily,
-    SkOTTableName::Record::NameID::Predefined::WWSFamilyName,
+const SK_OT_USHORT SkOTUtils::LocalizedStrings_NameTable::familyNameTypes[3] = {
+        SkOTTableName::Record::NameID::Predefined::FontFamilyName,
+        SkOTTableName::Record::NameID::Predefined::PreferredFamily,
+        SkOTTableName::Record::NameID::Predefined::WWSFamilyName,
 };
 
 void SkOTUtils::SetAdvancedTypefaceFlags(SkOTTableOS2_V4::Type fsType,

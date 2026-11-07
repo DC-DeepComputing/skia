@@ -5,10 +5,12 @@
  * found in the LICENSE file.
  */
 
+#include "include/utils/SkParse.h"
+
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTo.h"
-#include "include/utils/SkParse.h"
 
 #include <cstdint>
 #include <cstdlib>
@@ -210,11 +212,12 @@ const char* SkParse::FindScalars(const char str[], SkScalar value[], int count)
     return str;
 }
 
-static bool lookup_str(const char str[], const char** table, int count)
-{
-    while (--count >= 0)
-        if (!strcmp(str, table[count]))
+static bool lookup_str(const char str[], SkSpan<const char* const> table) {
+    for (const char* entry : table) {
+        if (!strcmp(str, entry)) {
             return true;
+        }
+    }
     return false;
 }
 
@@ -223,13 +226,10 @@ bool SkParse::FindBool(const char str[], bool* value)
     static const char* gYes[] = { "yes", "1", "true" };
     static const char* gNo[] = { "no", "0", "false" };
 
-    if (lookup_str(str, gYes, std::size(gYes)))
-    {
+    if (lookup_str(str, gYes)) {
         if (value) *value = true;
         return true;
-    }
-    else if (lookup_str(str, gNo, std::size(gNo)))
-    {
+    } else if (lookup_str(str, gNo)) {
         if (value) *value = false;
         return true;
     }
