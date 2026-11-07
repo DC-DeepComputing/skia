@@ -8,6 +8,7 @@
 #ifndef GrYUVABackendTextures_DEFINED
 #define GrYUVABackendTextures_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkYUVAInfo.h"
 #include "include/gpu/GpuTypes.h"
@@ -95,7 +96,18 @@ public:
     GrYUVABackendTextures& operator=(GrYUVABackendTextures&&) = default;
 
     GrYUVABackendTextures(const SkYUVAInfo&,
-                          const GrBackendTexture[SkYUVAInfo::kMaxPlanes],
+                          SkSpan<const GrBackendTexture, SkYUVAInfo::kMaxPlanes>,
+                          GrSurfaceOrigin textureOrigin);
+
+    /** DEPRECATED: Prefer the SkSpan overload above, which bounds-checks textures.
+        This pointer overload is kept for existing clients and forwards to it.
+
+        PRECONDITIONS: textures must point to at least SkYUVAInfo::kMaxPlanes elements
+        (only the first numPlanes() are read). Note that C-style array arguments still
+        select this overload.
+    */
+    GrYUVABackendTextures(const SkYUVAInfo&,
+                          const GrBackendTexture textures[SkYUVAInfo::kMaxPlanes],
                           GrSurfaceOrigin textureOrigin);
 
     const std::array<GrBackendTexture, SkYUVAInfo::kMaxPlanes>& textures() const {
