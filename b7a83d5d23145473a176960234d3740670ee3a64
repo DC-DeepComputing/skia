@@ -16,6 +16,24 @@
       "message": "Thanks for putting this together! The `(fRun, fBlock)` cache in `ParagraphImpl::fShapedEllipses` and the `AffixBlock` extraction look clean and keep the same layout output as before.\n\nTwo issues in `modules/skparagraph/tests/SkParagraphTest.cpp` need an update before this can land:\n\n1. **Debug / ASAN `SkASSERT` crash (`SkParagraphTest.cpp:5269`)**:\n   `SkParagraph_EllipsisReusedAtOtherWidths` crashes on `Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_FreeType_ASAN_Upload` (https://ci.chromium.org/b/8665863488528850833). The paragraph has `smallText` (28 bytes) + `largeText` (56 bytes), so `fText.size() \u003d\u003d 84`, while line 5269 calls:\n   ```cpp\n   paragraph-\u003eupdateFontSize(0, strlen(smallText), 20);\n   ```\n   `ParagraphImpl::updateFontSize` (`ParagraphImpl.cpp:1209`) asserts `SkASSERT(from \u003d\u003d 0 \u0026\u0026 to \u003d\u003d fText.size());` (whole-paragraph updates only; in Release builds the assert compiles out and all blocks are updated). Passing `strlen(smallText) + strlen(largeText)` (or `impl-\u003etext().size()`) fixes the crash.\n\n2. **Test coverage for the `fBlock` part of the `(fRun, fBlock)` key (`SkParagraphTest.cpp:5214-5216`, `TextLine.cpp:733`)**:\n   `fontSize(14)` and `fontSize(28)` produce two separate `Run`s (`runIndex` 0 and 1), so `shaped.fRun \u003d\u003d runIndex` alone distinguishes them and `shaped.fBlock \u003d\u003d blockIndex` is not exercised. Could you also cover two adjacent blocks whose font sizes are `nearlyEqual` (for example `14.0f` and `14.0f + 0.5f * SK_ScalarNearlyZero`, where `impl-\u003eruns().size() \u003d\u003d 1` via `shapeWithSameFont`, while `ShapeString` builds `SkFont` with the exact block size) and check `shapedEllipsisCount() \u003d\u003d 2` and `sameAsNewParagraph` across widths ending in each block?",
       "revId": "b7a83d5d23145473a176960234d3740670ee3a64",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23b37571_3fd8fdb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-11-07T03:47:48Z",
+      "side": 1,
+      "message": "Thanks. Done in PS2.\n\n1. updateFontSize now uses the whole text. The test passes in a Debug build.\n2. The test now also has two blocks with font sizes 14 and 14 + 0.5 * SK_ScalarNearlyZero. They share one run, and the test checks shapedEllipsisCount() \u003d\u003d 2 and sameAsNewParagraph at widths that end in each block. Without the fBlock compare in shapeEllipsisOnce, three of these checks fail.",
+      "parentUuid": "f51c18e6_e3172992",
+      "revId": "b7a83d5d23145473a176960234d3740670ee3a64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
