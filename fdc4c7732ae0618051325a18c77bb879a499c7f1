@@ -46,6 +46,30 @@
       },
       "revId": "fdc4c7732ae0618051325a18c77bb879a499c7f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7110480f_5ddcb760",
+        "filename": "modules/skparagraph/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-07T22:13:06Z",
+      "side": 1,
+      "message": "Done in PS6: switched to `#ifndef SK_IGNORE_ELLIPSIZE_TRUNCATED_LINES` (enabled by default, `BUILD.gn` reverted). Also covered `layout(SK_ScalarInfinity)` when `maxLines` is finite, switched `SkParagraph_EllipsisAfterHardLineBreak` from `UNIX_ONLY_TEST` to `DEF_TEST`, and marked cold `TextLine::createEllipsis` `SK_NEVER_INLINE` so single-caller LTO does not bloat `ParagraphImpl::layout` on `ShortLayout`.\n\nWith the fix enabled, all 20,198 Flutter framework and engine tests pass with 0 regressions, so Flutter needs no `flutter_defines.gni` guard. Across google3 SkParagraph clients (1151 test targets), 1150 have no regressions and 1 golden test (`maxLines\u003d2` text wrapping onto a line ending in `\\n`) now renders the expected ellipsis — so we can pre-land `SK_IGNORE_ELLIPSIZE_TRUNCATED_LINES` in `SkUserConfig.h` before submitting this CL, then update that golden and remove the define after the roll.",
+      "parentUuid": "be133079_f56e38de",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 5
+      },
+      "revId": "fdc4c7732ae0618051325a18c77bb879a499c7f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
