@@ -224,6 +224,24 @@
       "parentUuid": "83d6752e_7a909fe1",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70a2c620_85216e08",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3376992
+      },
+      "writtenOn": "2026-11-07T00:57:26Z",
+      "side": 1,
+      "message": "Latest patch still passes the notification shade perf CUJ  https://android-build.corp.google.com/abtd/run/L06200030222979395/?referrer\u003demail",
+      "parentUuid": "67bb40ac_6646e474",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
