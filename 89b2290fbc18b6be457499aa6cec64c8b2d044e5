@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "019fb8e1_1b01f0ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-07T22:11:28Z",
+      "side": 1,
+      "message": "LGTM, thanks for the quick PS2 update! Whole-text `updateFontSize` fixes the Debug `SkASSERT`, and the two `14` / `14 + 0.5 * SK_ScalarNearlyZero` blocks sharing one `Run` cover the `fBlock` part of the `(fRun, fBlock)` key in `TextLine::shapeEllipsisOnce`.\n\nVerified `(fRun, fBlock)` lookup via `AffixBlock`, the `Run` copy before `fClusterStart` updates, and `fShapedEllipses` clearing on `fState \u003c kShaped` (`ParagraphImpl.cpp:166`):\n- `Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_FreeType_ASAN_Upload` (https://ci.chromium.org/b/8665821988615135857) and local `dm --match SkParagraph` (232/232): pass\n- Flutter engine + framework corpus (20,198 tests): no regressions\n- google3 SkParagraph clients (1,151 test targets): no regressions\n- Linux x86_64 Release `txt_benchmarks`: neutral on single-width layouts; 5.3x speedup (median ratio 0.187, 95% CI [0.179, 0.191]) on 200 mixed-script `maxLines\u003d1` ellipsis paragraphs alternating widths 200 and 201, confirming the commit-message speedup on Linux.",
+      "revId": "89b2290fbc18b6be457499aa6cec64c8b2d044e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
