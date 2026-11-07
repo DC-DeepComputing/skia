@@ -13,6 +13,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSpan.h"
 #include "src/gpu/ganesh/GrYUVATextureProxies.h"
 #include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
 #include "src/image/SkImage_Base.h"
@@ -86,7 +87,7 @@ public:
 
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(skgpu::ganesh::SurfaceDrawContext*,
                                                              SkSamplingOptions,
-                                                             const SkTileMode[2],
+                                                             SkSpan<const SkTileMode, 2>,
                                                              const SkMatrix&,
                                                              const SkRect*,
                                                              const SkRect*) const override;
