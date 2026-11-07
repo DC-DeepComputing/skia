@@ -10,6 +10,7 @@
 #include "src/gpu/KeyBuilder.h"
 
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <cstring>
 
@@ -104,7 +105,8 @@ bool GrStencilSettings::operator==(const GrStencilSettings& that) const {
     static_assert(10 == sizeof(Face));
 }
 
-static constexpr GrStencilTest gUserStencilTestToRaw[kGrUserStencilTestCount] = {
+// clang-format off
+static constexpr std::array<GrStencilTest, kGrUserStencilTestCount> gUserStencilTestToRaw = {
     // Tests that respect the clip.
     GrStencilTest::kAlways,  // kAlwaysIfInClip (This is only for when there is not a stencil clip).
     GrStencilTest::kEqual,   // kEqualIfInClip.
@@ -121,6 +123,7 @@ static constexpr GrStencilTest gUserStencilTestToRaw[kGrUserStencilTestCount] = 
     GrStencilTest::kEqual,
     GrStencilTest::kNotEqual
 };
+// clang-format on
 
 static_assert(0 == (int)GrUserStencilTest::kAlwaysIfInClip);
 static_assert(1 == (int)GrUserStencilTest::kEqualIfInClip);
@@ -135,7 +138,8 @@ static_assert(9 == (int)GrUserStencilTest::kLEqual);
 static_assert(10 == (int)GrUserStencilTest::kEqual);
 static_assert(11 == (int)GrUserStencilTest::kNotEqual);
 
-static constexpr GrStencilOp gUserStencilOpToRaw[kGrUserStencilOpCount] = {
+// clang-format off
+static constexpr std::array<GrStencilOp, kGrUserStencilOpCount> gUserStencilOpToRaw = {
     GrStencilOp::kKeep,
 
     // Ops that only modify user bits.
@@ -156,6 +160,7 @@ static constexpr GrStencilOp gUserStencilOpToRaw[kGrUserStencilOpCount] = {
     GrStencilOp::kReplace,   // kSetClipAndReplaceUserBits.
     GrStencilOp::kZero       // kZeroClipAndUserBits.
 };
+// clang-format on
 
 static_assert(0 == (int)GrUserStencilOp::kKeep);
 static_assert(1 == (int)GrUserStencilOp::kZero);

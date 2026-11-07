@@ -12,6 +12,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "src/shaders/gradients/SkLinearGradient.h"
 
 #include <array>
@@ -45,7 +46,7 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
         fColorSpace. Otherwise, the SkColor factory should be called, with fColors. fColorCount
         will be the number of color stops in either case, and fColors and fStops can be passed to
         the gradient factory. (The constructor may decide not to use stops, in which case fStops
-        will be nullptr). */
+        will be empty). */
     struct RandomParams {
         inline static constexpr int kMaxRandomGradientColors = 5;
 
@@ -62,7 +63,7 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
         SkScalar fStopStorage[kMaxRandomGradientColors];
         SkTileMode fTileMode;
         int fColorCount;
-        SkScalar* fStops;
+        SkSpan<SkScalar> fStops;
     };
 #endif
 
