@@ -34,6 +34,24 @@
       "parentUuid": "abe271c9_95427de7",
       "revId": "a0a3bc1beeaea527179315c999b03a41215e3d6c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49e3f8ec_e13faf37",
+        "filename": "modules/skparagraph/src/Run.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-08T00:16:54Z",
+      "side": 1,
+      "message": "Done: the Run::shift fix is now a separate parent CL with its own test (SkParagraph_SpacingTrailingClusterWithoutGlyphs): https://skia-review.googlesource.com/c/skia/+/1421196. This CL is rebased on top of it.",
+      "parentUuid": "c271b822_63fde133",
+      "revId": "a0a3bc1beeaea527179315c999b03a41215e3d6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
