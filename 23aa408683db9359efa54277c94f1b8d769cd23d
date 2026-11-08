@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fcb5012_9c234e10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-08T18:04:16Z",
+      "side": 1,
+      "message": "PS6 is again a rebase with no code change; only the position of the new test in SkParagraphTest.cpp moved. The skparagraph commits that landed in between (Close glyph and text ranges in OneLineShaper::clusteredText, plus Cap letter spacing line shift and its revert) change only OneLineShaper.cpp and tests and do not touch ParagraphBuilderImpl.\n\nRe-checked on PS6: the Flutter text/paragraph/editing tests (2411) pass with no changes against the base. In the google3 run over the SkParagraph/SkUnicode dependents (1151 targets), //geo/imagery/augmented_viewer/vector:labels_scuba_test failed once on this CL, but a re-run on the same google3 base with 3 attempts shows it is flaky on both sides: it fails the first attempt and passes the second with and without this CL. It also failed on both sides in the PS5 run. No other changes.\n\nLGTM.",
+      "revId": "23aa408683db9359efa54277c94f1b8d769cd23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
