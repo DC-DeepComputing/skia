@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15330299_473ecb88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-08T18:28:18Z",
+      "side": 1,
+      "message": "PS7 is a clean rebase of PS4; the code is the same as before. I checked it against the commits that landed in skparagraph since then (Cluster no longer keeps the paragraph, the letter spacing shift cap and its revert, closed ranges in OneLineShaper::clusteredText, shared unresolved codepoints in ParagraphCache). They compose cleanly: Cluster is now 48 bytes, and halfLetterSpacing() always finds the style for every cluster that reaches TextLine.\n\nTested on PS7:\n- Flutter framework tests (20199 tests, flutter_tester, Linux x86_64): no regressions.\n- google3 SkParagraph clients A/B (1151 targets): one failure in labels_scuba_test, in a 3D icon and not in the text. It passes on rerun, so it is a render flake.\n- txt_benchmarks A/B against the parent: neutral, every benchmark within 2%.\n- ASAN try job: green.\n\nLGTM from my side.",
+      "revId": "f648d7e523e8996550cee53aeb832ed6011979d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
