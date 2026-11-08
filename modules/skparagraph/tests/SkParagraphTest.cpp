@@ -11895,6 +11895,81 @@ DEF_TEST(SkParagraph_ZeroWidthClusterSplit, reporter) {
     }
 }
 
+// A space-less font drops a trailing U+200B, leaving a cluster without glyphs at the end of the
+// run; per-cluster spacing (two styles or word spacing) must not move the end of the run twice
+DEF_TEST(SkParagraph_SpacingTrailingClusterWithoutGlyphs, reporter) {
+    auto typeface = ToolUtils::TestFontMgr()->makeFromStream(
+            GetResourceAsStream("fonts/abc/abc.ttf"), {});
+    if (!typeface) {
+        return;
+    }
+    auto fontProvider = sk_make_sp<TypefaceFontProvider>();
+    fontProvider->registerTypeface(typeface, SkString("AbcFont"));
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setAssetFontManager(fontProvider);
+    fontCollection->disableFontFallback();
+
+    // The last piece gets another color, which forces the per-cluster spacing path
+    auto layout = [&](const char* text, const char* lastPiece, SkScalar letterSpacing,
+                      SkScalar wordSpacing, size_t rangeEnd = 2) {
+        TextStyle style;
+        style.setFontFamilies({SkString("AbcFont")});
+        style.setFontSize(20.0f);
+        style.setColor(SK_ColorBLACK);
+        style.setLetterSpacing(letterSpacing);
+        style.setWordSpacing(wordSpacing);
+        ParagraphBuilderImpl builder(ParagraphStyle(), fontCollection, get_unicode());
+        builder.pushStyle(style);
+        builder.addText(text);
+        if (lastPiece) {
+            style.setColor(SK_ColorRED);
+            builder.pushStyle(style);
+            builder.addText(lastPiece);
+            builder.pop();
+        }
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(1000.0f);
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        return paragraph->getRectsForRange(
+                0, rangeEnd, RectHeightStyle::kTight, RectWidthStyle::kTight);
+    };
+
+    for (SkScalar spacing : {3.0f, -2.0f}) {
+        auto expected = layout("ab", "c", spacing, 0.0f);
+        auto twoStyles = layout("ab", "\u200B", spacing, 0.0f);
+        auto wordSpacing = layout("ab\u200B", nullptr, spacing, 1.0f);
+        REPORTER_ASSERT(reporter,
+                        expected.size() == 1 && twoStyles.size() == 1 && wordSpacing.size() == 1);
+        if (expected.size() != 1 || twoStyles.size() != 1 || wordSpacing.size() != 1) {
+            return;
+        }
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(
+                                expected[0].rect.width(), twoStyles[0].rect.width(), EPSILON100),
+                        "%f != %f", expected[0].rect.width(), twoStyles[0].rect.width());
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(
+                                expected[0].rect.width(), wordSpacing[0].rect.width(), EPSILON100),
+                        "%f != %f", expected[0].rect.width(), wordSpacing[0].rect.width());
+    }
+
+    // Word spacing on a space followed by a dropped LRM in the same run must still extend the run
+    auto expectedSpace = layout("ab c", nullptr, 0.0f, 10.0f, /*rangeEnd=*/3);
+    auto spaceBeforeEmpty = layout("ab \u200E", nullptr, 0.0f, 10.0f, /*rangeEnd=*/3);
+    REPORTER_ASSERT(reporter, expectedSpace.size() == 1 && spaceBeforeEmpty.size() == 1);
+    if (expectedSpace.size() == 1 && spaceBeforeEmpty.size() == 1) {
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(expectedSpace[0].rect.width(),
+                                            spaceBeforeEmpty[0].rect.width(),
+                                            EPSILON100),
+                        "%f != %f",
+                        expectedSpace[0].rect.width(),
+                        spaceBeforeEmpty[0].rect.width());
+    }
+}
+
 // Verify that a BiDi isolate starting a styled block with a space-less primary font
 // preserves a 0-width cluster for the isolate and does not trap during style measurement
 DEF_TEST(SkParagraph_BidiIsolateStyledBlockNoSpaceFont, reporter) {
