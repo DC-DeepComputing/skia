@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <cstring>
 #include <utility>
 
 namespace skia {
@@ -34,17 +35,22 @@ struct CoreTextRunState {
                      bool isLtr,
                      bool zeroSize,
                      bool isFallback,
+                     bool splitKerning,
+                     SkFont font,
                      Run::ShapingBuffer* shapingBuffer)
-            : fGlyphCount(glyphCount)
+            : fFont(std::move(font))
+            , fGlyphCount(glyphCount)
             , fUtf8Range(utf8Range)
             , fIsLtr(isLtr)
             , fZeroSize(zeroSize)
             , fIsFallback(isFallback)
+            , fSplitKerning(splitKerning)
             , fShapingBuffer(shapingBuffer)
             , fClusters(glyphCount)
             , fAdvances(glyphCount)
             , fOrigins(isFallback ? 0 : glyphCount)
-            , fGlyphs(isFallback ? 0 : glyphCount) {}
+            , fGlyphs(isFallback ? 0 : glyphCount)
+            , fSplitOffsets(splitKerning ? glyphCount : 0) {}
 
     SkFont fFont;
     const TextStyle* fStyle = nullptr;
@@ -56,12 +62,14 @@ struct CoreTextRunState {
     bool fIsLtr;
     bool fZeroSize;
     bool fIsFallback;
+    bool fSplitKerning;
     SkScalar fRunAdvanceX = 0;
     Run::ShapingBuffer* fShapingBuffer;
     skia_private::AutoSTArray<64, uint32_t> fClusters;
     skia_private::AutoSTArray<64, SkScalar> fAdvances;
     skia_private::AutoSTArray<64, CGPoint> fOrigins;
     skia_private::AutoSTArray<64, CGGlyph> fGlyphs;
+    skia_private::AutoSTArray<64, SkScalar> fSplitOffsets;
 };
 
 struct RegionShapeContext {
@@ -119,6 +127,7 @@ struct AffixStyleState {
     bool fFallbackDisabled = false;
     bool fPrimaryDisallowed = false;
     bool fZeroSize = false;
+    bool fHasTab = false;
     SkFont fFont;
     uint8_t fLevel = 0;
 };
@@ -129,22 +138,49 @@ struct AffixGlyphData {
             , fGlyphs(totalGlyphs)
             , fOrigins(totalGlyphs)
             , fAdvances(totalGlyphs)
-            , fClusters(totalGlyphs) {}
+            , fSplitOffsets(totalGlyphs)
+            , fClusters(totalGlyphs) {
+        std::fill_n(fSplitOffsets.data(), totalGlyphs, 0.0f);
+    }
 
     CFIndex fCount;
     SkScalar fTotalAdvance = 0;
     skia_private::AutoSTArray<16, CGGlyph> fGlyphs;
     skia_private::AutoSTArray<16, CGPoint> fOrigins;
     skia_private::AutoSTArray<16, SkScalar> fAdvances;
+    // The part of a kerning pair moved into each glyph's offset, as in shapeTextRegion
+    skia_private::AutoSTArray<16, SkScalar> fSplitOffsets;
     skia_private::AutoSTArray<16, uint32_t> fClusters;
 };
 
 // Writes each glyph's advance from CoreText's base advances, rounded to whole pixels when subpixel
-// is off (the meaning of SkFont::isSubpixel)
-static void coretext_advances(bool subpixel, const CGSize* advances, SkScalar* out, CFIndex count) {
+// is off (the meaning of SkFont::isSubpixel), and when splitOffsets is non-null moves half of each
+// spacing glyph's pair kerning (base advance minus nominal advance) onto the next glyph's advance
+// and x-offset so drawn x stays unchanged while the caret sits at kern/2
+static void coretext_advances(bool subpixel,
+                              const CGSize* nominal,
+                              const CGSize* advances,
+                              SkScalar* out,
+                              SkScalar* splitOffsets,
+                              CFIndex count) {
+    // Half a kerning pair would put the next glyph off the pixel grid
+    SkASSERT(subpixel || !splitOffsets);
+    SkASSERT(!splitOffsets || nominal);
+    SkScalar carry = 0;
     for (CFIndex k = 0; k < count; ++k) {
         const SkScalar advance = SkScalarFromCGFloat(advances[k].width);
-        out[k] = subpixel ? advance : SkScalarRoundToScalar(advance);
+        if (!splitOffsets) {
+            out[k] = subpixel ? advance : SkScalarRoundToScalar(advance);
+            continue;
+        }
+        splitOffsets[k] = carry;
+        out[k] = advance + carry;
+        carry = 0;
+        // CoreText kerns no pair across zero-advance glyphs or past the run end
+        if (advance != 0 && k + 1 < count && advances[k + 1].width != 0) {
+            carry = (advance - SkScalarFromCGFloat(nominal[k].width)) / 2;
+            out[k] -= carry;
+        }
     }
 }
 
@@ -349,14 +385,17 @@ static SkUniqueCFRef<CTLineRef> typeset_line(CFAttributedStringRef attrStr) {
 }
 
 // Extracts ctRun's glyph IDs, CoreText origins, and horizontal glyph advances into caller buffers,
-// zeroing advances when zeroSize is true and rounding when subpixel is false
+// zeroing advances when zeroSize is true, rounding when subpixel is false, and splitting pair
+// kerning into splitOffsetsOut when non-null
 static void extract_ctrun_glyphs(CTRunRef ctRun,
+                                 CTFontRef ctFont,
                                  CFIndex count,
                                  bool zeroSize,
                                  bool subpixel,
                                  CGGlyph* glyphsOut,
                                  CGPoint* originsOut,
-                                 SkScalar* advancesOut) {
+                                 SkScalar* advancesOut,
+                                 SkScalar* splitOffsetsOut) {
     CTRunGetGlyphs(ctRun, CFRangeMake(0, count), glyphsOut);
     skia_private::AutoSTArray<64, CGSize> baseAdvances(count);
     // CTRunGetAdvances derives advances from drawn x, so a zero-advance mark drawn d off the pen
@@ -366,20 +405,36 @@ static void extract_ctrun_glyphs(CTRunRef ctRun,
     // The 12pt stand-in advances CoreText gives zero-size text never reach the run
     if (zeroSize) {
         std::fill_n(advancesOut, count, 0.0f);
+        if (splitOffsetsOut) {
+            std::fill_n(splitOffsetsOut, count, 0.0f);
+        }
         return;
+    }
+    skia_private::AutoSTArray<64, CGSize> nominal(splitOffsetsOut ? count : 0);
+    if (splitOffsetsOut) {
+        SkASSERT(ctFont);
+        CTFontGetAdvancesForGlyphs(
+                ctFont, kCTFontOrientationHorizontal, glyphsOut, nominal.data(), count);
     }
     // KEEPER-DEBT: this keeps CoreText's advance to the next 28pt tab stop, where HarfBuzz gives
     // U+0009 its hmtx advance; the stop counts from the CTLine start (hard break or placeholder),
     // so after a soft wrap it is off the line's stops. Remove when tabs get the HarfBuzz advance
     // or line-relative stops
-    coretext_advances(subpixel, baseAdvances.data(), advancesOut, count);
+    coretext_advances(subpixel,
+                      splitOffsetsOut ? nominal.data() : nullptr,
+                      baseAdvances.data(),
+                      advancesOut,
+                      splitOffsetsOut,
+                      count);
 }
 
 // Converts a CoreText glyph origin (y-up) into a Skia run glyph offset (y-down), pinning
-// zero-size stand-in origins to (0, 0)
-static SkPoint glyph_draw_offset(CGPoint origin, bool zeroSize) {
+// zero-size stand-in origins to (0, 0) and adding splitOffsetX to restore drawn x after moving
+// half a kerning pair onto the glyph's advance
+static SkPoint glyph_draw_offset(CGPoint origin, bool zeroSize, SkScalar splitOffsetX) {
     const CGPoint pinned = zeroSize ? CGPointZero : origin;
-    return SkPoint::Make(SkScalarFromCGFloat(pinned.x), -SkScalarFromCGFloat(pinned.y));
+    return SkPoint::Make(SkScalarFromCGFloat(pinned.x) + splitOffsetX,
+                         -SkScalarFromCGFloat(pinned.y));
 }
 
 // Selects the primary CTRun and CTFont for an affix line, populates state's SkFont and reconciled
@@ -442,8 +497,8 @@ static bool shares_primary_face(CTFontRef ctFont, CTFontRef primary) {
     return CFEqual(face.get(), primaryFace.get());
 }
 
-// Collects glyphs, origins, advances, and normalized UTF-8 clusters across all non-empty CTRuns of
-// an affix line, zeroing glyph IDs from disallowed or secondary fallback CTRuns
+// Collects glyphs, origins, advances, split kerning offsets, and normalized UTF-8 clusters across
+// all non-empty CTRuns of an affix line, zeroing glyph IDs from disallowed or secondary CTRuns
 static void collect_affix_glyphs(CFArrayRef runs,
                                  const CoreTextIndexMap& indexMap,
                                  const AffixStyleState& state,
@@ -458,20 +513,25 @@ static void collect_affix_glyphs(CFArrayRef runs,
         if (gc <= 0) {
             continue;
         }
+        CTFontRef ctFont = ct_run_font(ctRun);
+        // Left-to-right subpixel runs without tabs split pair kerning as in shapeTextRegion
+        const bool splitKerning = !state.fZeroSize && state.fFont.isSubpixel() && !state.fHasTab &&
+                                  (CTRunGetStatus(ctRun) & kCTRunStatusRightToLeft) == 0;
         // Base advances keep a mark's drawn offset off the glyph before it, as in shapeTextRegion;
         // a zero-size affix keeps zero advances
         extract_ctrun_glyphs(ctRun,
+                             ctFont,
                              gc,
                              state.fZeroSize,
                              state.fFont.isSubpixel(),
                              out.fGlyphs.data() + runStart,
                              out.fOrigins.data() + runStart,
-                             out.fAdvances.data() + runStart);
+                             out.fAdvances.data() + runStart,
+                             splitKerning ? out.fSplitOffsets.data() + runStart : nullptr);
         for (CFIndex k = 0; k < gc; ++k) {
             out.fTotalAdvance += out.fAdvances[runStart + k];
         }
 
-        CTFontRef ctFont = ct_run_font(ctRun);
         const bool unresolvedRun = state.fPrimaryDisallowed ||
                                    is_disallowed_ct_font(ctFont,
                                                          state.fFallbackDisabled,
@@ -509,7 +569,7 @@ static void commit_affix_run(const SkShaper::RunHandler::RunInfo& info,
     SkScalar penX = 0;
     for (CFIndex g = 0; g < data.fCount; ++g) {
         buffer.glyphs[g] = data.fGlyphs[g];
-        const SkPoint offset = glyph_draw_offset(data.fOrigins[g], zeroSize);
+        const SkPoint offset = glyph_draw_offset(data.fOrigins[g], zeroSize, data.fSplitOffsets[g]);
         if (buffer.offsets) {
             buffer.positions[g] = buffer.point + SkPoint::Make(penX, 0);
             buffer.offsets[g] = offset;
@@ -691,18 +751,22 @@ static void measure_fallback_glyphs(SkSpan<const char> paragraphText, CoreTextRu
     }
 }
 
-// Extracts ctRun's glyphs, origins, and shaped advances into runState, applies the primary font's
-// newline advance to U+000A clusters, and stores the total advance in runState.fRunAdvanceX
+// Extracts ctRun's glyphs, origins, and shaped advances (plus split kerning offsets when enabled)
+// into runState, applies the primary font's newline advance to U+000A clusters, and stores the
+// total advance in runState.fRunAdvanceX
 static void measure_shaped_glyphs(CTRunRef ctRun,
+                                  CTFontRef ctFont,
                                   SkSpan<const char> paragraphText,
                                   CoreTextRunState& runState) {
     extract_ctrun_glyphs(ctRun,
+                         ctFont,
                          runState.fGlyphCount,
                          runState.fZeroSize,
                          runState.fFont.isSubpixel(),
                          runState.fGlyphs.data(),
                          runState.fOrigins.data(),
-                         runState.fAdvances.data());
+                         runState.fAdvances.data(),
+                         runState.fSplitKerning ? runState.fSplitOffsets.data() : nullptr);
     for (CFIndex k = 0; k < runState.fGlyphCount; ++k) {
         // CoreText gives '\n' no advance, HarfBuzz the advance of the primary font's cmap glyph
         // (.notdef when it has none); that advance moves all later lines, so their float positions
@@ -801,6 +865,7 @@ void CoreTextLineShaper::ShapeAffix(const SkString& text,
         state.fAllowedTypefaces.push_back(clusterTypeface);
     }
     state.fFallbackDisabled = !fontCollection->fontFallbackEnabled();
+    state.fHasTab = memchr(text.c_str(), '\t', text.size()) != nullptr;
 
     CoreTextAttrStringBuilder builder(
             text.c_str(), text.size(), baseDir, std::move(fontCollection));
@@ -985,19 +1050,28 @@ void CoreTextLineShaper::shapeRegionRun(RegionShapeContext& ctx, int runIdx, SkS
     const bool isFallback = is_disallowed_run_font(ctFont, ctx.fFallbackDisabled, ctx.fBlockState);
     const uint8_t bidiLevel =
             resolve_run_bidi_level(ctx.fBidiRegions, runUtf8Range.start, item.fRun);
-
-    CoreTextRunState runState(CTRunGetGlyphCount(item.fRun),
-                              runUtf8Range,
-                              (bidiLevel % 2) == 0,
-                              ctx.fBlockState.fStyle->getFontSize() <= 0,
-                              isFallback,
-                              &ctx.fShapingBuffer);
-    runState.fFont = make_run_font(ctFont,
+    const bool isLtr = (bidiLevel % 2) == 0;
+    const bool zeroSize = ctx.fBlockState.fStyle->getFontSize() <= 0;
+    SkFont runFont = make_run_font(ctFont,
                                    isFallback,
                                    ctx.fBlockState.fPrimary,
                                    *ctx.fBlockState.fStyle,
                                    fParagraph->paragraphStyle().fakeMissingFontStyles(),
                                    &ctx.fTypefaceCache);
+    // Only left-to-right subpixel runs split pair kerning; a tab's advance to its stop is not
+    // kerning, so runs containing a tab keep whole advances
+    const bool splitKerning =
+            !isFallback && !zeroSize && isLtr && runFont.isSubpixel() &&
+            !memchr(ctx.fText.data() + runUtf8Range.start, '\t', runUtf8Range.width());
+
+    CoreTextRunState runState(CTRunGetGlyphCount(item.fRun),
+                              runUtf8Range,
+                              isLtr,
+                              zeroSize,
+                              isFallback,
+                              splitKerning,
+                              std::move(runFont),
+                              &ctx.fShapingBuffer);
     runState.fStyle = ctx.fBlockState.fStyle;
     runState.fLanguage = ctx.fBlockState.fLanguage.c_str();
     runState.fBidiLevel = bidiLevel;
@@ -1009,7 +1083,7 @@ void CoreTextLineShaper::shapeRegionRun(RegionShapeContext& ctx, int runIdx, SkS
     if (isFallback) {
         measure_fallback_glyphs(ctx.fText, runState);
     } else {
-        measure_shaped_glyphs(item.fRun, ctx.fText, runState);
+        measure_shaped_glyphs(item.fRun, ctFont, ctx.fText, runState);
     }
     this->appendRegionRun(runState, advanceX);
 }
@@ -1103,7 +1177,9 @@ void CoreTextLineShaper::populateShapedRun(Run& run,
         // SkShaper's HarfBuzz runs put x_offset and y_offset there
         positions[k] = SkPoint::Make(runStartX + penX, 0);
         penX += runState.fAdvances[k];
-        offsets[k] = glyph_draw_offset(runState.fOrigins[k], runState.fZeroSize);
+        offsets[k] = glyph_draw_offset(runState.fOrigins[k],
+                                       runState.fZeroSize,
+                                       runState.fSplitKerning ? runState.fSplitOffsets[k] : 0);
         clusterIndexes[k] = runState.fClusters[k];
         if (glyphs[k] == 0) {
             this->recordUnresolvedGlyph(glyph_text_range(runState, k));
