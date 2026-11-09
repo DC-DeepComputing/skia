@@ -18,6 +18,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
+#include <limits>
 
 DEF_TEST(AdobeRGB, r) {
     if (sk_sp<SkData> profile = GetResourceAsData("icc_profiles/AdobeRGB1998.icc")) {
@@ -147,6 +148,185 @@ DEF_TEST(HDR_ICC, r) {
                 REPORTER_ASSERT(
                         r, approx_equal(dst_pixel_actual[i], dst_pixels_expected[test][pixel][i]));
             }
+        }
+    }
+}
+
+DEF_TEST(ICC_WriteRejectsInvalidColorSpace, r) {
+    REPORTER_ASSERT(r, SkWriteICCProfile(static_cast<const SkColorSpace*>(nullptr)) == nullptr);
+    REPORTER_ASSERT(
+            r, SkWriteICCProfile(static_cast<const skcms_ICCProfile*>(nullptr), "desc") == nullptr);
+
+    // Non-invertible, NaN/Inf, or s15Fixed16-underflowing/saturating toXYZD50 matrices must be
+    // rejected instead of emitting an ICC profile with zero or singular rXYZ/gXYZ/bXYZ tags.
+    constexpr float kNaN = std::numeric_limits<float>::quiet_NaN();
+    constexpr float kInf = std::numeric_limits<float>::infinity();
+    constexpr skcms_Matrix3x3 kBadMatrices[] = {
+            {{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}},
+            {{{1, 0, 0}, {1, 0, 0}, {0, 0, 1}}},
+            {{{kNaN, 0, 0}, {0, 1, 0}, {0, 0, 1}}},
+            {{{kInf, 0, 0}, {0, 1, 0}, {0, 0, 1}}},
+            {{{1e-7f, 0, 0}, {0, 1e-7f, 0}, {0, 0, 1e-7f}}},
+            {{{1e8f, 2e8f, 0}, {1e8f, 1e8f, 0}, {0, 0, 1}}},
+            {{{1e35f, 2e35f, 0}, {1e35f, 1e35f, 0}, {0, 0, 1}}},
+    };
+    for (const skcms_Matrix3x3& badMatrix : kBadMatrices) {
+        REPORTER_ASSERT(r, SkWriteICCProfile(SkNamedTransferFn::kSRGB, badMatrix) == nullptr);
+        REPORTER_ASSERT(r, SkWriteICCProfile(SkNamedTransferFn::kPQ, badMatrix) == nullptr);
+        sk_sp<SkColorSpace> cs = SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, badMatrix);
+        REPORTER_ASSERT(r, cs);
+        REPORTER_ASSERT(r, SkWriteICCProfile(cs.get()) == nullptr);
+
+        skcms_ICCProfile profile;
+        skcms_Init(&profile);
+        skcms_SetTransferFunction(&profile, &SkNamedTransferFn::kSRGB);
+        skcms_SetXYZD50(&profile, &badMatrix);
+        REPORTER_ASSERT(r, SkWriteICCProfile(&profile, "bad matrix") == nullptr);
+    }
+
+    // Non-invertible or unsupported transfer functions must also be rejected.
+    skcms_TransferFunction hlgish;
+    REPORTER_ASSERT(r,
+                    skcms_TransferFunction_makeHLGish(
+                            &hlgish, 2.0f, 2.0f, 1.0f / 0.17883277f, 0.28466892f, 0.55991073f));
+    skcms_TransferFunction hlgInvish;
+    REPORTER_ASSERT(r, skcms_TransferFunction_invert(&hlgish, &hlgInvish));
+
+    const skcms_TransferFunction kBadTrfns[] = {
+            {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},    // sRGBish with g = 0
+            {1e-7f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},   // underflows s15Fixed16 to g = 0
+            {1.0f, 1e-7f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},   // underflows s15Fixed16 to a = 0
+            {2.2f, 1.0f, 0.0f, 1.0f, 0.5f, 0.5f, 0.0f},    // discontinuous sRGBish
+            {-99.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},  // Invalid
+            {-2.0f, kNaN, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},   // PQish with NaN coeff
+            hlgInvish,                                     // HLGinvish (no TRC or A2B writer)
+    };
+    for (const skcms_TransferFunction& badTrfn : kBadTrfns) {
+        REPORTER_ASSERT(r, SkWriteICCProfile(badTrfn, SkNamedGamut::kSRGB) == nullptr);
+
+        skcms_ICCProfile profile;
+        skcms_Init(&profile);
+        skcms_SetTransferFunction(&profile, &badTrfn);
+        skcms_SetXYZD50(&profile, &SkNamedGamut::kSRGB);
+        REPORTER_ASSERT(r, SkWriteICCProfile(&profile, "bad trfn") == nullptr);
+    }
+
+    // An empty skcms_ICCProfile, non-RGB data_color_space, 1-entry curv, or raw toProfile() for PQ
+    // (which puts PQ into trc[] without A2B) must return nullptr cleanly without asserting.
+    skcms_ICCProfile empty;
+    skcms_Init(&empty);
+    REPORTER_ASSERT(r, SkWriteICCProfile(&empty, "empty") == nullptr);
+
+    skcms_ICCProfile grayProfile;
+    skcms_Init(&grayProfile);
+    grayProfile.data_color_space = skcms_Signature_Gray;
+    skcms_SetTransferFunction(&grayProfile, &SkNamedTransferFn::kSRGB);
+    skcms_SetXYZD50(&grayProfile, &SkNamedGamut::kSRGB);
+    REPORTER_ASSERT(r, SkWriteICCProfile(&grayProfile, "gray") == nullptr);
+
+    uint8_t zeroEntry[2] = {0, 0};
+    skcms_ICCProfile oneEntryCurv = *skcms_sRGB_profile();
+    oneEntryCurv.trc[0].table_entries = 1;
+    oneEntryCurv.trc[0].table_16 = zeroEntry;
+    REPORTER_ASSERT(r, SkWriteICCProfile(&oneEntryCurv, "curv1") == nullptr);
+
+    skcms_ICCProfile pqToProfile;
+    SkColorSpace::MakeRGB(SkNamedTransferFn::kPQ, SkNamedGamut::kRec2020)->toProfile(&pqToProfile);
+    REPORTER_ASSERT(r, SkWriteICCProfile(&pqToProfile, "pq without A2B") == nullptr);
+
+    // Malformed A2B/B2A structures (wrong channel counts, grid_points < 2, or non-invertible
+    // B2A output_curves) must be rejected, while a valid 3->3 B2A round-trips output_curves.
+    constexpr uint16_t kClut[2 * 2 * 2 * 3] = {};
+    skcms_ICCProfile lutProfile;
+    skcms_Init(&lutProfile);
+    lutProfile.has_A2B = true;
+    lutProfile.A2B.input_channels = 3;
+    lutProfile.A2B.output_channels = 3;
+    for (int i = 0; i < 3; ++i) {
+        lutProfile.A2B.grid_points[i] = 2;
+        lutProfile.A2B.input_curves[i].parametric = SkNamedTransferFn::kLinear;
+        lutProfile.A2B.output_curves[i].parametric = SkNamedTransferFn::kLinear;
+    }
+    lutProfile.A2B.grid_16 = reinterpret_cast<const uint8_t*>(kClut);
+
+    skcms_ICCProfile badGrid = lutProfile;
+    badGrid.A2B.grid_points[0] = 1;
+    REPORTER_ASSERT(r, SkWriteICCProfile(&badGrid, "bad grid") == nullptr);
+
+    skcms_ICCProfile badChans = lutProfile;
+    badChans.A2B.input_channels = 4;
+    REPORTER_ASSERT(r, SkWriteICCProfile(&badChans, "bad chans") == nullptr);
+
+    lutProfile.has_B2A = true;
+    lutProfile.B2A.input_channels = 3;
+    lutProfile.B2A.output_channels = 3;
+    for (int i = 0; i < 3; ++i) {
+        lutProfile.B2A.grid_points[i] = 2;
+        lutProfile.B2A.input_curves[i].parametric = SkNamedTransferFn::kLinear;
+        lutProfile.B2A.output_curves[i].parametric = {0.0f, 1.0f, 0, 0, 0, 0, 0};
+    }
+    lutProfile.B2A.grid_16 = reinterpret_cast<const uint8_t*>(kClut);
+    REPORTER_ASSERT(r, SkWriteICCProfile(&lutProfile, "bad b2a output_curves") == nullptr);
+
+    for (int i = 0; i < 3; ++i) {
+        lutProfile.B2A.output_curves[i].parametric = SkNamedTransferFn::k2Dot2;
+    }
+    sk_sp<SkData> b2aData = SkWriteICCProfile(&lutProfile, "valid b2a");
+    REPORTER_ASSERT(r, b2aData != nullptr);
+    if (b2aData) {
+        skcms_ICCProfile parsedB2A;
+        REPORTER_ASSERT(r, skcms_Parse(b2aData->data(), b2aData->size(), &parsedB2A));
+        REPORTER_ASSERT(r, parsedB2A.has_B2A && parsedB2A.B2A.output_channels == 3);
+        REPORTER_ASSERT(r, std::abs(parsedB2A.B2A.output_curves[0].parametric.g - 2.2f) < 1e-3f);
+    }
+}
+
+DEF_TEST(ICC_WriteDesaturatedOutOfLocusGamut, r) {
+    // A desaturating display profile replaces M_true with M_true * D^-1 (mixing channels toward
+    // luminance). Its primaries lie outside the [0, 1] chromaticity box (so PrimariesToXYZD50
+    // rejects those chromaticities), yet its 3x3 toXYZD50 matrix is finite and invertible and
+    // must serialize and round-trip cleanly for both SDR and HDR transfer functions.
+    for (float s : {0.45f, 0.60f}) {
+        const float wR = 0.2225f * (1.0f - s);
+        const float wG = 0.7169f * (1.0f - s);
+        const float wB = 0.0606f * (1.0f - s);
+        const skcms_Matrix3x3 desat = {{
+                {s + wR, wG, wB},
+                {wR, s + wG, wB},
+                {wR, wG, s + wB},
+        }};
+        skcms_Matrix3x3 invDesat;
+        REPORTER_ASSERT(r, skcms_Matrix3x3_invert(&desat, &invDesat));
+        const skcms_Matrix3x3 gamut = skcms_Matrix3x3_concat(&SkNamedGamut::kDisplayP3, &invDesat);
+
+        for (const skcms_TransferFunction& tf :
+             {SkNamedTransferFn::kSRGB, SkNamedTransferFn::kPQ}) {
+            sk_sp<SkData> icc = SkWriteICCProfile(tf, gamut);
+            REPORTER_ASSERT(r, icc != nullptr);
+            if (!icc) {
+                continue;
+            }
+            skcms_ICCProfile parsed;
+            REPORTER_ASSERT(r, skcms_Parse(icc->data(), icc->size(), &parsed));
+            if (skcms_TransferFunction_isPQ(&tf)) {
+                REPORTER_ASSERT(r, parsed.has_CICP && parsed.CICP.color_primaries == 2);
+            }
+            sk_sp<SkColorSpace> roundTrip = SkColorSpace::Make(parsed);
+            REPORTER_ASSERT(r, roundTrip != nullptr);
+
+            constexpr float kSrcPixel[3] = {1.0f, 0.0f, 0.0f};
+            float dstPixel[3] = {0.0f, 0.0f, 0.0f};
+            REPORTER_ASSERT(r,
+                            skcms_Transform(kSrcPixel,
+                                            skcms_PixelFormat_RGB_fff,
+                                            skcms_AlphaFormat_Opaque,
+                                            skcms_sRGB_profile(),
+                                            dstPixel,
+                                            skcms_PixelFormat_RGB_fff,
+                                            skcms_AlphaFormat_Opaque,
+                                            &parsed,
+                                            1));
+            REPORTER_ASSERT(r, dstPixel[0] > 0.0f || dstPixel[1] > 0.0f || dstPixel[2] > 0.0f);
         }
     }
 }
