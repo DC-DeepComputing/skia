@@ -45,6 +45,23 @@ SK_API std::unique_ptr<SkCodec> Decode(sk_sp<const SkData>,
  */
 SK_API bool GetHotSpot(const SkCodec* codec, int frameIndex, SkIPoint* hotSpot);
 
+struct DefaultImageInfo {
+    SkISize dimensions;
+    SkIPoint hotSpot;
+    bool isCursor;
+    bool hasCompatibleFrame;
+};
+
+/**
+ * Describes the largest directory entry, preferring higher bit depth on ties.
+ * These display dimensions can differ from SkCodec::dimensions(), which bound
+ * all entries. hotSpot is valid only for cursors. hasCompatibleFrame indicates
+ * whether a currently available representation fits the default dimensions.
+ *
+ * codec must have been created by SkIcoRustDecoder::Decode().
+ */
+SK_API bool GetDefaultImageInfo(const SkCodec* codec, DefaultImageInfo* info);
+
 inline constexpr SkCodecs::Decoder Decoder() { return {"ico", IsIco, Decode}; }
 
 }  // namespace SkIcoRustDecoder

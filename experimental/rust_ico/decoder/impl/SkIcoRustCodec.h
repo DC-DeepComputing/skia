@@ -46,6 +46,9 @@ public:
     static std::unique_ptr<SkCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*);
 
     bool getHotSpot(int frameIndex, SkIPoint* hotSpot) const;
+    SkISize defaultDimensions() const { return fDefaultDimensions; }
+    bool getDefaultHotSpot(SkIPoint* hotSpot) const;
+    bool defaultImageIsAvailable() const;
 
 protected:
     SkISize onGetScaledDimensions(float desiredScale) const override;
@@ -106,7 +109,8 @@ private:
      *         matching codec between startIndex and the end of
      *         the array.
      */
-    int chooseCodec(const SkISize& requestedSize, int startIndex);
+    int chooseCodec(const SkISize& requestedSize, int startIndex) const;
+    int chooseFallbackCodec(const SkISize& requestedSize) const;
 
     /**
      * Common codec selection logic for onGetPixels and onStartIncrementalDecode.
@@ -141,7 +145,9 @@ private:
     SkIcoRustCodec(SkEncodedInfo&& info,
                    std::unique_ptr<SkStream>,
                    std::vector<EmbeddedImage> embeddedImages,
-                   bool isCursor);
+                   bool isCursor,
+                   SkISize defaultDimensions,
+                   SkIPoint defaultHotSpot);
 
     const SkFrameHolder* getFrameHolder() const override { return &fFrameHolder; }
 
@@ -182,6 +188,8 @@ private:
     std::vector<EmbeddedImage> fEmbeddedImages;
     FrameHolder fFrameHolder;
     const bool fIsCursor;
+    const SkISize fDefaultDimensions;
+    const SkIPoint fDefaultHotSpot;
 
     // fCurrCodec is owned by this class, but should not be an
     // std::unique_ptr. It will be deleted by the destructor of fEmbeddedImages.
