@@ -32,10 +32,11 @@ public:
         fCollectBreadcrumbTriangles = true;
     }
 
-    int pathToTriangles(GrEagerVertexAllocator* vertexAlloc, BreadcrumbTriangleList* breadcrumbList,
-                        bool* isLinear) {
+    [[nodiscard]] bool pathToTriangles(GrEagerVertexAllocator* vertexAlloc,
+                                       BreadcrumbTriangleList* breadcrumbList,
+                                       bool* isLinear, int* vertexCount) {
         Poly* polys = this->pathToPolys(breadcrumbList, isLinear);
-        return this->polysToTriangles(polys, vertexAlloc, breadcrumbList);
+        return this->polysToTriangles(polys, vertexAlloc, breadcrumbList, vertexCount);
     }
 
     Poly* pathToPolys(BreadcrumbTriangleList* breadcrumbList, bool* isLinear) {
@@ -48,11 +49,13 @@ public:
         return polys;
     }
 
-    int polysToTriangles(Poly* polys, GrEagerVertexAllocator* vertexAlloc,
-                         BreadcrumbTriangleList* breadcrumbList) const {
-        int vertexCount = this->GrTriangulator::polysToTriangles(polys, vertexAlloc);
+    [[nodiscard]] bool polysToTriangles(Poly* polys,
+                                        GrEagerVertexAllocator* vertexAlloc,
+                                        BreadcrumbTriangleList* breadcrumbList,
+                                        int* vertexCount) const {
+        bool result = this->GrTriangulator::polysToTriangles(polys, vertexAlloc, vertexCount);
         breadcrumbList->concat(std::move(fBreadcrumbList));
-        return vertexCount;
+        return result;
     }
 };
 
