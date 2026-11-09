@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "750672f791514c4038246d423ccc473417d25211",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "607c1041_793fec52",
+        "filename": "tests/GrPipelineDynamicStateTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-09T16:37:35Z",
+      "side": 1,
+      "message": "Are we going to hit the Protect job readback issue ?",
+      "revId": "750672f791514c4038246d423ccc473417d25211",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
