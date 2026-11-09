@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca7e7382_6295e3cb",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 3376992
+      },
+      "writtenOn": "2026-11-09T17:25:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a854be00_ffac1899",
+      "range": {
+        "startLine": 421,
+        "startChar": 5,
+        "endLine": 424,
+        "endChar": 6
+      },
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9ac0dc1_af50a1c2",
@@ -109,6 +133,30 @@
       "side": 1,
       "message": "I\u0027ve uploaded a new patchset that doesn\u0027t set top_of_pipe bit ~ so these changes are eliminated.",
       "parentUuid": "e8dfe20a_b213013c",
+      "range": {
+        "startLine": 501,
+        "startChar": 16,
+        "endLine": 501,
+        "endChar": 76
+      },
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "589d685c_037c7a84",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 3376992
+      },
+      "writtenOn": "2026-11-09T17:25:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "458e5870_a2b7656e",
       "range": {
         "startLine": 501,
         "startChar": 16,
