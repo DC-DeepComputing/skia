@@ -125,7 +125,9 @@ static bool supports_packed_yuyv(Recorder* recorder) {
     return info.isValid() && caps->isTexturable(info);
 }
 
-DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageShaderPackedYUYVDecalTest, reporter, context,
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageShaderPackedYUYVDecalTest,
+                                         reporter,
+                                         context,
                                          CtsEnforcement::kNever) {
     // Test that decal tiling on a packed 4:2:2 image is resolved per pixel, not per pixel pair,
     // when the subset bounds fall on odd pixels. The plane holds one texel per 2x1 block of pixels,
@@ -223,7 +225,9 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageShaderPackedYUYVDecalTest, reporte
         }
     }
 }
-DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageShaderPackedYUYVTileOriginTest, reporter, context,
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageShaderPackedYUYVTileOriginTest,
+                                         reporter,
+                                         context,
                                          CtsEnforcement::kNever) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     REPORTER_ASSERT(reporter, recorder);

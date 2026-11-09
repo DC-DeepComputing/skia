@@ -128,12 +128,11 @@ std::unordered_set<SkUnichar> ParagraphImpl::unresolvedCodepoints() {
 }
 
 void ParagraphImpl::addUnresolvedCodepoints(TextRange textRange) {
-    fUnicode->forEachCodepoint(
-        &fText[textRange.start], textRange.width(),
-        [&](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
-            fUnresolvedCodepoints.emplace(unichar);
-        }
-    );
+    fUnicode->forEachCodepoint(&fText[textRange.start],
+                               textRange.width(),
+                               [&](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
+                                   fUnresolvedCodepoints.emplace(unichar);
+                               });
 }
 
 void ParagraphImpl::layout(SkScalar rawWidth) {

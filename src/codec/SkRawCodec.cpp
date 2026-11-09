@@ -731,8 +731,7 @@ std::unique_ptr<SkCodec> SkRawCodec::MakeFromStream(std::unique_ptr<SkStream> st
                 *result = kInvalidInput;
                 return nullptr;
             }
-            return SkJpegCodec::MakeFromStream(std::move(memoryStream), result,
-                                               std::move(profile));
+            return SkJpegCodec::MakeFromStream(std::move(memoryStream), result, std::move(profile));
         }
     }
 

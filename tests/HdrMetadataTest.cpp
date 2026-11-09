@@ -287,7 +287,6 @@ DEF_TEST(HdrMetadata_Agtm_Mix, r) {
          skhdr::AdaptiveGlobalToneMap::ComponentMixingFunction({.fMax=0.75f, .fComponent=0.25f}),
          SkColor4f({0.75f, 0.5f,    0.25f,   0.125f}),
          SkColor4f({0.75f, 0.6875f, 0.6250f, 0.125f}));
-
 }
 
 DEF_TEST(HdrMetadata_Agtm_RWTMO, r) {

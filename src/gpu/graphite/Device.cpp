@@ -1698,10 +1698,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // Calculate the clipped bounds of the draw and determine the clip elements that affect the
     // draw without updating the clip stack.
     ClipStack::ElementList clipElements;
-    Clip clip = fClip.visitClipStackForDraw(localToDevice,
-                                            &geometry,
-                                            &style,
-                                            &clipElements);
+    Clip clip = fClip.visitClipStackForDraw(localToDevice, &geometry, &style, &clipElements);
     if (clip.isClippedOut()) {
         // Clipped out, so don't record anything.
         return;

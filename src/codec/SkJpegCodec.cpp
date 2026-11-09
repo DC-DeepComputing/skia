@@ -123,7 +123,8 @@ std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(std::unique_ptr<SkStream> s
 
 std::unique_ptr<SkCodec> SkJpegCodec::MakeFromStream(
         std::unique_ptr<SkStream> stream,
-        Result* result, std::unique_ptr<SkCodecs::ColorProfile> defaultColorProfile) {
+        Result* result,
+        std::unique_ptr<SkCodecs::ColorProfile> defaultColorProfile) {
     SkASSERT(result);
     if (!stream) {
         *result = SkCodec::kInvalidInput;

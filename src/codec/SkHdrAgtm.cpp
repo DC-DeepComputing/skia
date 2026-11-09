@@ -32,9 +32,7 @@ static constexpr float kMaxHdrHeadroom = 6.f;
 // The maximum linear value is exp2(kMaxHdrHeadroom) =  64.
 static constexpr float kMaxLinearHdrHeadroom = 64.f;
 
-static bool in_unit_interval(float x) {
-  return x >= 0.f && x <= 1.f;
-}
+static bool in_unit_interval(float x) { return x >= 0.f && x <= 1.f; }
 
 // AGTM tone mapping shader.
 static constexpr char gAgtmSKSL[] =
@@ -157,7 +155,7 @@ namespace skhdr {
 SkColor4f AgtmHelpers::EvaluateComponentMixingFunction(
         const AdaptiveGlobalToneMap::ComponentMixingFunction& mix, const SkColor4f& c) {
     // This implements that math in Formula (9).
-    float common = mix.fRed * c.fR + mix.fGreen * c.fG + mix.fBlue * c.fB  +
+    float common = mix.fRed * c.fR + mix.fGreen * c.fG + mix.fBlue * c.fB +
                    mix.fMax * std::max(std::max(c.fR, c.fG), c.fB) +
                    mix.fMin * std::min(std::min(c.fR, c.fG), c.fB);
 
@@ -561,23 +559,23 @@ sk_sp<SkColorFilter> MakeColorFilter(
         if (weighting.fWeight[a] == 0.f) {
             continue;
         }
-        const auto& gain = hatm.fAlternateImages[
-            weighting.fAlternateImageIndex[a]].fColorGainFunction;
+        const auto& gain =
+                hatm.fAlternateImages[weighting.fAlternateImageIndex[a]].fColorGainFunction;
 
         std::array<const char *, 2> mix_rgbx_str = {"mix_rgbx_i", "mix_rgbx_j"};
         builder.uniform(mix_rgbx_str[a]) = SkColor4f({
-            gain.fComponentMixing.fRed,
-            gain.fComponentMixing.fGreen,
-            gain.fComponentMixing.fBlue,
-            0.f,
+                gain.fComponentMixing.fRed,
+                gain.fComponentMixing.fGreen,
+                gain.fComponentMixing.fBlue,
+                0.f,
         });
 
         std::array<const char *, 2> mix_Mmcx_str = {"mix_Mmcx_i", "mix_Mmcx_j"};
         builder.uniform(mix_Mmcx_str[a]) = SkColor4f({
-            gain.fComponentMixing.fMax,
-            gain.fComponentMixing.fMin,
-            gain.fComponentMixing.fComponent,
-            0.f,
+                gain.fComponentMixing.fMax,
+                gain.fComponentMixing.fMin,
+                gain.fComponentMixing.fComponent,
+                0.f,
         });
 
         std::array<const char*, 2> curve_texcoord_y_str = {"curve_texcoord_y_i",

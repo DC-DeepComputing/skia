@@ -801,23 +801,22 @@ TextRange OneLineShaper::clusteredText(GlyphRange& glyphs) {
     // TODO: code it without if (as a part of LTR/RTL refactoring)
     if (fCurrentRun->leftToRight()) {
         while (glyphs.start > 0 && clusterIndex(glyphs.start) > textRange.start) {
-          glyphs.start--;
+            glyphs.start--;
         }
         while (glyphs.end < fCurrentRun->size() && clusterIndex(glyphs.end) < textRange.end) {
-          glyphs.end++;
+            glyphs.end++;
         }
     } else {
         while (glyphs.start > 0 && clusterIndex(glyphs.start - 1) < textRange.end) {
-          glyphs.start--;
+            glyphs.start--;
         }
         while (glyphs.end < fCurrentRun->size() && clusterIndex(glyphs.end) > textRange.start) {
-          glyphs.end++;
+            glyphs.end++;
         }
     }
 
     return { textRange.start, textRange.end };
 }
-
 
 // By definition any emoji_sequence starts from a codepoint that has
 // UCHAR_EMOJI property.

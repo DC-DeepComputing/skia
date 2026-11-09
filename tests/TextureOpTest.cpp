@@ -405,5 +405,3 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextureOpNearestSubsetOvershootTest,
         }
     }
 }
-
-

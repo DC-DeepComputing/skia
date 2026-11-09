@@ -1385,28 +1385,28 @@ ShaderCodeDictionary::ShaderCodeDictionary(
             /*numChildren=*/kNumCoordinateManipulateChildren
     };
 
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShader] = {
+    fBuiltInCodeSnippets[(int)BuiltInCodeSnippetID::kImageShader] = {
             /*name=*/"Image",
             /*staticFn=*/"sk_image_shader",
             SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresSamplerDescData,
-            /*uniforms=*/{{{ "invImgSize",            SkSLType::kFloat2 },
-                           { "subset",                SkSLType::kFloat4 },
-                           { "tilemodeX",             SkSLType::kInt },
-                           { "tilemodeY",             SkSLType::kInt },
-                           { "filterMode",            SkSLType::kInt }}},
-            /*texturesAndSamplers=*/{{"image"}}
-    };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCubicImageShader] = {
+            /*uniforms=*/
+            {{{"invImgSize", SkSLType::kFloat2},
+              {"subset", SkSLType::kFloat4},
+              {"tilemodeX", SkSLType::kInt},
+              {"tilemodeY", SkSLType::kInt},
+              {"filterMode", SkSLType::kInt}}},
+            /*texturesAndSamplers=*/{{"image"}}};
+    fBuiltInCodeSnippets[(int)BuiltInCodeSnippetID::kCubicImageShader] = {
             /*name=*/"CubicImage",
             /*staticFn=*/"sk_cubic_image_shader",
             SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresSamplerDescData,
-            /*uniforms=*/{{{ "invImgSize",            SkSLType::kFloat2 },
-                           { "subset",                SkSLType::kFloat4 },
-                           { "tilemodeX",             SkSLType::kInt },
-                           { "tilemodeY",             SkSLType::kInt },
-                           { "cubicCoeffs",           SkSLType::kHalf4x4 }}},
-            /*texturesAndSamplers=*/{{"image"}}
-    };
+            /*uniforms=*/
+            {{{"invImgSize", SkSLType::kFloat2},
+              {"subset", SkSLType::kFloat4},
+              {"tilemodeX", SkSLType::kInt},
+              {"tilemodeY", SkSLType::kInt},
+              {"cubicCoeffs", SkSLType::kHalf4x4}}},
+            /*texturesAndSamplers=*/{{"image"}}};
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kHWImageShader] = {
             /*name=*/"HardwareImage",
             /*staticFn=*/"sk_hw_image_shader",
@@ -1424,100 +1424,88 @@ ShaderCodeDictionary::ShaderCodeDictionary(
             /*texturesAndSamplers=*/{{"image"}}
     };
 
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kYUVImageShader] = {
+    fBuiltInCodeSnippets[(int)BuiltInCodeSnippetID::kYUVImageShader] = {
             /*name=*/"YUVImage",
             /*staticFn=*/"sk_yuv_image_shader",
             SnippetRequirementFlags::kLocalCoords,
-            /*uniforms=*/{{{ "invImgSizeY",         SkSLType::kFloat2 },
-                           { "invImgSizeUV",        SkSLType::kFloat2 },  // Relative to Y's texels
-                           { "subset",              SkSLType::kFloat4 },
-                           { "linearFilterUVInset", SkSLType::kFloat2 },
-                           { "tilemodeX",           SkSLType::kInt },
-                           { "tilemodeY",           SkSLType::kInt },
-                           { "filterModeY",         SkSLType::kInt },
-                           { "filterModeUV",        SkSLType::kInt },
-                           { "channelSelectY",      SkSLType::kHalf4 },
-                           { "channelSelectU",      SkSLType::kHalf4 },
-                           { "channelSelectV",      SkSLType::kHalf4 },
-                           { "channelSelectA",      SkSLType::kHalf4 },
-                           { "yuvToRGBMatrix",      SkSLType::kHalf3x3 },
-                           { "yuvToRGBTranslate",   SkSLType::kHalf3 }}},
-            /*texturesAndSamplers=*/{{{ "samplerY" },
-                                      { "samplerU" },
-                                      { "samplerV" },
-                                      { "samplerA" }}}
-    };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPackedYUVImageShader] = {
+            /*uniforms=*/
+            {{{"invImgSizeY", SkSLType::kFloat2},
+              {"invImgSizeUV", SkSLType::kFloat2},  // Relative to Y's texels
+              {"subset", SkSLType::kFloat4},
+              {"linearFilterUVInset", SkSLType::kFloat2},
+              {"tilemodeX", SkSLType::kInt},
+              {"tilemodeY", SkSLType::kInt},
+              {"filterModeY", SkSLType::kInt},
+              {"filterModeUV", SkSLType::kInt},
+              {"channelSelectY", SkSLType::kHalf4},
+              {"channelSelectU", SkSLType::kHalf4},
+              {"channelSelectV", SkSLType::kHalf4},
+              {"channelSelectA", SkSLType::kHalf4},
+              {"yuvToRGBMatrix", SkSLType::kHalf3x3},
+              {"yuvToRGBTranslate", SkSLType::kHalf3}}},
+            /*texturesAndSamplers=*/{{{"samplerY"}, {"samplerU"}, {"samplerV"}, {"samplerA"}}}};
+    fBuiltInCodeSnippets[(int)BuiltInCodeSnippetID::kPackedYUVImageShader] = {
             /*name=*/"PackedYUVImage",
             /*staticFn=*/"sk_packed_yuv_image_shader",
             SnippetRequirementFlags::kLocalCoords,
-            /*uniforms=*/{{{ "invImgSize",         SkSLType::kFloat2 },
-                           { "subset",             SkSLType::kFloat4 },
-                           { "tilemodeX",          SkSLType::kInt },
-                           { "tilemodeY",          SkSLType::kInt },
-                           { "channelSelectY",     SkSLType::kHalf4 },
-                           { "channelSelectU",     SkSLType::kHalf4 },
-                           { "channelSelectV",     SkSLType::kHalf4 },
-                           { "yuvToRGBMatrix",     SkSLType::kHalf3x3 },
-                           { "yuvToRGBTranslate",  SkSLType::kHalf3 }}},
-            /*texturesAndSamplers=*/{{"samplerPlane"}}
-    };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCubicYUVImageShader] = {
+            /*uniforms=*/
+            {{{"invImgSize", SkSLType::kFloat2},
+              {"subset", SkSLType::kFloat4},
+              {"tilemodeX", SkSLType::kInt},
+              {"tilemodeY", SkSLType::kInt},
+              {"channelSelectY", SkSLType::kHalf4},
+              {"channelSelectU", SkSLType::kHalf4},
+              {"channelSelectV", SkSLType::kHalf4},
+              {"yuvToRGBMatrix", SkSLType::kHalf3x3},
+              {"yuvToRGBTranslate", SkSLType::kHalf3}}},
+            /*texturesAndSamplers=*/{{"samplerPlane"}}};
+    fBuiltInCodeSnippets[(int)BuiltInCodeSnippetID::kCubicYUVImageShader] = {
             /*name=*/"CubicYUVImage",
             /*staticFn=*/"sk_cubic_yuv_image_shader",
             SnippetRequirementFlags::kLocalCoords,
-            /*uniforms=*/{{{ "invImgSizeY",       SkSLType::kFloat2 },
-                           { "invImgSizeUV",      SkSLType::kFloat2 },  // Relative to Y's texels
-                           { "subset",            SkSLType::kFloat4 },
-                           { "tilemodeX",         SkSLType::kInt },
-                           { "tilemodeY",         SkSLType::kInt },
-                           { "cubicCoeffs",       SkSLType::kHalf4x4 },
-                           { "channelSelectY",    SkSLType::kHalf4 },
-                           { "channelSelectU",    SkSLType::kHalf4 },
-                           { "channelSelectV",    SkSLType::kHalf4 },
-                           { "channelSelectA",    SkSLType::kHalf4 },
-                           { "yuvToRGBMatrix",    SkSLType::kHalf3x3 },
-                           { "yuvToRGBTranslate", SkSLType::kHalf3 }}},
-            /*texturesAndSamplers=*/{{{ "samplerY" },
-                                      { "samplerU" },
-                                      { "samplerV" },
-                                      { "samplerA" }}}
-    };
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kHWYUVImageShader] = {
+            /*uniforms=*/
+            {{{"invImgSizeY", SkSLType::kFloat2},
+              {"invImgSizeUV", SkSLType::kFloat2},  // Relative to Y's texels
+              {"subset", SkSLType::kFloat4},
+              {"tilemodeX", SkSLType::kInt},
+              {"tilemodeY", SkSLType::kInt},
+              {"cubicCoeffs", SkSLType::kHalf4x4},
+              {"channelSelectY", SkSLType::kHalf4},
+              {"channelSelectU", SkSLType::kHalf4},
+              {"channelSelectV", SkSLType::kHalf4},
+              {"channelSelectA", SkSLType::kHalf4},
+              {"yuvToRGBMatrix", SkSLType::kHalf3x3},
+              {"yuvToRGBTranslate", SkSLType::kHalf3}}},
+            /*texturesAndSamplers=*/{{{"samplerY"}, {"samplerU"}, {"samplerV"}, {"samplerA"}}}};
+    fBuiltInCodeSnippets[(int)BuiltInCodeSnippetID::kHWYUVImageShader] = {
             /*name=*/"HWYUVImage",
             /*staticFn=*/"sk_hw_yuv_image_shader",
             SnippetRequirementFlags::kLocalCoords,
-            /*uniforms=*/{{{ "invImgSizeY",           SkSLType::kFloat2 },
-                           { "invImgSizeUV",          SkSLType::kFloat2 }, // Relative to Y's texels
-                           { "subset",                SkSLType::kFloat4 },
-                           { "linearFilterUVInset",   SkSLType::kFloat2 },
-                           { "channelSelectY",        SkSLType::kHalf4 },
-                           { "channelSelectU",        SkSLType::kHalf4 },
-                           { "channelSelectV",        SkSLType::kHalf4 },
-                           { "channelSelectA",        SkSLType::kHalf4 },
-                           { "yuvToRGBMatrix",        SkSLType::kHalf3x3 },
-                           { "yuvToRGBTranslate",     SkSLType::kHalf3 }}},
-            /*texturesAndSamplers=*/{{{ "samplerY" },
-                                      { "samplerU" },
-                                      { "samplerV" },
-                                      { "samplerA" }}}
-    };
+            /*uniforms=*/
+            {{{"invImgSizeY", SkSLType::kFloat2},
+              {"invImgSizeUV", SkSLType::kFloat2},  // Relative to Y's texels
+              {"subset", SkSLType::kFloat4},
+              {"linearFilterUVInset", SkSLType::kFloat2},
+              {"channelSelectY", SkSLType::kHalf4},
+              {"channelSelectU", SkSLType::kHalf4},
+              {"channelSelectV", SkSLType::kHalf4},
+              {"channelSelectA", SkSLType::kHalf4},
+              {"yuvToRGBMatrix", SkSLType::kHalf3x3},
+              {"yuvToRGBTranslate", SkSLType::kHalf3}}},
+            /*texturesAndSamplers=*/{{{"samplerY"}, {"samplerU"}, {"samplerV"}, {"samplerA"}}}};
 
-    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kHWYUVNoSwizzleImageShader] = {
+    fBuiltInCodeSnippets[(int)BuiltInCodeSnippetID::kHWYUVNoSwizzleImageShader] = {
             /*name=*/"HWYUVImageNoSwizzle",
             /*staticFn=*/"sk_hw_yuv_no_swizzle_image_shader",
             SnippetRequirementFlags::kLocalCoords,
-            /*uniforms=*/{{{ "invImgSizeY",              SkSLType::kFloat2 },
-                           { "invImgSizeUV",             SkSLType::kFloat2 }, // Relative to Y space
-                           { "subset",                   SkSLType::kFloat4 },
-                           { "linearFilterUVInset",      SkSLType::kFloat2 },
-                           { "yuvToRGBMatrix",           SkSLType::kHalf3x3 },
-                           { "yuvToRGBXlateAlphaParams", SkSLType::kHalf4 }}},
-            /*texturesAndSamplers=*/{{{ "samplerY" },
-                                      { "samplerU" },
-                                      { "samplerV" },
-                                      { "samplerA" }}}
-    };
+            /*uniforms=*/
+            {{{"invImgSizeY", SkSLType::kFloat2},
+              {"invImgSizeUV", SkSLType::kFloat2},  // Relative to Y space
+              {"subset", SkSLType::kFloat4},
+              {"linearFilterUVInset", SkSLType::kFloat2},
+              {"yuvToRGBMatrix", SkSLType::kHalf3x3},
+              {"yuvToRGBXlateAlphaParams", SkSLType::kHalf4}}},
+            /*texturesAndSamplers=*/{{{"samplerY"}, {"samplerU"}, {"samplerV"}, {"samplerA"}}}};
 
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCoordNormalizeShader] = {
             /*name=*/"CoordNormalize",

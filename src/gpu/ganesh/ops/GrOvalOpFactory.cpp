@@ -279,7 +279,7 @@ private:
             fragBuilder->codeAppendf("half4 %s = half4(edgeAlpha);", args.fOutputCoverage);
         }
 
-        SkMatrix      fLocalMatrix = SkMatrix::InvalidMatrix();
+        SkMatrix fLocalMatrix = SkMatrix::InvalidMatrix();
         UniformHandle fLocalMatrixUniform;
     };
 
@@ -540,7 +540,7 @@ private:
             fragBuilder->codeAppendf("half4 %s = half4(edgeAlpha);", args.fOutputCoverage);
         }
 
-        SkMatrix      fLocalMatrix = SkMatrix::InvalidMatrix();
+        SkMatrix fLocalMatrix = SkMatrix::InvalidMatrix();
         UniformHandle fLocalMatrixUniform;
     };
 
@@ -727,7 +727,7 @@ private:
 
         using INHERITED = ProgramImpl;
 
-        SkMatrix      fLocalMatrix = SkMatrix::InvalidMatrix();
+        SkMatrix fLocalMatrix = SkMatrix::InvalidMatrix();
         UniformHandle fLocalMatrixUniform;
     };
 

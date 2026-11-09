@@ -165,12 +165,11 @@ public:
                 : fVertices(nullptr)
                 , fNumVertices(numVertices)
                 , fVertexSize(vertexSize)
-                , fGpuBuffer(std::move(gpuBuffer)) {
-        }
+                , fGpuBuffer(std::move(gpuBuffer)) {}
 
-        const void*        fVertices;
-        int                fNumVertices;
-        size_t             fVertexSize;
+        const void* fVertices;
+        int fNumVertices;
+        size_t fVertexSize;
 
         sk_sp<GrGpuBuffer> fGpuBuffer;
     };

@@ -2100,10 +2100,10 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
             SkIRect iSubsetUV = subsetUV.roundOut();
             // Inset in UV and map back to Y texel space. This gives us the largest possible
             // inset rectangle that will not sample outside of the subset texels in UV space.
-            SkRect insetRectUV = {(iSubsetUV.fLeft  +0.5f)*ssx,
-                                  (iSubsetUV.fTop   +0.5f)*ssy,
-                                  (iSubsetUV.fRight -0.5f)*ssx,
-                                  (iSubsetUV.fBottom-0.5f)*ssy};
+            SkRect insetRectUV = {(iSubsetUV.fLeft + 0.5f) * ssx,
+                                  (iSubsetUV.fTop + 0.5f) * ssy,
+                                  (iSubsetUV.fRight - 0.5f) * ssx,
+                                  (iSubsetUV.fBottom - 0.5f) * ssy};
             // Compute intersection with original inset
             SkRect insetRect = imgData.fSubset.makeOutset(-0.5f, -0.5f);
             (void) insetRect.intersect(insetRectUV);

@@ -1157,7 +1157,7 @@ bool SkOpCoincidence::apply(DEBUG_COIN_DECLARE_ONLY_PARAMS()) {
 }
 
 // Please keep this in sync with debugRelease()
-bool SkOpCoincidence::release(SkCoincidentSpans** headPtr, SkCoincidentSpans* remove)  {
+bool SkOpCoincidence::release(SkCoincidentSpans** headPtr, SkCoincidentSpans* remove) {
     while (SkCoincidentSpans* coin = *headPtr) {
         if (coin == remove) {
             *headPtr = coin->next();

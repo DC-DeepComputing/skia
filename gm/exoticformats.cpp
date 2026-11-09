@@ -196,20 +196,20 @@ constexpr unsigned int kDDSD_DEPTH       = 0x800000;
 constexpr unsigned int kDDSD_REQUIRED = kDDSD_CAPS | kDDSD_HEIGHT | kDDSD_WIDTH | kDDSD_PIXELFORMAT;
 
 typedef struct {
-    DWORD           dwSize;
-    DWORD           dwFlags;
-    DWORD           dwHeight;
-    DWORD           dwWidth;
-    DWORD           dwPitchOrLinearSize;
-    DWORD           dwDepth;
-    DWORD           dwMipMapCount;
-    DWORD           dwReserved1[11];
+    DWORD dwSize;
+    DWORD dwFlags;
+    DWORD dwHeight;
+    DWORD dwWidth;
+    DWORD dwPitchOrLinearSize;
+    DWORD dwDepth;
+    DWORD dwMipMapCount;
+    DWORD dwReserved1[11];
     DDS_PIXELFORMAT ddspf;
-    DWORD           dwCaps;
-    DWORD           dwCaps2;
-    DWORD           dwCaps3;
-    DWORD           dwCaps4;
-    DWORD           dwReserved2;
+    DWORD dwCaps;
+    DWORD dwCaps2;
+    DWORD dwCaps3;
+    DWORD dwCaps4;
+    DWORD dwReserved2;
 } DDS_HEADER;
 
 // This DDS loader is barely sufficient to load the specific files this GM requires. Use

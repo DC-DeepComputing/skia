@@ -768,8 +768,8 @@ SkEnumBitMask<FilterResult::BoundsAnalysis> FilterResult::analyzeBounds(
             // to be handled specially to keep rendering methods visually consistent.
             float scaleFactors[2];
             if (!(SkMatrix(netTransform).getMinMaxScales(scaleFactors) &&
-                    SkScalarNearlyEqual(scaleFactors[0], 1.f, 0.2f) &&
-                    SkScalarNearlyEqual(scaleFactors[1], 1.f, 0.2f))) {
+                  SkScalarNearlyEqual(scaleFactors[0], 1.f, 0.2f) &&
+                  SkScalarNearlyEqual(scaleFactors[1], 1.f, 0.2f))) {
                 analysis |= BoundsAnalysis::kRequiresDecalInLayerSpace;
                 if (fBoundary == PixelBoundary::kTransparent) {
                     // Turn off considering the transparent padding as safe to prevent that
@@ -1309,7 +1309,10 @@ void FilterResult::draw(const Context& ctx,
 #endif
             }
             netTransform.preTranslate(-1.f, -1.f);
-            device->drawSpecial(fImage->makePixelOutset().get(), netTransform, sampling, paint,
+            device->drawSpecial(fImage->makePixelOutset().get(),
+                                netTransform,
+                                sampling,
+                                paint,
                                 SkCanvas::kFast_SrcRectConstraint);
         } else {
             paint.setAntiAlias(true);

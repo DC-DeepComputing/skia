@@ -35,15 +35,11 @@ const RenderPassProperties kRGBA_1_D {
 
 namespace {
 
-void precompile_an_arc_draw(skiatest::Reporter* reporter,
-                            PrecompileContext* precompileContext) {
+void precompile_an_arc_draw(skiatest::Reporter* reporter, PrecompileContext* precompileContext) {
     PaintOptions paintOptions;
     paintOptions.addBlendMode(SkBlendMode::kSrcOver);
 
-    Precompile(precompileContext,
-               paintOptions,
-               DrawTypeFlags::kCircularArc,
-               { kRGBA_1_D });
+    Precompile(precompileContext, paintOptions, DrawTypeFlags::kCircularArc, {kRGBA_1_D});
 }
 
 void draw_an_arc(skiatest::Reporter* reporter, Context* context) {

@@ -1159,9 +1159,9 @@ static void aaa_walk_convex_edges(SkAnalyticEdge*  prevHead,
         local_bot_fixed = std::min(local_bot_fixed, SkIntToFixed(stop_y));
 
 #if defined(SK_LEGACY_ALPHA_RUNS)
-        SkFixed left  = std::max(leftBound, leftE->fX);
+        SkFixed left = std::max(leftBound, leftE->fX);
         SkFixed dLeft = leftE->fDX;
-        SkFixed rite  = std::min(riteBound, riteE->fX);
+        SkFixed rite = std::min(riteBound, riteE->fX);
 #else
         SkFixed left  = std::clamp(leftE->fX, leftBound, riteBound);
         SkFixed dLeft = leftE->fDX;

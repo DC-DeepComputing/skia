@@ -167,7 +167,7 @@ public:
     SkPoint fPt;   // cache of point value at this t
 protected:
     SkOpSpanBase* fSpan;  // contains winding data
-    SkOpPtT* fNext;  // intersection on opposite curve or alias on this curve
+    SkOpPtT* fNext;       // intersection on opposite curve or alias on this curve
     bool fDeleted;  // set if removed from span list
     bool fDuplicatePt;  // set if identical pt is somewhere in the next loop
     // below mutable since referrer is otherwise always const
@@ -403,10 +403,10 @@ private:
 
 protected:  // no direct access to internals to avoid treating a span base as a span
     SkOpPtT fPtT;  // list of points and t values associated with the start of this span
-    SkOpSegment* fSegment;  // segment that contains this span
+    SkOpSegment* fSegment;   // segment that contains this span
     SkOpSpanBase* fCoinEnd;  // linked list of coincident spans that end here (may point to itself)
-    SkOpAngle* fFromAngle;  // points to next angle from span start to end
-    SkOpSpan* fPrev;  // previous intersection point
+    SkOpAngle* fFromAngle;   // points to next angle from span start to end
+    SkOpSpan* fPrev;         // previous intersection point
     int fSpanAdds;  // number of times intersections have been added to span
     bool fAligned;
     bool fChased;  // set after span has been added to chase array
@@ -564,8 +564,8 @@ public:
 
 private:  // no direct access to internals to avoid treating a span base as a span
     SkOpSpan* fCoincident;  // linked list of spans coincident with this one (may point to itself)
-    SkOpAngle* fToAngle;  // points to next angle from span start to end
-    SkOpSpanBase* fNext;  // next intersection point
+    SkOpAngle* fToAngle;    // points to next angle from span start to end
+    SkOpSpanBase* fNext;    // next intersection point
     int fWindSum;  // accumulated from contours surrounding this one.
     int fOppSum;  // for binary operators: the opposite winding sum
     int fWindValue;  // 0 == canceled; 1 == normal; >1 == coincident

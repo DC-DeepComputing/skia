@@ -248,7 +248,7 @@ private:
                         SkASSERT(!fViewMatrix->hasPerspective());
                         float a=fViewMatrix->getScaleX(), b=fViewMatrix->getSkewX(),
                               c=fViewMatrix->getSkewY(),  d=fViewMatrix->getScaleY();
-                        float det = a*d - b*c;
+                        float det = a * d - b * c;
                         if (det > 0) {
                             // outset = inverse(|a b|) * |.5|
                             //                  |c d|    | 0|

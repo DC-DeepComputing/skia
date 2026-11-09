@@ -197,10 +197,10 @@ private:
             }
         }
 
-        SkMatrix    fViewMatrixPrev  = SkMatrix::InvalidMatrix();
-        SkMatrix    fLocalMatrixPrev = SkMatrix::InvalidMatrix();
-        SkPMColor4f fColor           = SK_PMColor4fILLEGAL;
-        uint8_t     fCoverage        = 0xFF;
+        SkMatrix fViewMatrixPrev = SkMatrix::InvalidMatrix();
+        SkMatrix fLocalMatrixPrev = SkMatrix::InvalidMatrix();
+        SkPMColor4f fColor = SK_PMColor4fILLEGAL;
+        uint8_t fCoverage = 0xFF;
 
         UniformHandle fViewMatrixUniform;
         UniformHandle fLocalMatrixUniform;

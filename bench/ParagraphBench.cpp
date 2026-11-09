@@ -27,14 +27,10 @@ class ParagraphBench final : public Benchmark {
     std::unique_ptr<skia::textlayout::Paragraph> fParagraph;
 
 public:
-    ParagraphBench() {
-        fName.printf("skparagraph");
-    }
+    ParagraphBench() { fName.printf("skparagraph"); }
 
 protected:
-    const char* onGetName() override {
-        return fName.c_str();
-    }
+    const char* onGetName() override { return fName.c_str(); }
 
     bool isSuitableFor(Backend backend) override {
         // fParagraph might have failed to be created in onDelayedSetup()
@@ -49,26 +45,25 @@ protected:
         fTStyle.setColor(SK_ColorBLACK);
 
         const char* text =
-            "This is a very long sentence to test if the text will properly wrap "
-            "around and go to the next line. Sometimes, short sentence. Longer "
-            "sentences are okay too because they are necessary. Very short. "
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
-            "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim "
-            "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea "
-            "commodo consequat. Duis aute irure dolor in reprehenderit in voluptate "
-            "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint "
-            "occaecat cupidatat non proident, sunt in culpa qui officia deserunt "
-            "mollit anim id est laborum. "
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
-            "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim "
-            "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea "
-            "commodo consequat. Duis aute irure dolor in reprehenderit in voluptate "
-            "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint "
-            "occaecat cupidatat non proident, sunt in culpa qui officia deserunt "
-            "mollit anim id est laborum.";
+                "This is a very long sentence to test if the text will properly wrap "
+                "around and go to the next line. Sometimes, short sentence. Longer "
+                "sentences are okay too because they are necessary. Very short. "
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
+                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim "
+                "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea "
+                "commodo consequat. Duis aute irure dolor in reprehenderit in voluptate "
+                "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint "
+                "occaecat cupidatat non proident, sunt in culpa qui officia deserunt "
+                "mollit anim id est laborum. "
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
+                "tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim "
+                "veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea "
+                "commodo consequat. Duis aute irure dolor in reprehenderit in voluptate "
+                "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint "
+                "occaecat cupidatat non proident, sunt in culpa qui officia deserunt "
+                "mollit anim id est laborum.";
         skia::textlayout::ParagraphStyle paragraph_style;
-        auto builder =
-            skia::textlayout::ParagraphBuilder::make(paragraph_style, fFontCollection);
+        auto builder = skia::textlayout::ParagraphBuilder::make(paragraph_style, fFontCollection);
         if (!builder) {
             return;
         }
@@ -95,6 +90,6 @@ private:
     using INHERITED = Benchmark;
 };
 
-DEF_BENCH( return new ParagraphBench; )
+DEF_BENCH(return new ParagraphBench;)
 
-#endif // SK_ENABLE_PARAGRAPH
+#endif  // SK_ENABLE_PARAGRAPH

@@ -203,8 +203,8 @@ private:
 #ifdef SK_GAMMA_APPLY_TO_A8
     float    fDistanceAdjust  = -1.f;
 #endif
-    SkISize  fAtlasDimensions = {-1, -1};
-    SkMatrix fLocalMatrix     = SkMatrix::InvalidMatrix();
+    SkISize fAtlasDimensions = {-1, -1};
+    SkMatrix fLocalMatrix = SkMatrix::InvalidMatrix();
 
     UniformHandle fDistanceAdjustUni;
     UniformHandle fAtlasDimensionsInvUniform;
@@ -467,7 +467,7 @@ private:
         fragBuilder->codeAppendf("half4 %s = half4(val);", args.fOutputCoverage);
     }
 
-    SkMatrix      fLocalMatrix;
+    SkMatrix fLocalMatrix;
     UniformHandle fLocalMatrixUniform;
 
     SkISize       fAtlasDimensions;
@@ -784,9 +784,9 @@ private:
     }
 
 private:
-    DistanceAdjust fDistanceAdjust  = DistanceAdjust::Make(1.0f, 1.0f, 1.0f);
-    SkISize        fAtlasDimensions = {-1, -1};
-    SkMatrix       fLocalMatrix     = SkMatrix::InvalidMatrix();
+    DistanceAdjust fDistanceAdjust = DistanceAdjust::Make(1.0f, 1.0f, 1.0f);
+    SkISize fAtlasDimensions = {-1, -1};
+    SkMatrix fLocalMatrix = SkMatrix::InvalidMatrix();
 
     UniformHandle fDistanceAdjustUni;
     UniformHandle fAtlasDimensionsInvUniform;

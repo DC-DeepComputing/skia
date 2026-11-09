@@ -167,12 +167,12 @@ const char* BitmapTextRenderStep::fragmentCoverageSkSL() const {
     // the calling code) with the actual coverage splatted out into all four channels.
     static_assert(kNumTextAtlasTextures == 4);
     return "outputCoverage = bitmap_text_coverage_fn(sample_indexed_atlas(textureCoords, "
-                                                                         "int(texIndex), "
-                                                                         "text_atlas_0, "
-                                                                         "text_atlas_1, "
-                                                                         "text_atlas_2, "
-                                                                         "text_atlas_3), "
-                                                    "int(maskFormat));";
+           "int(texIndex), "
+           "text_atlas_0, "
+           "text_atlas_1, "
+           "text_atlas_2, "
+           "text_atlas_3), "
+           "int(maskFormat));";
 }
 
 bool BitmapTextRenderStep::usesUniformsInFragmentSkSL() const { return false; }

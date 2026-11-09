@@ -267,15 +267,15 @@ SkRuntimeEffect* make_displacement_shader() {
     // public runtime effect restrictions). Otherwise, this would use a "uniform ivec2"
     // and component indexing to convert the displacement color into a vector.
     static constexpr char kDisplacementShaderCode[] =
-        "uniform shader displMap;"
-        "uniform shader colorMap;"
-        "uniform half2 scale;"
-        "uniform half4 xSelect;" // Only one of RGBA will be 1, the rest are 0
-        "uniform half4 ySelect;"
+            "uniform shader displMap;"
+            "uniform shader colorMap;"
+            "uniform half2 scale;"
+            "uniform half4 xSelect;"  // Only one of RGBA will be 1, the rest are 0
+            "uniform half4 ySelect;"
 
-        "half4 main(float2 coord) {"
+            "half4 main(float2 coord) {"
             "return sk_displacement(displMap, colorMap, coord, scale, xSelect, ySelect);"
-        "}";
+            "}";
 
     return SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
                                kDisplacementShaderCode,
