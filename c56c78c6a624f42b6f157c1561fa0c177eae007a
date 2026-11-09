@@ -242,6 +242,24 @@
       "parentUuid": "67bb40ac_6646e474",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b538cc2_ebc89413",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3405028
+      },
+      "writtenOn": "2026-11-09T08:31:21Z",
+      "side": 1,
+      "message": "\u003e Would those barriers be able to protect the RAW hazard?\nYes, they should (assuming the access masks are set correctly too, that is in the first barrier uses VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT, the 2nd VK_ACCESS_SHADER_READ_BIT). If both pipeline barriers (the first/releasing/exporting one, and the second importing/aquiring one) are going into the same Vulkan queue they are serialized. Ohterwise one needs a X-queue synchronization with a semaphore in addition.\n\nFeel free to close comment as the patch has been significantly reworked.",
+      "parentUuid": "70a2c620_85216e08",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
