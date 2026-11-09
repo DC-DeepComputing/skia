@@ -105,14 +105,18 @@ public:
     }
 
     skgpu::Token addASAPUpload(GrDeferredTextureUploadFn&& upload) final {
+        fNumASAPUploads++;
         return fTokenTracker.nextFlushToken();
     }
 
     void issueDrawToken() { fTokenTracker.issueDrawToken(); }
     void issueFlushToken() { fTokenTracker.issueFlushToken(); }
 
+    int numASAPUploads() const { return fNumASAPUploads; }
+
 private:
     skgpu::TokenTracker fTokenTracker;
+    int fNumASAPUploads = 0;
 
     using INHERITED = GrDeferredUploadTarget;
 };
