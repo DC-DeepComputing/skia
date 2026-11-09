@@ -559,9 +559,34 @@ sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
     return s.detachAsData();
 }
 
-}  // namespace
+bool is_valid_to_xyz_d50(const skcms_Matrix3x3& toXYZD50) {
+    skcms_Matrix3x3 inv;
+    if (!skcms_Matrix3x3_invert(&toXYZD50, &inv)) {
+        return false;
+    }
+    // Also verify that s15Fixed16 quantization in write_xyz_tag preserves invertibility (rejecting
+    // matrices that underflow to zero or saturate to a singular matrix).
+    skcms_Matrix3x3 quantized;
+    for (int r = 0; r < 3; ++r) {
+        for (int c = 0; c < 3; ++c) {
+            quantized.vals[r][c] = SkFixedToFloat(float_round_to_fixed(toXYZD50.vals[r][c]));
+        }
+    }
+    return skcms_Matrix3x3_invert(&quantized, &inv);
+}
 
-sk_sp<SkData> SkWriteICCProfile(const skcms_ICCProfile* profile, const char* desc) {
+bool is_valid_parametric_trc(const skcms_TransferFunction& fn) {
+    skcms_TransferFunction inv;
+    return skcms_TransferFunction_isSRGBish(&fn) && skcms_TransferFunction_invert(&fn, &inv) &&
+           float_round_to_fixed(fn.g) > 0 && float_round_to_fixed(fn.a) > 0;
+}
+
+bool is_valid_trc(const skcms_Curve& trc) {
+    return trc.table_entries ? (trc.table_entries >= 2 && trc.table_16 != nullptr)
+                             : is_valid_parametric_trc(trc.parametric);
+}
+
+sk_sp<SkData> write_icc_profile(const skcms_ICCProfile* profile, const char* desc) {
     ICCHeader header;
     bool uses_4_4_features = false;
 
@@ -706,6 +731,28 @@ sk_sp<SkData> SkWriteICCProfile(const skcms_ICCProfile* profile, const char* des
     return SkData::MakeFromMalloc(profile_data.release(), profile_size);
 }
 
+}  // namespace
+
+sk_sp<SkData> SkWriteICCProfile(const skcms_ICCProfile* profile, const char* desc) {
+    if (!profile || profile->data_color_space != skcms_Signature_RGB) {
+        return nullptr;
+    }
+    if (!profile->has_A2B && !(profile->has_trc && profile->has_toXYZD50)) {
+        return nullptr;
+    }
+    if (profile->has_toXYZD50 && !is_valid_to_xyz_d50(profile->toXYZD50)) {
+        return nullptr;
+    }
+    if (profile->has_trc) {
+        for (size_t i = 0; i < kNumChannels; ++i) {
+            if (!is_valid_trc(profile->trc[i])) {
+                return nullptr;
+            }
+        }
+    }
+    return write_icc_profile(profile, desc);
+}
+
 sk_sp<SkData> SkWriteICCProfile(const SkColorSpace* colorSpace,
                                 const skhdr::Metadata* hdrMetadata) {
     if (!colorSpace) {
@@ -716,6 +763,14 @@ sk_sp<SkData> SkWriteICCProfile(const SkColorSpace* colorSpace,
     skcms_Matrix3x3 toXYZD50;
     colorSpace->transferFn(&fn);
     colorSpace->toXYZD50(&toXYZD50);
+
+    const bool isHdr = skcms_TransferFunction_isPQish(&fn) ||
+                       skcms_TransferFunction_isHLGish(&fn) || skcms_TransferFunction_isPQ(&fn) ||
+                       skcms_TransferFunction_isHLG(&fn);
+    if (!is_valid_to_xyz_d50(toXYZD50) ||
+        !(isHdr ? SkIsFinite(&fn.g, 7) : is_valid_parametric_trc(fn))) {
+        return nullptr;
+    }
 
     skcms_ICCProfile profile;
     memset(&profile, 0, sizeof(profile));
@@ -731,18 +786,15 @@ sk_sp<SkData> SkWriteICCProfile(const SkColorSpace* colorSpace,
         profile.toXYZD50 = toXYZD50;
     }
 
-    // Populate the analytic TRC for sRGB-like curves.
-    if (skcms_TransferFunction_isSRGBish(&fn)) {
+    if (!isHdr) {
+        // Populate the analytic TRC for sRGB-like curves.
         profile.has_trc = true;
         profile.trc[0].table_entries = 0;
         profile.trc[0].parametric = fn;
         memcpy(&profile.trc[1], &profile.trc[0], sizeof(profile.trc[0]));
         memcpy(&profile.trc[2], &profile.trc[0], sizeof(profile.trc[0]));
-    }
-
-    // Populate A2B (PQ and HLG only).
-    if (skcms_TransferFunction_isPQish(&fn) || skcms_TransferFunction_isHLGish(&fn) ||
-        skcms_TransferFunction_isPQ(&fn) || skcms_TransferFunction_isHLG(&fn)) {
+    } else {
+        // Populate A2B (PQ and HLG only).
         // Populate a 1D curve to perform per-channel conversion to linear and tone mapping.
         constexpr uint32_t kTrcTableSize = 65;
         trc_table.resize(kTrcTableSize);
@@ -843,8 +895,7 @@ sk_sp<SkData> SkWriteICCProfile(const SkColorSpace* colorSpace,
     }
 
     // Populate CICP.
-    if (skcms_TransferFunction_isHLGish(&fn) || skcms_TransferFunction_isPQish(&fn) ||
-        skcms_TransferFunction_isHLG(&fn) || skcms_TransferFunction_isPQ(&fn)) {
+    if (isHdr) {
         profile.has_CICP = true;
         profile.CICP.color_primaries = get_cicp_primaries(toXYZD50);
         profile.CICP.transfer_characteristics = get_cicp_trfn(fn);
@@ -866,7 +917,7 @@ sk_sp<SkData> SkWriteICCProfile(const SkColorSpace* colorSpace,
     }
 
     std::string description = get_desc_string(fn, toXYZD50);
-    return SkWriteICCProfile(&profile, description.c_str());
+    return write_icc_profile(&profile, description.c_str());
 }
 
 sk_sp<SkData> SkWriteICCProfile(const skcms_TransferFunction& fn, const skcms_Matrix3x3& toXYZD50) {
