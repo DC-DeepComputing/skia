@@ -58,9 +58,17 @@ func newChromeContext(
 	stepCtx := td.StartStep(ctx, td.Props("create chrome devtools context").Infra())
 	defer td.EndStep(stepCtx)
 
+	// Chrome's own logs (e.g. GPU process crashes, the reason a WebGL context was lost) only go to
+	// stderr, not to the page console. Log stream is in the parent context so it survives this step.
+	chromeLogs := td.NewLogStream(ctx, "chrome stderr", td.SeverityInfo)
+
 	execOpts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.ExecPath(chromeBin),
 		chromedp.NoSandbox, // req'd for modern Ubuntus where we don't have sudo/root
+		chromedp.Flag("enable-logging", "stderr"),
+		// WARNING and above; INFO is mostly page console messages, which attachConsole captures.
+		chromedp.Flag("log-level", "1"),
+		chromedp.CombinedOutput(chromeLogs),
 	)
 	chromeCtx, cancelChrome := chromedp.NewExecAllocator(ctx, execOpts...)
 
