@@ -1631,6 +1631,22 @@ bool SkScalerContextFTUtils::drawSVGGlyph(FT_Face face, const SkGlyph& glyph, Lo
 }
 #endif  // FT_CONFIG_OPTION_SVG
 
+std::optional<SkScalerContextFTUtils::OutlineShift> SkScalerContextFTUtils::ComputeOutlineShift(
+        FT_Pos xMin, FT_Pos yMin, FT_Pos xMax, FT_Pos yMax, SkFDot6 dx, SkFDot6 dy) {
+    if (!SkTFitsIn<SkFDot6>(xMin) || !SkTFitsIn<SkFDot6>(xMax) ||
+        !SkTFitsIn<SkFDot6>(yMin) || !SkTFitsIn<SkFDot6>(yMax)) {
+        return std::nullopt;
+    }
+
+    // We want to apply the subpixel offset (dx, dy), and then align the resulting
+    // bounding box to the integer pixel grid of our destination bitmap.
+    // We do this by calculating the translation required to move the glyph's
+    // pixel-rounded left edge (in the destination space) to the origin which allows
+    // us to only make one call to Translate.
+    return OutlineShift{dx - SkIntToFDot6(SkFDot6Floor(xMin + dx)),
+                        dy - SkIntToFDot6(SkFDot6Floor(yMin + dy))};
+}
+
 void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& glyph, void* imageBuffer,
                                                 const SkMatrix& bitmapTransform,
                                                 const SkMaskGamma::PreBlend& preBlend) const {
@@ -1729,19 +1745,14 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                 FT_BBox     bbox;
                 FT_Bitmap   target;
                 FT_Outline_Get_CBox(outline, &bbox);
-                if (!SkTFitsIn<SkFDot6>(bbox.xMin) || !SkTFitsIn<SkFDot6>(bbox.xMax) ||
-                    !SkTFitsIn<SkFDot6>(bbox.yMin) || !SkTFitsIn<SkFDot6>(bbox.yMax)) {
+                // A rejected outline leaves the glyph blank, same as when FreeType itself
+                // refuses to render an outline that is too large
+                std::optional<OutlineShift> shift =
+                        ComputeOutlineShift(bbox.xMin, bbox.yMin, bbox.xMax, bbox.yMax, dx, dy);
+                if (!shift) {
                     return;
                 }
-
-                // We want to apply the subpixel offset (dx, dy), and then align the resulting
-                // bounding box to the integer pixel grid of our destination bitmap.
-                // We do this by calculating the translation required to move the glyph's
-                // pixel-rounded left edge (in the destination space) to the origin which allows
-                // us to only make one call to Translate.
-                auto xShift = dx - SkIntToFDot6(SkFDot6Floor(bbox.xMin + dx));
-                auto yShift = dy - SkIntToFDot6(SkFDot6Floor(bbox.yMin + dy));
-                FT_Outline_Translate(outline, xShift, yShift);
+                FT_Outline_Translate(outline, shift->fX, shift->fY);
 
                 target.width = glyph.width();
                 target.rows = glyph.height();

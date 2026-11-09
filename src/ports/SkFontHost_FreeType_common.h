@@ -12,8 +12,11 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+#include "src/core/SkFDot6.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkScalerContext.h"
+
+#include <optional>
 
 class SkCanvas;
 class SkPathBuilder;
@@ -65,6 +68,20 @@ struct SkScalerContextFTUtils {
      *  state of FT_Face.
      */
     static bool computeColrV1GlyphBoundingBox(FT_Face, SkGlyphID, SkRect* bounds);
+
+    struct OutlineShift {
+        FT_Pos fX;
+        FT_Pos fY;
+    };
+
+    /** Computes the translation that applies the subpixel offset (dx, dy) to an outline with
+     *  control box [xMin, xMax] x [yMin, yMax] (26.6) and moves the floored left/bottom edge to
+     *  the bitmap origin. Returns nullopt if the translated outline cannot be rasterized safely;
+     *  the caller then leaves the glyph image blank. No side effects.
+     */
+    static std::optional<OutlineShift> ComputeOutlineShift(FT_Pos xMin, FT_Pos yMin,
+                                                           FT_Pos xMax, FT_Pos yMax,
+                                                           SkFDot6 dx, SkFDot6 dy);
 
 private:
     bool generateFacePath(FT_Face, SkGlyphID, LoadGlyphFlags, SkPathBuilder*) const;
