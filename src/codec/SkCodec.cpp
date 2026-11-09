@@ -18,6 +18,8 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkStream.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkMalloc.h"
 #include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
@@ -27,6 +29,8 @@
 #include "src/core/SkColorPriv.h"
 #include "src/core/SkNoDestructor.h"
 
+#include <cstddef>
+#include <cstdint>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -872,6 +876,7 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
                 ? kDecodeRow_XformTime : kPalette_XformTime;
         if (!SkCodecPriv::SelectXformFormat(
                     dstInfo.colorType(), fXformTime == kPalette_XformTime, &fDstXformFormat)) {
+            fXformTime = kNo_XformTime;
             return false;
         }
         if (encodedAlpha == SkEncodedInfo::kUnpremul_Alpha
@@ -880,6 +885,21 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
         } else {
             fDstXformAlphaFormat = skcms_AlphaFormat_Unpremul;
         }
+        // Dry-run a 0-pixel transform (with distinct pointers so cross-bpp alias checks pass) to
+        // reject non-invertible destination profiles or unusable source profiles upfront.
+        uint64_t dummySrc = 0, dummyDst = 0;
+        if (!skcms_Transform(&dummySrc,
+                             fSrcXformFormat,
+                             skcms_AlphaFormat_Unpremul,
+                             fEncodedInfo.profile(),
+                             &dummyDst,
+                             fDstXformFormat,
+                             fDstXformAlphaFormat,
+                             fDstProfile,
+                             /*npixels=*/0)) {
+            fXformTime = kNo_XformTime;
+            return false;
+        }
     }
     return true;
 }
@@ -887,9 +907,25 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
 void SkCodec::applyColorXform(void* dst, const void* src, int count) const {
     // It is okay for srcProfile to be null. This will use sRGB.
     const auto* srcProfile = fEncodedInfo.profile();
-    SkAssertResult(skcms_Transform(src, fSrcXformFormat, skcms_AlphaFormat_Unpremul, srcProfile,
-                                   dst, fDstXformFormat, fDstXformAlphaFormat, fDstProfile,
-                                   count));
+    if (!skcms_Transform(src,
+                         fSrcXformFormat,
+                         skcms_AlphaFormat_Unpremul,
+                         srcProfile,
+                         dst,
+                         fDstXformFormat,
+                         fDstXformAlphaFormat,
+                         fDstProfile,
+                         count)) {
+        // Defense in depth behind the 0-pixel dry run in initializeColorXform (e.g. if count * bpp
+        // exceeds INT_MAX).
+        SkDEBUGFAIL("Failed to apply color xform");
+        if (count > 0) {
+            const size_t bpp = fXformTime == kPalette_XformTime
+                                       ? sizeof(uint32_t)
+                                       : static_cast<size_t>(fDstInfo.bytesPerPixel());
+            sk_bzero(dst, static_cast<size_t>(count) * bpp);
+        }
+    }
 }
 
 std::vector<SkCodec::FrameInfo> SkCodec::getFrameInfo() {

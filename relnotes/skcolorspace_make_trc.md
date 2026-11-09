@@ -1,0 +1,1 @@
+`SkColorSpace::Make(const skcms_ICCProfile&)` now requires parametric transfer curves in `profile.trc` to be invertible sRGB-ish functions (when CICP transfer characteristics are not used), returning `nullptr` otherwise.

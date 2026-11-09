@@ -63,6 +63,9 @@ protected:
     IsAnimated onIsAnimated() override;
     const SkFrameHolder* getFrameHolder() const override { return &fFrameHolder; }
     bool conversionSupported(const SkImageInfo&, bool, bool) override;
+    // SkCrabbyAvifCodec converts YUV via crabbyavif rather than SkCodec::applyColorXform, and may
+    // carry CICP-only profiles without toXYZD50 that would fail initializeColorXform's dry run.
+    bool usesColorXform() const override { return false; }
     bool onGetGainmapCodec(SkGainmapInfo* info, std::unique_ptr<SkCodec>* gainmapCodec) override;
     bool onGetValidSubset(SkIRect*) const override { return true; }
 

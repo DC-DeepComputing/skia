@@ -20,6 +20,7 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDataTable.h"
+#include "include/core/SkFourByteTag.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
@@ -3161,4 +3162,380 @@ DEF_TEST(Codec_budgeted_buffer, r) {
     REPORTER_ASSERT(r, moveAssigned.empty());
     REPORTER_ASSERT(r, moveAssigned.size() == 0);
     REPORTER_ASSERT(r, moveAssigned.data() == nullptr);
+}
+
+namespace {
+
+uint32_t png_crc32(const uint8_t* data, size_t len) {
+    uint32_t crc = 0xFFFFFFFFu;
+    for (size_t i = 0; i < len; ++i) {
+        crc ^= data[i];
+        for (int bit = 0; bit < 8; ++bit) {
+            crc = (crc >> 1) ^ (0xEDB88320u & (0u - (crc & 1u)));
+        }
+    }
+    return ~crc;
+}
+
+uint32_t zlib_adler32(const uint8_t* data, size_t len) {
+    uint32_t a = 1;
+    uint32_t b = 0;
+    for (size_t i = 0; i < len; ++i) {
+        a = (a + data[i]) % 65521u;
+        b = (b + a) % 65521u;
+    }
+    return (b << 16) | a;
+}
+
+// Builds a raw RGB->XYZ ICC profile containing both an A2B0 (mAB) LUT and fallback rXYZ/gXYZ/bXYZ
+// + para type-0 TRC tags so tests can independently supply non-invertible TRC or gamut fallback
+// tags without depending on SkWriteICCProfile.
+sk_sp<SkData> make_a2b_icc_profile(uint32_t paraGammaFixed16, bool zeroGamut) {
+    auto writeXYZTag = [](SkWStream* s, uint32_t x, uint32_t y, uint32_t z) {
+        SkStreamPriv::WriteU32BE(s, SkSetFourByteTag('X', 'Y', 'Z', ' '));
+        SkStreamPriv::WriteU32BE(s, 0);
+        SkStreamPriv::WriteU32BE(s, x);
+        SkStreamPriv::WriteU32BE(s, y);
+        SkStreamPriv::WriteU32BE(s, z);
+    };
+    auto writeParaType0 = [](SkWStream* s, uint32_t gFixed16) {
+        SkStreamPriv::WriteU32BE(s, SkSetFourByteTag('p', 'a', 'r', 'a'));
+        SkStreamPriv::WriteU32BE(s, 0);
+        SkStreamPriv::WriteU16BE(s, 0);
+        SkStreamPriv::WriteU16BE(s, 0);
+        SkStreamPriv::WriteU32BE(s, gFixed16);
+    };
+
+    constexpr uint32_t kHeaderSize = 132;
+    constexpr uint32_t kTagCount = 8;
+    constexpr uint32_t kDataStart = kHeaderSize + kTagCount * 12;  // 228
+    constexpr uint32_t kXYZSize = 20;
+    constexpr uint32_t kParaSize = 16;
+    constexpr uint32_t kA2BSize = 32 + 3 * kParaSize + 68 + 3 * kParaSize;               // 196
+    constexpr uint32_t kProfileSize = kDataStart + 4 * kXYZSize + kParaSize + kA2BSize;  // 520
+
+    SkDynamicMemoryWStream s;
+    SkStreamPriv::WriteU32BE(&s, kProfileSize);
+    SkStreamPriv::WriteU32BE(&s, 0);
+    SkStreamPriv::WriteU32BE(&s, 0x04300000u);
+    SkStreamPriv::WriteU32BE(&s, SkSetFourByteTag('m', 'n', 't', 'r'));
+    SkStreamPriv::WriteU32BE(&s, SkSetFourByteTag('R', 'G', 'B', ' '));
+    SkStreamPriv::WriteU32BE(&s, SkSetFourByteTag('X', 'Y', 'Z', ' '));
+    for (int i = 0; i < 3; ++i) {
+        SkStreamPriv::WriteU32BE(&s, 0);
+    }
+    SkStreamPriv::WriteU32BE(&s, SkSetFourByteTag('a', 'c', 's', 'p'));
+    for (int i = 0; i < 7; ++i) {
+        SkStreamPriv::WriteU32BE(&s, 0);
+    }
+    SkStreamPriv::WriteU32BE(&s, 0x0000F6D6u);  // D50 X (0.9642)
+    SkStreamPriv::WriteU32BE(&s, 0x00010000u);  // D50 Y (1.0000)
+    SkStreamPriv::WriteU32BE(&s, 0x0000D32Du);  // D50 Z (0.8249)
+    for (int i = 0; i < 12; ++i) {
+        SkStreamPriv::WriteU32BE(&s, 0);
+    }
+    SkStreamPriv::WriteU32BE(&s, kTagCount);
+
+    auto writeTagEntry = [&s](uint32_t sig, uint32_t offset, uint32_t size) {
+        SkStreamPriv::WriteU32BE(&s, sig);
+        SkStreamPriv::WriteU32BE(&s, offset);
+        SkStreamPriv::WriteU32BE(&s, size);
+    };
+    constexpr uint32_t kWtptOff = kDataStart;
+    constexpr uint32_t kRXYZOff = kWtptOff + kXYZSize;
+    constexpr uint32_t kGXYZOff = kRXYZOff + kXYZSize;
+    constexpr uint32_t kBXYZOff = kGXYZOff + kXYZSize;
+    constexpr uint32_t kTrcOff = kBXYZOff + kXYZSize;
+    constexpr uint32_t kA2BOff = kTrcOff + kParaSize;
+    writeTagEntry(SkSetFourByteTag('w', 't', 'p', 't'), kWtptOff, kXYZSize);
+    writeTagEntry(SkSetFourByteTag('r', 'X', 'Y', 'Z'), kRXYZOff, kXYZSize);
+    writeTagEntry(SkSetFourByteTag('g', 'X', 'Y', 'Z'), kGXYZOff, kXYZSize);
+    writeTagEntry(SkSetFourByteTag('b', 'X', 'Y', 'Z'), kBXYZOff, kXYZSize);
+    writeTagEntry(SkSetFourByteTag('r', 'T', 'R', 'C'), kTrcOff, kParaSize);
+    writeTagEntry(SkSetFourByteTag('g', 'T', 'R', 'C'), kTrcOff, kParaSize);
+    writeTagEntry(SkSetFourByteTag('b', 'T', 'R', 'C'), kTrcOff, kParaSize);
+    writeTagEntry(SkSetFourByteTag('A', '2', 'B', '0'), kA2BOff, kA2BSize);
+
+    writeXYZTag(&s, 0x0000F6D6u, 0x00010000u, 0x0000D32Du);
+    if (zeroGamut) {
+        writeXYZTag(&s, 0, 0, 0);
+        writeXYZTag(&s, 0, 0, 0);
+        writeXYZTag(&s, 0, 0, 0);
+    } else {
+        writeXYZTag(&s, 0x00006FA2u, 0x000038F5u, 0x00000390u);
+        writeXYZTag(&s, 0x00006299u, 0x0000B785u, 0x000018DAu);
+        writeXYZTag(&s, 0x000024A0u, 0x00000F84u, 0x0000B6CFu);
+    }
+    writeParaType0(&s, paraGammaFixed16);
+
+    // mAB tag: 3->3 identity linear curves + 2x2x2 CLUT mapping RGB corners to D50 XYZ.
+    SkStreamPriv::WriteU32BE(&s, SkSetFourByteTag('m', 'A', 'B', ' '));
+    SkStreamPriv::WriteU32BE(&s, 0);
+    s.write8(3);
+    s.write8(3);
+    SkStreamPriv::WriteU16BE(&s, 0);
+    SkStreamPriv::WriteU32BE(&s, 32);   // B curves
+    SkStreamPriv::WriteU32BE(&s, 0);    // Matrix
+    SkStreamPriv::WriteU32BE(&s, 0);    // M curves
+    SkStreamPriv::WriteU32BE(&s, 80);   // CLUT
+    SkStreamPriv::WriteU32BE(&s, 148);  // A curves
+    for (int i = 0; i < 3; ++i) {
+        writeParaType0(&s, 0x00010000u);
+    }
+    constexpr uint8_t kGridPoints[16] = {2, 2, 2};
+    s.write(kGridPoints, sizeof(kGridPoints));
+    constexpr uint8_t kClutHeader[4] = {2, 0, 0, 0};
+    s.write(kClutHeader, sizeof(kClutHeader));
+    for (int r = 0; r < 2; ++r) {
+        for (int g = 0; g < 2; ++g) {
+            for (int b = 0; b < 2; ++b) {
+                SkStreamPriv::WriteU16BE(&s, r ? 31595u : 0u);  // ~0.9642 in u1.15 XYZ PCS
+                SkStreamPriv::WriteU16BE(&s, g ? 32768u : 0u);  // 1.0000 in u1.15 XYZ PCS
+                SkStreamPriv::WriteU16BE(&s, b ? 27030u : 0u);  // ~0.8249 in u1.15 XYZ PCS
+            }
+        }
+    }
+    for (int i = 0; i < 3; ++i) {
+        writeParaType0(&s, 0x00010000u);
+    }
+
+    SkASSERT(s.bytesWritten() == kProfileSize);
+    return s.detachAsData();
+}
+
+// Inserts a raw iCCP chunk immediately after IHDR (byte 33) using a stored zlib block.
+sk_sp<SkData> inject_png_iccp_chunk(const SkData* png, const SkData* icc) {
+    constexpr size_t kAfterIHDR = 8 + 25;
+    if (!png || png->size() < kAfterIHDR || !icc || icc->size() > 0xFFFFu) {
+        return nullptr;
+    }
+
+    SkDynamicMemoryWStream chunkTypeAndData;
+    chunkTypeAndData.write("iCCP", 4);
+    chunkTypeAndData.write("icc\0", 4);
+    chunkTypeAndData.write8(0);  // deflate compression method
+
+    // Zlib header (0x78 0x01) + final uncompressed block (0x01, LEN, NLEN) + ICC bytes + Adler-32.
+    const uint16_t len = static_cast<uint16_t>(icc->size());
+    const uint16_t nlen = ~len;
+    const uint8_t zlibPrefix[7] = {
+            0x78,
+            0x01,
+            0x01,
+            static_cast<uint8_t>(len & 0xFFu),
+            static_cast<uint8_t>(len >> 8),
+            static_cast<uint8_t>(nlen & 0xFFu),
+            static_cast<uint8_t>(nlen >> 8),
+    };
+    chunkTypeAndData.write(zlibPrefix, sizeof(zlibPrefix));
+    chunkTypeAndData.write(icc->bytes(), icc->size());
+    SkStreamPriv::WriteU32BE(&chunkTypeAndData, zlib_adler32(icc->bytes(), icc->size()));
+
+    sk_sp<SkData> body = chunkTypeAndData.detachAsData();
+    const uint32_t crc = png_crc32(body->bytes(), body->size());
+
+    SkDynamicMemoryWStream out;
+    out.write(png->bytes(), kAfterIHDR);
+    SkStreamPriv::WriteU32BE(&out, static_cast<uint32_t>(body->size() - 4));
+    out.write(body->bytes(), body->size());
+    SkStreamPriv::WriteU32BE(&out, crc);
+    out.write(png->bytes() + kAfterIHDR, png->size() - kAfterIHDR);
+    return out.detachAsData();
+}
+
+}  // namespace
+
+DEF_TEST(Codec_A2BWithNonInvertibleTags, r) {
+    // Regression test for embedded ICC profiles that pair a valid A2B0 LUT with non-invertible
+    // fallback tags (either para type-0 TRCs with g = 0, or all-zero rXYZ/gXYZ/bXYZ tags).
+    // Both getInfo() and SkAndroidCodec::computeOutputColorSpace() must fall back to sRGB rather
+    // than returning a non-invertible destination SkColorSpace, and decoding into unzeroed memory
+    // must overwrite every pixel without leaking stale bytes.
+    const sk_sp<SkData> zeroGammaIcc = make_a2b_icc_profile(/*paraGammaFixed16=*/0,
+                                                            /*zeroGamut=*/false);
+    const sk_sp<SkData> zeroGamutIcc = make_a2b_icc_profile(/*paraGammaFixed16=*/0x00010000u,
+                                                            /*zeroGamut=*/true);
+
+    for (const sk_sp<SkData>& icc : {zeroGammaIcc, zeroGamutIcc}) {
+        skcms_ICCProfile parsed;
+        REPORTER_ASSERT(r, skcms_Parse(icc->data(), icc->size(), &parsed));
+        REPORTER_ASSERT(r, parsed.has_A2B && parsed.has_trc && parsed.has_toXYZD50);
+
+        for (SkColorType srcCT : {
+                     kRGBA_8888_SkColorType,
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+                     // libpng's png_icc_check_header discards RGB iCCP profiles on grayscale PNGs,
+                     // whereas SkPngRustCodec retains them and exercises G_8 -> RGB/RGBA A2B.
+                     kGray_8_SkColorType,
+#endif
+             }) {
+            SkBitmap srcBm;
+            srcBm.allocPixels(SkImageInfo::Make(4, 4, srcCT, kOpaque_SkAlphaType));
+            srcBm.eraseColor(SkColorSetRGB(0x20, 0x80, 0xE0));
+            sk_sp<SkData> basePng = SkPngEncoder::Encode(srcBm.pixmap(), {});
+            REPORTER_ASSERT(r, basePng);
+            sk_sp<SkData> png = inject_png_iccp_chunk(basePng.get(), icc.get());
+            REPORTER_ASSERT(r, png);
+
+            std::unique_ptr<SkCodec> codec = SkCodec::MakeFromData(png);
+            REPORTER_ASSERT(r, codec);
+            if (!codec) {
+                continue;
+            }
+            REPORTER_ASSERT(r, codec->getICCProfile() && codec->getICCProfile()->has_A2B);
+            REPORTER_ASSERT(r, codec->getInfo().colorSpace());
+            REPORTER_ASSERT(r, codec->getInfo().colorSpace()->isSRGB());
+
+            for (SkColorType dstCT :
+                 {kN32_SkColorType, kRGB_565_SkColorType, kRGBA_F16_SkColorType}) {
+                const SkImageInfo dstInfo = codec->getInfo().makeColorType(dstCT);
+                SkBitmap dstBmA;
+                SkBitmap dstBmB;
+                dstBmA.allocPixels(dstInfo);
+                dstBmB.allocPixels(dstInfo);
+                memset(dstBmA.getPixels(), 0xAB, dstBmA.computeByteSize());
+                memset(dstBmB.getPixels(), 0x54, dstBmB.computeByteSize());
+                REPORTER_ASSERT(r,
+                                codec->getPixels(dstInfo, dstBmA.getPixels(), dstBmA.rowBytes()) ==
+                                        SkCodec::kSuccess);
+                REPORTER_ASSERT(r,
+                                codec->getPixels(dstInfo, dstBmB.getPixels(), dstBmB.rowBytes()) ==
+                                        SkCodec::kSuccess);
+                REPORTER_ASSERT(r,
+                                0 == memcmp(dstBmA.getPixels(),
+                                            dstBmB.getPixels(),
+                                            dstBmA.computeByteSize()));
+            }
+
+            const SkImageInfo dstInfo = codec->getInfo().makeColorType(kN32_SkColorType);
+            SkBitmap dstBmA;
+            SkBitmap dstBmB;
+            dstBmA.allocPixels(dstInfo);
+            dstBmB.allocPixels(dstInfo);
+            sk_sp<SkImage> deferred = SkImages::DeferredFromEncodedData(png);
+            REPORTER_ASSERT(r, deferred);
+            if (deferred) {
+                memset(dstBmA.getPixels(), 0xAB, dstBmA.computeByteSize());
+                memset(dstBmB.getPixels(), 0x54, dstBmB.computeByteSize());
+                REPORTER_ASSERT(r, deferred->readPixels(nullptr, dstBmA.pixmap(), 0, 0));
+                REPORTER_ASSERT(r, deferred->readPixels(nullptr, dstBmB.pixmap(), 0, 0));
+                REPORTER_ASSERT(r,
+                                0 == memcmp(dstBmA.getPixels(),
+                                            dstBmB.getPixels(),
+                                            dstBmA.computeByteSize()));
+            }
+
+            auto androidCodec = SkAndroidCodec::MakeFromData(png);
+            REPORTER_ASSERT(r, androidCodec);
+            if (androidCodec) {
+                sk_sp<SkColorSpace> outCS =
+                        androidCodec->computeOutputColorSpace(kN32_SkColorType, nullptr);
+                REPORTER_ASSERT(r, outCS && outCS->isSRGB());
+                const SkImageInfo androidInfo = androidCodec->getInfo()
+                                                        .makeColorType(kN32_SkColorType)
+                                                        .makeColorSpace(outCS);
+                memset(dstBmA.getPixels(), 0xAB, dstBmA.computeByteSize());
+                memset(dstBmB.getPixels(), 0x54, dstBmB.computeByteSize());
+                REPORTER_ASSERT(r,
+                                androidCodec->getAndroidPixels(
+                                        androidInfo, dstBmA.getPixels(), dstBmA.rowBytes()) ==
+                                        SkCodec::kSuccess);
+                REPORTER_ASSERT(r,
+                                androidCodec->getAndroidPixels(
+                                        androidInfo, dstBmB.getPixels(), dstBmB.rowBytes()) ==
+                                        SkCodec::kSuccess);
+                REPORTER_ASSERT(r,
+                                0 == memcmp(dstBmA.getPixels(),
+                                            dstBmB.getPixels(),
+                                            dstBmA.computeByteSize()));
+            }
+        }
+    }
+}
+
+DEF_TEST(Codec_NonInvertibleDstColorSpace, r) {
+    constexpr skcms_TransferFunction kZeroGamma = {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    constexpr skcms_Matrix3x3 kZeroMatrix = {{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
+    const sk_sp<SkColorSpace> badTrfnCS = SkColorSpace::MakeRGB(kZeroGamma, SkNamedGamut::kSRGB);
+    const sk_sp<SkColorSpace> badGamutCS =
+            SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, kZeroMatrix);
+    const sk_sp<SkColorSpace> validP3CS =
+            SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kDisplayP3);
+    REPORTER_ASSERT(r, badTrfnCS && badGamutCS && validP3CS);
+
+    for (const char* path : {"images/arrow.png",
+                             "images/color_wheel.png",
+                             "images/index8.png",
+                             "images/grayscale.jpg",
+                             "images/baby_tux.webp",
+                             "images/rle.bmp"}) {
+        sk_sp<SkData> data = GetResourceAsData(path);
+        if (!data) {
+            ERRORF(r, "Missing resource: %s", path);
+            continue;
+        }
+        std::unique_ptr<SkCodec> codec = SkCodec::MakeFromData(data);
+        REPORTER_ASSERT(r, codec);
+        if (!codec) {
+            continue;
+        }
+
+        for (SkColorType ct : {kRGBA_8888_SkColorType,
+                               kBGRA_8888_SkColorType,
+                               kRGB_565_SkColorType,
+                               kRGBA_F16_SkColorType,
+                               kBGR_101010x_XR_SkColorType}) {
+            const SkAlphaType at =
+                    codec->getInfo().isOpaque() ? kOpaque_SkAlphaType : kPremul_SkAlphaType;
+            if ((ct == kRGB_565_SkColorType || ct == kBGR_101010x_XR_SkColorType) &&
+                !codec->getInfo().isOpaque()) {
+                continue;
+            }
+
+            for (const sk_sp<SkColorSpace>& badCS : {badTrfnCS, badGamutCS}) {
+                const SkImageInfo badInfo =
+                        codec->getInfo().makeColorType(ct).makeAlphaType(at).makeColorSpace(badCS);
+                SkBitmap bm;
+                bm.allocPixels(badInfo);
+                memset(bm.getPixels(), 0xCD, bm.computeByteSize());
+                REPORTER_ASSERT(r,
+                                codec->getPixels(badInfo, bm.getPixels(), bm.rowBytes()) ==
+                                        SkCodec::kInvalidConversion,
+                                "path=%s ct=%d",
+                                path,
+                                static_cast<int>(ct));
+                REPORTER_ASSERT(r, static_cast<const uint8_t*>(bm.getPixels())[0] == 0xCDu);
+            }
+
+            const SkImageInfo goodInfo =
+                    codec->getInfo().makeColorType(ct).makeAlphaType(at).makeColorSpace(validP3CS);
+            SkBitmap goodBm;
+            goodBm.allocPixels(goodInfo);
+            REPORTER_ASSERT(r,
+                            codec->getPixels(goodInfo, goodBm.getPixels(), goodBm.rowBytes()) ==
+                                    SkCodec::kSuccess,
+                            "path=%s ct=%d",
+                            path,
+                            static_cast<int>(ct));
+        }
+
+        if (codec->getInfo().colorType() == kGray_8_SkColorType) {
+            SkBitmap grayBm;
+            grayBm.allocPixels(codec->getInfo().makeColorSpace(badTrfnCS));
+            REPORTER_ASSERT(
+                    r,
+                    codec->getPixels(grayBm.info(), grayBm.getPixels(), grayBm.rowBytes()) ==
+                            SkCodec::kInvalidConversion);
+        }
+
+        const SkImageInfo badN32 =
+                codec->getInfo().makeColorType(kN32_SkColorType).makeColorSpace(badTrfnCS);
+        SkBitmap bm;
+        bm.allocPixels(badN32);
+        REPORTER_ASSERT(r, codec->startScanlineDecode(badN32) == SkCodec::kInvalidConversion);
+        const SkCodec::Result incRes =
+                codec->startIncrementalDecode(badN32, bm.getPixels(), bm.rowBytes());
+        REPORTER_ASSERT(r,
+                        incRes == SkCodec::kInvalidConversion || incRes == SkCodec::kUnimplemented);
+    }
 }
