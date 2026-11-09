@@ -1,0 +1,1 @@
+`SkWriteICCProfile` now validates that the input color space or `skcms_ICCProfile` is a 3-channel RGB profile whose `toXYZD50` gamut matrix and transfer curves are valid and invertible, returning `nullptr` otherwise.

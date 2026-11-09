@@ -23,6 +23,8 @@ namespace skhdr {
 class Metadata;
 }
 
+// Serializes an SkColorSpace as an ICC v4 profile, or returns nullptr if it is null or its gamut
+// or transfer function cannot be represented as a valid, invertible ICC profile.
 SK_API sk_sp<SkData> SkWriteICCProfile(const SkColorSpace*,
                                        const skhdr::Metadata* = nullptr);
 
@@ -30,6 +32,8 @@ SK_API sk_sp<SkData> SkWriteICCProfile(const SkColorSpace*,
 SK_API sk_sp<SkData> SkWriteICCProfile(const skcms_TransferFunction&,
                                        const skcms_Matrix3x3& toXYZD50);
 
+// Serializes a 3-channel RGB skcms_ICCProfile as an ICC v4 profile, or returns nullptr if the
+// profile is null or its color space, gamut, or transfer curves are invalid or non-invertible.
 SK_API sk_sp<SkData> SkWriteICCProfile(const skcms_ICCProfile*, const char* description);
 
 // Utility function for populating the grid_16 member of skcms_A2B and skcms_B2A
