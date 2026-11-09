@@ -151,7 +151,8 @@ sk_sp<SkColorSpace> ColorProfile::getAndroidOutputColorSpace() const {
         // will be handled after decode time.
         return encodedSpace;
     }
-    if (fProfile.has_toXYZD50) {
+    skcms_Matrix3x3 inv;
+    if (fProfile.has_toXYZD50 && skcms_Matrix3x3_invert(&fProfile.toXYZD50, &inv)) {
         return SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
                                      fProfile.toXYZD50);
     }

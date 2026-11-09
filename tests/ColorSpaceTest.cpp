@@ -380,3 +380,29 @@ DEF_TEST(ColorSpace_equiv, r) {
     // Most important to test in debug mode that we don't SkASSERT().
     REPORTER_ASSERT(r, SkColorSpace::Equals(x.get(), y.get()));
 }
+
+DEF_TEST(ColorSpace_NonInvertibleTRC, r) {
+    // A parametric curve with g = 0, a = 1, b..f = 0 classifies as sRGB-ish (y = x^0 = 1)
+    // but is not invertible. SkColorSpace::Make(profile) must reject it so decoded images
+    // never produce a destination SkColorSpace that skcms_Transform cannot prepare, whereas
+    // SkColorSpace::MakeRGB intentionally continues to accept arbitrary non-Invalid curves.
+    constexpr skcms_TransferFunction kZeroGamma = {0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    REPORTER_ASSERT(r, skcms_TransferFunction_isSRGBish(&kZeroGamma));
+
+    skcms_TransferFunction inv;
+    REPORTER_ASSERT(r, !skcms_TransferFunction_invert(&kZeroGamma, &inv));
+
+    skcms_ICCProfile profile;
+    skcms_Init(&profile);
+    skcms_SetTransferFunction(&profile, &kZeroGamma);
+    skcms_SetXYZD50(&profile, &SkNamedGamut::kSRGB);
+
+    REPORTER_ASSERT(r, SkColorSpace::Make(profile) == nullptr);
+    REPORTER_ASSERT(r, SkColorSpace::MakeRGB(kZeroGamma, SkNamedGamut::kSRGB) != nullptr);
+
+    // A synthetic in-memory profile with a non-sRGBish curve in trc[] (such as PQish with zero
+    // coefficients and no CICP tag) must also be rejected by SkColorSpace::Make.
+    constexpr skcms_TransferFunction kDegeneratePQish = {-2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    skcms_SetTransferFunction(&profile, &kDegeneratePQish);
+    REPORTER_ASSERT(r, SkColorSpace::Make(profile) == nullptr);
+}
