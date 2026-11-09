@@ -22,6 +22,30 @@
       },
       "revId": "55decb8e5b64137177c86739afc1fef9ad5a553e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82c2cbad_4dd9e719",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2610,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-11-09T21:24:11Z",
+      "side": 1,
+      "message": "This is actually a redundant check so I removed it, there wouldn\u0027t be a scenario.",
+      "parentUuid": "ee7909c2_a8123055",
+      "range": {
+        "startLine": 2608,
+        "startChar": 4,
+        "endLine": 2610,
+        "endChar": 5
+      },
+      "revId": "55decb8e5b64137177c86739afc1fef9ad5a553e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
