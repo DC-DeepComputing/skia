@@ -12865,6 +12865,150 @@ DEF_TEST(SkParagraph_GlyphOffsetsOnlyWhenNeeded, reporter) {
     REPORTER_ASSERT(reporter, movedUpOrDown);
 }
 
+// Hit-testing keeps the caret on grapheme boundaries in visual order, including at exact cluster
+// edges, inside LTR and RTL ligatures, and across combining marks with their own glyph cluster
+DEF_TEST(SkParagraph_GlyphPositionSnapsToGraphemes, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>(true);
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    struct Case {
+        const char* family;
+        const char* text;
+        TextDirection direction;
+        std::vector<int> visualCarets;
+    };
+    // b + U+0301, i + U+0307, beh + kasra, and alef + maddah are two code points in one grapheme;
+    // Google Sans' fi and Katibeh's lam-alef put two graphemes into one ligature glyph
+    const Case kCases[] = {
+            {"Google Sans", "ab\u0301c", TextDirection::kLtr, {0, 1, 3, 4}},
+            {"Google Sans", "fi\u0307x", TextDirection::kLtr, {0, 1, 3, 4}},
+            {"Noto Naskh Arabic", "\u0628\u0650\u0633", TextDirection::kRtl, {3, 2, 0}},
+            {"Noto Naskh Arabic", "\u0628\u0627\u0653", TextDirection::kRtl, {3, 1, 0}},
+            {"Katibeh", "\u0628\u0644\u0627", TextDirection::kRtl, {3, 2, 1, 0}},
+    };
+    for (const Case& c : kCases) {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextDirection(c.direction);
+        paragraphStyle.setTextAlign(TextAlign::kLeft);
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString(c.family)});
+        textStyle.setFontSize(20);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText(c.text);
+        auto paragraph = builder.Build();
+        paragraph->layout(1000);
+        REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0, "%s", c.family);
+
+        const SkScalar width = paragraph->getMaxIntrinsicWidth();
+        std::vector<SkScalar> xs;
+        for (SkScalar x = -1.0f; x <= width + 2; x += 0.5f) {
+            xs.push_back(x);
+        }
+        std::vector<int> sortedCarets = c.visualCarets;
+        std::sort(sortedCarets.begin(), sortedCarets.end());
+        for (size_t i = 0; i + 1 < sortedCarets.size(); ++i) {
+            const std::vector<TextBox> boxes = paragraph->getRectsForRange(sortedCarets[i],
+                                                                           sortedCarets[i + 1],
+                                                                           RectHeightStyle::kTight,
+                                                                           RectWidthStyle::kTight);
+            REPORTER_ASSERT(reporter, !boxes.empty());
+            for (const TextBox& box : boxes) {
+                xs.push_back(box.rect.fLeft);
+                xs.push_back(box.rect.fRight);
+            }
+        }
+        std::sort(xs.begin(), xs.end());
+        REPORTER_ASSERT(reporter, !xs.empty());
+
+        std::vector<int> visited;
+        for (SkScalar x : xs) {
+            const int position = paragraph->getGlyphPositionAtCoordinate(x, 10).position;
+            REPORTER_ASSERT(reporter,
+                            std::find(c.visualCarets.begin(), c.visualCarets.end(), position) !=
+                                    c.visualCarets.end(),
+                            "%s '%s' x=%g: caret %d inside a grapheme",
+                            c.family,
+                            c.text,
+                            x,
+                            position);
+            if (visited.empty() || visited.back() != position) {
+                visited.push_back(position);
+            }
+        }
+        REPORTER_ASSERT(reporter,
+                        visited == c.visualCarets,
+                        "%s '%s': visited %zu carets (first %d), expected %zu (first %d)",
+                        c.family,
+                        c.text,
+                        visited.size(),
+                        visited.empty() ? -1 : visited.front(),
+                        c.visualCarets.size(),
+                        c.visualCarets.front());
+    }
+}
+
+// A Default_Ignorable code point folded into a preceding glyph's cluster takes no share of that
+// glyph in hit-testing: the caret flips at the glyph's midpoint and lands before the ignorable
+DEF_TEST(SkParagraph_GlyphPositionSkipsDefaultIgnorables, reporter) {
+    sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+    auto abcTypeface = mgr->makeFromStream(GetResourceAsStream("fonts/abc/abc.ttf"), {});
+    // Portable font manager returns null for stream-backed typefaces when native fonts are disabled
+    if (!abcTypeface) {
+        return;
+    }
+    auto fontCollection = sk_make_sp<FontCollection>();
+    auto fontProvider = sk_make_sp<TypefaceFontProvider>();
+    fontProvider->registerTypeface(abcTypeface, SkString("AbcFont"));
+    fontCollection->setAssetFontManager(fontProvider);
+    fontCollection->setDefaultFontManager(mgr);
+
+    ParagraphStyle paragraphStyle;
+    TextStyle style;
+    style.setFontFamilies({SkString("AbcFont")});
+    style.setFontSize(20.0f);
+    paragraphStyle.setTextStyle(style);
+    for (const char* text : {"a\u200Bb", "a\u200Eb", "a\uFEFFb"}) {
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(style);
+        builder.addText(text);
+        auto paragraph = builder.Build();
+        paragraph->layout(100.0f);
+
+        const std::vector<TextBox> boxes =
+                paragraph->getRectsForRange(0, 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        REPORTER_ASSERT(reporter, boxes.size() == 1);
+        if (boxes.size() != 1) {
+            continue;
+        }
+        const SkRect a = boxes[0].rect;
+        const PositionWithAffinity leftHalf =
+                paragraph->getGlyphPositionAtCoordinate(a.fLeft + a.width() * 0.4f, a.centerY());
+        const PositionWithAffinity rightHalf =
+                paragraph->getGlyphPositionAtCoordinate(a.fLeft + a.width() * 0.9f, a.centerY());
+        REPORTER_ASSERT(reporter,
+                        leftHalf.position == 0 && leftHalf.affinity == Affinity::kDownstream,
+                        "'%s': left half of 'a' gives %d",
+                        text,
+                        leftHalf.position);
+        REPORTER_ASSERT(reporter,
+                        rightHalf.position == 1 && rightHalf.affinity == Affinity::kUpstream,
+                        "'%s': right half of 'a' gives %d",
+                        text,
+                        rightHalf.position);
+        Paragraph::GlyphInfo info;
+        REPORTER_ASSERT(reporter,
+                        paragraph->getClosestUTF16GlyphInfoAt(
+                                a.fLeft + a.width() * 0.9f, a.centerY(), &info) &&
+                                info.fGraphemeClusterTextRange == TextRange(0, 1) &&
+                                info.fGraphemeLayoutBounds.width() > 0,
+                        "'%s': closest glyph on right half of 'a' is [%zu,%zu) width %g",
+                        text,
+                        info.fGraphemeClusterTextRange.start,
+                        info.fGraphemeClusterTextRange.end,
+                        info.fGraphemeLayoutBounds.width());
+    }
+}
+
 // When an unresolved combining mark attaches to the non-initial codepoint of a multi-char
 // ligature, clusteredText must expand both the glyph range and text range to the whole ligature
 DEF_TEST(SkParagraph_LigatureWithUnresolvedMark, reporter) {

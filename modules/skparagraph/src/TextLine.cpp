@@ -26,6 +26,7 @@
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
 #include "modules/skshaper/include/SkShaper_skunicode.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "src/core/SkUTF.h"
 
 #include <algorithm>
 #include <iterator>
@@ -139,6 +140,136 @@ std::pair<size_t, size_t> isolateClusterGlyphs(const ParagraphImpl* owner,
     size_t fallback =
             (isStart == run->leftToRight()) ? cluster->endPos() : cluster->startPos();
     return {fallback, fallback};
+}
+
+// Returns the paragraph-global UTF-8 end index of glyph pos's cluster in run, stepping past any
+// adjacent glyphs that share pos's cluster index or belong to combining marks skipped by an
+// IgnoreMarks ligature
+TextIndex cluster_end_utf8(const ParagraphImpl& owner, const Run& run, size_t pos) {
+    SkASSERT(pos <= run.size());
+    const TextIndex clusterStart8 = run.globalClusterIndex(pos);
+    if (run.leftToRight()) {
+        // LTR callers only pass glyph indices inside [sliceStart, sliceEnd) with
+        // sliceEnd <= run.size()
+        SkASSERT(pos < run.size());
+        size_t endGlyph = pos + 1;
+        while (endGlyph < run.size() &&
+               (run.globalClusterIndex(endGlyph) <= clusterStart8 ||
+                !owner.codeUnitHasProperty(run.globalClusterIndex(endGlyph),
+                                           SkUnicode::CodeUnitFlags::kGraphemeStart))) {
+            ++endGlyph;
+        }
+        return run.globalClusterIndex(endGlyph);
+    }
+    // RTL glyphs sit in reverse logical order, so the next logical cluster lies at a lower glyph
+    // index and glyph 0 ends at run.textRange().end
+    size_t endGlyph = pos;
+    while (endGlyph > 0 && (run.globalClusterIndex(endGlyph - 1) <= clusterStart8 ||
+                            !owner.codeUnitHasProperty(run.globalClusterIndex(endGlyph - 1),
+                                                       SkUnicode::CodeUnitFlags::kGraphemeStart))) {
+        --endGlyph;
+    }
+    return endGlyph == 0 ? run.textRange().end : run.globalClusterIndex(endGlyph - 1);
+}
+
+struct HitCluster {
+    TextIndex fStart8;
+    TextIndex fEnd8;
+    size_t fStartGlyph;
+    size_t fEndGlyph;
+};
+
+// Resolves glyph found inside [sliceStart, sliceEnd) of run to its enclosing cluster's UTF-8
+// [fStart8, fEnd8) range and visual [fStartGlyph, fEndGlyph) span, anchoring detached combining
+// marks onto their base or IgnoreMarks ligature glyph. Scans Run::globalClusterIndex directly
+// because fClusters has no reverse map from a detached mark glyph (!kGraphemeStart)
+HitCluster resolve_hit_cluster(const ParagraphImpl& owner,
+                               const Run& run,
+                               size_t sliceStart,
+                               size_t sliceEnd,
+                               size_t found) {
+    SkASSERT(sliceStart <= found && found < sliceEnd && sliceEnd <= run.size());
+    // A detached combining-mark glyph sits right of its base in LTR and left of its base or
+    // IgnoreMarks ligature in RTL; step onto the owning grapheme start when the slice has one
+    while (!owner.codeUnitHasProperty(run.globalClusterIndex(found),
+                                      SkUnicode::CodeUnitFlags::kGraphemeStart)) {
+        if (run.leftToRight()) {
+            if (found == sliceStart) {
+                break;
+            }
+            --found;
+        } else {
+            if (found + 1 >= sliceEnd) {
+                break;
+            }
+            ++found;
+        }
+    }
+
+    const TextIndex start8 = run.globalClusterIndex(found);
+    const TextIndex end8 = cluster_end_utf8(owner, run, found);
+    size_t startGlyph = found;
+    size_t endGlyph = found + 1;
+    // Include co-clustered glyphs and detached combining marks so the visual span covers the full
+    // cluster width in both LTR (marks to the right) and RTL (marks to the left)
+    if (run.leftToRight()) {
+        while (startGlyph > sliceStart && run.globalClusterIndex(startGlyph - 1) == start8) {
+            --startGlyph;
+        }
+        while (endGlyph < sliceEnd &&
+               (run.globalClusterIndex(endGlyph) <= start8 ||
+                !owner.codeUnitHasProperty(run.globalClusterIndex(endGlyph),
+                                           SkUnicode::CodeUnitFlags::kGraphemeStart))) {
+            ++endGlyph;
+        }
+    } else {
+        while (startGlyph > sliceStart &&
+               (run.globalClusterIndex(startGlyph - 1) <= start8 ||
+                !owner.codeUnitHasProperty(run.globalClusterIndex(startGlyph - 1),
+                                           SkUnicode::CodeUnitFlags::kGraphemeStart))) {
+            --startGlyph;
+        }
+        while (endGlyph < sliceEnd && run.globalClusterIndex(endGlyph) == start8) {
+            ++endGlyph;
+        }
+    }
+    return {start8, end8, startGlyph, endGlyph};
+}
+
+// Filters graphemes in place to keep only visible graphemes (not solely Default_Ignorable)
+// unless every grapheme in the cluster is ignorable; returns true when graphemes shrank
+bool drop_ignorable_graphemes(const ParagraphImpl& owner,
+                              SkUnicode* unicode,
+                              skia_private::TArray<TextIndex>* graphemes) {
+    if (!unicode || graphemes->size() <= 1) {
+        return false;
+    }
+    const SkSpan<const char> text = owner.text();
+    int kept = 0;
+    for (int i = 0; i < graphemes->size(); ++i) {
+        const TextIndex start = (*graphemes)[i];
+        SkASSERT(start < text.size());
+        const TextIndex end = owner.findNextGraphemeBoundary(start + 1);
+        const char* ptr = text.data() + start;
+        const char* endPtr = text.data() + end;
+        bool ignorable = ptr < endPtr;
+        while (ptr < endPtr) {
+            const SkUnichar u = SkUTF::NextUTF8(&ptr, endPtr);
+            if (u < 0 || !unicode->isDefaultIgnorable(u)) {
+                ignorable = false;
+                break;
+            }
+        }
+        if (!ignorable) {
+            (*graphemes)[kept++] = start;
+        }
+    }
+    // Keep an all-ignorable cluster intact so a standalone ignorable glyph still hit-tests
+    if (kept == 0 || kept == graphemes->size()) {
+        return false;
+    }
+    graphemes->pop_back_n(graphemes->size() - kept);
+    return true;
 }
 
 }  // namespace
@@ -1641,6 +1772,8 @@ void TextLine::getRectsForRange(TextRange textRange0,
     }
 }
 
+// Maps horizontal line coordinate dx to the nearest UTF-16 grapheme boundary and caret affinity on
+// this line
 PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
 
     // A line with only the ellipsis has no text runs to hit, whatever the text direction
@@ -1697,12 +1830,21 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
 
                 if (dx <= context.clip.fLeft) {
                     // All the other runs are placed right of this one
-                    auto utf16Index = fOwner->getUTF16Index(context.run->globalClusterIndex(context.pos));
                     if (run->leftToRight()) {
+                        // A slice can start on a detached combining mark's glyph cluster
+                        auto clusterIndex8 = context.run->globalClusterIndex(context.pos);
+                        auto utf16Index = fOwner->getUTF16Index(
+                                fOwner->findPreviousGraphemeBoundary(clusterIndex8));
                         result = { SkToS32(utf16Index), kDownstream};
                         keepLooking = false;
                     } else {
-                        result = { SkToS32(utf16Index + 1), kUpstream};
+                        // The leftmost RTL glyph is the slice's logical end and may be a composed
+                        // grapheme or multi-grapheme ligature, so land at its cluster's trailing
+                        // grapheme boundary
+                        auto clusterEnd8 = cluster_end_utf8(*fOwner, *context.run, context.pos);
+                        auto utf16Index = fOwner->getUTF16Index(
+                                fOwner->findNextGraphemeBoundary(clusterEnd8));
+                        result = { SkToS32(utf16Index), kUpstream};
                         // If we haven't reached the end of the run we need to keep looking
                         keepLooking = context.pos != 0;
                     }
@@ -1712,10 +1854,15 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
 
                 if (dx >= context.clip.fRight) {
                     // We have to keep looking ; just in case keep the last one as the closest
-                    auto utf16Index = fOwner->getUTF16Index(context.run->globalClusterIndex(context.pos + context.size));
+                    // Snap to the outer grapheme edge in case a slice edge splits a mark cluster
+                    auto clusterEnd8 = context.run->globalClusterIndex(context.pos + context.size);
                     if (run->leftToRight()) {
+                        auto utf16Index = fOwner->getUTF16Index(
+                                fOwner->findNextGraphemeBoundary(clusterEnd8));
                         result = {SkToS32(utf16Index), kUpstream};
                     } else {
+                        auto utf16Index = fOwner->getUTF16Index(
+                                fOwner->findPreviousGraphemeBoundary(clusterEnd8));
                         result = {SkToS32(utf16Index), kDownstream};
                     }
                     // For RTL we go another way
@@ -1742,16 +1889,20 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                     found = index;
                 }
 
-                SkScalar glyphemePosLeft = context.run->positionX(found) + context.fTextShift + offsetX;
-                SkScalar glyphemesWidth = context.run->positionX(found + 1) - context.run->positionX(found);
-
-                // Find the grapheme range that contains the point
-                auto clusterIndex8 = context.run->globalClusterIndex(found);
-                auto clusterEnd8 = context.run->globalClusterIndex(found + 1);
-                auto graphemes = fOwner->countSurroundingGraphemes({clusterIndex8, clusterEnd8});
+                const HitCluster hit = resolve_hit_cluster(
+                        *fOwner, *context.run, context.pos, context.pos + context.size, found);
+                SkScalar glyphemePosLeft =
+                        context.run->positionX(hit.fStartGlyph) + context.fTextShift + offsetX;
+                SkScalar glyphemesWidth = context.run->positionX(hit.fEndGlyph) -
+                                          context.run->positionX(hit.fStartGlyph);
+                auto graphemes = fOwner->countSurroundingGraphemes({hit.fStart8, hit.fEnd8});
+                // Shapers fold Default_Ignorable code points into an adjacent glyph's cluster;
+                // mirror buildClusterTable so they take no share of the visible glyph's width
+                const bool droppedIgnorable =
+                        drop_ignorable_graphemes(*fOwner, fOwner->getUnicode().get(), &graphemes);
 
                 SkScalar center = glyphemePosLeft + glyphemesWidth / 2;
-                if (graphemes.size() > 1) {
+                if (graphemes.size() > 1 || droppedIgnorable) {
                     // Calculate the position proportionally based on grapheme count
                     SkScalar averageGraphemeWidth = glyphemesWidth / graphemes.size();
                     SkScalar delta = dx - glyphemePosLeft;
@@ -1763,23 +1914,37 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                     graphemeIndex = std::clamp(graphemeIndex, 0, SkToInt(graphemes.size()) - 1);
                     auto graphemeCenter = glyphemePosLeft + graphemeIndex * averageGraphemeWidth +
                                           averageGraphemeWidth / 2;
-                    auto graphemeUtf8Index = graphemes[graphemeIndex];
+                    // countSurroundingGraphemes lists graphemes in logical order, which runs
+                    // right-to-left across an RTL ligature
+                    const size_t logicalIndex = context.run->leftToRight()
+                                                        ? SkToSizeT(graphemeIndex)
+                                                        : graphemes.size() - 1 - graphemeIndex;
+                    auto graphemeUtf8Index = graphemes[logicalIndex];
                     if ((dx < graphemeCenter) == context.run->leftToRight()) {
-                        size_t utf16Index = fOwner->getUTF16Index(graphemeUtf8Index);
+                        // graphemes[0] is hit.fStart8 when the cluster starts mid-grapheme
+                        size_t utf16Index = fOwner->getUTF16Index(
+                                fOwner->findPreviousGraphemeBoundary(graphemeUtf8Index));
                         result = { SkToS32(utf16Index), kDownstream };
                     } else {
-                        size_t utf16Index = fOwner->getUTF16Index(graphemeUtf8Index + 1);
+                        // The grapheme may hold a mark past its first code unit, so it ends at
+                        // the next grapheme start
+                        size_t utf16Index = fOwner->getUTF16Index(
+                                fOwner->findNextGraphemeBoundary(graphemeUtf8Index + 1));
                         result = { SkToS32(utf16Index), kUpstream };
                     }
                     // Keep UTF16 index as is
                 } else if ((dx < center) == context.run->leftToRight()) {
-                    size_t utf16Index = fOwner->getUTF16Index(clusterIndex8);
+                    // A shaper may give a combining mark its own glyph cluster (HarfBuzz
+                    // MONOTONE_CHARACTERS), so a cluster edge can fall inside a grapheme; the
+                    // caret goes to the grapheme edge on the hit side, as native text puts it
+                    size_t utf16Index = fOwner->getUTF16Index(
+                            fOwner->findPreviousGraphemeBoundary(hit.fStart8));
                     result = { SkToS32(utf16Index), kDownstream };
                 } else {
-                    size_t utf16Index = context.run->leftToRight()
-                                                ? fOwner->getUTF16Index(clusterEnd8)
-                                                : fOwner->getUTF16Index(clusterIndex8) + 1;
-                    result = { SkToS32(utf16Index), kUpstream };
+                    // hit.fEnd8 can fall inside a grapheme when a shaper splits a combining mark
+                    // into its own glyph cluster, so step to the next grapheme start
+                    TextIndex end8 = fOwner->findNextGraphemeBoundary(hit.fEnd8);
+                    result = { SkToS32(fOwner->getUTF16Index(end8)), kUpstream };
                 }
 
                 return keepLooking = false;
