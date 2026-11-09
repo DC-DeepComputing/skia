@@ -54,6 +54,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "fa75c1d9_3851f03f",
+        "filename": "experimental/rust_ico/decoder/SkIcoRustDecoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-09T23:16:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e5a1426_cf30d9f9",
+      "range": {
+        "startLine": 63,
+        "startChar": 7,
+        "endLine": 63,
+        "endChar": 11
+      },
+      "revId": "81e0f3895ed228a47d9d6e070ab0d3de71c718f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3ab5deda_b4b738a1",
         "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
         "patchSetId": 5
@@ -65,6 +89,30 @@
       "writtenOn": "2026-11-09T19:53:04Z",
       "side": 1,
       "message": "I would also prefer an optional return value here, but since we already have this pattern for `getHotSpot` it makes sense to keep it consistent.  Maybe we can cleanup later.",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 8
+      },
+      "revId": "81e0f3895ed228a47d9d6e070ab0d3de71c718f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2582bc38_11293560",
+        "filename": "experimental/rust_ico/decoder/impl/SkIcoRustCodec.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 4159917
+      },
+      "writtenOn": "2026-11-09T23:16:50Z",
+      "side": 1,
+      "message": "Agreed. Cleaned this up here too: both indexed and default hotspot getters now return optional points. The metadata also uses an optional hotspot instead of a separate cursor flag. We need to do it in 2-step so we still keep old signature and will do a cleanup CL once we update chromium side to use new signature.",
+      "parentUuid": "3ab5deda_b4b738a1",
       "range": {
         "startLine": 50,
         "startChar": 4,
