@@ -69,6 +69,24 @@
       "parentUuid": "9295e3b7_b0c5b4e7",
       "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c96a5cd_9fe14e56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5303896
+      },
+      "writtenOn": "2026-11-09T16:25:38Z",
+      "side": 1,
+      "message": "note: \"wrong\" is probably too strong, this functionality just simply was not implemented. If you look at the diff in src/sksl/sksl_graphite_vert.sksl this missing functionality was already marked with a todo.",
+      "parentUuid": "969cd458_ae0f8ad0",
+      "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
