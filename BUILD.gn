@@ -1368,7 +1368,10 @@ optional("typeface_freetype") {
   public_defines = [ "SK_TYPEFACE_FACTORY_FREETYPE" ]
   deps = [ "//third_party/freetype2" ]
   sources = skia_ports_freetype_sources
-  sources_for_tests = [ "tests/FontScanner_FreeTypeTest.cpp" ]
+  sources_for_tests = [
+    "tests/FontHost_FreeTypeTest.cpp",
+    "tests/FontScanner_FreeTypeTest.cpp",
+  ]
 }
 
 bazel_args = []
@@ -3019,6 +3022,9 @@ if (skia_enable_tools) {
         ":test",
         ":tool_utils",
         ":typeface_fontations_tests",
+
+        # Links the tests of the FreeType port; optional() only builds them
+        ":typeface_freetype_tests",
         "modules/bentleyottmann:tests",
         "modules/skottie:tests",
         "modules/skparagraph:tests",
