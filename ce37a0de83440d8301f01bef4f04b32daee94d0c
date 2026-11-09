@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7ffad0d_487ee563",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3375938
+      },
+      "writtenOn": "2026-11-09T06:43:24Z",
+      "side": 1,
+      "message": "egdaniel@, can you help provide a second CR+1 for this so I can land this CL? I didn\u0027t realize Skia strictly requires google.com accounts for review enforcement...",
+      "revId": "ce37a0de83440d8301f01bef4f04b32daee94d0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
