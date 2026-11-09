@@ -105,6 +105,24 @@
       "parentUuid": "9c96a5cd_9fe14e56",
       "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "079243b6_a4ce8902",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-09T17:07:59Z",
+      "side": 1,
+      "message": "There is b/351869082.  We can do a float3 interpolation for now. I was hoping to port the trick that we use for CoverBoundsRenderStep\u0027s perspective interpolation to CoverageMask and for text, but it doesn\u0027t work when the w\u003d0 line intersects the bounding box.  I have been sitting on a fix for that which involves splitting up the geometry around the w\u003d0 line and fudging the W values.\n\nBut at the current rate, that will be a bit before it lands, so probably worth getting correctness first and then go back to avoiding a perspective divide.",
+      "parentUuid": "a2fe7651_dc4e4f18",
+      "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
