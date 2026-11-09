@@ -344,6 +344,11 @@ void GrVkBuffer::onAbandon() {
 }
 
 void GrVkBuffer::onMap(MapType type) {
+    // Ensure the device isn't lost before reading to ensure any present
+    // values we are reading from are what is expected.
+    if (type == MapType::kRead && this->getVkGpu()->isDeviceLost()) {
+        return;
+    }
     this->vkMap(0, type == MapType::kRead ? this->size() : 0);
 }
 

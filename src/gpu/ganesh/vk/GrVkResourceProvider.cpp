@@ -480,6 +480,8 @@ void GrVkResourceProvider::forceSyncAllCommandBuffers() {
         GrVkCommandPool* pool = fActiveCommandPools[i];
         if (!pool->isOpen()) {
             GrVkPrimaryCommandBuffer* buffer = pool->getPrimaryCommandBuffer();
+            // Only used to drain outstanding GPU work (e.g. before teardown); nothing consumes
+            // the results of that work afterwards, so a failed wait needs no handling here.
             buffer->forceSync(fGpu);
         }
     }
