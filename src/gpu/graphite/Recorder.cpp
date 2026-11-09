@@ -26,6 +26,7 @@
 #include "include/private/SkLog.h"
 #include "src/capture/SkCaptureManager.h"
 #include "src/core/SkMipmap.h"
+#include "src/core/SkSurfacePriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/cpu/Recorder.h"
 #include "src/gpu/GpuTypesPriv.h"
@@ -295,7 +296,8 @@ std::unique_ptr<Recording> Recorder::snap() {
 }
 
 SkCanvas* Recorder::makeDeferredCanvas(const SkImageInfo& imageInfo,
-                                       const TextureInfo& textureInfo) {
+                                       const TextureInfo& textureInfo,
+                                       const SkSurfaceProps* props) {
     if (fTargetProxyCanvas) {
         // Require snapping before requesting another canvas.
         SKIA_LOG_W("Requested a new deferred canvas before snapping the previous one");
@@ -310,7 +312,7 @@ SkCanvas* Recorder::makeDeferredCanvas(const SkImageInfo& imageInfo,
                                       fTargetProxyData->refLazyProxy(),
                                       imageInfo.dimensions(),
                                       imageInfo.colorInfo(),
-                                      {},
+                                      SkSurfacePropsCopyOrDefault(props),
                                       LoadOp::kLoad);
     fTargetProxyCanvas = std::make_unique<SkCanvas>(fTargetProxyDevice);
     return fTargetProxyCanvas.get();

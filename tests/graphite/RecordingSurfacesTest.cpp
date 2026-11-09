@@ -11,6 +11,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
@@ -486,6 +487,32 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecordingSurfacesTestTwoCanvases, reporter, c
     REPORTER_ASSERT(reporter, recorder->makeDeferredCanvas(kImageInfo, textureInfo) != nullptr);
     // Second canvas fails to be created.
     REPORTER_ASSERT(reporter, recorder->makeDeferredCanvas(kImageInfo, textureInfo) == nullptr);
+}
+
+// Tests that a deferred canvas draws with the surface props it was created with, or the default
+// ones when none are given.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecordingSurfacesTestCanvasProps, reporter, context,
+                                   CtsEnforcement::kNextRelease) {
+    const SkImageInfo kImageInfo = SkImageInfo::Make(SkISize::Make(1, 1),
+                                                     SkColorType::kRGBA_8888_SkColorType,
+                                                     SkAlphaType::kPremul_SkAlphaType);
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    sk_sp<SkSurface> surface =
+            SkSurfaces::RenderTarget(recorder.get(), kImageInfo, skgpu::Mipmapped::kNo);
+    const TextureInfo& textureInfo =
+            static_cast<Surface*>(surface.get())->target().proxy()->textureInfo();
+
+    SkCanvas* canvas = recorder->makeDeferredCanvas(kImageInfo, textureInfo);
+    REPORTER_ASSERT(reporter, canvas != nullptr);
+    REPORTER_ASSERT(reporter, canvas->getBaseProps() == SkSurfaceProps());
+    recorder->snap();
+
+    const SkSurfaceProps props(SkSurfaceProps::kUseDeviceIndependentFonts_Flag,
+                               kRGB_H_SkPixelGeometry);
+    canvas = recorder->makeDeferredCanvas(kImageInfo, textureInfo, &props);
+    REPORTER_ASSERT(reporter, canvas != nullptr);
+    REPORTER_ASSERT(reporter, canvas->getBaseProps() == props);
+    recorder->snap();
 }
 
 // Tests that inserting a recording with a surface does not crash even if no draws to a deferred

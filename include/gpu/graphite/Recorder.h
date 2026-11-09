@@ -26,6 +26,7 @@
 
 class SkCanvas;
 class SkPixmap;
+class SkSurfaceProps;
 class SkTraceMemoryDump;
 struct SkISize;
 struct SkImageInfo;
@@ -194,8 +195,11 @@ public:
     // Returns a canvas that will record to a proxy surface, which must be instantiated on replay.
     // This can only be called once per Recording; subsequent calls will return null until a
     // Recording is snapped. Additionally, the returned SkCanvas is only valid until the next
-    // Recording snap, at which point it is deleted.
-    SkCanvas* makeDeferredCanvas(const SkImageInfo&, const TextureInfo&);
+    // Recording snap, at which point it is deleted. The canvas draws with the given surface props
+    // (e.g. SkSurfaceProps::kUseDeviceIndependentFonts_Flag), or the default ones if null.
+    SkCanvas* makeDeferredCanvas(const SkImageInfo&,
+                                 const TextureInfo&,
+                                 const SkSurfaceProps* props = nullptr);
 
     /**
      * Frees GPU resources created and held by the Recorder. Can be called to reduce GPU memory

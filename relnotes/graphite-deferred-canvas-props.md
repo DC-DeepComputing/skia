@@ -1,0 +1,1 @@
+`skgpu::graphite::Recorder::makeDeferredCanvas` takes an optional `const SkSurfaceProps*`, the surface props the returned canvas draws with (the default ones when null, as before). This allows, for instance, `SkSurfaceProps::kUseDeviceIndependentFonts_Flag` on a deferred canvas.
