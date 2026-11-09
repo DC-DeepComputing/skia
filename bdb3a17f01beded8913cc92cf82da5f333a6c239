@@ -87,6 +87,24 @@
       "parentUuid": "969cd458_ae0f8ad0",
       "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2fe7651_dc4e4f18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-09T16:33:15Z",
+      "side": 1,
+      "message": "Yea, see if you can poke around buganizer and see if there\u0027s an existing issue. I believe you can ask duckie to fuzzy search buganizer. Otherwise, you can create a new issue.",
+      "parentUuid": "9c96a5cd_9fe14e56",
+      "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
