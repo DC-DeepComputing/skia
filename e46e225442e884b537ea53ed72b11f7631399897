@@ -16,6 +16,24 @@
       "message": "Perf regressed pretty significantly with this CL, I think we should revert and refine, or refine with follow-up exceptions: https://skia-perf.luci.app/t/?begin\u003d1793966534\u0026end\u003d1793966535\u0026subset\u003dall",
       "revId": "e46e225442e884b537ea53ed72b11f7631399897",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51aaa41d_33f713e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-11-09T16:56:55Z",
+      "side": 1,
+      "message": "Thanks I will revert.\n\nI double checked I would have discovered it myself eventually. Yes, I would have. I don\u0027t know how to use skia-perf, but Gemini \"knows\" how to retrieve the data, and would have reverted it itself.\n\n```\n• SKP - Graphite (51 traces): +20% to +55% on SVG/path SKPs (desk_micrographygirlsvg.skp, desk_chalkboard.skp, desk_ynevsvg.skp).\n• SKP - Ganesh (119 traces): +9% to +13% on the same SKPs.\n• SKP - CPU (12 traces): +0.4% to +3.8%.\n```\n\nTop suspect is gr_sp\u003cT\u003e::fPtr. I double checked performance on this one, as I suspect it would affect it, but there was no regressions locally. So I trusted the numbers.",
+      "parentUuid": "03f99189_d99d6a70",
+      "revId": "e46e225442e884b537ea53ed72b11f7631399897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
