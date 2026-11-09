@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03f99189_d99d6a70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-09T15:41:00Z",
+      "side": 1,
+      "message": "Perf regressed pretty significantly with this CL, I think we should revert and refine, or refine with follow-up exceptions: https://skia-perf.luci.app/t/?begin\u003d1793966534\u0026end\u003d1793966535\u0026subset\u003dall",
+      "revId": "e46e225442e884b537ea53ed72b11f7631399897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
