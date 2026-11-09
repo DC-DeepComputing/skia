@@ -344,6 +344,24 @@
       "parentUuid": "41666d50_9c113f00",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7593a6ab_95721d00",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-11-09T19:24:51Z",
+      "side": 1,
+      "message": "That does make sense that we would end up waiting until the dst stage of the barrier in Skia\u0027s queue submit, so bottom of pipe makes sense. This makes me wonder if we should do the same for Skia\u0027s acquire from the foreign queue where we should wait on top of pipe instead of the currently inferred stage based on image layout, though that is probably a change separate from this issue and may actually be resolved by future plans I have in Skia to track stage usages instead inferring them. \n\nLGTM",
+      "parentUuid": "5799e5e5_2fea3bc5",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
