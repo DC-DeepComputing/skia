@@ -1666,65 +1666,70 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                 if constexpr (kSkShowTextBlitCoverage) {
                     memset(mask.image(), 0x80, mask.fBounds.height() * mask.fRowBytes);
                 }
-                FT_GlyphSlotRec& ftGlyph = *face->glyph;
+                // FT_Bitmap width (horizontal) or rows (vertical) count 3 subpixel samples per
+                // mask pixel, so clipping must convert between subpixels and pixels. Work on a
+                // copy so the slot keeps its buffer and metrics for FreeType
+                const int ftVertScale = (doVert ? 3 : 1);
+                const int ftHoriScale = (doVert ? 1 : 3);
+                FT_Bitmap bitmap = face->glyph->bitmap;
+                int bitmapLeft = face->glyph->bitmap_left;
+                int bitmapTop = face->glyph->bitmap_top;
 
+                // The outline rendered here may differ from the one measured in generateMetrics
+                // (e.g. Type 1 charstrings with random or stateful OtherSubrs), so the bitmap
+                // can be anywhere relative to the mask
                 if (!SkIRect::Intersects(mask.fBounds,
-                                         SkIRect::MakeXYWH( ftGlyph.bitmap_left,
-                                                           -ftGlyph.bitmap_top,
-                                                            ftGlyph.bitmap.width,
-                                                            ftGlyph.bitmap.rows)))
-                {
+                                         SkIRect::MakeXYWH(bitmapLeft,
+                                                           -bitmapTop,
+                                                           bitmap.width / ftHoriScale,
+                                                           bitmap.rows / ftVertScale))) {
                     return;
                 }
+                // A non-empty pixel extent implies FT_Render_Glyph allocated rows * pitch bytes
+                SkASSERT(bitmap.buffer);
 
                 // If the FT_Bitmap extent is larger, discard bits of the bitmap outside the mask.
                 // If the SkMask extent is larger, shrink mask to fit bitmap (clearing discarded).
-                unsigned char* origBuffer = ftGlyph.bitmap.buffer;
                 // First align the top left (origin).
-                if (-ftGlyph.bitmap_top < mask.fBounds.fTop) {
-                    int32_t topDiff = mask.fBounds.fTop - (-ftGlyph.bitmap_top);
-                    ftGlyph.bitmap.buffer += ftGlyph.bitmap.pitch * topDiff;
-                    ftGlyph.bitmap.rows -= topDiff;
-                    ftGlyph.bitmap_top = -mask.fBounds.fTop;
+                if (-bitmapTop < mask.fBounds.fTop) {
+                    int32_t topDiff = mask.fBounds.fTop - (-bitmapTop);
+                    bitmap.buffer += static_cast<ptrdiff_t>(bitmap.pitch) * topDiff * ftVertScale;
+                    bitmap.rows -= topDiff * ftVertScale;
+                    bitmapTop = -mask.fBounds.fTop;
                 }
-                if (ftGlyph.bitmap_left < mask.fBounds.fLeft) {
-                    int32_t leftDiff = mask.fBounds.fLeft - ftGlyph.bitmap_left;
-                    ftGlyph.bitmap.buffer += leftDiff;
-                    ftGlyph.bitmap.width -= leftDiff;
-                    ftGlyph.bitmap_left = mask.fBounds.fLeft;
+                if (bitmapLeft < mask.fBounds.fLeft) {
+                    int32_t leftDiff = mask.fBounds.fLeft - bitmapLeft;
+                    bitmap.buffer += leftDiff * ftHoriScale;
+                    bitmap.width -= leftDiff * ftHoriScale;
+                    bitmapLeft = mask.fBounds.fLeft;
                 }
-                if (mask.fBounds.fTop < -ftGlyph.bitmap_top) {
-                    mask.image() += mask.fRowBytes * (-ftGlyph.bitmap_top - mask.fBounds.fTop);
-                    mask.bounds().fTop = -ftGlyph.bitmap_top;
+                if (mask.fBounds.fTop < -bitmapTop) {
+                    mask.image() += mask.fRowBytes * (-bitmapTop - mask.fBounds.fTop);
+                    mask.bounds().fTop = -bitmapTop;
                 }
-                if (mask.fBounds.fLeft < ftGlyph.bitmap_left) {
-                    mask.image() += sizeof(uint16_t) * (ftGlyph.bitmap_left - mask.fBounds.fLeft);
-                    mask.bounds().fLeft = ftGlyph.bitmap_left;
+                if (mask.fBounds.fLeft < bitmapLeft) {
+                    mask.image() += sizeof(uint16_t) * (bitmapLeft - mask.fBounds.fLeft);
+                    mask.bounds().fLeft = bitmapLeft;
                 }
                 // Origins aligned, clean up the width and height.
-                int ftVertScale = (doVert ? 3 : 1);
-                int ftHoriScale = (doVert ? 1 : 3);
-                if (mask.fBounds.height() * ftVertScale < SkToInt(ftGlyph.bitmap.rows)) {
-                    ftGlyph.bitmap.rows = mask.fBounds.height() * ftVertScale;
+                if (mask.fBounds.height() * ftVertScale < SkToInt(bitmap.rows)) {
+                    bitmap.rows = mask.fBounds.height() * ftVertScale;
                 }
-                if (mask.fBounds.width() * ftHoriScale < SkToInt(ftGlyph.bitmap.width)) {
-                    ftGlyph.bitmap.width = mask.fBounds.width() * ftHoriScale;
+                if (mask.fBounds.width() * ftHoriScale < SkToInt(bitmap.width)) {
+                    bitmap.width = mask.fBounds.width() * ftHoriScale;
                 }
-                if (SkToInt(ftGlyph.bitmap.rows) < mask.fBounds.height() * ftVertScale) {
-                    mask.bounds().fBottom = mask.fBounds.fTop + ftGlyph.bitmap.rows / ftVertScale;
+                if (SkToInt(bitmap.rows) < mask.fBounds.height() * ftVertScale) {
+                    mask.bounds().fBottom = mask.fBounds.fTop + bitmap.rows / ftVertScale;
                 }
-                if (SkToInt(ftGlyph.bitmap.width) < mask.fBounds.width() * ftHoriScale) {
-                    mask.bounds().fRight = mask.fBounds.fLeft + ftGlyph.bitmap.width / ftHoriScale;
+                if (SkToInt(bitmap.width) < mask.fBounds.width() * ftHoriScale) {
+                    mask.bounds().fRight = mask.fBounds.fLeft + bitmap.width / ftHoriScale;
                 }
                 if (preBlend.isApplicable()) {
-                    copyFT2LCD16<true>(ftGlyph.bitmap, &mask, doBGR,
-                                       preBlend.fR, preBlend.fG, preBlend.fB);
+                    copyFT2LCD16<true>(bitmap, &mask, doBGR, preBlend.fR, preBlend.fG, preBlend.fB);
                 } else {
-                    copyFT2LCD16<false>(ftGlyph.bitmap, &mask, doBGR,
-                                        preBlend.fR, preBlend.fG, preBlend.fB);
+                    copyFT2LCD16<false>(
+                            bitmap, &mask, doBGR, preBlend.fR, preBlend.fG, preBlend.fB);
                 }
-                // Restore the buffer pointer so FreeType can properly free it.
-                ftGlyph.bitmap.buffer = origBuffer;
             } else {
                 FT_BBox     bbox;
                 FT_Bitmap   target;
