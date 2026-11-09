@@ -382,14 +382,14 @@ sk_sp<SkColorSpace> SkColorSpace::Make(const skcms_ICCProfile& profile) {
         }
     }
     if (profile.has_trc && !hasSetTrfn) {
-        // We can't work with tables or mismatched parametric curves.
+        // We can't work with tables, mismatched parametric curves, or non-invertible curves.
         const skcms_Curve* trc = profile.trc;
-        if (trc[0].table_entries == 0 &&
-            trc[1].table_entries == 0 &&
-            trc[2].table_entries == 0 &&
+        skcms_TransferFunction inv;
+        if (trc[0].table_entries == 0 && trc[1].table_entries == 0 && trc[2].table_entries == 0 &&
             0 == memcmp(&trc[0].parametric, &trc[1].parametric, sizeof(trc[0].parametric)) &&
-            0 == memcmp(&trc[0].parametric, &trc[2].parametric, sizeof(trc[0].parametric)))
-        {
+            0 == memcmp(&trc[0].parametric, &trc[2].parametric, sizeof(trc[0].parametric)) &&
+            skcms_TransferFunction_isSRGBish(&trc[0].parametric) &&
+            skcms_TransferFunction_invert(&trc[0].parametric, &inv)) {
             trfn = profile.trc[0].parametric;
             hasSetTrfn = true;
         } else {
