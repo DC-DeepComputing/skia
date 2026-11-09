@@ -760,6 +760,34 @@ std::unique_ptr<SkCodec> SkRawCodec::MakeFromStream(std::unique_ptr<SkStream> st
 SkCodec::Result SkRawCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst,
                                         size_t dstRowBytes, const Options& options,
                                         int* rowsDecoded) {
+    constexpr auto srcFormat = skcms_PixelFormat_RGB_888;
+    skcms_PixelFormat dstFormat;
+    if (!SkCodecPriv::SelectXformFormat(dstInfo.colorType(), false, &dstFormat)) {
+        return kInvalidConversion;
+    }
+
+    const skcms_ICCProfile* const srcProfile = this->getEncodedInfo().profile();
+    skcms_ICCProfile dstProfileStorage;
+    const skcms_ICCProfile* dstProfile = nullptr;
+    if (auto cs = dstInfo.colorSpace()) {
+        cs->toProfile(&dstProfileStorage);
+        dstProfile = &dstProfileStorage;
+    }
+
+    uint64_t dummySrc = 0;
+    uint64_t dummyDst = 0;
+    if (!skcms_Transform(&dummySrc,
+                         srcFormat,
+                         skcms_AlphaFormat_Unpremul,
+                         srcProfile,
+                         &dummyDst,
+                         dstFormat,
+                         skcms_AlphaFormat_Unpremul,
+                         dstProfile,
+                         /*npixels=*/0)) {
+        return kInvalidConversion;
+    }
+
     const int width = dstInfo.width();
     const int height = dstInfo.height();
     std::unique_ptr<dng_image> image(fDngImage->render(width, height));
@@ -788,20 +816,6 @@ SkCodec::Result SkRawCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst,
     buffer.fPixelType = ttByte;
     buffer.fPixelSize = sizeof(uint8_t);
     buffer.fRowStep = width * 3;
-
-    constexpr auto srcFormat = skcms_PixelFormat_RGB_888;
-    skcms_PixelFormat dstFormat;
-    if (!SkCodecPriv::SelectXformFormat(dstInfo.colorType(), false, &dstFormat)) {
-        return kInvalidConversion;
-    }
-
-    const skcms_ICCProfile* const srcProfile = this->getEncodedInfo().profile();
-    skcms_ICCProfile dstProfileStorage;
-    const skcms_ICCProfile* dstProfile = nullptr;
-    if (auto cs = dstInfo.colorSpace()) {
-        cs->toProfile(&dstProfileStorage);
-        dstProfile = &dstProfileStorage;
-    }
 
     for (int i = 0; i < height; ++i) {
         buffer.fArea = dng_rect(i, 0, i + 1, width);

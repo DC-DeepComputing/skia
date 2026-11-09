@@ -18,6 +18,8 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkStream.h"
+#include "include/private/SkAssert.h"
+#include "include/private/SkMalloc.h"
 #include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
@@ -25,8 +27,11 @@
 #include "src/codec/SkPixmapUtilsPriv.h"
 #include "src/codec/SkSampler.h"
 #include "src/core/SkColorPriv.h"
+#include "src/core/SkMemset.h"
 #include "src/core/SkNoDestructor.h"
 
+#include <cstddef>
+#include <cstdint>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -867,19 +872,40 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
     }
 
     if (needsColorXform) {
-        fXformTime = SkEncodedInfo::kPalette_Color != fEncodedInfo.color()
-                          || kRGBA_F16_SkColorType == dstInfo.colorType()
-                ? kDecodeRow_XformTime : kPalette_XformTime;
+        const XformTime xformTime = SkEncodedInfo::kPalette_Color != fEncodedInfo.color() ||
+                                                    kRGBA_F16_SkColorType == dstInfo.colorType()
+                                            ? kDecodeRow_XformTime
+                                            : kPalette_XformTime;
+        XformFormat dstXformFormat;
         if (!SkCodecPriv::SelectXformFormat(
-                    dstInfo.colorType(), fXformTime == kPalette_XformTime, &fDstXformFormat)) {
+                    dstInfo.colorType(), xformTime == kPalette_XformTime, &dstXformFormat)) {
             return false;
         }
-        if (encodedAlpha == SkEncodedInfo::kUnpremul_Alpha
-                && dstInfo.alphaType() == kPremul_SkAlphaType) {
-            fDstXformAlphaFormat = skcms_AlphaFormat_PremulAsEncoded;
-        } else {
-            fDstXformAlphaFormat = skcms_AlphaFormat_Unpremul;
+        const skcms_AlphaFormat dstXformAlphaFormat =
+                encodedAlpha == SkEncodedInfo::kUnpremul_Alpha &&
+                                dstInfo.alphaType() == kPremul_SkAlphaType
+                        ? skcms_AlphaFormat_PremulAsEncoded
+                        : skcms_AlphaFormat_Unpremul;
+
+        // Dry-run a 0-pixel transform (with distinct pointers so cross-bpp alias checks pass) to
+        // reject non-invertible destination profiles or unusable source profiles upfront.
+        uint64_t dummySrc = 0;
+        uint64_t dummyDst = 0;
+        if (!skcms_Transform(&dummySrc,
+                             fSrcXformFormat,
+                             skcms_AlphaFormat_Unpremul,
+                             fEncodedInfo.profile(),
+                             &dummyDst,
+                             dstXformFormat,
+                             dstXformAlphaFormat,
+                             fDstProfile,
+                             /*npixels=*/0)) {
+            return false;
         }
+
+        fXformTime = xformTime;
+        fDstXformFormat = dstXformFormat;
+        fDstXformAlphaFormat = dstXformAlphaFormat;
     }
     return true;
 }
@@ -887,9 +913,48 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
 void SkCodec::applyColorXform(void* dst, const void* src, int count) const {
     // It is okay for srcProfile to be null. This will use sRGB.
     const auto* srcProfile = fEncodedInfo.profile();
-    SkAssertResult(skcms_Transform(src, fSrcXformFormat, skcms_AlphaFormat_Unpremul, srcProfile,
-                                   dst, fDstXformFormat, fDstXformAlphaFormat, fDstProfile,
-                                   count));
+    if (skcms_Transform(src,
+                        fSrcXformFormat,
+                        skcms_AlphaFormat_Unpremul,
+                        srcProfile,
+                        dst,
+                        fDstXformFormat,
+                        fDstXformAlphaFormat,
+                        fDstProfile,
+                        count)) {
+        return;
+    }
+
+    SkDEBUGFAIL("Failed to apply color xform");
+    if (count <= 0) {
+        return;
+    }
+    const size_t n = static_cast<size_t>(count);
+    switch (fDstXformFormat) {
+        case skcms_PixelFormat_G_8:
+            sk_bzero(dst, n);
+            break;
+        case skcms_PixelFormat_BGR_565:
+            sk_bzero(dst, n * sizeof(uint16_t));
+            break;
+        case skcms_PixelFormat_RGBA_8888:
+        case skcms_PixelFormat_BGRA_8888:
+        case skcms_PixelFormat_RGBA_1010102:
+            sk_bzero(dst, n * sizeof(uint32_t));
+            break;
+        case skcms_PixelFormat_BGR_101010x_XR:
+            SkOpts::memset32(static_cast<uint32_t*>(dst), SkSampler::kBGR_101010x_XR_Zero, count);
+            break;
+        case skcms_PixelFormat_RGBA_hhhh:
+            sk_bzero(dst, n * sizeof(uint64_t));
+            break;
+        case skcms_PixelFormat_BGRA_10101010_XR:
+            SkOpts::memset64(static_cast<uint64_t*>(dst), SkSampler::kBGRA_10101010_XR_Zero, count);
+            break;
+        default:
+            SkDEBUGFAILF("Unexpected dst xform format: %d", static_cast<int>(fDstXformFormat));
+            break;
+    }
 }
 
 std::vector<SkCodec::FrameInfo> SkCodec::getFrameInfo() {

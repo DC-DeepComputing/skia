@@ -63,6 +63,7 @@ protected:
     IsAnimated onIsAnimated() override;
     const SkFrameHolder* getFrameHolder() const override { return &fFrameHolder; }
     bool conversionSupported(const SkImageInfo&, bool, bool) override;
+    bool usesColorXform() const override { return false; }
     bool onGetGainmapCodec(SkGainmapInfo* info, std::unique_ptr<SkCodec>* gainmapCodec) override;
     bool onGetValidSubset(SkIRect*) const override { return true; }
 
