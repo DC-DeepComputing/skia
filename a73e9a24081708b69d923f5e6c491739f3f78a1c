@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f0d7aaf_08350ccc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-09T18:35:57Z",
+      "side": 1,
+      "message": "LGTM.  I think this needs to land atomically with https://skia-review.git.corp.google.com/c/skia/+/1415857/22?usp\u003drelated-change, to avoid breaking SkPngRustCodec.",
+      "revId": "a73e9a24081708b69d923f5e6c491739f3f78a1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
