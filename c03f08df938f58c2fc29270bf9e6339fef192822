@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa0ca895_8d7abaf7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-09T19:33:48Z",
+      "side": 1,
+      "message": "LGTM\n\nIf you\u0027re planning to stage Flutter, we should land the `SK_IGNORE_ELLIPSIZE_TRUNCATED_LINES` define there first.",
+      "revId": "c03f08df938f58c2fc29270bf9e6339fef192822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
