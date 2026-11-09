@@ -111,6 +111,14 @@ bool GrOpFlushState::preExecuteDraws() {
     return true;
 }
 
+void GrOpFlushState::abort() {
+    fCurrDraw = fDraws.end();
+    fCurrUpload = fInlineUploads.end();
+    if (fTokenTracker) {
+        fTokenTracker->catchUpFlushToken();
+    }
+}
+
 void GrOpFlushState::reset() {
     SkASSERT(fCurrDraw == fDraws.end());
     SkASSERT(fCurrUpload == fInlineUploads.end());
@@ -122,6 +130,12 @@ void GrOpFlushState::reset() {
     fInlineUploads.reset();
     fDraws.reset();
     fBaseDrawToken = skgpu::Token::InvalidToken();
+    // Advance the tokens at the end of every flush, even one that executed no draws, so that work
+    // scheduled during this flush is never considered pending by a later flush.
+    if (fTokenTracker) {
+        fTokenTracker->issueDrawToken();
+        fTokenTracker->catchUpFlushToken();
+    }
 }
 
 void GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,

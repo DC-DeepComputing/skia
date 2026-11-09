@@ -84,6 +84,7 @@ public:
 
     GrGpu* gpu() { return fGpu; }
 
+    void abort();
     void reset();
 
     /** Additional data required on a per-op basis when executing GrOps. */
