@@ -691,11 +691,38 @@ bool GrVkPrimaryCommandBuffer::submitToQueue(
     return true;
 }
 
-void GrVkPrimaryCommandBuffer::forceSync(GrVkGpu* gpu) {
+bool GrVkPrimaryCommandBuffer::forceSync(GrVkGpu* gpu) {
     if (fSubmitFence == VK_NULL_HANDLE) {
-        return;
+        return true;
     }
+<<<<<<< HEAD   (59690b53c2d37dd7a3dc7cc8e5718384f51ca200 [M150][graphite] Guard SDF inset with define)
     GR_VK_CALL_ERRCHECK(gpu, WaitForFences(gpu->device(), 1, &fSubmitFence, true, UINT64_MAX));
+||||||| BASE   (7e1b95ec3c00b3fdcd36f6964dc6ef90b73e9d38 Merge 2 release notes into RELEASE_NOTES.md)
+    // On some drivers vkWaitForFences() can spuriously return VK_TIMEOUT when a signal handler
+    // runs. Work around this by retrying on VK_TIMEOUT.
+    VkResult result = VK_TIMEOUT;
+    while (result == VK_TIMEOUT) {
+        GR_VK_CALL_RESULT_NOCHECK(
+                gpu, result, WaitForFences(gpu->device(), 1, &fSubmitFence, true, UINT64_MAX));
+    }
+    if (result != VK_SUCCESS && !gpu->isDeviceLost()) {
+        SkDebugf("vkWaitForFences() failed. Error: %d\n", result);
+    }
+    SkASSERT(VK_SUCCESS == result || VK_ERROR_DEVICE_LOST == result);
+=======
+    // On some drivers vkWaitForFences() can spuriously return VK_TIMEOUT when a signal handler
+    // runs. Work around this by retrying on VK_TIMEOUT.
+    VkResult result = VK_TIMEOUT;
+    while (result == VK_TIMEOUT) {
+        GR_VK_CALL_RESULT_NOCHECK(
+                gpu, result, WaitForFences(gpu->device(), 1, &fSubmitFence, true, UINT64_MAX));
+    }
+    if (result != VK_SUCCESS && !gpu->isDeviceLost()) {
+        SkDebugf("vkWaitForFences() failed. Error: %d\n", result);
+    }
+    SkASSERT(VK_SUCCESS == result || VK_ERROR_DEVICE_LOST == result);
+    return result == VK_SUCCESS;
+>>>>>>> CHANGE (4926b4bba66d4f12a91c7a3b17fe8282b399b7e4 [Ganesh][Vulkan] Check vkWaitForFences success)
 }
 
 bool GrVkPrimaryCommandBuffer::finished(GrVkGpu* gpu) {
