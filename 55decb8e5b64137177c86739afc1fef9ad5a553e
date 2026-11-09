@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee7909c2_a8123055",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2610,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-09T21:06:49Z",
+      "side": 1,
+      "message": "What scenario causes us to have be in the device-lost state but not return false from `submitCommandBuffer`?",
+      "range": {
+        "startLine": 2608,
+        "startChar": 4,
+        "endLine": 2610,
+        "endChar": 5
+      },
+      "revId": "55decb8e5b64137177c86739afc1fef9ad5a553e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
