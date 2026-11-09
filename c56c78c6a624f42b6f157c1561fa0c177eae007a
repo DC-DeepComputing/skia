@@ -326,6 +326,24 @@
       "parentUuid": "8b538cc2_ebc89413",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5799e5e5_2fea3bc5",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3376992
+      },
+      "writtenOn": "2026-11-09T18:15:37Z",
+      "side": 1,
+      "message": "\u003e  the dst stage shouldn\u0027t matter so top of pipe or bottom of pipe should both work IIUC.\n\nI think 7.7.6 says that the ownership-release ignores dstStageMask since bottom of pipe is basically whoever you\u0027re handing the buffer off to (HwC/DPU or whatever). But this is still super valid for intra-queue stage dependency - so dependency within skia for foreign queues\n\nCorrect me if I\u0027m wrong, so in this case not only does dstStage matter, but then setting ALL_COMMANDS_BIT would increase delay in ownership-release as well (since we would end up stalling as we won\u0027t ignore dstStage).\n\nThis is what I *think* and will defer to an expert!",
+      "parentUuid": "41666d50_9c113f00",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
