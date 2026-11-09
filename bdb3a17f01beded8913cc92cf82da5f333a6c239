@@ -33,6 +33,24 @@
       "message": "So was this a driver issue or was it simply that the new hardware did not have an initial triaged negative issue, and all graphite perspective draws were wrong for mask filters?",
       "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ececb69e_15ac965e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-09T16:21:49Z",
+      "side": 1,
+      "message": "@Michael do we have a bug somewhere for this?",
+      "parentUuid": "9295e3b7_b0c5b4e7",
+      "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
