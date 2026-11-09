@@ -260,6 +260,24 @@
       "parentUuid": "70a2c620_85216e08",
       "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41666d50_9c113f00",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-11-09T16:32:00Z",
+      "side": 1,
+      "message": "\u003e Leaving this as srcStage \u003d VkImageLayoutToPipelineSrcStageFlags(currentLayout,..) would ideally solve the RAW hazard and is technically the same the Ganesh Vk is doing\n\nI agree, and for the multiple queue scenario that shouldn\u0027t affect anything as the client\u0027s MutableState causing the pipeline barrier would always be at the end of the commend buffer of the last submitted queue.\n\nI also took a look at the Vulkan spec and in [section 7.7.6](https://registry.khronos.org/vulkan/specs/latest/html/vkspec.html#synchronization-queue-transfers), it seems that unless we specify `VK_DEPENDENCY_QUEUE_FAMILY_OWNERSHIP_TRANSFER_USE_ALL_STAGES_BIT_KHR` in the `dependencyFlags` for `vkCmdPipelineBarrier`, the dst stage *shouldn\u0027t* matter so top of pipe or bottom of pipe should both work IIUC.\n\nThere is a note in that section mentioning \"Prior to the introduction of `VK_DEPENDENCY_QUEUE_FAMILY_OWNERSHIP_TRANSFER_USE_ALL_STAGES_BIT_KHR`, `VK_PIPELINE_STAGE_ALL_COMMANDS_BIT` is the only valid stage to wait on or wait for these operations, as the acquire and release operations do not occur in a defined stage.\". This makes we wonder if we should also update the `srcStageMask` for Skia\u0027s acquire from the foreign queue to wait on `VK_PIPELINE_STAGE_ALL_COMMANDS_BIT` (although a bit contradictory since in the spec it says `srcStageMask` shouldn\u0027t matter and is ignored for the acquire operation).",
+      "parentUuid": "8b538cc2_ebc89413",
+      "revId": "c56c78c6a624f42b6f157c1561fa0c177eae007a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
