@@ -123,6 +123,24 @@
       "parentUuid": "a2fe7651_dc4e4f18",
       "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80f7623c_e872979d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5303896
+      },
+      "writtenOn": "2026-11-09T20:34:17Z",
+      "side": 1,
+      "message": "Thanks for the added context Michael. Since we\u0027re going to start with the simple float3 interpolation, I\u0027ll just make a new issue and keep yours open for tracking the optimized version of the fix. In the meantime, does my diff look appropriate for the short-term fix? \n\nAlso, I\u0027ll make a follow-up CL applying the same functionality to the text shaders after we merge this one.",
+      "parentUuid": "079243b6_a4ce8902",
+      "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
