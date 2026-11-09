@@ -29,11 +29,33 @@ std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
     return Decode(SkMemoryStream::Make(std::move(data)), result);
 }
 
+std::optional<SkIPoint> GetHotSpot(const SkCodec* codec, int frameIndex) {
+    if (!codec) {
+        return std::nullopt;
+    }
+    return static_cast<const SkIcoRustCodec*>(codec)->getHotSpot(frameIndex);
+}
+
 bool GetHotSpot(const SkCodec* codec, int frameIndex, SkIPoint* hotSpot) {
-    if (!codec || !hotSpot || frameIndex < 0) {
+    if (!hotSpot) {
         return false;
     }
-    return static_cast<const SkIcoRustCodec*>(codec)->getHotSpot(frameIndex, hotSpot);
+    const auto point = GetHotSpot(codec, frameIndex);
+    if (!point) {
+        return false;
+    }
+    *hotSpot = *point;
+    return true;
+}
+
+std::optional<DefaultImageInfo> GetDefaultImageInfo(const SkCodec* codec) {
+    if (!codec) {
+        return std::nullopt;
+    }
+    const auto* ico = static_cast<const SkIcoRustCodec*>(codec);
+    return DefaultImageInfo{ico->defaultDimensions(),
+                            ico->getDefaultHotSpot(),
+                            ico->defaultImageIsAvailable()};
 }
 
 }  // namespace SkIcoRustDecoder
