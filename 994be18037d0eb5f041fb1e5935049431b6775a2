@@ -16,6 +16,24 @@
       "message": "Should there be a new unit test or GM to exercise this?",
       "revId": "994be18037d0eb5f041fb1e5935049431b6775a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65e116eb_bdb86f35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-09T17:25:19Z",
+      "side": 1,
+      "message": "Ah forgot to remove my autosubmit, but yes, I have tests in the works that I will send out in a separate CL.",
+      "parentUuid": "602c2b33_6239d699",
+      "revId": "994be18037d0eb5f041fb1e5935049431b6775a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
