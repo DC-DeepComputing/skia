@@ -1631,6 +1631,44 @@ bool SkScalerContextFTUtils::drawSVGGlyph(FT_Face face, const SkGlyph& glyph, Lo
 }
 #endif  // FT_CONFIG_OPTION_SVG
 
+// Returns the shift along one axis that moves floor(min + d) to 0, or nullopt if the shifted
+// [min, max] leaves the range FreeType renders or the shift does not fit in 32 bits
+static std::optional<FT_Pos> compute_axis_shift(FT_Pos min, FT_Pos max, SkFDot6 d) {
+    // FT_Outline_Render (ftoutln.c) refuses control boxes beyond this, and the rasterizers
+    // rely on it to keep their 32-bit coordinate math from overflowing
+    constexpr int64_t kMaxRenderablePos = 0x1000000;
+
+    // 64-bit math: with a 32-bit FT_Pos (Windows) the shifted coordinates would wrap silently
+    // and could pass FreeType's own range check
+    const int64_t minPlusD = int64_t{min} + d;
+    const int64_t shift = d - (minPlusD >> 6) * 64;
+    SkASSERT(0 <= min + shift && min + shift < 64);
+    if (!SkTFitsIn<SkFDot6>(shift) || int64_t{max} + shift > kMaxRenderablePos) {
+        return std::nullopt;
+    }
+    return static_cast<FT_Pos>(shift);
+}
+
+std::optional<SkScalerContextFTUtils::OutlineShift> SkScalerContextFTUtils::ComputeOutlineShift(
+        FT_Pos xMin, FT_Pos yMin, FT_Pos xMax, FT_Pos yMax, SkFDot6 dx, SkFDot6 dy) {
+    if (!SkTFitsIn<SkFDot6>(xMin) || !SkTFitsIn<SkFDot6>(xMax) ||
+        !SkTFitsIn<SkFDot6>(yMin) || !SkTFitsIn<SkFDot6>(yMax)) {
+        return std::nullopt;
+    }
+
+    // We want to apply the subpixel offset (dx, dy), and then align the resulting
+    // bounding box to the integer pixel grid of our destination bitmap.
+    // We do this by calculating the translation required to move the glyph's
+    // pixel-rounded left edge (in the destination space) to the origin which allows
+    // us to only make one call to Translate.
+    std::optional<FT_Pos> xShift = compute_axis_shift(xMin, xMax, dx);
+    std::optional<FT_Pos> yShift = compute_axis_shift(yMin, yMax, dy);
+    if (!xShift || !yShift) {
+        return std::nullopt;
+    }
+    return OutlineShift{*xShift, *yShift};
+}
+
 void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& glyph, void* imageBuffer,
                                                 const SkMatrix& bitmapTransform,
                                                 const SkMaskGamma::PreBlend& preBlend) const {
@@ -1729,19 +1767,14 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                 FT_BBox     bbox;
                 FT_Bitmap   target;
                 FT_Outline_Get_CBox(outline, &bbox);
-                if (!SkTFitsIn<SkFDot6>(bbox.xMin) || !SkTFitsIn<SkFDot6>(bbox.xMax) ||
-                    !SkTFitsIn<SkFDot6>(bbox.yMin) || !SkTFitsIn<SkFDot6>(bbox.yMax)) {
+                // A rejected outline leaves the glyph blank, same as when FreeType itself
+                // refuses to render an outline that is too large
+                std::optional<OutlineShift> shift =
+                        ComputeOutlineShift(bbox.xMin, bbox.yMin, bbox.xMax, bbox.yMax, dx, dy);
+                if (!shift) {
                     return;
                 }
-
-                // We want to apply the subpixel offset (dx, dy), and then align the resulting
-                // bounding box to the integer pixel grid of our destination bitmap.
-                // We do this by calculating the translation required to move the glyph's
-                // pixel-rounded left edge (in the destination space) to the origin which allows
-                // us to only make one call to Translate.
-                auto xShift = dx - SkIntToFDot6(SkFDot6Floor(bbox.xMin + dx));
-                auto yShift = dy - SkIntToFDot6(SkFDot6Floor(bbox.yMin + dy));
-                FT_Outline_Translate(outline, xShift, yShift);
+                FT_Outline_Translate(outline, shift->fX, shift->fY);
 
                 target.width = glyph.width();
                 target.rows = glyph.height();
