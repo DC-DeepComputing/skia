@@ -11,17 +11,22 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDocument.h"
 #include "include/core/SkExecutor.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkImage.h" // IWYU pragma: keep
+#include "include/core/SkImageGenerator.h"
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/docs/SkPDFDocument.h"
 #include "include/docs/SkPDFJpegHelpers.h"
+#include "include/encode/SkJpegEncoder.h"
+#include "modules/skcms/skcms.h"
 #include "src/core/SkExecutors.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
@@ -276,6 +281,66 @@ DEF_TEST(SkPDF_abort_jobs, rep) {
     auto doc = SkPDF::MakeDocument(&dst, metadata);
     doc->beginPage(612, 792)->drawImage(b.asImage(), 0, 0);
     doc->abort();
+}
+
+DEF_TEST(SkPDF_non_invertible_image_colorspace, r) {
+    REQUIRE_PDF_DOCUMENT(SkPDF_non_invertible_image_colorspace, r);
+    constexpr skcms_Matrix3x3 kZeroMatrix = {{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
+    const sk_sp<SkColorSpace> zeroGamutCS =
+            SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, kZeroMatrix);
+    // Lossless PDF serialization (default fEncodingQuality == 101) converts image SkColorSpaces
+    // via SkColorSpace::toProfile(), which places kPQ into trc[] without A2B; SkWriteICCProfile
+    // returns nullptr for both spaces so SkPDFBitmap falls back to DeviceRGB instead of asserting
+    // or dereferencing null ICC data.
+    const sk_sp<SkColorSpace> pqCS =
+            SkColorSpace::MakeRGB(SkNamedTransferFn::kPQ, SkNamedGamut::kRec2020);
+    REPORTER_ASSERT(r, zeroGamutCS && pqCS);
+
+    class EncodedJpegGenerator final : public SkImageGenerator {
+    public:
+        EncodedJpegGenerator(const SkImageInfo& info, sk_sp<SkData> jpeg)
+                : SkImageGenerator(info), fJpeg(std::move(jpeg)) {}
+
+    protected:
+        sk_sp<const SkData> onRefEncodedData() override { return fJpeg; }
+
+    private:
+        sk_sp<SkData> fJpeg;
+    };
+
+    SkBitmap baseBm;
+    baseBm.allocPixels(SkImageInfo::MakeN32Premul(8, 8));
+    baseBm.eraseColor(SK_ColorRED);
+    sk_sp<SkData> jpegData = SkJpegEncoder::Encode(baseBm.pixmap(), {});
+    REPORTER_ASSERT(r, jpegData);
+
+    SkDynamicMemoryWStream out;
+    auto doc = SkPDF::MakeDocument(&out, SkPDF::JPEG::MetadataWithCallbacks());
+    SkCanvas* canvas = doc->beginPage(64, 64);
+    for (const sk_sp<SkColorSpace>& cs : {zeroGamutCS, pqCS}) {
+        const SkImageInfo info = SkImageInfo::Make(8, 8, kN32_SkColorType, kPremul_SkAlphaType, cs);
+        SkBitmap bm;
+        bm.allocPixels(info);
+        bm.eraseColor(SK_ColorGREEN);
+        canvas->drawImage(bm.asImage(), 0, 0);
+        if (jpegData) {
+            sk_sp<SkImage> jpegImg = SkImages::DeferredFromGenerator(
+                    std::make_unique<EncodedJpegGenerator>(info, jpegData));
+            REPORTER_ASSERT(r, jpegImg);
+            if (jpegImg) {
+                canvas->drawImage(jpegImg, 16, 0);
+            }
+        }
+    }
+    doc->endPage();
+    doc->close();
+    sk_sp<SkData> pdf = out.detachAsData();
+    REPORTER_ASSERT(r, pdf && pdf->size() > 0);
+    if (pdf) {
+        REPORTER_ASSERT(r, contains(pdf->bytes(), pdf->size(), "/Filter /DCTDecode"));
+        REPORTER_ASSERT(r, contains(pdf->bytes(), pdf->size(), "/ColorSpace /DeviceRGB"));
+        REPORTER_ASSERT(r, !contains(pdf->bytes(), pdf->size(), "/ICCBased"));
+    }
 }
 
 #endif // SK_SUPPORT_PDF

@@ -46,7 +46,7 @@ constexpr float kD50_z = 0.8249f;
 // The use of double is necessary to accommodate the full potential 32-bit mantissa of the 16.16
 // SkFixed value, and so avoiding rounding problems with float. Also, see the comment in SkFixed.h.
 SkFixed float_round_to_fixed(float x) {
-    return sk_float_saturate2int((float)floor((double)x * SK_Fixed1 + 0.5));
+    return sk_double_saturate2int(floor((double)x * SK_Fixed1 + 0.5));
 }
 
 // Convert a float to a uInt16Number, with 0.0 mapping go 0 and 1.0 mapping to |one|.
@@ -191,6 +191,7 @@ bool nearly_equal(const skcms_Matrix3x3& u, const skcms_Matrix3x3& v) {
 }
 
 constexpr uint32_t kCICPPrimariesSRGB = 1;
+constexpr uint32_t kCICPPrimariesUnspecified = 2;
 constexpr uint32_t kCICPPrimariesP3 = 12;
 constexpr uint32_t kCICPPrimariesRec2020 = 9;
 
@@ -516,7 +517,7 @@ sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
         m_curves_offset = offset;
         for (size_t i = 0; i < kNumChannels; ++i) {
             m_curves_data[i] = write_trc_tag(m_curves[i]);
-            SkASSERT(a_curves_data[i]);
+            SkASSERT(m_curves_data[i]);
             offset += m_curves_data[i]->size();
         }
     }
@@ -559,9 +560,129 @@ sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
     return s.detachAsData();
 }
 
+bool is_valid_to_xyz_d50(const skcms_Matrix3x3& toXYZD50) {
+    skcms_Matrix3x3 inv;
+    if (!skcms_Matrix3x3_invert(&toXYZD50, &inv)) {
+        return false;
+    }
+    // Also verify that s15Fixed16 quantization in write_xyz_tag preserves invertibility (rejecting
+    // matrices that underflow to zero or saturate to a singular matrix).
+    skcms_Matrix3x3 quantized;
+    for (int r = 0; r < 3; ++r) {
+        for (int c = 0; c < 3; ++c) {
+            quantized.vals[r][c] = SkFixedToFloat(float_round_to_fixed(toXYZD50.vals[r][c]));
+        }
+    }
+    return skcms_Matrix3x3_invert(&quantized, &inv);
+}
+
+bool is_valid_parametric_trc(const skcms_TransferFunction& fn) {
+    skcms_TransferFunction inv;
+    if (!skcms_TransferFunction_isSRGBish(&fn) || !skcms_TransferFunction_invert(&fn, &inv)) {
+        return false;
+    }
+    const skcms_TransferFunction quantized = {
+            SkFixedToFloat(float_round_to_fixed(fn.g)),
+            SkFixedToFloat(float_round_to_fixed(fn.a)),
+            SkFixedToFloat(float_round_to_fixed(fn.b)),
+            SkFixedToFloat(float_round_to_fixed(fn.c)),
+            SkFixedToFloat(float_round_to_fixed(fn.d)),
+            SkFixedToFloat(float_round_to_fixed(fn.e)),
+            SkFixedToFloat(float_round_to_fixed(fn.f)),
+    };
+    return skcms_TransferFunction_isSRGBish(&quantized) &&
+           skcms_TransferFunction_invert(&quantized, &inv);
+}
+
+bool is_valid_curve(const skcms_Curve& trc) {
+    return trc.table_entries ? (trc.table_entries >= 2 && trc.table_16 != nullptr)
+                             : is_valid_parametric_trc(trc.parametric);
+}
+
+bool are_valid_curves(const skcms_Curve* curves) {
+    for (size_t i = 0; i < kNumChannels; ++i) {
+        if (!is_valid_curve(curves[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool is_valid_clut(const uint8_t* grid_points, const uint8_t* grid_16) {
+    if (!grid_16) {
+        return false;
+    }
+    for (size_t i = 0; i < kNumChannels; ++i) {
+        if (grid_points[i] < 2) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool is_valid_a2b(const skcms_A2B& a2b) {
+    if (a2b.output_channels != kNumChannels || !are_valid_curves(a2b.output_curves)) {
+        return false;
+    }
+    if (a2b.input_channels != 0 &&
+        (a2b.input_channels != kNumChannels || !are_valid_curves(a2b.input_curves) ||
+         !is_valid_clut(a2b.grid_points, a2b.grid_16))) {
+        return false;
+    }
+    if (a2b.matrix_channels != 0 &&
+        (a2b.matrix_channels != kNumChannels || !are_valid_curves(a2b.matrix_curves) ||
+         !SkIsFinite(&a2b.matrix.vals[0][0], 12))) {
+        return false;
+    }
+    return true;
+}
+
+bool is_valid_b2a(const skcms_B2A& b2a) {
+    if (b2a.input_channels != kNumChannels || !are_valid_curves(b2a.input_curves)) {
+        return false;
+    }
+    if (b2a.output_channels != 0 &&
+        (b2a.output_channels != kNumChannels || !are_valid_curves(b2a.output_curves) ||
+         !is_valid_clut(b2a.grid_points, b2a.grid_16))) {
+        return false;
+    }
+    if (b2a.matrix_channels != 0 &&
+        (b2a.matrix_channels != kNumChannels || !are_valid_curves(b2a.matrix_curves) ||
+         !SkIsFinite(&b2a.matrix.vals[0][0], 12))) {
+        return false;
+    }
+    return true;
+}
+
 }  // namespace
 
 sk_sp<SkData> SkWriteICCProfile(const skcms_ICCProfile* profile, const char* desc) {
+    if (!profile || profile->data_color_space != skcms_Signature_RGB) {
+        return nullptr;
+    }
+    if (profile->pcs != skcms_Signature_XYZ &&
+        !(profile->pcs == skcms_Signature_Lab && profile->has_A2B)) {
+        return nullptr;
+    }
+    if (!profile->has_A2B && !(profile->has_trc && profile->has_toXYZD50)) {
+        return nullptr;
+    }
+    if (profile->has_toXYZD50 && !is_valid_to_xyz_d50(profile->toXYZD50)) {
+        return nullptr;
+    }
+    if (profile->has_trc && !are_valid_curves(profile->trc)) {
+        return nullptr;
+    }
+    if (profile->has_A2B && !is_valid_a2b(profile->A2B)) {
+        return nullptr;
+    }
+    if (profile->has_B2A && !is_valid_b2a(profile->B2A)) {
+        return nullptr;
+    }
+    if (profile->has_HAGC && profile->HAGC.size > 0 && !profile->HAGC.buffer) {
+        return nullptr;
+    }
+
     ICCHeader header;
     bool uses_4_4_features = false;
 
@@ -629,7 +750,7 @@ sk_sp<SkData> SkWriteICCProfile(const skcms_ICCProfile* profile, const char* des
         SkASSERT(b2a.input_channels == kNumChannels);
         auto b2a_data = write_mAB_or_mBA_tag(kTAG_mBAType,
                                              b2a.input_curves,
-                                             b2a.output_channels ? b2a.input_curves : nullptr,
+                                             b2a.output_channels ? b2a.output_curves : nullptr,
                                              b2a.output_channels ? b2a.grid_points : nullptr,
                                              b2a.output_channels ? b2a.grid_16 : nullptr,
                                              b2a.matrix_channels ? b2a.matrix_curves : nullptr,
@@ -717,6 +838,17 @@ sk_sp<SkData> SkWriteICCProfile(const SkColorSpace* colorSpace,
     colorSpace->transferFn(&fn);
     colorSpace->toXYZD50(&toXYZD50);
 
+    if (!is_valid_to_xyz_d50(toXYZD50) || !SkIsFinite(&fn.g, 7)) {
+        return nullptr;
+    }
+
+    const bool isHdr = skcms_TransferFunction_isPQish(&fn) ||
+                       skcms_TransferFunction_isHLGish(&fn) || skcms_TransferFunction_isPQ(&fn) ||
+                       skcms_TransferFunction_isHLG(&fn);
+    if (!isHdr && !is_valid_parametric_trc(fn)) {
+        return nullptr;
+    }
+
     skcms_ICCProfile profile;
     memset(&profile, 0, sizeof(profile));
     std::vector<uint16_t> trc_table;
@@ -731,18 +863,15 @@ sk_sp<SkData> SkWriteICCProfile(const SkColorSpace* colorSpace,
         profile.toXYZD50 = toXYZD50;
     }
 
-    // Populate the analytic TRC for sRGB-like curves.
-    if (skcms_TransferFunction_isSRGBish(&fn)) {
+    if (!isHdr) {
+        // Populate the analytic TRC for sRGB-like curves.
         profile.has_trc = true;
         profile.trc[0].table_entries = 0;
         profile.trc[0].parametric = fn;
         memcpy(&profile.trc[1], &profile.trc[0], sizeof(profile.trc[0]));
         memcpy(&profile.trc[2], &profile.trc[0], sizeof(profile.trc[0]));
-    }
-
-    // Populate A2B (PQ and HLG only).
-    if (skcms_TransferFunction_isPQish(&fn) || skcms_TransferFunction_isHLGish(&fn) ||
-        skcms_TransferFunction_isPQ(&fn) || skcms_TransferFunction_isHLG(&fn)) {
+    } else {
+        // Populate A2B (PQ and HLG only).
         // Populate a 1D curve to perform per-channel conversion to linear and tone mapping.
         constexpr uint32_t kTrcTableSize = 65;
         trc_table.resize(kTrcTableSize);
@@ -843,10 +972,10 @@ sk_sp<SkData> SkWriteICCProfile(const SkColorSpace* colorSpace,
     }
 
     // Populate CICP.
-    if (skcms_TransferFunction_isHLGish(&fn) || skcms_TransferFunction_isPQish(&fn) ||
-        skcms_TransferFunction_isHLG(&fn) || skcms_TransferFunction_isPQ(&fn)) {
+    if (isHdr) {
+        const uint32_t cicpPrimaries = get_cicp_primaries(toXYZD50);
         profile.has_CICP = true;
-        profile.CICP.color_primaries = get_cicp_primaries(toXYZD50);
+        profile.CICP.color_primaries = cicpPrimaries ? cicpPrimaries : kCICPPrimariesUnspecified;
         profile.CICP.transfer_characteristics = get_cicp_trfn(fn);
         profile.CICP.matrix_coefficients = 0;
         profile.CICP.video_full_range_flag = 1;
