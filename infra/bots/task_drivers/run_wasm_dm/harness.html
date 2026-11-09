@@ -17,6 +17,12 @@
     async function dm(argv) {
       const exit = Promise.withResolvers();
 
+      // A wasm trap (e.g. failed SkASSERT) on a pthread shows up as an uncaught error on the main
+      // thread, instead of going through the onExit/onAbort handlers.
+      window.addEventListener("error", (e) => {
+        exit.reject(new Error("uncaught: " + (e.error?.message ?? e.message)));
+      });
+
       Module = await createModule({
         noInitialRun: true,
         arguments: argv,

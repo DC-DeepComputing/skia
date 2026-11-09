@@ -29,6 +29,19 @@
 #include <chrono>
 #include <memory>
 
+#if defined(SK_BUILD_FOR_WASM)
+#include <emscripten/em_js.h>
+// Explicitly yield control back to the browser thread. Requires -sASYNCIFY or -sJSPI. Busy-wait is
+// an antipattern in the web world because it prevents the browser from running its event loop
+// which, among many other things, is the mechanism that delivers the sync object signal from GPU
+// process to blocking thread (caller of this function).
+EM_ASYNC_JS(void, yieldToBrowserThread, (), {
+    await new Promise(resolve => setTimeout(resolve, 0));
+})
+#else
+void yieldToBrowserThread() {}
+#endif
+
 struct GrContextOptions;
 
 using namespace sk_gpu_test;
@@ -45,6 +58,7 @@ static void busy_wait_for_callback(int* count, int expectedValue, GrDirectContex
     auto end = begin;
     do {
         dContext->checkAsyncWorkCompletion();
+        yieldToBrowserThread();
         end = std::chrono::steady_clock::now();
     } while (*count != expectedValue && (end - begin) < std::chrono::seconds(1));
     if (*count != expectedValue) {

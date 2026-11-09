@@ -1685,6 +1685,9 @@ int main(int argc, char** argv) {
 #if defined(SK_GANESH)
     GrContextOptions grCtxOptions;
     CommonFlags::SetCtxOptions(&grCtxOptions);
+#if defined(SK_BUILD_FOR_WASM)
+    grCtxOptions.fSkipGLErrorChecks = GrContextOptions::Enable::kNo;
+#endif
 #endif
 
     dump_json();  // It's handy for the bots to assume this is ~never missing.
