@@ -307,3 +307,28 @@ DEF_GANESH_TEST(GrDrawOpAtlasConfig_Basic, reporter, options, CtsEnforcement::kA
     test_atlas_config(reporter, 65536, 0, MaskFormat::kA8,
                       { 512, 512 }, { 256, 256 });
 }
+
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrOpFlushStateAbort,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kApiLevel_T) {
+    auto dContext = ctxInfo.directContext();
+    auto gpu = dContext->priv().getGpu();
+    auto resourceProvider = dContext->priv().resourceProvider();
+
+    TestingUploadTarget uploadTarget;
+    GrOpFlushState flushState(gpu, resourceProvider, uploadTarget.writeableTokenTracker());
+
+    // Advance draw token by simulating an uncompleted draw
+    uploadTarget.issueDrawToken();
+    REPORTER_ASSERT(reporter,
+                    uploadTarget.tokenTracker()->nextDrawToken() !=
+                    uploadTarget.tokenTracker()->nextFlushToken());
+
+    // abort() should catch up flush tokens
+    flushState.abort();
+    REPORTER_ASSERT(reporter,
+                    uploadTarget.tokenTracker()->nextDrawToken() ==
+                    uploadTarget.tokenTracker()->nextFlushToken());
+    flushState.reset();
+}
