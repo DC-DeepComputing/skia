@@ -104,11 +104,11 @@ struct SkXMLParser::ParsingContext {
         auto* ctx = static_cast<ParsingContext*>(data);
         ctx->flushText();
 
-        ctx->fParser->onStartElement(tag);
-
+        ctx->fBufferedAttrs.clear();
         for (size_t i = 0; attributes[i]; i += 2) {
-            ctx->fParser->onAddAttribute(attributes[i], attributes[i + 1]);
+            ctx->fBufferedAttrs.push_back({attributes[i], attributes[i + 1]});
         }
+        ctx->fParser->onStartElement(tag, ctx->fBufferedAttrs);
     }
 
     static void XMLCALL end_element_handler(void* data, const char* tag) {
@@ -142,7 +142,7 @@ struct SkXMLParser::ParsingContext {
 private:
     void flushText() {
         if (!fBufferedText.empty()) {
-            fParser->onText(fBufferedText.data(), SkTo<int>(fBufferedText.size()));
+            fParser->onText(std::string_view(fBufferedText.data(), fBufferedText.size()));
             fBufferedText.clear();
         }
     }
@@ -153,6 +153,7 @@ private:
 
     SkXMLParser* const fParser;
     std::vector<char> fBufferedText;
+    std::vector<Attribute> fBufferedAttrs;
 };
 
 SkXMLParser::SkXMLParser(SkXMLParserError* parserError) : fError(parserError)
@@ -240,7 +241,6 @@ void SkXMLParser::GetNativeErrorString(int error, SkString* str)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void SkXMLParser::onStartElement(const char elem[]) {}
-void SkXMLParser::onAddAttribute(const char name[], const char value[]) {}
-void SkXMLParser::onEndElement(const char elem[]) {}
-void SkXMLParser::onText(const char text[], int len) {}
+void SkXMLParser::onStartElement(std::string_view elem, SkSpan<const Attribute> attributes) {}
+void SkXMLParser::onEndElement(std::string_view elem) {}
+void SkXMLParser::onText(std::string_view text) {}
