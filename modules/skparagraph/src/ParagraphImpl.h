@@ -188,6 +188,9 @@ public:
     int32_t unresolvedGlyphs() override;
     std::unordered_set<SkUnichar> unresolvedCodepoints() override;
     void addUnresolvedCodepoints(TextRange textRange);
+    // True when the current runs come from CoreText (shaped here or restored from ParagraphCache);
+    // false for HarfBuzz runs, including a kCoreText paragraph that fell back to HarfBuzz
+    bool isCoreTextShaped() const { return fCoreTextShaped; }
 
     void setState(InternalState state);
     sk_sp<SkPicture> getPicture() { return fPicture; }
@@ -244,7 +247,7 @@ public:
         return (fCodeUnitProperties[index] & property) == property;
     }
 
-    sk_sp<SkUnicode> getUnicode() { return fUnicode; }
+    sk_sp<SkUnicode> getUnicode() const { return fUnicode; }
 
 private:
     friend class ParagraphBuilder;
@@ -257,6 +260,12 @@ private:
     friend class CoreTextLineShaper;
 
     void computeEmptyMetrics();
+
+    // kCoreText paragraphs resolve families without FontCollection's default manager, so strut
+    // and empty-line metrics come from the faces the CoreText runs are shaped with
+    std::vector<sk_sp<SkTypeface>> findTypefaces(const std::vector<SkString>& familyNames,
+                                                 SkFontStyle fontStyle,
+                                                 const std::optional<FontArguments>& fontArgs);
 
     // Input
     skia_private::TArray<StyleBlock<SkScalar>> fLetterSpaceStyles;
@@ -302,6 +311,7 @@ private:
     sk_sp<SkUnicode> fUnicode;
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
+    bool fCoreTextShaped;
     TextIndex fTrailingSpaces;
 };
 }  // namespace textlayout

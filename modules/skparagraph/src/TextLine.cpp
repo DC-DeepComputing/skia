@@ -24,6 +24,9 @@
 #include "modules/skparagraph/src/ParagraphPainterImpl.h"
 #include "modules/skshaper/include/SkShaper.h"
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+#include "modules/skparagraph/src/CoreTextLineShaper.h"
+#endif
 #include "modules/skshaper/include/SkShaper_skunicode.h"
 #include "modules/skunicode/include/SkUnicode.h"
 
@@ -878,6 +881,30 @@ std::unique_ptr<Run> TextLine::ShapeString(ParagraphImpl* owner,
         }
     }
 
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+    // The CoreText cascade performs the fallback the attempts below emulate, and the default
+    // font manager they consult must stay out of CoreText paragraphs
+    if (owner->isCoreTextShaped()) {
+        ShapeHandler handler(
+                run.heightMultiplier(), run.useHalfLeading(), run.baselineShift(), ellipsis);
+        CoreTextLineShaper::ShapeAffix(ellipsis,
+                                       textStyle,
+                                       run.fFont.refTypeface(),
+                                       owner->paragraphStyle().fakeMissingFontStyles(),
+                                       bidiLevel,
+                                       owner->fontCollection(),
+                                       owner->getUnicode().get(),
+                                       &handler);
+        auto ellipsisRun = handler.run();
+        // CoreText gives at least one glyph for any non-empty string, even an invisible or
+        // unsupported code point, so ShapeAffix always commits a run; createEllipsis needs it
+        SkASSERT(ellipsisRun);
+        ellipsisRun->fTextRange = TextRange(0, ellipsis.size());
+        ellipsisRun->fOwner = owner;
+        return ellipsisRun;
+    }
+#endif
+
     auto shaped = [&](sk_sp<SkTypeface> typeface, sk_sp<SkFontMgr> fallback) -> std::unique_ptr<Run> {
         ShapeHandler handler(
                 run.heightMultiplier(), run.useHalfLeading(), run.baselineShift(), ellipsis);
@@ -1711,6 +1738,16 @@ PositionWithAffinity TextLine::getGlyphPositionAtCoordinate(SkScalar dx) {
                 if (SkScalarNearlyEqual(context.clip.fRight, dx, 0.01f)) {
                     context.clip.fRight = dx;
                 }
+
+#if defined(SK_PARAGRAPH_NATIVE_CORETEXT)
+                // CoreText paragraphs snap carets to grapheme boundaries and skip folded
+                // Default_Ignorable code points while kDefault keeps legacy glyph-cluster steps
+                if (fOwner->isCoreTextShaped()) {
+                    CoreTextLineShaper::HitTestRunSlice(
+                            *fOwner, context, offsetX, dx, &result, &keepLooking);
+                    return keepLooking;
+                }
+#endif
 
                 if (dx <= context.clip.fLeft) {
                     // All the other runs are placed right of this one

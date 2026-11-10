@@ -144,6 +144,16 @@ public:
     void addSpacesAtTheEnd(SkScalar space, Cluster* cluster);
     SkScalar addLetterSpacesEvenly(SkScalar space, Cluster* cluster);
     SkScalar addLetterSpacesEvenly(SkScalar space);
+    // Same float steps as addLetterSpacesEvenly(space), but no space between glyphs of one
+    // grapheme (base + mark, Indic conjunct), which CoreText may shape as several glyphs.
+    // Starts from the shift of the runs before it and returns the shift after it. Moves every
+    // glyph position and the end position, grows fAdvance by this run's spacing; clusters untouched
+    SkScalar addLetterSpacesAfterGraphemes(SkScalar space, SkScalar shift);
+    // Spaces the cluster as one unit, so marks and conjunct parts keep their shaped offsets.
+    // Grows the run advance and the cluster width by space, sets the cluster's half spacing,
+    // moves the end position only when the cluster ends at the run's last glyph, and returns
+    // space; the caller shifts later clusters by it
+    SkScalar addLetterSpaceAfterCluster(SkScalar space, Cluster* cluster);
     void shift(const Cluster* cluster, SkScalar offset);
     void extend(const Cluster* cluster, SkScalar offset);
 
