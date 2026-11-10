@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "include/core/SkFourByteTag.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkAssert.h"
 #include "modules/skottie/include/TextShaper.h"
@@ -140,6 +141,10 @@ public:
         return fUnicode->isRegionalIndicator(utf8);
     }
     bool isIdeographic(SkUnichar utf8) override { return fUnicode->isIdeographic(utf8); }
+    // Forwards the UAX #24 Script query to the wrapped SkUnicode backend
+    SkFourByteTag getScript(SkUnichar utf8) override { return fUnicode->getScript(utf8); }
+    // Forwards the Mn/Me mark query to the wrapped SkUnicode backend
+    bool isNonSpacingMark(SkUnichar utf8) override { return fUnicode->isNonSpacingMark(utf8); }
     std::unique_ptr<SkBidiIterator> makeBidiIterator(const uint16_t text[],
                                                      int count,
                                                      SkBidiIterator::Direction dir) override {

@@ -27,6 +27,7 @@ skia_filegroup(
         "SkUnicode.cpp",
         "SkUnicode_hardcoded.cpp",
         "SkUnicode_hardcoded.h",
+        "SkUnicode_hardcoded_tables.h",
     ],
     visibility = ["//modules/skunicode:__pkg__"],
 )

@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkFourByteTag.h"
 #include "include/private/SkDebug.h"
 #include "modules/skunicode/src/SkUnicode_hardcoded.h"
+#include "modules/skunicode/src/SkUnicode_hardcoded_tables.h"
 #include <algorithm>
 #include <array>
 #include <utility>
@@ -167,6 +169,39 @@ bool SkUnicodeHardCodedCharProperties::IsDefaultIgnorable(SkUnichar utf8) {
 
 bool SkUnicodeHardCodedCharProperties::isDefaultIgnorable(SkUnichar utf8) {
     return IsDefaultIgnorable(utf8);
+}
+
+// Looks up the ISO 15924 UAX #24 Script tag of utf8 in kScriptRanges, returning 'Zzzz' when
+// utf8 is unassigned or outside U+0000..U+10FFFF
+SkFourByteTag SkUnicodeHardCodedCharProperties::GetScript(SkUnichar utf8) {
+    using SkUnicodeTables::kScriptRanges;
+    if (utf8 < 0 || utf8 > 0x10FFFF) {
+        return SkSetFourByteTag('Z', 'z', 'z', 'z');
+    }
+    // The ranges start at U+0000, so the one before the first range past utf8 holds it
+    auto next = std::ranges::upper_bound(kScriptRanges, utf8, {}, [](const auto& range) {
+        return static_cast<SkUnichar>(range.fFirst);
+    });
+    SkASSERT(next != kScriptRanges.begin());
+    return SkUnicodeTables::kScriptTags[(next - 1)->fScript];
+}
+
+// Forwards the SkUnicode virtual Script query to GetScript
+SkFourByteTag SkUnicodeHardCodedCharProperties::getScript(SkUnichar utf8) {
+    return GetScript(utf8);
+}
+
+// Binary-searches kNonSpacingMarkRanges for General_Category Mn and Me code points
+bool SkUnicodeHardCodedCharProperties::IsNonSpacingMark(SkUnichar utf8) {
+    using SkUnicodeTables::kNonSpacingMarkRanges;
+    auto it = std::ranges::lower_bound(
+            kNonSpacingMarkRanges, utf8, {}, &std::pair<SkUnichar, SkUnichar>::second);
+    return it != kNonSpacingMarkRanges.end() && utf8 >= it->first;
+}
+
+// Forwards the SkUnicode virtual non-spacing mark query to IsNonSpacingMark
+bool SkUnicodeHardCodedCharProperties::isNonSpacingMark(SkUnichar utf8) {
+    return IsNonSpacingMark(utf8);
 }
 
 bool SkUnicodeHardCodedCharProperties::isEmoji(SkUnichar unichar) {
