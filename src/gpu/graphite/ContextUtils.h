@@ -19,6 +19,7 @@ class SkColorInfo;
 class SkM44;
 enum class SkBlendMode;
 struct SkIRect;
+struct SkISize;
 
 namespace skgpu {
 enum class BackendApi : unsigned int;
@@ -54,13 +55,16 @@ enum class Layout : uint8_t;
 //
 // It is assumed that `dstReadBounds` is in the same coordinate space as the `viewport` (e.g.
 // final backing target's pixel coords) and that its width and height match the dimensions of the
-// texture to be sampled for dst reads.
-static constexpr Uniform kIntrinsicUniforms[] = { {"viewport",      SkSLType::kFloat4},
-                                                  {"dstReadBounds", SkSLType::kFloat4} };
+// region copied into the dst texture, while `dstCopyDimensions` matches the full backing
+// dimensions of the texture to be sampled for dst reads.
+static constexpr Uniform kIntrinsicUniforms[] = {{"viewport", SkSLType::kFloat4},
+                                                 {"dstReadBounds", SkSLType::kFloat4},
+                                                 {"invDstCopyDims", SkSLType::kFloat2}};
 
 void CollectIntrinsicUniforms(const Caps* caps,
                               SkIRect viewport,
                               SkIRect dstReadBounds,
+                              SkISize dstCopyDimensions,
                               UniformManager*);
 
 // Returns whether or not hardware blending can be used. If not, we must perform a dst read within

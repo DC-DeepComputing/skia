@@ -161,9 +161,11 @@ protected:
     // pass. This is a bare pointer since the CopyTask that initializes the texture's contents
     // will have tracked the resource on the CommandBuffer already.
     std::pair<const Texture*, const Sampler*> fDstCopy;
-    // Already includes replay translation and respects final color attachment bounds, but with
-    // dimensions that equal fDstCopy's width and height.
+    // Already includes replay translation and respects final color attachment bounds, with
+    // dimensions matching the valid copied region within fDstCopy.
     SkIRect fDstReadBounds;
+
+    SkISize dstCopyDimensions() const;
 
     Protected fIsProtected;
 
