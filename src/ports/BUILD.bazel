@@ -162,7 +162,7 @@ skia_cc_library(
     deps = [
         "//:core",
         "//src/core:core_priv",
-        "@expat",
+        "//src/xml",
     ],
 )
 

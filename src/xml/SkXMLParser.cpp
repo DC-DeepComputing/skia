@@ -9,7 +9,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkRandom.h"
@@ -92,11 +91,15 @@ const XML_Memory_Handling_Suite sk_XML_alloc = {
 } // anonymous namespace
 
 struct SkXMLParser::ParsingContext {
-    SK_ONLY_STACK_ALLOCATABLE;
-
     explicit ParsingContext(SkXMLParser* parser)
         : fXMLParser(XML_ParserCreate_MM(nullptr, &sk_XML_alloc, nullptr))
-        , fParser(parser) {}
+        , fParser(parser) {
+        fParser->fContext = this;
+    }
+
+    ~ParsingContext() {
+        fParser->fContext = nullptr;
+    }
 
     static void XMLCALL start_element_handler(void* data,
                                               const char* tag,
@@ -151,7 +154,7 @@ private:
         fBufferedText.insert(fBufferedText.end(), txt, &txt[len]);
     }
 
-    SkXMLParser* const fParser;
+    raw_ptr<SkXMLParser> const fParser;
     std::vector<char> fBufferedText;
     std::vector<Attribute> fBufferedAttrs;
 };
@@ -232,6 +235,14 @@ bool SkXMLParser::parse(const char doc[], size_t len)
 {
     SkMemoryStream docStream(doc, len);
     return this->parse(docStream);
+}
+
+int SkXMLParser::getCurrentLineNumber() const {
+    return fContext ? SkToInt(XML_GetCurrentLineNumber(fContext->fXMLParser)) : -1;
+}
+
+int SkXMLParser::getCurrentColumnNumber() const {
+    return fContext ? SkToInt(XML_GetCurrentColumnNumber(fContext->fXMLParser)) : -1;
 }
 
 void SkXMLParser::GetNativeErrorString(int error, SkString* str)
