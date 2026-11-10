@@ -266,7 +266,9 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
         mipmapped = Mipmapped::kNo;
     }
 
-    Protected isProtected = recorder->priv().isProtected();
+    Protected isProtected = (caps->protectedSupport() && !caps->protectedMultiQueueSupport())
+                                    ? Protected::kYes
+                                    : Protected::kNo;
     auto textureInfo = caps->getDefaultSampledTextureInfo(ct, mipmapped, isProtected,
                                                           Renderable::kNo);
     if (!textureInfo.isValid()) {
@@ -741,10 +743,12 @@ public:
 
     GraphiteBackend(skgpu::graphite::Recorder* recorder,
                     const SkSurfaceProps& surfaceProps,
-                    SkColorType colorType)
+                    SkColorType colorType,
+                    skgpu::Protected isProtected)
             : Backend(SkImageFilterCache::Create(SkImageFilterCache::kDefaultTransientSize),
                       surfaceProps, colorType)
-            , fRecorder(recorder) {}
+            , fRecorder(recorder)
+            , fIsProtected(isProtected) {}
 
     // Backend
     sk_sp<SkDevice> makeDevice(SkISize size,
@@ -761,7 +765,10 @@ public:
                                              SkBackingFit::kApprox,
                                              props ? *props : this->surfaceProps(),
                                              skgpu::graphite::LoadOp::kDiscard,
-                                             "ImageFilterResult");
+                                             "ImageFilterResult",
+                                             /*registerWithRecorder=*/true,
+                                             /*allowUnpremul=*/false,
+                                             fIsProtected);
     }
 
     sk_sp<SkSpecialImage> makeImage(const SkIRect& subset, sk_sp<SkImage> image) const override {
@@ -801,20 +808,25 @@ public:
                                              SkBackingFit::kApprox,
                                              this->surfaceProps(),
                                              skgpu::graphite::LoadOp::kDiscard,
-                                             "EvalBlurTexture");
+                                             "EvalBlurTexture",
+                                             /*registerWithRecorder=*/true,
+                                             /*allowUnpremul=*/false,
+                                             fIsProtected);
     }
 
 private:
     skgpu::graphite::Recorder* fRecorder;
+    skgpu::Protected fIsProtected;
 };
 
 } // anonymous namespace
 
 sk_sp<Backend> MakeGraphiteBackend(skgpu::graphite::Recorder* recorder,
                                    const SkSurfaceProps& surfaceProps,
-                                   SkColorType colorType) {
+                                   SkColorType colorType,
+                                   skgpu::Protected isProtected) {
     SkASSERT(recorder);
-    return sk_make_sp<GraphiteBackend>(recorder, surfaceProps, colorType);
+    return sk_make_sp<GraphiteBackend>(recorder, surfaceProps, colorType, isProtected);
 }
 
 }  // namespace skif

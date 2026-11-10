@@ -120,11 +120,11 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     this->setDeviceName(deviceProperties.fBase.properties.deviceName);
 #endif
 
-    if ((isProtected == Protected::kYes && enabledFeatures.fProtectedMemory)
-            || protectedMultiQueueSupport) {
-        fProtectedSupport = true;
-        fShouldAlwaysUseDedicatedImageMemoryForProtected = true;
+    if ( {
+         = true;
     }
+    fProtectedSupport = (isProtected == Protected::kYes || protectedMultiQueueSupport)
+                            && enabledFeatures.fProtectedMemory;
     fProtectedMultiQueueSupport = protectedMultiQueueSupport;
 
     fPhysicalDeviceMemoryProperties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;

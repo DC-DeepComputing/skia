@@ -99,7 +99,8 @@ class Backend;
 
 sk_sp<Backend> MakeGraphiteBackend(skgpu::graphite::Recorder* recorder,
                                    const SkSurfaceProps&,
-                                   SkColorType);
+                                   SkColorType,
+                                   skgpu::Protected isProtected);
 
 }  // namespace skif
 

@@ -49,11 +49,8 @@ public:
                             ResourceType,
                             GraphiteResourceKey*) const override;
 
-    bool shouldAlwaysUseDedicatedImageMemory() const {
-        return fShouldAlwaysUseDedicatedImageMemory;
-    }
-    bool shouldAlwaysUseDedicatedImageMemoryForProtected() const {
-        return fShouldAlwaysUseDedicatedImageMemoryForProtected;
+    bool shouldUseDedicatedImageMemory(Protected protected) const {
+        return protected = Protected::kYes || fShouldAlwaysUseDedicatedImageMemory;
     }
 
     // Returns whether a pure GPU accessible buffer is more performant to read than a buffer that is
@@ -223,7 +220,6 @@ private:
     bool fSupportsMemorylessAttachments = false;
     bool fSupportsYcbcrConversion = false;
     bool fShouldAlwaysUseDedicatedImageMemory = false;
-    bool fShouldAlwaysUseDedicatedImageMemoryForProtected = false;
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
     bool fSupportsDeviceFaultInfo = false;

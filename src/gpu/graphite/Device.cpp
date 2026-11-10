@@ -425,18 +425,21 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                            LoadOp initialLoadOp,
                            std::string_view label,
                            bool registerWithRecorder,
-                           bool allowUnpremul) {
+                           bool allowUnpremul,
+                           std::optional<Protected> isProtected) {
     SkASSERT(!(mipmapped == Mipmapped::kYes && backingFit == SkBackingFit::kApprox));
     if (!recorder) {
         return nullptr;
     }
 
+    Protected protectedness = isProtected.has_value() ? *isProtected
+                                                      : recorder->priv().isProtected();
     const Caps* caps = recorder->priv().caps();
     SkISize backingDimensions = backingFit == SkBackingFit::kApprox ? GetApproxSize(ii.dimensions())
                                                                     : ii.dimensions();
     auto textureInfo = caps->getDefaultSampledTextureInfo(ii.colorType(),
                                                           mipmapped,
-                                                          recorder->priv().isProtected(),
+                                                          protectedness,
                                                           Renderable::kYes);
 
     return Make(recorder,
@@ -690,11 +693,15 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& info, const SkPaint*) {
                 SkBackingFit::kApprox,
                 props,
                 initialLoadOp,
-                label);
+                label,
+                /*registerWithRecorder=*/true,
+                /*allowUnpremul=*/false,
+                this->target().isProtected());
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) {
-    return SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo, &props);
+    return SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo, &props, {},
+                                    this->target().isProtected());
 }
 sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
                                    Budgeted budgeted,
@@ -2536,7 +2543,8 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
 
 sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
                                                          SkColorType colorType) const {
-    return skif::MakeGraphiteBackend(fRecorder, surfaceProps, colorType);
+    return skif::MakeGraphiteBackend(fRecorder, surfaceProps, colorType,
+                                     fDC->target().proxy()->isProtected());
 }
 
 const TextureProxyView& Device::target() const { return fDC->target(); }

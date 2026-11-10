@@ -34,9 +34,7 @@ struct SK_API VulkanBackendContext {
     // If SK_ENABLE_VK_EXPLICIT_QUEUE_DEFINITIONS is not defined, fQueue should always be the field
     // set for the context's queue, regardless of if the context is protected or not.
     VkQueue                          fQueue = VK_NULL_HANDLE;
-#if defined(SK_ENABLE_VK_EXPLICIT_QUEUE_DEFINITIONS)
     VkQueue                          fProtectedQueue = VK_NULL_HANDLE;
-#endif
     uint32_t                         fGraphicsQueueIndex = 0;
     // The max api version set here should match the value set in VkApplicationInfo::apiVersion when
     // then VkInstance was created. Skia requires Vulkan 1.1 as the minimum version.

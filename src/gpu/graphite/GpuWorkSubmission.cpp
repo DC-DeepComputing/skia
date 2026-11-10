@@ -36,7 +36,7 @@ GpuWorkSubmission::GpuWorkSubmission(std::unique_ptr<CommandBuffer> cmdBuffer,
                 SkASSERT(!buffer->isUnmappable());
                 fOutstandingAsyncMapCounter->ref();
                 buffer->asyncMap([](GpuFinishedContext c, CallbackResult) {
-                                     static_cast<SkRefCnt*>(c)->unref();
+                                    static_cast<SkRefCnt*>(c)->unref();
                                  }, fOutstandingAsyncMapCounter.get());
             }
         }
