@@ -8,9 +8,18 @@
 #include "include/core/SkTypes.h"
 
 #if defined(SK_XML)
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "src/xml/SkDOM.h"
+#include "src/xml/SkXMLParser.h"
 #include "tests/Test.h"
+
+#include <algorithm>
+#include <cstring>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
 
 static const SkDOM::Node* check_node(skiatest::Reporter* r, const SkDOM& dom,
                                      const SkDOM::Node* node, const char* expectedName,
@@ -81,6 +90,80 @@ DEF_TEST(SkDOM_test, r) {
         check_node(r, dom, dom.getNextSibling(elem3),
                    "elem4", SkDOM::kElement_Type);
     }
+}
+
+DEF_TEST(SkXMLParser_CallbacksAndPosition, r) {
+    class RecordingParser : public SkXMLParser {
+    public:
+        struct Event {
+            enum class Type { kStart, kText, kEnd } fType;
+            std::string fText;
+            std::vector<std::pair<std::string, std::string>> fAttrs;
+        };
+
+        std::vector<Event> fEvents;
+        int fMaxLine = -1;
+        int fMaxCol = -1;
+
+    protected:
+        void onStartElement(std::string_view elem, SkSpan<const Attribute> attributes) override {
+            Event event{Event::Type::kStart, std::string(elem), {}};
+            for (const auto& [name, value] : attributes) {
+                event.fAttrs.emplace_back(name, value);
+            }
+            fEvents.push_back(std::move(event));
+            fMaxLine = std::max(fMaxLine, this->getCurrentLineNumber());
+            fMaxCol = std::max(fMaxCol, this->getCurrentColumnNumber());
+        }
+        void onText(std::string_view text) override {
+            fEvents.push_back({Event::Type::kText, std::string(text), {}});
+        }
+        void onEndElement(std::string_view elem) override {
+            fEvents.push_back({Event::Type::kEnd, std::string(elem), {}});
+        }
+    };
+
+    static const char kDoc[] =
+        "<root a='1'\n"
+        "      b='2'>"
+        "<child c='3'>hello</child>"
+        "</root>";
+
+    RecordingParser parser;
+    REPORTER_ASSERT(r, parser.parse(kDoc, sizeof(kDoc) - 1));
+    REPORTER_ASSERT(r, parser.fEvents.size() == 5);
+    if (parser.fEvents.size() == 5) {
+        using Type = RecordingParser::Event::Type;
+        REPORTER_ASSERT(r, parser.fEvents[0].fType == Type::kStart);
+        REPORTER_ASSERT(r, parser.fEvents[0].fText == "root");
+        REPORTER_ASSERT(r, parser.fEvents[0].fAttrs.size() == 2);
+        REPORTER_ASSERT(r,
+                        parser.fEvents[0].fAttrs[0] ==
+                                std::make_pair(std::string("a"), std::string("1")));
+        REPORTER_ASSERT(r,
+                        parser.fEvents[0].fAttrs[1] ==
+                                std::make_pair(std::string("b"), std::string("2")));
+
+        REPORTER_ASSERT(r, parser.fEvents[1].fType == Type::kStart);
+        REPORTER_ASSERT(r, parser.fEvents[1].fText == "child");
+        REPORTER_ASSERT(r, parser.fEvents[1].fAttrs.size() == 1);
+        REPORTER_ASSERT(r,
+                        parser.fEvents[1].fAttrs[0] ==
+                                std::make_pair(std::string("c"), std::string("3")));
+
+        REPORTER_ASSERT(r, parser.fEvents[2].fType == Type::kText);
+        REPORTER_ASSERT(r, parser.fEvents[2].fText == "hello");
+
+        REPORTER_ASSERT(r, parser.fEvents[3].fType == Type::kEnd);
+        REPORTER_ASSERT(r, parser.fEvents[3].fText == "child");
+
+        REPORTER_ASSERT(r, parser.fEvents[4].fType == Type::kEnd);
+        REPORTER_ASSERT(r, parser.fEvents[4].fText == "root");
+    }
+    REPORTER_ASSERT(r, parser.fMaxLine >= 2);
+    REPORTER_ASSERT(r, parser.fMaxCol >= 1);
+    REPORTER_ASSERT(r, parser.getCurrentLineNumber() == -1);
+    REPORTER_ASSERT(r, parser.getCurrentColumnNumber() == -1);
 }
 
 #endif // SK_XML
