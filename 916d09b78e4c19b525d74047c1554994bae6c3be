@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95852ab6_68054b83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-11-10T08:28:40Z",
+      "side": 1,
+      "message": "private API for conversion with color matrix",
+      "revId": "916d09b78e4c19b525d74047c1554994bae6c3be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
