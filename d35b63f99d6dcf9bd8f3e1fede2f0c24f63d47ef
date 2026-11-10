@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be997b3a_e141d701",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5318168
+      },
+      "writtenOn": "2026-11-10T15:05:52Z",
+      "side": 1,
+      "message": "Hi \n\nCould you please take a look at this CL?\n\nThis fixes crbug.com/575293867. In Chrome, a CSS box-shadow on a circle looks much fainter than on a shape that is almost a circle, for example the same circle with a 0.01px spread.\n\nThe cause is the extra 0.5 in the Ganesh circle blur shader and in the legacy Graphite AnalyticBlurMask. The profile already stores its values at texel centers, so the offset is applied twice. I saw that AnalyticRRectBlurMask already dropped this offset in ab04e7e980, so I added you both as reviewers. Chromium still uses the legacy Graphite path through SK_SUPPORT_LEGACY_GRAPHITE_RRECT_BLUR, so I changed it there too. I\u0027m happy to drop that part if you plan to remove the legacy path soon.\n\nI added a unit test that checks the coverage on the edge of a blurred circle. Locally it passes with the fix on Ganesh and Graphite (Vulkan), including a build with SK_SUPPORT_LEGACY_GRAPHITE_RRECT_BLUR defined. I expect small changes in the GPU circle blur GMs such as blurcircles.\n\nThanks!",
+      "revId": "d35b63f99d6dcf9bd8f3e1fede2f0c24f63d47ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
