@@ -10,18 +10,21 @@
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTo.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 /**
  * This macro creates the member variables required by the SkTInternalLList class. It should be
  * placed in the private section of any class that will be stored in a double linked list.
  */
-#define SK_DECLARE_INTERNAL_LLIST_INTERFACE(ClassName)              \
-    friend class SkTInternalLList<ClassName>;                       \
-    /* back pointer to the owning list - for debugging */           \
-    SkDEBUGCODE(SkTInternalLList<ClassName>* fList = nullptr;)      \
-    ClassName* fPrev = nullptr;                                     \
-    ClassName* fNext = nullptr
+// RAW_PTR_EXCLUSION: Intrusive list nodes may reside in arenas/pools or require trivial dtors.
+#define SK_DECLARE_INTERNAL_LLIST_INTERFACE(ClassName)                            \
+    friend class SkTInternalLList<ClassName>;                                     \
+    /* back pointer to the owning list - for debugging */                         \
+    SkDEBUGCODE(RAW_PTR_EXCLUSION SkTInternalLList<ClassName>* fList = nullptr;)  \
+    RAW_PTR_EXCLUSION ClassName* fPrev = nullptr;                                 \
+    RAW_PTR_EXCLUSION ClassName* fNext = nullptr
 
 /**
  * This class implements a templated internal doubly linked list data structure.
@@ -243,7 +246,7 @@ public:
         void operator++() { this->next(); }
 
     private:
-        T* fCurr;
+        RAW_PTR_EXCLUSION T* fCurr;
     };
 
     Iter begin() const {
@@ -294,8 +297,9 @@ public:
 #endif // SK_DEBUG
 
 private:
-    T* fHead = nullptr;
-    T* fTail = nullptr;
+    // RAW_PTR_EXCLUSION: Intrusive list nodes may reside in arenas/pools without individual free.
+    RAW_PTR_EXCLUSION T* fHead = nullptr;
+    RAW_PTR_EXCLUSION T* fTail = nullptr;
 
     SkTInternalLList(const SkTInternalLList&) = delete;
     SkTInternalLList& operator=(const SkTInternalLList&) = delete;

@@ -12,6 +12,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkFixed.h"
 #include "include/private/SkSafe32.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 
@@ -29,8 +30,9 @@ struct SkAnalyticEdge {
         kCCW = -1,  // counter clockwise
     };
 
-    SkAnalyticEdge* fNext;
-    SkAnalyticEdge* fPrev;
+    // RAW_PTR_EXCLUSION: Arena/stack-allocated scanline rasterizer edges.
+    RAW_PTR_EXCLUSION SkAnalyticEdge* fNext;
+    RAW_PTR_EXCLUSION SkAnalyticEdge* fPrev;
 
     SkFixed fX;
     SkFixed fDX;

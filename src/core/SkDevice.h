@@ -29,6 +29,7 @@
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkMatrixPriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/shaders/SkShaderBase.h"
 
 #include <cstdint>
@@ -81,7 +82,8 @@ struct SkStrikeDeviceInfo {
     const SkSurfaceProps fSurfaceProps;
     const SkScalerContextFlags fScalerContextFlags;
     // This is a pointer so this can be compiled without SK_GPU_SUPPORT.
-    const sktext::gpu::SubRunControl* const fSubRunControl;
+    // RAW_PTR_EXCLUSION: Transient parameter struct pointing to Context-owned SubRunControl.
+    RAW_PTR_EXCLUSION const sktext::gpu::SubRunControl* const fSubRunControl;
 };
 
 /**
@@ -307,7 +309,8 @@ public:
 
         const SkImageInfo        fInfo;
         const SkPixelGeometry    fPixelGeometry;
-        SkRasterHandleAllocator* fAllocator = nullptr;
+        // RAW_PTR_EXCLUSION: Transient CreateInfo parameter struct.
+        RAW_PTR_EXCLUSION SkRasterHandleAllocator* fAllocator = nullptr;
     };
 
     /**

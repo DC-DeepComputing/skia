@@ -13,6 +13,7 @@
 #include "include/core/SkSize.h"
 #include "src/core/SkCachedData.h"
 #include "src/core/SkImageInfoPriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/shaders/SkShaderBase.h"
 #include <memory>
 
@@ -93,7 +94,8 @@ protected:
 
 private:
     sk_sp<SkColorSpace> fCS;
-    Level*              fLevels;    // managed by the baseclass, may be null due to onDataChanged.
+    // RAW_PTR_EXCLUSION: Managed by SkCachedData (may reside in SkDiscardableMemory).
+    RAW_PTR_EXCLUSION Level* fLevels;  // managed by the baseclass, may be null due to onDataChanged.
     int                 fCount;
 
     SkMipmap(void* malloc, size_t size);

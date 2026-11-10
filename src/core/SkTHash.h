@@ -11,6 +11,7 @@
 #include "include/core/SkTypes.h"
 #include "src/core/SkChecksum.h"
 #include "src/core/SkMathPriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <initializer_list>
 #include <memory>
@@ -294,8 +295,9 @@ public:
         }
 
     protected:
-        const TTable* fTable;
-        int fSlot;
+        // RAW_PTR_EXCLUSION: Short-lived hash table iterator.
+        RAW_PTR_EXCLUSION const TTable* fTable;
+        int                             fSlot;
     };
 
 private:

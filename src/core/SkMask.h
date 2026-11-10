@@ -13,6 +13,7 @@
 #include "include/private/SkTemplates.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorPriv.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -191,7 +192,8 @@ template <> struct SkMask::AlphaIter<SkMask::kARGB32_Format> {
     }
     uint8_t operator*() const { return SkGetPackedA32(*fPtr); }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
-    const uint32_t* fPtr;
+    // RAW_PTR_EXCLUSION: Scanline pixel iterator cursor.
+    RAW_PTR_EXCLUSION const uint32_t* fPtr;
 };
 
 template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
@@ -211,7 +213,8 @@ template <> struct SkMask::AlphaIter<SkMask::kLCD16_Format> {
         return (r + g + b) / 3;
     }
     bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
-    const uint16_t* fPtr;
+    // RAW_PTR_EXCLUSION: Scanline pixel iterator cursor.
+    RAW_PTR_EXCLUSION const uint16_t* fPtr;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

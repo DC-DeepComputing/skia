@@ -13,6 +13,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSpan.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <optional>
 
@@ -54,7 +55,8 @@ public:
         };
 
         uint32_t           fFlags;      // flags that impact the drawing of the points
-        SkPoint*           fPoints;     // the center point of each generated point
+        // RAW_PTR_EXCLUSION: Owned array deleted via delete[] in ~PointData().
+        RAW_PTR_EXCLUSION SkPoint* fPoints;  // the center point of each generated point
         int                fNumPoints;  // number of points in fPoints
         SkVector           fSize;       // the size to draw the points
         SkRect             fClipRect;   // clip required to draw the points (if kUseClip is set)

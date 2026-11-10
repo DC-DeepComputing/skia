@@ -10,6 +10,7 @@
 #include "include/private/SkMacros.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMath.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkBuffer.h"
@@ -89,6 +90,9 @@ public:
             fCount = count;
         }
     }
+public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
 private:
     SkRegionPriv::RunType fStack[kRunArrayStackCount];
     AutoTMalloc<SkRegionPriv::RunType> fMalloc;
@@ -709,6 +713,8 @@ static void assert_valid_pair(int left, int rite)
 #endif
 
 struct spanRec {
+    SK_ONLY_STACK_ALLOCATABLE;
+
     const SkRegionPriv::RunType*    fA_runs;
     const SkRegionPriv::RunType*    fB_runs;
     int                         fA_left, fA_rite, fB_left, fB_rite;
@@ -923,6 +929,9 @@ public:
     bool isEmpty() const { return 0 == fPrevLen; }
 
     uint8_t fMin, fMax;
+
+public:
+    SK_ONLY_STACK_ALLOCATABLE;
 
 private:
     RunArray* fArray;

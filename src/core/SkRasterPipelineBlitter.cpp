@@ -38,6 +38,7 @@
 #include "src/core/SkRasterPipelineOpList.h"
 #include "src/core/SkRasterPipelineVizualizer.h"
 #include "src/effects/colorfilters/SkColorFilterBase.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/shaders/SkShaderBase.h"
 
 #include <algorithm>
@@ -110,13 +111,14 @@ private:
     void appendClipLerp     (SkRasterPipeline*) const;
 
     SkPixmap               fDst;
-    SkArenaAlloc*          fAlloc;
+    // RAW_PTR_EXCLUSION: SkRasterPipelineBlitter is allocated in SkArenaAlloc.
+    RAW_PTR_EXCLUSION SkArenaAlloc* fAlloc;
     SkRasterPipeline       fColorPipeline;
     SkRasterPipeline       fBlendPipeline;
     // If the blender is a blend-mode, we retain that information for late-stage optimizations
     std::optional<SkBlendMode> fBlendMode;
     // set to pipeline storage (for alpha) if we have a clipShader
-    void*                  fClipShaderBuffer = nullptr; // "native" : float or U16
+    RAW_PTR_EXCLUSION void* fClipShaderBuffer = nullptr; // "native" : float or U16
 
     bool fCanDirectBlit;
     const SkColor4f fDirectBlitPaintColor;

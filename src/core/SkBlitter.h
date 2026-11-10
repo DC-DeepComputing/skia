@@ -18,6 +18,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAutoMalloc.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -209,8 +210,9 @@ public:
     }
 
 private:
-    SkBlitter*  fBlitter;
-    SkIRect     fClipRect;
+    // RAW_PTR_EXCLUSION: Blitters are arena- or stack-allocated.
+    RAW_PTR_EXCLUSION SkBlitter* fBlitter;
+    SkIRect                      fClipRect;
 };
 
 /** Wraps another (real) blitter, and ensures that the real blitter is only
@@ -242,8 +244,9 @@ public:
     }
 
 private:
-    SkBlitter*      fBlitter;
-    const SkRegion* fRgn;
+    // RAW_PTR_EXCLUSION: Blitters and clip regions are arena- or stack-allocated.
+    RAW_PTR_EXCLUSION SkBlitter*      fBlitter;
+    RAW_PTR_EXCLUSION const SkRegion* fRgn;
 };
 
 #ifdef SK_DEBUG
@@ -275,8 +278,9 @@ public:
     }
 
 private:
-    SkBlitter*  fBlitter;
-    SkIRect     fClipRect;
+    // RAW_PTR_EXCLUSION: Blitters are arena- or stack-allocated.
+    RAW_PTR_EXCLUSION SkBlitter* fBlitter;
+    SkIRect                      fClipRect;
 };
 #endif
 

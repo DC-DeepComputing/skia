@@ -96,7 +96,8 @@ public:
 
     // Callers can inspect the stage list for debugging purposes.
     struct StageList {
-        StageList*          prev;
+        // RAW_PTR_EXCLUSION: Allocated in SkArenaAlloc.
+        RAW_PTR_EXCLUSION StageList* prev;
         SkRasterPipelineOp  stage;
         RAW_PTR_EXCLUSION void* ctx;  // RAW_PTR_EXCLUSION: pointer used to pack integers.
     };
@@ -158,11 +159,12 @@ private:
                           bool store);
     uint8_t* tailPointer();
 
-    SkArenaAlloc*                        fAlloc;
-    SkRasterPipelineContexts::RewindCtx* fRewindCtx;
+    // RAW_PTR_EXCLUSION: Arena/stack-allocated pipeline state and stage list.
+    RAW_PTR_EXCLUSION SkArenaAlloc*                        fAlloc;
+    RAW_PTR_EXCLUSION SkRasterPipelineContexts::RewindCtx* fRewindCtx;
     // A linked list of stages. fStages and getStageList() return the latest stage.
-    StageList*                  fStages;
-    uint8_t*                    fTailPointer;
+    RAW_PTR_EXCLUSION StageList*                           fStages;
+    RAW_PTR_EXCLUSION uint8_t*                             fTailPointer;
     int                         fNumStages;
 
     // Only 1 in 2 million CPU-backend pipelines used more than two MemoryCtxs.

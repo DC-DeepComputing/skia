@@ -9,6 +9,7 @@
 #define SkTLazy_DEFINED
 
 #include "include/private/SkAssert.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <optional>
 #include <utility>
@@ -209,8 +210,9 @@ public:
     const T& operator *() const { return *fObj; }
 
 private:
-    const T*         fObj;
-    std::optional<T> fLazy;
+    // RAW_PTR_EXCLUSION: Points to caller's const T or inline std::optional<T> fLazy.
+    RAW_PTR_EXCLUSION const T* fObj;
+    std::optional<T>           fLazy;
 };
 
 #endif

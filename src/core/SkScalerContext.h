@@ -27,6 +27,7 @@
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskGamma.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/partition_alloc/raw_ref.h"
 
 #include <cstddef>
@@ -250,8 +251,9 @@ struct SkScalerContextEffects {
             : fPathEffect(paint.getPathEffect())
             , fMaskFilter(paint.getMaskFilter()) {}
 
-    SkPathEffect*   fPathEffect;
-    SkMaskFilter*   fMaskFilter;
+    // RAW_PTR_EXCLUSION: Borrowed from caller's SkPaint for synchronous glyph lookup.
+    RAW_PTR_EXCLUSION SkPathEffect* fPathEffect;
+    RAW_PTR_EXCLUSION SkMaskFilter* fMaskFilter;
 };
 
 class SkScalerContext {

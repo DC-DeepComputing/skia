@@ -33,6 +33,7 @@
 #include "include/private/SkTemplates.h"
 #include "include/private/chromium/Slug.h"
 #include "src/core/SkDrawShadowInfo.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 
@@ -122,7 +123,8 @@ public:
 
     ACT_AS_PTR(fPtr)
 private:
-    T* fPtr;
+    // RAW_PTR_EXCLUSION: Allocated in SkRecord's SkArenaAlloc.
+    RAW_PTR_EXCLUSION T* fPtr;
     Optional(const Optional&) = delete;
     Optional& operator=(const Optional&) = delete;
 };
@@ -137,7 +139,8 @@ public:
 
     ACT_AS_PTR(fPtr)
 private:
-    T* fPtr;
+    // RAW_PTR_EXCLUSION: Allocated in SkRecord's SkArenaAlloc; must remain POD.
+    RAW_PTR_EXCLUSION T* fPtr;
 };
 
 #undef ACT_AS_PTR

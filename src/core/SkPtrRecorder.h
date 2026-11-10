@@ -11,7 +11,9 @@
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTDArray.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 
@@ -75,6 +77,9 @@ public:
             return fIndex < fSet.fList.size() ? fSet.fList[fIndex++].fPtr : nullptr;
         }
 
+    public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
     private:
         const SkPtrSet& fSet;
         int             fIndex;
@@ -86,7 +91,8 @@ protected:
 
 private:
     struct Pair {
-        void*       fPtr;   // never nullptr
+        // RAW_PTR_EXCLUSION: Stored in SkTDArray without constructors/destructors; opaque key.
+        RAW_PTR_EXCLUSION void* fPtr;  // never nullptr
         uint32_t    fIndex; // 1...N
     };
 

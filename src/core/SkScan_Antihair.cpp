@@ -22,6 +22,7 @@
 #include "src/core/SkLineClipper.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkScan.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -86,7 +87,8 @@ public:
     virtual SkFixed drawLine(int x, int stopx, SkFixed fy, SkFixed slope) = 0;
 
 private:
-    SkBlitter*  fBlitter;
+    // RAW_PTR_EXCLUSION: Stack-allocated anti-hairline blitter wrapper.
+    RAW_PTR_EXCLUSION SkBlitter* fBlitter;
 };
 
 // This class is responsible for drawing perfectly horizontal hairlines.

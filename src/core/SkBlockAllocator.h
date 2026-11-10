@@ -16,6 +16,7 @@
 #include "include/private/SkMath.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkOnlyStackAllocatable.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -149,8 +150,9 @@ public:
 
         SkDEBUGCODE(uint32_t fSentinel;)  // known value to check for bad back pointers to blocks
 
-        Block*          fNext;      // doubly-linked list of blocks
-        Block*          fPrev;
+        // RAW_PTR_EXCLUSION: Low-level allocator blocks (fHead is inline in SkBlockAllocator).
+        RAW_PTR_EXCLUSION Block* fNext;  // doubly-linked list of blocks
+        RAW_PTR_EXCLUSION Block* fPrev;
 
         // Each block tracks its own cursor because as later blocks are released, an older block
         // may become the active tail again.
@@ -168,7 +170,7 @@ public:
     // Tuple representing a range of bytes, marking the unaligned start, the first aligned point
     // after any padding, and the upper limit depending on requested size.
     struct ByteRange {
-        Block* fBlock;         // Owning block
+        RAW_PTR_EXCLUSION Block* fBlock;  // Owning block
         int    fStart;         // Inclusive byte lower limit of byte range
         int    fAlignedOffset; // >= start, matching alignment requirement (i.e. first real byte)
         int    fEnd;           // Exclusive upper limit of byte range
@@ -447,7 +449,7 @@ private:
 
     int scratchBlockSize() const { return fHead.fPrev ? fHead.fPrev->fSize : 0; }
 
-    Block* fTail; // All non-head blocks are heap allocated; tail will never be null.
+    RAW_PTR_EXCLUSION Block* fTail; // All non-head blocks are heap allocated; tail will never be null.
 
     // All remaining state is packed into 64 bits to keep SkBlockAllocator at 16 bytes + head block
     // (on a 64-bit system).

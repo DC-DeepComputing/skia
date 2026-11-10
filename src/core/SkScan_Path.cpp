@@ -18,6 +18,7 @@
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkMath.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkSafe32.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkEdge.h"
@@ -352,6 +353,9 @@ public:
     void blitMask(const SkMask&, const SkIRect& clip) override {
         SkDEBUGFAIL("blitMask unexpected");
     }
+
+public:
+    SK_ONLY_STACK_ALLOCATABLE;
 
 private:
     SkBlitter*  fBlitter;

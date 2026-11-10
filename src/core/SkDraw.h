@@ -20,6 +20,7 @@
 #include "src/core/SkDrawTypes.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkZip.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class SkArenaAlloc;
 class SkBitmap;
@@ -246,9 +247,10 @@ private:
 public:
     SkPixmap fDst;
     BlitterChooser* fBlitterChooser{nullptr};  // required
-    const SkMatrix* fCTM{nullptr};             // required
-    const SkRasterClip* fRC{nullptr};          // required
-    const SkSurfaceProps* fProps{nullptr};     // optional
+    // RAW_PTR_EXCLUSION: Stack-scoped SkBaseDraw/SkDraw state pointers.
+    RAW_PTR_EXCLUSION const SkMatrix*       fCTM{nullptr};    // required
+    RAW_PTR_EXCLUSION const SkRasterClip*   fRC{nullptr};     // required
+    RAW_PTR_EXCLUSION const SkSurfaceProps* fProps{nullptr};  // optional
 
 #ifdef SK_DEBUG
     void validate() const;

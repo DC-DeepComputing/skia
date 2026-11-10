@@ -8,8 +8,10 @@
 #ifndef SkRecordPattern_DEFINED
 #define SkRecordPattern_DEFINED
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTLogic.h"
 #include "src/core/SkRecord.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 namespace SkRecords {
 
@@ -37,7 +39,8 @@ public:
     }
 
 private:
-    type* fPtr;
+    // RAW_PTR_EXCLUSION: Transient pattern matcher pointing into SkRecord::fAlloc.
+    RAW_PTR_EXCLUSION type* fPtr;
 };
 
 // Matches any command that draws, and stores its paint.
@@ -71,7 +74,7 @@ private:
     template <typename T> static T* AsPtr(SkRecords::Optional<T>& x) { return x; }
     template <typename T> static T* AsPtr(T& x) { return &x; }
 
-    SkPaint* fPaint;
+    RAW_PTR_EXCLUSION SkPaint* fPaint;
 };
 
 // Matches any command that draws *once* (logically), and stores its paint.
@@ -111,7 +114,7 @@ private:
     template <typename T> static T* AsPtr(SkRecords::Optional<T>& x) { return x; }
     template <typename T> static T* AsPtr(T& x) { return &x; }
 
-    SkPaint* fPaint;
+    RAW_PTR_EXCLUSION SkPaint* fPaint;
 };
 
 // Matches if Matcher doesn't.  Stores nothing.

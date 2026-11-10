@@ -36,6 +36,7 @@
 #include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <array>
@@ -375,8 +376,9 @@ private:
     }
 
     const int fWindow;
-    float* fKernel;
-    skvx::Vec<N, float>* fSrcBuffer;
+    // RAW_PTR_EXCLUSION: Trailing arena buffer pointers allocated with Pass.
+    RAW_PTR_EXCLUSION float* fKernel;
+    RAW_PTR_EXCLUSION skvx::Vec<N, float>* fSrcBuffer;
     int fSrcBufferBase;
 };
 
@@ -701,19 +703,20 @@ private:
 #endif
     }
 
-    skvx::Vec<4, uint32_t>* const fBuffer0;
-    skvx::Vec<4, uint32_t>* const fBuffer1;
-    skvx::Vec<4, uint32_t>* const fBuffer2;
-    skvx::Vec<4, uint32_t>* const fBuffersEnd;
+    // RAW_PTR_EXCLUSION: Trailing arena ring-buffer bounds and cursors.
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* const fBuffer0;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* const fBuffer1;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* const fBuffer2;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* const fBuffersEnd;
     const skvx::ScaledDividerU32 fDivider;
 
     // blur state
     char fSum0[sizeof(skvx::Vec<4, uint32_t>)];
     char fSum1[sizeof(skvx::Vec<4, uint32_t>)];
     char fSum2[sizeof(skvx::Vec<4, uint32_t>)];
-    skvx::Vec<4, uint32_t>* fBuffer0Cursor;
-    skvx::Vec<4, uint32_t>* fBuffer1Cursor;
-    skvx::Vec<4, uint32_t>* fBuffer2Cursor;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* fBuffer0Cursor;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* fBuffer1Cursor;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* fBuffer2Cursor;
 };
 
 // Implement a scanline processor that uses a two-box filter to approximate a Tent filter.
@@ -938,16 +941,17 @@ private:
         sum1.store(fSum1);
     }
 
-    skvx::Vec<4, uint32_t>* const fBuffer0;
-    skvx::Vec<4, uint32_t>* const fBuffer1;
-    skvx::Vec<4, uint32_t>* const fBuffersEnd;
+    // RAW_PTR_EXCLUSION: Trailing arena ring-buffer bounds and cursors.
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* const fBuffer0;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* const fBuffer1;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* const fBuffersEnd;
     const skvx::ScaledDividerU32 fDivider;
 
     // blur state
     char fSum0[sizeof(skvx::Vec<4, uint32_t>)];
     char fSum1[sizeof(skvx::Vec<4, uint32_t>)];
-    skvx::Vec<4, uint32_t>* fBuffer0Cursor;
-    skvx::Vec<4, uint32_t>* fBuffer1Cursor;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* fBuffer0Cursor;
+    RAW_PTR_EXCLUSION skvx::Vec<4, uint32_t>* fBuffer1Cursor;
 };
 
 class A8Pass final : public Pass {
@@ -1141,16 +1145,17 @@ private:
     // While input data is only A8 (only needing uint8_t to store), we need to store
     // single-channel 32-bit data for the accumulation calculations.
     uint64_t  fWeight;
-    uint32_t* fBuffer0;
-    uint32_t* fBuffer0End;
-    uint32_t* fBuffer1;
-    uint32_t* fBuffer1End;
-    uint32_t* fBuffer2;
-    uint32_t* fBuffer2End;
+    // RAW_PTR_EXCLUSION: Trailing arena ring-buffer bounds and cursors.
+    RAW_PTR_EXCLUSION uint32_t* fBuffer0;
+    RAW_PTR_EXCLUSION uint32_t* fBuffer0End;
+    RAW_PTR_EXCLUSION uint32_t* fBuffer1;
+    RAW_PTR_EXCLUSION uint32_t* fBuffer1End;
+    RAW_PTR_EXCLUSION uint32_t* fBuffer2;
+    RAW_PTR_EXCLUSION uint32_t* fBuffer2End;
 
-    uint32_t* fBuffer0Cursor;
-    uint32_t* fBuffer1Cursor;
-    uint32_t* fBuffer2Cursor;
+    RAW_PTR_EXCLUSION uint32_t* fBuffer0Cursor;
+    RAW_PTR_EXCLUSION uint32_t* fBuffer1Cursor;
+    RAW_PTR_EXCLUSION uint32_t* fBuffer2Cursor;
     uint32_t fSum0;
     uint32_t fSum1;
     uint32_t fSum2;

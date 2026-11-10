@@ -14,6 +14,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 
 /** This class is initialized with a clip rectangle, and then can be fed quads,
     which must already be monotonic in Y.
@@ -43,6 +44,9 @@ public:
     bool clipCubic(const SkPoint pts[4], const SkRect& clip);
 
     SkPath::Verb next(SkPoint pts[]);
+
+public:
+    SK_ONLY_STACK_ALLOCATABLE;
 
 private:
     SkPoint*        fCurrPoint;

@@ -10,6 +10,7 @@
 #ifndef SkTraceEvent_DEFINED
 #define SkTraceEvent_DEFINED
 
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/utils/SkEventTracer.h"
 #include "src/core/SkTraceEventCommon.h" // IWYU pragma: export
 #include "src/core/SkUtils.h"
@@ -396,6 +397,10 @@ class TRACE_EVENT_API_CLASS_EXPORT ScopedTracer {
     const char* name;
     SkEventTracer::Handle event_handle;
   };
+ public:
+  SK_ONLY_STACK_ALLOCATABLE;
+
+ private:
   Data* p_data_;
   Data data_;
 };

@@ -13,6 +13,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 
 #include <optional>
 
@@ -40,6 +41,9 @@ public:
      */
     static void ClipPath(const SkPathRaw&, const SkRect& clip, bool canCullToTheRight,
                          void (*consume)(SkEdgeClipper*, bool newCtr, void* ctx), void* ctx);
+
+public:
+    SK_ONLY_STACK_ALLOCATABLE;
 
 private:
     SkPoint*    fCurrPoint;

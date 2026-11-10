@@ -15,6 +15,7 @@
 #include "src/core/SkBlitter.h"
 #include <cstdint>
 #include "include/private/SkDebug.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class SkPath;
 class SkRegion;
@@ -72,7 +73,8 @@ private:
     friend class SkAAClipBlitter;
 
     SkIRect  fBounds;
-    RunHead* fRunHead;
+    // RAW_PTR_EXCLUSION: Intrusively refcounted via RunHead::fRefCnt.
+    RAW_PTR_EXCLUSION RunHead* fRunHead;
 
     void freeRuns();
 
@@ -108,19 +110,20 @@ public:
     void blitMask(const SkMask&, const SkIRect& clip) override;
 
 private:
-    SkBlitter*      fBlitter;
-    const SkAAClip* fAAClip;
-    SkIRect         fAAClipBounds;
+    // RAW_PTR_EXCLUSION: Arena/stack-allocated blitter and interior scratch pointers.
+    RAW_PTR_EXCLUSION SkBlitter*      fBlitter;
+    RAW_PTR_EXCLUSION const SkAAClip* fAAClip;
+    SkIRect                           fAAClipBounds;
 
     // point into fScanlineScratch
-    int16_t*        fRuns;
-    SkAlpha*        fAA;
+    RAW_PTR_EXCLUSION int16_t*        fRuns;
+    RAW_PTR_EXCLUSION SkAlpha*        fAA;
 
     enum {
         kSize = 32 * 32
     };
     SkAutoSMalloc<kSize> fGrayMaskScratch;  // used for blitMask
-    void* fScanlineScratch;  // enough for a mask at 32bit, or runs+aa
+    RAW_PTR_EXCLUSION void* fScanlineScratch;  // enough for a mask at 32bit, or runs+aa
 
     void ensureRunsAndAA();
 };

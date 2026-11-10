@@ -166,8 +166,9 @@ public:
     }
 
 private:
-    const YOffset* fCurrYOff = nullptr;
-    const YOffset* fStopYOff = nullptr;
+    // RAW_PTR_EXCLUSION: Interior cursors into RunHead::Alloc buffer.
+    RAW_PTR_EXCLUSION const YOffset* fCurrYOff = nullptr;
+    RAW_PTR_EXCLUSION const YOffset* fStopYOff = nullptr;
     const uint8_t* fData = nullptr;
 
     int fTop = kMaxInt32;
@@ -263,7 +264,8 @@ class SkAAClip::Builder {
         RAW_PTR_EXCLUSION SkTDArray<uint8_t>* fData;
     };
     SkTDArray<Row>  fRows;
-    Row* fCurrRow;
+    // RAW_PTR_EXCLUSION: Points into SkTDArray fRows.
+    RAW_PTR_EXCLUSION Row* fCurrRow;
     int fPrevY;
     int fWidth;
     int fMinY;
@@ -815,8 +817,9 @@ public:
     }
 
 private:
-    Builder* fBuilder;
-    int      fLeft; // cache of builder's bounds' left edge
+    // RAW_PTR_EXCLUSION: Stack-scoped Builder owned by caller.
+    RAW_PTR_EXCLUSION Builder* fBuilder;
+    int                        fLeft; // cache of builder's bounds' left edge
     int      fRight;
     int      fMinY;
 

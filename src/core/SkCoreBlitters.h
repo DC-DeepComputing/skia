@@ -16,6 +16,7 @@
 #include "include/private/SkCPUTypes.h"
 #include "src/core/SkBlitRow.h"
 #include "src/core/SkBlitter.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/shaders/SkShaderBase.h"
 
 #include <cstdint>
@@ -49,8 +50,9 @@ public:
     ~SkShaderBlitter() override;
 
 protected:
-    sk_sp<SkShader>         fShader;
-    SkShaderBase::Context* fShaderContext;
+    sk_sp<SkShader>                                  fShader;
+    // RAW_PTR_EXCLUSION: Shader context is allocated in SkArenaAlloc.
+    RAW_PTR_EXCLUSION SkShaderBase::Context*         fShaderContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -108,7 +110,8 @@ public:
     void blitMask(const SkMask&, const SkIRect&) override;
 
 private:
-    SkPMColor*          fBuffer;
+    // RAW_PTR_EXCLUSION: Allocated in SkArenaAlloc.
+    RAW_PTR_EXCLUSION SkPMColor* fBuffer;
     SkBlitRow::Proc32   fProc32;
     SkBlitRow::Proc32   fProc32Blend;
     bool fShadeDirectlyIntoDevice;
