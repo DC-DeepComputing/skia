@@ -291,15 +291,15 @@ std::optional<AnalyticBlurMask> AnalyticBlurMask::MakeCircle(Recorder* recorder,
     }
 
     // In the shader we calculate an index into the blur profile
-    // "i = (length(fragCoords - circleCenter) - solidRadius + 0.5) / textureRadius" as
-    // "i = length((fragCoords - circleCenter) / textureRadius) -
-    //      (solidRadius - 0.5) / textureRadius"
+    // "i = (length(fragCoords - circleCenter) - solidRadius) / textureRadius" as
+    // "i = length((fragCoords - circleCenter) / textureRadius) - solidRadius / textureRadius"
     // to avoid passing large values to length() that would overflow. We precalculate
-    // "1 / textureRadius" and "(solidRadius - 0.5) / textureRadius" here.
+    // "1 / textureRadius" and "solidRadius / textureRadius" here. The profile already stores
+    // its values at texel centers, so no extra half pixel offset is needed.
     const Rect shapeData = Rect(devRect.centerX(),
                                 devRect.centerY(),
                                 1.0f / params.fTextureRadius,
-                                (params.fSolidRadius - 0.5f) / params.fTextureRadius);
+                                params.fSolidRadius / params.fTextureRadius);
 
     // Determine how much to outset the draw bounds to ensure we hit pixels within 3*sigma.
     std::optional<Rect> drawBounds = outset_bounds(localToDevice,

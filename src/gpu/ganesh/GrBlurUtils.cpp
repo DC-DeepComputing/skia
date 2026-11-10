@@ -520,10 +520,12 @@ std::unique_ptr<GrFragmentProcessor> MakeCircleBlur(GrRecordingContext* context,
         "uniform half4 circleData;"
 
         "half4 main(float2 xy) {"
-            // We just want to compute "(length(vec) - circleData.z + 0.5) * circleData.w" but need
+            // We just want to compute "(length(vec) - circleData.z) * circleData.w" but need
             // to rearrange to avoid passing large values to length() that would overflow.
+            // The profile already stores its values at texel centers, so no extra half pixel
+            // offset is needed here.
             "half2 vec = half2((sk_FragCoord.xy - circleData.xy) * circleData.w);"
-            "half dist = length(vec) + (0.5 - circleData.z) * circleData.w;"
+            "half dist = length(vec) - circleData.z * circleData.w;"
             "return blurProfile.eval(half2(dist, 0.5)).aaaa;"
         "}"
     );

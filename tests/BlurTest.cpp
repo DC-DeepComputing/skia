@@ -708,3 +708,68 @@ DEF_TEST(blur_b508075339, reporter) {
     // completes without triggering an SkASSERT in SkBitmap::getAddr.
     canvas->drawRect(SkRect::MakeWH(kCanvasSize, kCanvasSize), paint);
 }
+
+#if defined(SK_GANESH) || defined(SK_GRAPHITE)
+// Draws a blurred circle and checks the coverage on its edge. A Gaussian blur of an edge has
+// 50% coverage on the edge itself. The GPU circle blur used to add an extra half pixel offset,
+// which made the edge coverage about 16% for small sigmas. https://crbug.com/575293867
+static void check_blurred_circle_edge(skiatest::Reporter* reporter, SkSurface* surface) {
+    SkCanvas* canvas = surface->getCanvas();
+    canvas->clear(SK_ColorTRANSPARENT);
+
+    SkPaint paint;
+    paint.setColor(SK_ColorWHITE);
+    // Chrome draws box-shadows with anti-aliasing. Without it, Graphite first snaps the shape
+    // to whole pixels, which moves the circle's edge.
+    paint.setAntiAlias(true);
+    // Sigma 0.5 matches a CSS box-shadow with a 1px blur radius.
+    paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 0.5f));
+
+    // The center is on a pixel center, so the center of pixel (57, 32) is exactly 25px away from
+    // the circle's center. That puts it exactly on the circle's edge.
+    canvas->drawCircle(SkPoint::Make(32.5f, 32.5f), 25.f, paint);
+
+    SkBitmap bitmap;
+    bitmap.allocPixels(surface->imageInfo());
+    if (!surface->readPixels(bitmap, 0, 0)) {
+        ERRORF(reporter, "readPixels failed");
+        return;
+    }
+
+    const int edgeAlpha = SkColorGetA(bitmap.getColor(57, 32));
+    REPORTER_ASSERT(reporter, edgeAlpha >= 112 && edgeAlpha <= 144,
+                    "Expected about 128 on the circle edge, got %d", edgeAlpha);
+}
+#endif
+
+#if defined(SK_GANESH)
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BlurredCircleEdgeCoverage_Ganesh,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNever) {
+    SkImageInfo ii = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface =
+            SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kNo, ii);
+    if (!surface) {
+        ERRORF(reporter, "Could not create surface.");
+        return;
+    }
+    check_blurred_circle_edge(reporter, surface.get());
+}
+#endif
+
+#if defined(SK_GRAPHITE)
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BlurredCircleEdgeCoverage_Graphite,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNever) {
+    std::unique_ptr<skgpu::graphite::Recorder> recorder = context->makeRecorder();
+    SkImageInfo ii = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
+    if (!surface) {
+        ERRORF(reporter, "Could not create surface.");
+        return;
+    }
+    check_blurred_circle_edge(reporter, surface.get());
+}
+#endif

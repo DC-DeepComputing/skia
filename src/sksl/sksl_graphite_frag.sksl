@@ -2260,9 +2260,9 @@ $pure half4 $rect_blur_coverage_fn(float2 coords,
 }
 
 $pure half4 $circle_blur_coverage_fn(float2 coords, float4 circle, sampler2D blurProfile) {
-    // We just want to compute "(length(vec) - solidRadius + 0.5) / textureRadius" but need to
+    // We just want to compute "(length(vec) - solidRadius) / textureRadius" but need to
     // rearrange to avoid passing large values to length() that would overflow. We've precalculated
-    // "1 / textureRadius" and "(solidRadius - 0.5) / textureRadius" on the CPU as circle.z and
+    // "1 / textureRadius" and "solidRadius / textureRadius" on the CPU as circle.z and
     // circle.w, respectively.
     float invTextureRadius = circle.z;
     float normSolidRadius = circle.w;
