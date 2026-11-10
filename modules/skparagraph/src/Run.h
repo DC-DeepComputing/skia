@@ -341,7 +341,7 @@ public:
     bool isHardBreak() const { return fIsHardBreak; }
     bool isIdeographic() const { return fIsIdeographic; }
 
-    bool isSoftBreak() const;
+    bool isSoftBreak() const { return fIsSoftBreak; }
     bool isSoftHyphen() const;
     bool isGraphemeBreak() const;
     bool canBreakLineAfter() const { return isHardBreak() || isSoftBreak(); }
@@ -358,9 +358,11 @@ public:
     RunIndex runIndex() const { return fRunIndex; }
     ParagraphImpl* owner() const { return fOwner; }
 
-    Run* runOrNull() const;
-    Run& run() const;
-    SkFont font() const;
+    // Defined in ParagraphImpl.h, which has the complete ParagraphImpl; declared inline here so
+    // every TU that sees Run.h (Decorations.cpp has no ParagraphImpl.h) agrees on linkage
+    inline Run* runOrNull() const;
+    inline Run& run() const;
+    inline SkFont font() const;
 
     SkScalar trimmedWidth(size_t pos) const;
 
@@ -391,6 +393,8 @@ private:
     bool fIsIntraWordBreak;
     bool fIsHardBreak;
     bool fIsIdeographic;
+    // kSoftLineBreakBefore at fTextRange.end; fits in the tail padding, sizeof(Cluster) unchanged
+    bool fIsSoftBreak;
 };
 
 class InternalLineMetrics {
