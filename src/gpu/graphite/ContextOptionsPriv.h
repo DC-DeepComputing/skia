@@ -38,6 +38,12 @@ struct ContextOptionsPriv {
      * Override Caps' default strategy heuristics to prioritize this one if set *and* is supported.
      */
     std::optional<PathRendererStrategy> fPathRendererStrategy;
+
+    /**
+     * Force DstReadStrategy::kTextureCopy even on backends that support framebuffer fetch or input
+     * attachments, allowing DstCopy behavior to be unit-tested on all hardware.
+     */
+    bool fForceDstReadTextureCopy = false;
 };
 
 }  // namespace skgpu::graphite

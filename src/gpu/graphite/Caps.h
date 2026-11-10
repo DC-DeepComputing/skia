@@ -421,10 +421,9 @@ public:
     skgpu::ShaderErrorHandler* shaderErrorHandler() const { return fShaderErrorHandler; }
 
     /**
-     * Returns what method of dst read a draw should use for obtaining the dst color. Backends can
-     * use the default implementation or override this method as needed.
+     * Returns what method of dst read a draw should use for obtaining the dst color.
      */
-    virtual DstReadStrategy getDstReadStrategy() const;
+    DstReadStrategy getDstReadStrategy() const;
 
     float minPathSizeForMSAA() const { return fMinMSAAPathSize; }
     float minDistanceFieldFontSize() const { return fMinDistanceFieldFontSize; }
@@ -533,6 +532,7 @@ protected:
 #if defined(GPU_TEST_UTILS)
     std::string fDeviceName;
     std::optional<PathRendererStrategy> fRequestedPathRendererStrategy;
+    bool fForceDstReadTextureCopy = false;
 #endif
 
     // NOTE: This is a requested limit, the actual supported sample counts for a particular format
@@ -572,6 +572,8 @@ private:
                                                 Mipmapped,
                                                 Protected,
                                                 Discardable) const = 0;
+
+    virtual DstReadStrategy onGetDstReadStrategy() const;
 
     // Return the supported TextureUsages and SampleCounts for a texture of the given format and
     // tiling, assuming the textures are created with the requisite usages.

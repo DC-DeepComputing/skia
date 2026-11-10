@@ -52,7 +52,7 @@ public:
     inline static constexpr unsigned int kStorageBufferIndex = 2;
     inline static constexpr unsigned int kMaxNumUniformBuffers = 3;
 
-    inline static constexpr unsigned int kIntrinsicUniformSize = 32;
+    inline static constexpr unsigned int kIntrinsicUniformSize = 48;
 
     inline static constexpr unsigned int kStaticDataBufferIndex = 0;
     inline static constexpr unsigned int kAppendDataBufferIndex = 1;

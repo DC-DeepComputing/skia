@@ -10,6 +10,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/gpu/GpuTypes.h"
@@ -86,6 +87,7 @@ bool CanUseHardwareBlending(const Caps* caps,
 void CollectIntrinsicUniforms(const Caps* caps,
                               SkIRect viewport,
                               SkIRect dstReadBounds,
+                              SkISize dstCopyDimensions,
                               UniformManager* uniforms) {
     SkDEBUGCODE(uniforms->setExpectedUniforms(kIntrinsicUniforms, /*isSubstruct=*/false);)
 
@@ -110,13 +112,24 @@ void CollectIntrinsicUniforms(const Caps* caps,
 
     // dstReadBounds
     {
-        // Unlike viewport, dstReadBounds can be empty so check for 0 dimensions and set the
-        // reciprocal to 0. It is also not doubled since its purpose is to normalize texture coords
-        // to 0 to 1, and not -1 to 1.
-        int width = dstReadBounds.width();
-        int height = dstReadBounds.height();
-        uniforms->write(SkV4{(float) dstReadBounds.left(), (float) dstReadBounds.top(),
-                             width ? 1.f / width : 0.f, height ? 1.f / height : 0.f});
+        // Unlike viewport, dstReadBounds can be empty. Hold the top-left in XY and the maximum
+        // valid texel center of the copied subset in ZW (clamped to >= 0.5 so clamp() bounds
+        // remain well-ordered even when empty).
+        int readWidth = dstReadBounds.width();
+        int readHeight = dstReadBounds.height();
+        uniforms->write(SkV4{(float)dstReadBounds.left(),
+                             (float)dstReadBounds.top(),
+                             readWidth ? readWidth - 0.5f : 0.5f,
+                             readHeight ? readHeight - 0.5f : 0.5f});
+    }
+
+    // invDstCopyDims
+    {
+        // Normalize texture coords to 0 to 1 using the full backing dimensions of dstCopy.
+        int copyWidth = dstCopyDimensions.width();
+        int copyHeight = dstCopyDimensions.height();
+        uniforms->write(
+                SkV2{copyWidth ? 1.f / copyWidth : 0.f, copyHeight ? 1.f / copyHeight : 0.f});
     }
 
     SkDEBUGCODE(uniforms->doneWithExpectedUniforms());
