@@ -26,7 +26,7 @@ public:
 
     FunctionReference(const Context& context, Position pos,
                       const FunctionDeclaration* overloadChain)
-        : INHERITED(pos, kIRNodeKind, context.fTypes.fInvalid.get())
+        : INHERITED(pos, kIRNodeKind, context.fTypes->fInvalid.get())
         , fOverloadChain(overloadChain) {}
 
     const FunctionDeclaration* overloadChain() const {

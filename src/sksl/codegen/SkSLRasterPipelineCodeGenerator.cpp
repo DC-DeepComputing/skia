@@ -182,7 +182,7 @@ public:
     void pushCloneIndirect(SlotRange range, int dynamicStackID, int offsetFromStackTop);
 
 private:
-    Generator* fGenerator;
+    raw_ptr<Generator> fGenerator;
     int fStackID = 0;
     int fParentStackID = 0;
 };
@@ -191,7 +191,7 @@ class Generator {
 public:
     Generator(const SkSL::Program& program, DebugTracePriv* debugTrace, bool writeTraceOps)
             : fProgram(program)
-            , fContext(fProgram->fContext->fTypes, *fProgram->fContext->fErrors)
+            , fContext(*fProgram->fContext->fTypes, *fProgram->fContext->fErrors)
             , fDebugTrace(debugTrace)
             , fWriteTraceOps(writeTraceOps)
             , fProgramSlots(debugTrace ? &debugTrace->fSlotInfo : nullptr)
@@ -503,7 +503,7 @@ private:
     std::optional<AutoStack> fTraceMask;
     raw_ptr<const FunctionDefinition> fCurrentFunction = nullptr;
     SlotRange fCurrentFunctionResult;
-    AutoContinueMask* fCurrentContinueMask = nullptr;
+    raw_ptr<AutoContinueMask> fCurrentContinueMask;
     int fCurrentBreakTarget = -1;
     int fCurrentStack = 0;
     int fNextStackID = 0;
@@ -621,7 +621,7 @@ public:
     void enable() {
         SkASSERT(!fContinueMaskStack.has_value());
 
-        fContinueMaskStack.emplace(fGenerator);
+        fContinueMaskStack.emplace(fGenerator.get());
         fPreviousContinueMask = fGenerator->fCurrentContinueMask;
         fGenerator->fCurrentContinueMask = this;
     }
@@ -659,8 +659,8 @@ public:
 
 private:
     std::optional<AutoStack> fContinueMaskStack;
-    Generator* fGenerator = nullptr;
-    AutoContinueMask* fPreviousContinueMask = nullptr;
+    raw_ptr<Generator> fGenerator;
+    raw_ptr<AutoContinueMask> fPreviousContinueMask;
 };
 
 class AutoLoopTarget {
@@ -763,7 +763,7 @@ public:
         if (!fDedicatedStack.has_value()) {
             // Push the scratch expression onto a dedicated stack.
             fGenerator = gen;
-            fDedicatedStack.emplace(fGenerator);
+            fDedicatedStack.emplace(fGenerator.get());
             fDedicatedStack->enter();
             if (!fGenerator->pushExpression(*fExpression)) {
                 return unsupported();
@@ -788,7 +788,7 @@ public:
     }
 
 private:
-    Generator* fGenerator = nullptr;
+    raw_ptr<Generator> fGenerator;
     raw_ptr<const Expression> fExpression = nullptr;
     std::optional<AutoStack> fDedicatedStack;
     int fNumSlots = 0;
@@ -1060,7 +1060,7 @@ public:
         SkASSERT(!fDedicatedStack.has_value());
         SkASSERT(!fGenerator);
         fGenerator = gen;
-        fDedicatedStack.emplace(fGenerator);
+        fDedicatedStack.emplace(fGenerator.get());
 
         if (!fParent->swizzle().empty()) {
             SkDEBUGFAIL("an indexed-swizzle should have been handled by RewriteIndexedSwizzle");
@@ -1118,7 +1118,7 @@ public:
     }
 
 private:
-    Generator* fGenerator = nullptr;
+    raw_ptr<Generator> fGenerator;
     std::unique_ptr<LValue> fParent;
     std::optional<AutoStack> fDedicatedStack;
     raw_ptr<const IndexExpression> fIndexExpr = nullptr;
@@ -2862,7 +2862,7 @@ bool Generator::pushChildCall(const ChildCall& c) {
         case Type::TypeKind::kShader: {
             // The argument must be a float2.
             SkASSERT(c.arguments().size() == 1);
-            SkASSERT(arg->type().matches(*fContext.fTypes.fFloat2));
+            SkASSERT(arg->type().matches(*fContext.fTypes->fFloat2));
 
             // `exchange_src` will use the top four values on the stack, but we don't care what goes
             // into the blue/alpha components. We inject padding here to balance the stack.
@@ -2876,8 +2876,8 @@ bool Generator::pushChildCall(const ChildCall& c) {
         case Type::TypeKind::kColorFilter: {
             // The argument must be a half4/float4.
             SkASSERT(c.arguments().size() == 1);
-            SkASSERT(arg->type().matches(*fContext.fTypes.fHalf4) ||
-                     arg->type().matches(*fContext.fTypes.fFloat4));
+            SkASSERT(arg->type().matches(*fContext.fTypes->fHalf4) ||
+                     arg->type().matches(*fContext.fTypes->fFloat4));
 
             // Move the argument into src.rgba while also preserving the execution mask.
             fBuilder.exchange_src();
@@ -2887,10 +2887,10 @@ bool Generator::pushChildCall(const ChildCall& c) {
         case Type::TypeKind::kBlender: {
             // Both arguments must be half4/float4.
             SkASSERT(c.arguments().size() == 2);
-            SkASSERT(c.arguments()[0]->type().matches(*fContext.fTypes.fHalf4) ||
-                     c.arguments()[0]->type().matches(*fContext.fTypes.fFloat4));
-            SkASSERT(c.arguments()[1]->type().matches(*fContext.fTypes.fHalf4) ||
-                     c.arguments()[1]->type().matches(*fContext.fTypes.fFloat4));
+            SkASSERT(c.arguments()[0]->type().matches(*fContext.fTypes->fHalf4) ||
+                     c.arguments()[0]->type().matches(*fContext.fTypes->fFloat4));
+            SkASSERT(c.arguments()[1]->type().matches(*fContext.fTypes->fHalf4) ||
+                     c.arguments()[1]->type().matches(*fContext.fTypes->fFloat4));
 
             // Move the second argument into dst.rgba, and the first argument into src.rgba, while
             // simultaneously preserving the execution mask.
@@ -3350,7 +3350,7 @@ bool Generator::pushIntrinsic(IntrinsicKind intrinsic, const Expression& arg0) {
         case IntrinsicKind::k_fromLinearSrgb_IntrinsicKind:
         case IntrinsicKind::k_toLinearSrgb_IntrinsicKind:
             // The argument must be a half3.
-            SkASSERT(arg0.type().matches(*fContext.fTypes.fHalf3));
+            SkASSERT(arg0.type().matches(*fContext.fTypes->fHalf3));
             if (!this->pushExpression(arg0)) {
                 return unsupported();
             }

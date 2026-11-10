@@ -37,7 +37,7 @@ public:
                     Position pos,
                     std::unique_ptr<Expression> self,
                     const FunctionDeclaration* overloadChain)
-            : INHERITED(pos, kIRNodeKind, context.fTypes.fInvalid.get())
+            : INHERITED(pos, kIRNodeKind, context.fTypes->fInvalid.get())
             , fSelf(std::move(self))
             , fOverloadChain(overloadChain) {}
 

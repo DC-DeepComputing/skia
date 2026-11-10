@@ -19,6 +19,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkOnlyStackAllocatable.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ref.h"
 
 #include <cstddef>
@@ -247,8 +248,8 @@ public:
                                                //   of fColors/fColorOffsets on input, and
                                                //   actual number of colors/offsets on
                                                //   output.
-        SkColor4f*  fColors        = nullptr;  //!< The colors in the gradient.
-        SkScalar*   fColorOffsets  = nullptr;  //!< The unit offset for color transitions.
+        raw_ptr<SkColor4f, AllowPtrArithmetic> fColors;       //!< The colors in the gradient.
+        raw_ptr<SkScalar, AllowPtrArithmetic>  fColorOffsets; //!< The unit offset for color transitions.
         SkPoint     fPoint[2];                 //!< Type specific, see above.
         SkScalar    fRadius[2];                //!< Type specific, see above.
         SkTileMode  fTileMode;

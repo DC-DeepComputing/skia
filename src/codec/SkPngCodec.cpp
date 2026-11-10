@@ -424,7 +424,9 @@ public:
 
 private:
     int                         fRowsWrittenToOutput;
-    void*                       fDst;
+    // Callers of startIncrementalDecode may free the output buffer after an incomplete decode
+    // without rewinding or destroying the codec first.
+    raw_ptr<void, DisableDanglingPtrDetection> fDst;
     size_t                      fRowBytes;
 
     // Variables for partial decode
@@ -461,7 +463,7 @@ private:
 
     void allRowsCallback(png_bytep row, int rowNum) {
         SkASSERT(rowNum == fRowsWrittenToOutput);
-        this->applyXformRow(SkTAddOffset<void>(fDst, fRowsWrittenToOutput * fRowBytes), row);
+        this->applyXformRow(SkTAddOffset<void>(fDst.get(), fRowsWrittenToOutput * fRowBytes), row);
         fRowsWrittenToOutput++;
     }
 
@@ -505,7 +507,7 @@ private:
 
         // If there is no swizzler, all rows are needed.
         if (!this->swizzler() || this->swizzler()->rowNeeded(rowNum - fFirstRow)) {
-            this->applyXformRow(SkTAddOffset<void>(fDst, fRowsWrittenToOutput * fRowBytes), row);
+            this->applyXformRow(SkTAddOffset<void>(fDst.get(), fRowsWrittenToOutput * fRowBytes), row);
             fRowsWrittenToOutput++;
         }
 
@@ -549,7 +551,7 @@ private:
     const int               fNumberPasses;
     int                     fFirstRow;
     int                     fLastRow;
-    void*                   fDst;
+    raw_ptr<void, DisableDanglingPtrDetection> fDst;
     size_t                  fRowBytes;
     int                     fLinesDecoded;
     bool                    fInterlacedComplete;

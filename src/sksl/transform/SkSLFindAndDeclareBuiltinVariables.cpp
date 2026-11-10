@@ -79,7 +79,7 @@ public:
             }
             const FunctionDefinition& funcDef = pe->as<FunctionDefinition>();
             if (funcDef.declaration().isMain()) {
-                if (funcDef.declaration().returnType().matches(*fContext.fTypes.fHalf4)) {
+                if (funcDef.declaration().returnType().matches(*fContext.fTypes->fHalf4)) {
                     // We synthesize writes to sk_FragColor if main() returns a color, even if it's
                     // otherwise unreferenced.
                     this->addDeclaringElement(fSymbols.findBuiltinSymbol(Compiler::FRAGCOLOR_NAME));

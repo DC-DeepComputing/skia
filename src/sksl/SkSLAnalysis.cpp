@@ -109,7 +109,7 @@ protected:
                     SkASSERT(!arguments.empty());
 
                     const Expression* maybeCoords = arguments[0].get();
-                    if (maybeCoords->type().matches(*fContext.fTypes.fFloat2)) {
+                    if (maybeCoords->type().matches(*fContext.fTypes->fFloat2)) {
                         // If the coords are a direct reference to the program's sample-coords, and
                         // those coords are never modified, we can conservatively turn this into
                         // PassThrough sampling. In all other cases, we consider it Explicit.

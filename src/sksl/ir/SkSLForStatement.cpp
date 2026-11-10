@@ -167,7 +167,7 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
     }
 
     if (test) {
-        test = context.fTypes.fBool->coerceExpression(std::move(test), context);
+        test = context.fTypes->fBool->coerceExpression(std::move(test), context);
         if (!test) {
             return nullptr;
         }
@@ -273,7 +273,7 @@ std::unique_ptr<Statement> ForStatement::Make(const Context& context,
                                               std::unique_ptr<SymbolTable> symbolTable) {
     SkASSERT(is_simple_initializer(initializer.get()) ||
              is_vardecl_block_initializer(initializer.get()));
-    SkASSERT(!test || test->type().matches(*context.fTypes.fBool));
+    SkASSERT(!test || test->type().matches(*context.fTypes->fBool));
     SkASSERT(!Analysis::DetectVarDeclarationWithoutScope(*statement));
     SkASSERT(unrollInfo || !context.fConfig->strictES2Mode());
 

@@ -30,7 +30,7 @@ public:
                   const Program* program,
                   OutputStream* stream)
             : fProgram(*program)
-            , fContext(fProgram->fContext->fTypes, *fProgram->fContext->fErrors)
+            , fContext(*fProgram->fContext->fTypes, *fProgram->fContext->fErrors)
             , fCaps(*caps)
             , fOut(stream) {
         fContext.fConfig = fProgram->fConfig.get();

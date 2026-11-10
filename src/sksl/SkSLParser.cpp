@@ -727,7 +727,7 @@ const Type* Parser::arrayType(const Type* base, int count, Position pos) {
     const Context& context = fCompiler.context();
     count = base->convertArraySize(context, pos, pos, count);
     if (!count) {
-        return context.fTypes.fPoison.get();
+        return context.fTypes->fPoison.get();
     }
     return this->symbolTable()->addArrayDimension(fCompiler.context(), base, count);
 }
@@ -735,7 +735,7 @@ const Type* Parser::arrayType(const Type* base, int count, Position pos) {
 const Type* Parser::unsizedArrayType(const Type* base, Position pos) {
     const Context& context = fCompiler.context();
     if (!base->checkIfUsableInArray(context, pos)) {
-        return context.fTypes.fPoison.get();
+        return context.fTypes->fPoison.get();
     }
     return this->symbolTable()->addArrayDimension(fCompiler.context(), base,
                                                   SkSL::Type::kUnsizedArray);
@@ -1262,16 +1262,16 @@ const Type* Parser::findType(Position pos,
     const Symbol* symbol = this->symbolTable()->find(name);
     if (!symbol) {
         this->error(pos, "no symbol named '" + std::string(name) + "'");
-        return context.fTypes.fPoison.get();
+        return context.fTypes->fPoison.get();
     }
     if (!symbol->is<Type>()) {
         this->error(pos, "symbol '" + std::string(name) + "' is not a type");
-        return context.fTypes.fPoison.get();
+        return context.fTypes->fPoison.get();
     }
     const SkSL::Type* type = &symbol->as<Type>();
     if (!context.fConfig->isBuiltinCode()) {
         if (!TypeReference::VerifyType(context, type, pos)) {
-            return context.fTypes.fPoison.get();
+            return context.fTypes->fPoison.get();
         }
     }
     Position qualifierRange = modifiers->fPosition;
@@ -1290,16 +1290,16 @@ const Type* Parser::type(Modifiers* modifiers) {
     }
     if (!this->symbolTable()->isType(this->text(type))) {
         this->error(type, "no type named '" + std::string(this->text(type)) + "'");
-        return fCompiler.context().fTypes.fInvalid.get();
+        return fCompiler.context().fTypes->fInvalid.get();
     }
     const Type* result = this->findType(this->position(type), modifiers, this->text(type));
     if (result->isInterfaceBlock()) {
         // SkSL puts interface blocks into the symbol table, but they aren't general-purpose types;
         // you can't use them to declare a variable type or a function return type.
         this->error(type, "expected a type, found '" + std::string(this->text(type)) + "'");
-        return fCompiler.context().fTypes.fInvalid.get();
+        return fCompiler.context().fTypes->fInvalid.get();
     }
-    if (result->matches(*fCompiler.context().fTypes.fInvalid)) {
+    if (result->matches(*fCompiler.context().fTypes->fInvalid)) {
         // In runtime effects, reserved type names (e.g. sampler2D and texture2D) are aliases of the
         // invalid type. Reject the type whenever it is used.
         this->error(type, "invalid type");
