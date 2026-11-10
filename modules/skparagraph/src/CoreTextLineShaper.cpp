@@ -1154,5 +1154,251 @@ void CoreTextLineShaper::recordUnresolvedGlyph(TextRange glyphRange) {
     }
 }
 
+namespace {
+
+// Returns the paragraph-global UTF-8 end index of glyph pos's cluster in run, stepping past any
+// adjacent glyphs that share pos's cluster index or belong to combining marks skipped by an
+// IgnoreMarks ligature
+TextIndex cluster_end_utf8(const ParagraphImpl& owner, const Run& run, size_t pos) {
+    SkASSERT(pos <= run.size());
+    const TextIndex clusterStart8 = run.globalClusterIndex(pos);
+    if (run.leftToRight()) {
+        // LTR callers only pass glyph indices inside [sliceStart, sliceEnd) with
+        // sliceEnd <= run.size()
+        SkASSERT(pos < run.size());
+        size_t endGlyph = pos + 1;
+        while (endGlyph < run.size() &&
+               (run.globalClusterIndex(endGlyph) <= clusterStart8 ||
+                !owner.codeUnitHasProperty(run.globalClusterIndex(endGlyph),
+                                           SkUnicode::CodeUnitFlags::kGraphemeStart))) {
+            ++endGlyph;
+        }
+        return run.globalClusterIndex(endGlyph);
+    }
+    // RTL glyphs sit in reverse logical order, so the next logical cluster lies at a lower glyph
+    // index and glyph 0 ends at run.textRange().end
+    size_t endGlyph = pos;
+    while (endGlyph > 0 && (run.globalClusterIndex(endGlyph - 1) <= clusterStart8 ||
+                            !owner.codeUnitHasProperty(run.globalClusterIndex(endGlyph - 1),
+                                                       SkUnicode::CodeUnitFlags::kGraphemeStart))) {
+        --endGlyph;
+    }
+    return endGlyph == 0 ? run.textRange().end : run.globalClusterIndex(endGlyph - 1);
+}
+
+struct HitCluster {
+    TextIndex fStart8;
+    TextIndex fEnd8;
+    size_t fStartGlyph;
+    size_t fEndGlyph;
+};
+
+// Resolves glyph found inside [sliceStart, sliceEnd) of run to its enclosing cluster's UTF-8
+// [fStart8, fEnd8) range and visual [fStartGlyph, fEndGlyph) span, anchoring detached combining
+// marks onto their base or IgnoreMarks ligature glyph
+HitCluster resolve_hit_cluster(const ParagraphImpl& owner,
+                               const Run& run,
+                               size_t sliceStart,
+                               size_t sliceEnd,
+                               size_t found) {
+    SkASSERT(sliceStart <= found && found < sliceEnd && sliceEnd <= run.size());
+    // A detached combining-mark glyph sits right of its base in LTR and left of its base or
+    // IgnoreMarks ligature in RTL; step onto the owning grapheme start when the slice has one
+    while (!owner.codeUnitHasProperty(run.globalClusterIndex(found),
+                                      SkUnicode::CodeUnitFlags::kGraphemeStart)) {
+        if (run.leftToRight()) {
+            // Stop at the slice edge when a style or line break split a mark from its base
+            if (found == sliceStart) {
+                break;
+            }
+            --found;
+        } else {
+            if (found + 1 >= sliceEnd) {
+                break;
+            }
+            ++found;
+        }
+    }
+
+    const TextIndex start8 = run.globalClusterIndex(found);
+    const TextIndex end8 = cluster_end_utf8(owner, run, found);
+    size_t startGlyph = found;
+    size_t endGlyph = found + 1;
+    // Include co-clustered glyphs and detached combining marks so the visual span covers the full
+    // cluster width in both LTR (marks to the right) and RTL (marks to the left)
+    if (run.leftToRight()) {
+        while (startGlyph > sliceStart && run.globalClusterIndex(startGlyph - 1) == start8) {
+            --startGlyph;
+        }
+        // Absorb trailing glyphs of the same cluster or marks skipped by an IgnoreMarks ligature
+        while (endGlyph < sliceEnd &&
+               (run.globalClusterIndex(endGlyph) <= start8 ||
+                !owner.codeUnitHasProperty(run.globalClusterIndex(endGlyph),
+                                           SkUnicode::CodeUnitFlags::kGraphemeStart))) {
+            ++endGlyph;
+        }
+    } else {
+        // In RTL, detached marks and later ligature components sit visually left (lower index)
+        while (startGlyph > sliceStart &&
+               (run.globalClusterIndex(startGlyph - 1) <= start8 ||
+                !owner.codeUnitHasProperty(run.globalClusterIndex(startGlyph - 1),
+                                           SkUnicode::CodeUnitFlags::kGraphemeStart))) {
+            --startGlyph;
+        }
+        while (endGlyph < sliceEnd && run.globalClusterIndex(endGlyph) == start8) {
+            ++endGlyph;
+        }
+    }
+    return {start8, end8, startGlyph, endGlyph};
+}
+
+// Filters graphemes in place to keep only visible graphemes (not solely Default_Ignorable)
+// unless every grapheme in the cluster is ignorable; returns true when graphemes shrank
+bool drop_ignorable_graphemes(const ParagraphImpl& owner,
+                              skia_private::TArray<TextIndex>* graphemes) {
+    // ParagraphImpl constructors assert fUnicode and layout returns before shaping without it
+    SkUnicode* unicode = owner.getUnicode().get();
+    SkASSERT(unicode);
+    if (graphemes->size() <= 1) {
+        return false;
+    }
+    const SkSpan<const char> text = owner.text();
+    int kept = 0;
+    for (int i = 0; i < graphemes->size(); ++i) {
+        const TextIndex start = (*graphemes)[i];
+        SkASSERT(start < text.size());
+        const TextIndex end = owner.findNextGraphemeBoundary(start + 1);
+        const char* ptr = text.data() + start;
+        const char* endPtr = text.data() + end;
+        bool ignorable = ptr < endPtr;
+        // Any non-ignorable scalar (base letter or visible mark) makes the whole grapheme visible
+        while (ptr < endPtr) {
+            const SkUnichar u = SkUTF::NextUTF8(&ptr, endPtr);
+            if (u < 0 || !unicode->isDefaultIgnorable(u)) {
+                ignorable = false;
+                break;
+            }
+        }
+        if (!ignorable) {
+            (*graphemes)[kept++] = start;
+        }
+    }
+    // Keep an all-ignorable cluster intact so a standalone ignorable glyph still hit-tests
+    if (kept == 0 || kept == graphemes->size()) {
+        return false;
+    }
+    graphemes->pop_back_n(graphemes->size() - kept);
+    return true;
+}
+
+// Finds the glyph in [context.pos, context.pos + context.size) whose left edge is closest at or to
+// the left of dx, matching TextLine's 0.01 rounding hack and RTL exact-edge tie-break
+size_t find_hit_glyph(const ParagraphImpl& owner,
+                      const TextLine::ClipContext& context,
+                      SkScalar offsetX,
+                      SkScalar dx) {
+    size_t found = context.pos;
+    for (size_t index = context.pos; index < context.pos + context.size; ++index) {
+        SkScalar end = context.run->positionX(index) + context.fTextShift + offsetX;
+        if (owner.getApplyRoundingHack()) {
+            end = SkScalarRoundToScalar(end * 100.0f) / 100.0f;
+        }
+        if (end > dx) {
+            break;
+        }
+        // At an exact RTL glyph boundary, pick the glyph starting at dx rather than scanning right
+        if (end == dx && !context.run->leftToRight()) {
+            return index;
+        }
+        found = index;
+    }
+    return found;
+}
+
+}  // namespace
+
+bool CoreTextLineShaper::HitTestRunSlice(const ParagraphImpl& owner,
+                                         const TextLine::ClipContext& context,
+                                         SkScalar offsetX,
+                                         SkScalar dx,
+                                         PositionWithAffinity* result) {
+    SkASSERT(context.run);
+    SkASSERT(result);
+    const bool ltr = context.run->leftToRight();
+    if (dx <= context.clip.fLeft) {
+        if (ltr) {
+            // A slice can start on a detached combining mark's glyph cluster
+            const TextIndex start8 = context.run->globalClusterIndex(context.pos);
+            const size_t utf16 = owner.getUTF16Index(owner.findPreviousGraphemeBoundary(start8));
+            *result = {SkToS32(utf16), Affinity::kDownstream};
+            return false;
+        }
+        // The leftmost RTL glyph is the slice's logical end and may be a composed grapheme or
+        // multi-grapheme ligature, so land at its cluster's trailing grapheme boundary
+        const TextIndex end8 = cluster_end_utf8(owner, *context.run, context.pos);
+        const size_t utf16 = owner.getUTF16Index(owner.findNextGraphemeBoundary(end8));
+        *result = {SkToS32(utf16), Affinity::kUpstream};
+        // Visual runs go left to right, so every later slice starts right of dx and would
+        // overwrite this caret with an earlier logical position, even when this slice wraps
+        return false;
+    }
+
+    // Hard-break-only slices have size == 0, and NaN dx skips both <= and >= edge checks
+    if (dx >= context.clip.fRight || context.size == 0) {
+        // Snap to the outer grapheme edge in case a slice edge splits a mark cluster
+        const TextIndex edge8 = context.run->globalClusterIndex(context.pos + context.size);
+        const TextIndex snapped8 = ltr ? owner.findNextGraphemeBoundary(edge8)
+                                       : owner.findPreviousGraphemeBoundary(edge8);
+        *result = {SkToS32(owner.getUTF16Index(snapped8)),
+                   ltr ? Affinity::kUpstream : Affinity::kDownstream};
+        return true;
+    }
+
+    const size_t found = find_hit_glyph(owner, context, offsetX, dx);
+    const HitCluster hit = resolve_hit_cluster(
+            owner, *context.run, context.pos, context.pos + context.size, found);
+    const SkScalar clusterLeft =
+            context.run->positionX(hit.fStartGlyph) + context.fTextShift + offsetX;
+    const SkScalar clusterWidth =
+            context.run->positionX(hit.fEndGlyph) - context.run->positionX(hit.fStartGlyph);
+    auto graphemes = owner.countSurroundingGraphemes({hit.fStart8, hit.fEnd8});
+    // CoreText omits Default_Ignorable code points without emitting glyphs; drop them so they take
+    // no share of the preceding visible glyph's width
+    const bool droppedIgnorable = drop_ignorable_graphemes(owner, &graphemes);
+
+    if (graphemes.size() > 1 || droppedIgnorable) {
+        const SkScalar graphemeWidth = clusterWidth / graphemes.size();
+        int visualIndex = SkScalarNearlyZero(graphemeWidth)
+                                  ? 0
+                                  : SkScalarFloorToInt((dx - clusterLeft) / graphemeWidth);
+        visualIndex = std::clamp(visualIndex, 0, SkToInt(graphemes.size()) - 1);
+        const SkScalar graphemeCenter =
+                clusterLeft + visualIndex * graphemeWidth + graphemeWidth / 2;
+        // countSurroundingGraphemes lists graphemes in logical order, which runs right-to-left
+        // across an RTL ligature
+        const size_t logicalIndex =
+                ltr ? SkToSizeT(visualIndex) : graphemes.size() - 1 - SkToSizeT(visualIndex);
+        const TextIndex grapheme8 = graphemes[logicalIndex];
+        if ((dx < graphemeCenter) == ltr) {
+            const TextIndex start8 = owner.findPreviousGraphemeBoundary(grapheme8);
+            *result = {SkToS32(owner.getUTF16Index(start8)), Affinity::kDownstream};
+        } else {
+            const TextIndex end8 = owner.findNextGraphemeBoundary(grapheme8 + 1);
+            *result = {SkToS32(owner.getUTF16Index(end8)), Affinity::kUpstream};
+        }
+        return false;
+    }
+
+    const SkScalar center = clusterLeft + clusterWidth / 2;
+    if ((dx < center) == ltr) {
+        const TextIndex start8 = owner.findPreviousGraphemeBoundary(hit.fStart8);
+        *result = {SkToS32(owner.getUTF16Index(start8)), Affinity::kDownstream};
+    } else {
+        const TextIndex end8 = owner.findNextGraphemeBoundary(hit.fEnd8);
+        *result = {SkToS32(owner.getUTF16Index(end8)), Affinity::kUpstream};
+    }
+    return false;
+}
+
 }  // namespace textlayout
 }  // namespace skia
