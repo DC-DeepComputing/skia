@@ -57,6 +57,7 @@ void Caps::finishInitialization(const ContextOptions& options) {
     if (options.fOptionsPriv) {
         fMaxTextureSize = std::min(fMaxTextureSize, options.fOptionsPriv->fMaxTextureSizeOverride);
         fRequestedPathRendererStrategy = options.fOptionsPriv->fPathRendererStrategy;
+        fForceDstReadTextureCopy = options.fOptionsPriv->fForceDstReadTextureCopy;
         fDrawListLayer = options.fOptionsPriv->fDrawListLayer;
     }
 #endif
@@ -404,6 +405,15 @@ SampleCount Caps::getCompatibleMSAASampleCount(const TextureInfo& info) const {
 }
 
 DstReadStrategy Caps::getDstReadStrategy() const {
+#if defined(GPU_TEST_UTILS)
+    if (fForceDstReadTextureCopy) {
+        return DstReadStrategy::kTextureCopy;
+    }
+#endif
+    return this->onGetDstReadStrategy();
+}
+
+DstReadStrategy Caps::onGetDstReadStrategy() const {
     // TODO(b/238757201; b/383769988): Dst reads are currently only supported by FB fetch and
     // texture copy.
     if (this->shaderCaps()->fFBFetchSupport) {

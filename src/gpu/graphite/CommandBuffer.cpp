@@ -124,11 +124,10 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
         // off screen. Set the bounds to empty and let the GPU clipping do its job.
         dstReadBounds = SkIRect::MakeEmpty();
     }
-    // Save the dstCopy texture so that it can be embedded into texture bind commands later on.
-    // Stash the texture's full dimensions on the rect so we can calculate normalized coords later.
+    // Save the dstCopy texture so that it can be embedded into texture bind commands later on, and
+    // preserve the copied subset bounds so shaders can clamp sampling to the initialized region.
     fDstCopy.first = dstCopy;
-    fDstReadBounds = dstCopy ? SkIRect::MakePtSize(dstReadBounds.topLeft(), dstCopy->dimensions())
-                             : SkIRect::MakeEmpty();
+    fDstReadBounds = dstCopy ? dstReadBounds : SkIRect::MakeEmpty();
     if (dstCopy && !fDstCopy.second) {
         // Only lookup the sampler the first time we require a dstCopy. The texture can change
         // on subsequent passes but it will always use the same nearest neighbor sampling.
@@ -329,6 +328,10 @@ bool CommandBuffer::setReplayTranslationAndClip(const SkIVector& translation,
     }
 
     return true;
+}
+
+SkISize CommandBuffer::dstCopyDimensions() const {
+    return fDstCopy.first ? fDstCopy.first->dimensions() : SkISize::MakeEmpty();
 }
 
 } // namespace skgpu::graphite

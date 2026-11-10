@@ -29,8 +29,7 @@ public:
                Protected);
     ~VulkanCaps() override;
 
-    // Override Caps's implementation in order to consult Vulkan-specific texture properties.
-    DstReadStrategy getDstReadStrategy() const override;
+    DstReadStrategy onGetDstReadStrategy() const override;
 
     ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const override;
     std::string toString(const ImmutableSamplerInfo&) const override;

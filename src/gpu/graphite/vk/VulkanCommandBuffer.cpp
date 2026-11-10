@@ -806,7 +806,11 @@ void VulkanCommandBuffer::performOncePerRPUpdates(SkIRect viewport, bool bindDst
 
     // TODO(b/374997389): Somehow convey & enforce Layout::kStd430 for push constants.
     UniformManager intrinsicValues{Layout::kStd140};
-    CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fDstReadBounds, &intrinsicValues);
+    CollectIntrinsicUniforms(fSharedContext->caps(),
+                             viewport,
+                             fDstReadBounds,
+                             this->dstCopyDimensions(),
+                             &intrinsicValues);
     SkSpan<const char> bytes = intrinsicValues.finish();
     SkASSERT(bytes.size_bytes() == VulkanResourceProvider::kIntrinsicConstantSize);
 

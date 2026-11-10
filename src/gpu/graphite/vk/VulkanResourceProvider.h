@@ -35,7 +35,8 @@ class VulkanYcbcrConversion;
 
 class VulkanResourceProvider final : public ResourceProvider {
 public:
-    static constexpr size_t kIntrinsicConstantSize = sizeof(float) * 8; // float4 + 2xfloat2
+    static constexpr size_t kIntrinsicConstantSize =
+            sizeof(float) * 12;  // 2xfloat4 + float2, aligned to 16B
     // Intrinsic constant rtAdjust value is needed by the vertex shader. Dst copy bounds are needed
     // in the frag shader.
     static constexpr VkShaderStageFlagBits kIntrinsicConstantStageFlags =
