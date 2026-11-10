@@ -364,9 +364,6 @@ def _CheckGeneratedBazelBUILDFiles(input_api, output_api):
     # TODO(skbug.com/40043154): Remove when Bazel builds work on Windows.
     # Note: `make` is not installed on Windows by default.
     return []
-  if 'darwin' in sys.platform:
-    # This takes too long on Mac with default settings. Probably due to sandboxing.
-    return []
   files = []
   for affected_file in input_api.AffectedFiles(include_deletes=True):
     affected_file_path = affected_file.LocalPath()
@@ -477,9 +474,6 @@ def _CheckGNIGenerated(input_api, output_api):
             'Skipping Bazel=>GNI export check on Windows (unsupported platform).'
         )
     ]
-  if 'darwin' in sys.platform:
-    # This takes too long on Mac with default settings. Probably due to sandboxing.
-    return []
   files = []
   for affected_file in input_api.AffectedFiles(include_deletes=True):
     affected_file_path = affected_file.LocalPath()
