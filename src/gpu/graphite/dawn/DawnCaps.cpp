@@ -340,7 +340,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = true;
 
 #if !defined(__EMSCRIPTEN__)
-    // We need 32 bytes push constant for 2 vectors worth of intrinsic data.
+    // We need 48 bytes push constant for intrinsic uniform data (2xfloat4 + float2, 16B aligned).
     fResourceBindingReqs.fUsePushConstantsForIntrinsicConstants =
             limits.maxImmediateSize >= DawnGraphicsPipeline::kIntrinsicUniformSize;
 #endif

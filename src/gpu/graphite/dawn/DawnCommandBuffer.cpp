@@ -261,7 +261,11 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
 
 
     UniformManager intrinsicValues{Layout::kStd140};
-    CollectIntrinsicUniforms(fSharedContext->caps(), viewport, fDstReadBounds, &intrinsicValues);
+    CollectIntrinsicUniforms(fSharedContext->caps(),
+                             viewport,
+                             fDstReadBounds,
+                             this->dstCopyDimensions(),
+                             &intrinsicValues);
     const auto uniformData = UniformDataBlock::Wrap(&intrinsicValues);
     const bool usePushConstant = fSharedContext->dawnCaps()
                                          ->resourceBindingRequirements()

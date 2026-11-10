@@ -1396,10 +1396,14 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         // blending as well as the final blend.
         mainBody += "half4 dstColor;";
         if (useDstSampler) {
-            // dstReadBounds is in frag coords and already includes the replay translation. The
-            // reciprocol of the dstCopy dimensions are in ZW.
-            mainBody += "dstColor = sample(dstSampler,"
-                                          "dstReadBounds.zw*(sk_FragCoord.xy - dstReadBounds.xy));";
+            // dstReadBounds.xy is the top-left in frag coords (including replay translation) and
+            // dstReadBounds.zw holds the max valid texel center of the copied subset. Clamp before
+            // normalizing by invDstCopyDims so overhanging fragments cannot sample uninitialized
+            // padding in an approximate-fit dstCopy texture.
+            mainBody +=
+                    "float2 dstCoord = clamp(sk_FragCoord.xy - dstReadBounds.xy,"
+                    "float2(0.5), dstReadBounds.zw);"
+                    "dstColor = sample(dstSampler, invDstCopyDims * dstCoord);";
         } else if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
             // The dst texture should have been written to with the appropriate write swizzle, so we
             // do not need to worry about the read swizzle when accessing that value for blending.
