@@ -4,6 +4,7 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
 */
+#include "include/core/SkFourByteTag.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -78,6 +79,14 @@ public:
     bool isEmojiModifier(SkUnichar utf8) override { return fEmojiModifier.contains(utf8); }
     bool isRegionalIndicator(SkUnichar utf8) override { return fRegionalIndicator.contains(utf8); }
     bool isIdeographic(SkUnichar utf8) override { return fIdeographic.contains(utf8); }
+    // ICU4X's C++ diplomat bindings expose no ISO 15924 script-name lookup; use the generated UCD
+    // tables just as isDefaultIgnorable above does
+    SkFourByteTag getScript(SkUnichar utf8) override {
+        return SkUnicodeHardCodedCharProperties::GetScript(utf8);
+    }
+    bool isNonSpacingMark(SkUnichar utf8) override {
+        return SkUnicodeHardCodedCharProperties::IsNonSpacingMark(utf8);
+    }
 
     // TODO: is there a check for tabulation
     bool isTabulation(SkUnichar utf8) override {

@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkFourByteTag.h"
 #include "include/private/SkDebug.h"
 #include "modules/skunicode/src/SkUnicode_hardcoded.h"
+#include "modules/skunicode/src/SkUnicode_hardcoded_tables.h"
 #include <algorithm>
 #include <array>
 #include <utility>
@@ -167,6 +169,35 @@ bool SkUnicodeHardCodedCharProperties::IsDefaultIgnorable(SkUnichar utf8) {
 
 bool SkUnicodeHardCodedCharProperties::isDefaultIgnorable(SkUnichar utf8) {
     return IsDefaultIgnorable(utf8);
+}
+
+SkFourByteTag SkUnicodeHardCodedCharProperties::GetScript(SkUnichar utf8) {
+    using SkUnicodeTables::kScriptRanges;
+    if (utf8 < 0 || utf8 > 0x10FFFF) {
+        return SkSetFourByteTag('Z', 'z', 'z', 'z');
+    }
+    // The ranges start at U+0000, so the one before the first range past utf8 holds it
+    static_assert(kScriptRanges.front().first == 0);
+    auto next = std::ranges::upper_bound(kScriptRanges, utf8, {}, [](const auto& range) {
+        return static_cast<SkUnichar>(range.first);
+    });
+    SkASSERT(next != kScriptRanges.begin());
+    return SkUnicodeTables::kScriptTags[(next - 1)->script];
+}
+
+SkFourByteTag SkUnicodeHardCodedCharProperties::getScript(SkUnichar utf8) {
+    return GetScript(utf8);
+}
+
+bool SkUnicodeHardCodedCharProperties::IsNonSpacingMark(SkUnichar utf8) {
+    using SkUnicodeTables::kNonSpacingMarkRanges;
+    auto it = std::ranges::lower_bound(
+            kNonSpacingMarkRanges, utf8, {}, &std::pair<SkUnichar, SkUnichar>::second);
+    return it != kNonSpacingMarkRanges.end() && utf8 >= it->first;
+}
+
+bool SkUnicodeHardCodedCharProperties::isNonSpacingMark(SkUnichar utf8) {
+    return IsNonSpacingMark(utf8);
 }
 
 bool SkUnicodeHardCodedCharProperties::isEmoji(SkUnichar unichar) {

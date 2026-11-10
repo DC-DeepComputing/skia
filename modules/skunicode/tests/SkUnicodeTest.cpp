@@ -5,6 +5,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkFourByteTag.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
@@ -1167,5 +1168,147 @@ DEF_TEST(SkUnicode_Apple_LeadingZwnbspMatchesICU, reporter) {
         REPORTER_ASSERT(
                 reporter, apple->toUpper(text).equals(icu->toUpper(text)), "sample %zu toUpper", s);
     }
+}
+#endif
+
+// Checks the UAX #24 Script and General_Category Mn/Me contracts across BMP, SMP, unassigned,
+// spacing-mark (Mc), and out-of-range code points
+[[maybe_unused]] static void check_script_and_mark(SkUnicode* unicode,
+                                                   skiatest::Reporter* reporter) {
+    constexpr auto tag = [](const char s[5]) {
+        return SkSetFourByteTag(s[0], s[1], s[2], s[3]);
+    };
+    struct ScriptCase {
+        SkUnichar fCodePoint;
+        SkFourByteTag fScript;
+    };
+    const ScriptCase kScriptCases[] = {
+            {0x0000, tag("Zyyy")},   // U+0000 NULL
+            {' ', tag("Zyyy")},      // Common
+            {'A', tag("Latn")},      // Latin
+            {0x0300, tag("Zinh")},   // Inherited combining grave accent
+            {0x0378, tag("Zzzz")},   // Unassigned BMP
+            {0x0410, tag("Cyrl")},   // Cyrillic
+            {0x0627, tag("Arab")},   // Arabic
+            {0x10D0, tag("Geor")},   // Georgian
+            {0x4E2D, tag("Hani")},   // BMP Han
+            {0x2EBF0, tag("Hani")},  // CJK Extension I (Unicode 15.1)
+            {0x30000, tag("Hani")},  // CJK Extension G
+            {0x323B0, tag("Hani")},  // CJK Extension J (Unicode 17.0)
+            {0xE0080, tag("Zzzz")},  // Unassigned Plane 14
+            {0xE0100, tag("Zinh")},  // Variation Selectors Supplement
+            {0x10FFFF, tag("Zzzz")}, // Upper scalar boundary noncharacter
+            {-1, tag("Zzzz")},       // Below U+0000
+            {0x110000, tag("Zzzz")}, // Above U+10FFFF
+    };
+    for (const auto& c : kScriptCases) {
+        REPORTER_ASSERT(reporter,
+                        unicode->getScript(c.fCodePoint) == c.fScript,
+                        "U+%04X: %08x != %08x",
+                        static_cast<unsigned>(c.fCodePoint),
+                        unicode->getScript(c.fCodePoint),
+                        c.fScript);
+    }
+
+    const SkUnichar kMarks[] = {
+            0x0300,   // Mn: Combining Grave Accent
+            0x05B0,   // Mn: Hebrew Point Sheva
+            0x0951,   // Mn: Devanagari Stress Sign Udatta
+            0x20DD,   // Me: Combining Enclosing Circle
+            0x20E0,   // Me: Combining Enclosing Circle Backslash
+            0xFE0F,   // Mn: Variation Selector-16
+            0xE0100,  // Mn: Variation Selector-17
+            0xE01EF,  // Mn: Variation Selector-256
+    };
+    for (SkUnichar c : kMarks) {
+        REPORTER_ASSERT(reporter,
+                        unicode->isNonSpacingMark(c),
+                        "U+%04X expected Mn/Me",
+                        static_cast<unsigned>(c));
+    }
+
+    const SkUnichar kNonMarks[] = {
+            'A',
+            ' ',
+            0x0000,
+            0x0903,   // Mc: Devanagari Sign Visarga (spacing mark)
+            0x093E,   // Mc: Devanagari Vowel Sign AA (spacing mark)
+            0x200B,   // Cf: Zero Width Space
+            -1,
+            0x110000,
+    };
+    for (SkUnichar c : kNonMarks) {
+        REPORTER_ASSERT(reporter,
+                        !unicode->isNonSpacingMark(c),
+                        "U+%04X expected non-Mn/Me",
+                        static_cast<unsigned>(c));
+    }
+}
+
+#if defined(SK_UNICODE_ICU_IMPLEMENTATION)
+// ICU getScript and isNonSpacingMark return ISO 15924 tags and Mn/Me membership, clamping
+// out-of-range inputs to 'Zzzz' and false
+DEF_TEST(SkUnicode_Compiled_ScriptAndMark, reporter) {
+    auto icu = SkUnicodes::ICU::Make();
+    // Windows test bots do not ship icudtl.dat, so ICU cannot load there
+#if !defined(SK_BUILD_FOR_WIN)
+    REPORTER_ASSERT(reporter, icu);
+#endif
+    if (!icu) {
+        return;
+    }
+    check_script_and_mark(icu.get(), reporter);
+}
+#endif
+
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION)
+// Generated UCD tables in SkUnicodeHardCodedCharProperties serve getScript and isNonSpacingMark
+// on the Apple backend across BMP, Plane 2/3 CJK, Plane 14, and out-of-range sentinels
+DEF_TEST(SkUnicode_Apple_ScriptAndMark, reporter) {
+    auto apple = SkUnicodes::Apple::Make();
+    REPORTER_ASSERT(reporter, apple);
+    if (!apple) {
+        return;
+    }
+    check_script_and_mark(apple.get(), reporter);
+}
+#endif
+
+#if defined(SK_UNICODE_APPLE_IMPLEMENTATION) && defined(SK_UNICODE_ICU_IMPLEMENTATION)
+// Generated UCD tables agree with ICU on getScript and isNonSpacingMark for every code point in
+// U+0000..U+10FFFF and out-of-range sentinels
+DEF_TEST(SkUnicode_Apple_ScriptAndMarkMatchesICU, reporter) {
+    auto apple = SkUnicodes::Apple::Make();
+    auto icu = SkUnicodes::ICU::Make();
+    REPORTER_ASSERT(reporter, apple && icu);
+    if (!apple || !icu) {
+        return;
+    }
+    int mismatches = 0;
+    for (SkUnichar c = -2; c <= 0x110001; ++c) {
+        const SkFourByteTag appleScript = apple->getScript(c);
+        const SkFourByteTag icuScript = icu->getScript(c);
+        if (appleScript != icuScript) {
+            if (mismatches++ == 0) {
+                ERRORF(reporter,
+                       "getScript(0x%X): hardcoded %08x != ICU %08x",
+                       static_cast<unsigned>(c),
+                       appleScript,
+                       icuScript);
+            }
+        }
+        const bool appleMark = apple->isNonSpacingMark(c);
+        const bool icuMark = icu->isNonSpacingMark(c);
+        if (appleMark != icuMark) {
+            if (mismatches++ == 0) {
+                ERRORF(reporter,
+                       "isNonSpacingMark(0x%X): hardcoded %d != ICU %d",
+                       static_cast<unsigned>(c),
+                       appleMark,
+                       icuMark);
+            }
+        }
+    }
+    REPORTER_ASSERT(reporter, mismatches == 0, "%d code point mismatches", mismatches);
 }
 #endif
