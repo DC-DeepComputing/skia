@@ -141,6 +141,24 @@
       "parentUuid": "079243b6_a4ce8902",
       "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95ebd839_7b7fd511",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-10T15:31:16Z",
+      "side": 1,
+      "message": "That sounds good to me.",
+      "parentUuid": "80f7623c_e872979d",
+      "revId": "bdb3a17f01beded8913cc92cf82da5f333a6c239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
