@@ -477,7 +477,7 @@ std::string MetalCodeGenerator::typeName(const Type& raw) {
 
         case Type::TypeKind::kAtomic:
             // SkSL currently only supports the atomicUint type.
-            SkASSERT(type.matches(*fContext.fTypes.fAtomicUInt));
+            SkASSERT(type.matches(*fContext.fTypes->fAtomicUInt));
             return "atomic_uint";
 
         default:
@@ -2530,10 +2530,10 @@ void MetalCodeGenerator::writeLiteral(const Literal& l) {
         return;
     }
     if (type.isInteger()) {
-        if (type.matches(*fContext.fTypes.fUInt)) {
+        if (type.matches(*fContext.fTypes->fUInt)) {
             this->write(std::to_string(l.intValue() & 0xffffffff));
             this->write("u");
-        } else if (type.matches(*fContext.fTypes.fUShort)) {
+        } else if (type.matches(*fContext.fTypes->fUShort)) {
             this->write(std::to_string(l.intValue() & 0xffff));
             this->write("u");
         } else {
@@ -3217,7 +3217,7 @@ void MetalCodeGenerator::writeReturnStatementFromMain() {
 void MetalCodeGenerator::writeReturnStatement(const ReturnStatement& r) {
     if (fCurrentFunction && fCurrentFunction->isMain()) {
         if (r.expression()) {
-            if (r.expression()->type().matches(*fContext.fTypes.fHalf4)) {
+            if (r.expression()->type().matches(*fContext.fTypes->fHalf4)) {
                 this->write("_out.sk_FragColor = ");
                 this->writeExpression(*r.expression(), Precedence::kExpression);
                 this->writeLine(";");

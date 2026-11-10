@@ -175,7 +175,7 @@ public:
                 fContext.fErrors->error(expr.fPosition, "invalid expression");
                 break;
             default:
-                if (expr.type().matches(*fContext.fTypes.fInvalid)) {
+                if (expr.type().matches(*fContext.fTypes->fInvalid)) {
                     fContext.fErrors->error(expr.fPosition, "invalid expression");
                 }
                 break;

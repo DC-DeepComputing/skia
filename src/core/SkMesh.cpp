@@ -147,9 +147,9 @@ ColorType get_fs_color_type(const SkSL::Program& fsProgram) {
                     return ColorType::kNone;
                 }
                 const SkSL::Type& paramType = decl.parameters()[1]->type();
-                SkASSERT(paramType.matches(*fsProgram.fContext->fTypes.fHalf4) ||
-                         paramType.matches(*fsProgram.fContext->fTypes.fFloat4));
-                return paramType.matches(*fsProgram.fContext->fTypes.fHalf4) ? ColorType::kHalf4
+                SkASSERT(paramType.matches(*fsProgram.fContext->fTypes->fHalf4) ||
+                         paramType.matches(*fsProgram.fContext->fTypes->fFloat4));
+                return paramType.matches(*fsProgram.fContext->fTypes->fHalf4) ? ColorType::kHalf4
                                                                              : ColorType::kFloat4;
             }
         }
@@ -338,7 +338,7 @@ int check_for_passthrough_local_coords_and_dead_varyings(const SkSL::Program& fs
                 return false;
             }
             const Field& field = fVaryings->type().fields()[fa.fieldIndex()];
-            if (!field.fType->matches(*fContext.fTypes.fFloat2)) {
+            if (!field.fType->matches(*fContext.fTypes->fFloat2)) {
                 this->passthroughFailed();
                 return ProgramVisitor::visitStatement(s);
             }

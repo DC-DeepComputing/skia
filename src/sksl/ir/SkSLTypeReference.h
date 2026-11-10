@@ -33,7 +33,7 @@ public:
     inline static constexpr Kind kIRNodeKind = Kind::kTypeReference;
 
     TypeReference(const Context& context, Position pos, const Type* value)
-            : TypeReference(pos, value, context.fTypes.fInvalid.get()) {}
+            : TypeReference(pos, value, context.fTypes->fInvalid.get()) {}
 
     // Reports an error and returns false if the type is generic or, in a strict-ES2 program, if the
     // type is not allowed in ES2. Otherwise, returns true. (These are the same checks performed by

@@ -11,10 +11,13 @@
 #include "include/ports/SkFontMgr_data.h"
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkFontDescriptor.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/ports/SkFontMgr_custom.h"
 
-struct SkEmbeddedResource { const uint8_t* data; size_t size; };
-struct SkEmbeddedResourceHeader { const SkEmbeddedResource* entries; int count; };
+// RAW_PTR_EXCLUSION: Must match the C ABI / ODR struct layout emitted by tools/embed_resources.py
+// (static const arrays with extern "C" linkage, also declared in canvaskit_bindings.cpp).
+struct SkEmbeddedResource { RAW_PTR_EXCLUSION const uint8_t* data; size_t size; };
+struct SkEmbeddedResourceHeader { RAW_PTR_EXCLUSION const SkEmbeddedResource* entries; int count; };
 
 static void load_font_from_data(const SkFontScanner* scanner,
                                 std::unique_ptr<SkMemoryStream> stream, int index,

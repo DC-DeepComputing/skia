@@ -11,6 +11,7 @@
 #include "include/private/SkAssert.h"
 #include "src/partition_alloc/raw_ptr.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
+#include "src/partition_alloc/raw_ref.h"
 
 namespace SkSL {
 
@@ -29,7 +30,7 @@ public:
     ~Context();
 
     // The Context holds a reference to all of the built-in types.
-    const BuiltinTypes& fTypes;
+    const raw_ref<const BuiltinTypes> fTypes;
 
     // The Context holds a pointer to the configuration of the program being compiled.
     raw_ptr<ProgramConfig, DanglingUntriaged> fConfig = nullptr;

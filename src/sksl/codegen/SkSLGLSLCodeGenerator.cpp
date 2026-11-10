@@ -327,8 +327,8 @@ std::string GLSLCodeGenerator::getTypeName(const Type& raw) {
         case Type::TypeKind::kVector: {
             const Type& component = type.componentType();
             std::string result;
-            if (component.matches(*fContext.fTypes.fFloat) ||
-                component.matches(*fContext.fTypes.fHalf)) {
+            if (component.matches(*fContext.fTypes->fFloat) ||
+                component.matches(*fContext.fTypes->fHalf)) {
                 result = "vec";
             }
             else if (component.isSigned()) {
@@ -337,7 +337,7 @@ std::string GLSLCodeGenerator::getTypeName(const Type& raw) {
             else if (component.isUnsigned()) {
                 result = "uvec";
             }
-            else if (component.matches(*fContext.fTypes.fBool)) {
+            else if (component.matches(*fContext.fTypes->fBool)) {
                 result = "bvec";
             }
             else {
@@ -349,8 +349,8 @@ std::string GLSLCodeGenerator::getTypeName(const Type& raw) {
         case Type::TypeKind::kMatrix: {
             std::string result;
             const Type& component = type.componentType();
-            if (component.matches(*fContext.fTypes.fFloat) ||
-                component.matches(*fContext.fTypes.fHalf)) {
+            if (component.matches(*fContext.fTypes->fFloat) ||
+                component.matches(*fContext.fTypes->fHalf)) {
                 result = "mat";
             }
             else {
@@ -371,13 +371,13 @@ std::string GLSLCodeGenerator::getTypeName(const Type& raw) {
             return String::printf("%s[%d]", baseTypeName.c_str(), type.columns());
         }
         case Type::TypeKind::kScalar: {
-            if (type.matches(*fContext.fTypes.fHalf)) {
+            if (type.matches(*fContext.fTypes->fHalf)) {
                 return "float";
             }
-            else if (type.matches(*fContext.fTypes.fShort)) {
+            else if (type.matches(*fContext.fTypes->fShort)) {
                 return "int";
             }
-            else if (type.matches(*fContext.fTypes.fUShort)) {
+            else if (type.matches(*fContext.fTypes->fUShort)) {
                 return "uint";
             }
 
@@ -547,22 +547,22 @@ static constexpr char kDeterminant4[] =
 
 void GLSLCodeGenerator::writeDeterminantHack(const Expression& mat) {
     const Type& type = mat.type();
-    if (type.matches(*fContext.fTypes.fFloat2x2) ||
-        type.matches(*fContext.fTypes.fHalf2x2)) {
+    if (type.matches(*fContext.fTypes->fFloat2x2) ||
+        type.matches(*fContext.fTypes->fHalf2x2)) {
         this->write("_determinant2(");
         if (!fWrittenDeterminant2) {
             fWrittenDeterminant2 = true;
             fExtraFunctions.writeText(kDeterminant2);
         }
-    } else if (type.matches(*fContext.fTypes.fFloat3x3) ||
-               type.matches(*fContext.fTypes.fHalf3x3)) {
+    } else if (type.matches(*fContext.fTypes->fFloat3x3) ||
+               type.matches(*fContext.fTypes->fHalf3x3)) {
         this->write("_determinant3(");
         if (!fWrittenDeterminant3) {
             fWrittenDeterminant3 = true;
             fExtraFunctions.writeText(kDeterminant3);
         }
-    } else if (type.matches(*fContext.fTypes.fFloat4x4) ||
-               type.matches(*fContext.fTypes.fHalf4x4)) {
+    } else if (type.matches(*fContext.fTypes->fFloat4x4) ||
+               type.matches(*fContext.fTypes->fHalf4x4)) {
         this->write("_determinant4(");
         if (!fWrittenDeterminant4) {
             fWrittenDeterminant4 = true;
@@ -638,21 +638,21 @@ static constexpr char kInverse4[] =
 
 void GLSLCodeGenerator::writeInverseHack(const Expression& mat) {
     const Type& type = mat.type();
-    if (type.matches(*fContext.fTypes.fFloat2x2) || type.matches(*fContext.fTypes.fHalf2x2)) {
+    if (type.matches(*fContext.fTypes->fFloat2x2) || type.matches(*fContext.fTypes->fHalf2x2)) {
         this->write("_inverse2(");
         if (!fWrittenInverse2) {
             fWrittenInverse2 = true;
             fExtraFunctions.writeText(kInverse2);
         }
-    } else if (type.matches(*fContext.fTypes.fFloat3x3) ||
-               type.matches(*fContext.fTypes.fHalf3x3)) {
+    } else if (type.matches(*fContext.fTypes->fFloat3x3) ||
+               type.matches(*fContext.fTypes->fHalf3x3)) {
         this->write("_inverse3(");
         if (!fWrittenInverse3) {
             fWrittenInverse3 = true;
             fExtraFunctions.writeText(kInverse3);
         }
-    } else if (type.matches(*fContext.fTypes.fFloat4x4) ||
-               type.matches(*fContext.fTypes.fHalf4x4)) {
+    } else if (type.matches(*fContext.fTypes->fFloat4x4) ||
+               type.matches(*fContext.fTypes->fHalf4x4)) {
         this->write("_inverse4(");
         if (!fWrittenInverse4) {
             fWrittenInverse4 = true;
@@ -708,7 +708,7 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
             if (!fCaps->fEmulateAbsIntFunction)
                 break;
             SkASSERT(arguments.size() == 1);
-            if (!arguments[0]->type().matches(*fContext.fTypes.fInt)) {
+            if (!arguments[0]->type().matches(*fContext.fTypes->fInt)) {
                 break;
             }
             // abs(int) on Intel OSX is incorrect, so emulate it:
@@ -857,32 +857,32 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
                 case SpvDim1D:
                     dim = "1D";
                     isTextureFunctionWithBias = true;
-                    if (arg1Type.matches(*fContext.fTypes.fFloat)) {
+                    if (arg1Type.matches(*fContext.fTypes->fFloat)) {
                         proj = false;
                     } else {
-                        SkASSERT(arg1Type.matches(*fContext.fTypes.fFloat2));
+                        SkASSERT(arg1Type.matches(*fContext.fTypes->fFloat2));
                         proj = true;
                     }
                     break;
                 case SpvDim2D:
                     dim = "2D";
-                    if (!arg0Type.matches(*fContext.fTypes.fSamplerExternalOES)) {
+                    if (!arg0Type.matches(*fContext.fTypes->fSamplerExternalOES)) {
                         isTextureFunctionWithBias = true;
                     }
-                    if (arg1Type.matches(*fContext.fTypes.fFloat2)) {
+                    if (arg1Type.matches(*fContext.fTypes->fFloat2)) {
                         proj = false;
                     } else {
-                        SkASSERT(arg1Type.matches(*fContext.fTypes.fFloat3));
+                        SkASSERT(arg1Type.matches(*fContext.fTypes->fFloat3));
                         proj = true;
                     }
                     break;
                 case SpvDim3D:
                     dim = "3D";
                     isTextureFunctionWithBias = true;
-                    if (arg1Type.matches(*fContext.fTypes.fFloat3)) {
+                    if (arg1Type.matches(*fContext.fTypes->fFloat3)) {
                         proj = false;
                     } else {
-                        SkASSERT(arg1Type.matches(*fContext.fTypes.fFloat4));
+                        SkASSERT(arg1Type.matches(*fContext.fTypes->fFloat4));
                         proj = true;
                     }
                     break;
@@ -1020,7 +1020,7 @@ void GLSLCodeGenerator::writeCastConstructor(const AnyConstructor& c, Precedence
 
     const Expression& argument = *arguments.front();
     if ((this->getTypeName(c.type()) == this->getTypeName(argument.type()) ||
-         (argument.type().matches(*fContext.fTypes.fFloatLiteral)))) {
+         (argument.type().matches(*fContext.fTypes->fFloatLiteral)))) {
         // In cases like half(float), they're different types as far as SkSL is concerned but
         // the same type as far as GLSL is concerned. We avoid a redundant float(float) by just
         // writing out the inner expression here.
@@ -1271,12 +1271,12 @@ void GLSLCodeGenerator::writeShortCircuitWorkaroundExpression(const BinaryExpres
     if (b.getOperator().kind() == Operator::Kind::LOGICALAND) {
         this->writeExpression(*b.right(), Precedence::kTernary);
     } else {
-        Literal boolTrue(Position(), /*value=*/1, fContext.fTypes.fBool.get());
+        Literal boolTrue(Position(), /*value=*/1, fContext.fTypes->fBool.get());
         this->writeLiteral(boolTrue);
     }
     this->write(" : ");
     if (b.getOperator().kind() == Operator::Kind::LOGICALAND) {
-        Literal boolFalse(Position(), /*value=*/0, fContext.fTypes.fBool.get());
+        Literal boolFalse(Position(), /*value=*/0, fContext.fTypes->fBool.get());
         this->writeLiteral(boolFalse);
     } else {
         this->writeExpression(*b.right(), Precedence::kTernary);
@@ -1328,9 +1328,9 @@ void GLSLCodeGenerator::writePostfixExpression(const PostfixExpression& p,
 void GLSLCodeGenerator::writeLiteral(const Literal& l) {
     const Type& type = l.type();
     if (type.isInteger()) {
-        if (type.matches(*fContext.fTypes.fUInt)) {
+        if (type.matches(*fContext.fTypes->fUInt)) {
             this->write(std::to_string(l.intValue() & 0xffffffff) + "u");
-        } else if (type.matches(*fContext.fTypes.fUShort)) {
+        } else if (type.matches(*fContext.fTypes->fUShort)) {
             this->write(std::to_string(l.intValue() & 0xffff) + "u");
         } else {
             this->write(std::to_string(l.intValue()));
@@ -1533,14 +1533,14 @@ const char* GLSLCodeGenerator::getTypePrecision(const Type& type) {
     if (this->usesPrecisionModifiers()) {
         switch (type.typeKind()) {
             case Type::TypeKind::kScalar:
-                if (type.matches(*fContext.fTypes.fShort) ||
-                    type.matches(*fContext.fTypes.fUShort) ||
-                    type.matches(*fContext.fTypes.fHalf)) {
+                if (type.matches(*fContext.fTypes->fShort) ||
+                    type.matches(*fContext.fTypes->fUShort) ||
+                    type.matches(*fContext.fTypes->fHalf)) {
                     return fProgram->fConfig->fSettings.fForceHighPrecision ? "highp " : "mediump ";
                 }
-                if (type.matches(*fContext.fTypes.fFloat) ||
-                    type.matches(*fContext.fTypes.fInt) ||
-                    type.matches(*fContext.fTypes.fUInt)) {
+                if (type.matches(*fContext.fTypes->fFloat) ||
+                    type.matches(*fContext.fTypes->fInt) ||
+                    type.matches(*fContext.fTypes->fUInt)) {
                     return "highp ";
                 }
                 return "";
@@ -1614,7 +1614,7 @@ void GLSLCodeGenerator::writeVarDeclaration(const VarDeclaration& decl, bool glo
         this->writeVarInitializer(*var, *decl.value());
     }
     if (!fFoundExternalSamplerDecl &&
-        var->type().matches(*fContext.fTypes.fSamplerExternalOES)) {
+        var->type().matches(*fContext.fTypes->fSamplerExternalOES)) {
         if (!fCaps->fExternalTextureSupport) {
             fContext.fErrors->error(decl.position(), "external texture support is not enabled");
         } else {
@@ -1627,7 +1627,7 @@ void GLSLCodeGenerator::writeVarDeclaration(const VarDeclaration& decl, bool glo
             fFoundExternalSamplerDecl = true;
         }
     }
-    if (!fFoundRectSamplerDecl && var->type().matches(*fContext.fTypes.fSampler2DRect)) {
+    if (!fFoundRectSamplerDecl && var->type().matches(*fContext.fTypes->fSampler2DRect)) {
         fFoundRectSamplerDecl = true;
     }
     this->write(";");

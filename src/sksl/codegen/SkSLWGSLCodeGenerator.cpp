@@ -820,7 +820,7 @@ std::string to_wgsl_type(const Context& context, const Type& raw,
             return std::string(to_scalar_type(type, f16Available));
 
         case Type::TypeKind::kAtomic:
-            SkASSERT(type.matches(*context.fTypes.fAtomicUInt));
+            SkASSERT(type.matches(*context.fTypes->fAtomicUInt));
             return "atomic<u32>";
 
         case Type::TypeKind::kVector: {
@@ -841,7 +841,7 @@ std::string to_wgsl_type(const Context& context, const Type& raw,
             return result + '>';
         }
         case Type::TypeKind::kTexture: {
-            if (type.matches(*context.fTypes.fWriteOnlyTexture2D)) {
+            if (type.matches(*context.fTypes->fWriteOnlyTexture2D)) {
                 std::string result = "texture_storage_2d<";
                 // Write-only storage texture types require a pixel format, which is in the layout.
                 SkASSERT(layout);
@@ -861,7 +861,7 @@ std::string to_wgsl_type(const Context& context, const Type& raw,
                         return result + "write>";
                 }
             }
-            if (type.matches(*context.fTypes.fReadOnlyTexture2D)) {
+            if (type.matches(*context.fTypes->fReadOnlyTexture2D)) {
                 return "texture_2d<f32>";
             }
             break;
@@ -2056,7 +2056,7 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
     // `addImplicitFragColorWrite` from Transform::FindAndDeclareBuiltinVariables has already
     // injected sk_FragColor into our stage outputs even if it wasn't explicitly referenced.
     if (fGenSyntheticCode == IncludeSyntheticCode::kYes && ProgramConfig::IsFragment(programKind)) {
-        if (main.declaration().returnType().matches(*fContext.fTypes.fHalf4)) {
+        if (main.declaration().returnType().matches(*fContext.fTypes->fHalf4)) {
             this->write("_stageOut.sk_FragColor = ");
         }
     }
@@ -2082,7 +2082,7 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
             // We need to synthesize a coordinates parameter, but the coordinates don't matter.
             SkASSERT(ProgramConfig::IsFragment(programKind));
             const Type& type = v->type();
-            if (!type.matches(*fContext.fTypes.fFloat2)) {
+            if (!type.matches(*fContext.fTypes->fFloat2)) {
                 fContext.fErrors->error(
                         main.fPosition,
                         "main function has unsupported parameter: " + type.description());
@@ -2446,7 +2446,7 @@ void WGSLCodeGenerator::writeEmulatedSwitchFallthroughCases(SkSpan<const SwitchC
     this->writeLine(" {");
     ++fIndentation;
 
-    std::string fallthroughVar = this->writeScratchVar(*fContext.fTypes.fBool, "false");
+    std::string fallthroughVar = this->writeScratchVar(*fContext.fTypes->fBool, "false");
     const size_t secondToLastCaseIndex = cases.size() - 2;
     const size_t lastCaseIndex = cases.size() - 1;
 
@@ -3938,9 +3938,9 @@ std::string WGSLCodeGenerator::assembleLiteral(const Literal& l) {
         return value;
     }
     SkASSERT(type.isInteger());
-    if (type.matches(*fContext.fTypes.fUInt)) {
+    if (type.matches(*fContext.fTypes->fUInt)) {
         return std::to_string(l.intValue() & 0xffffffff) + "u";
-    } else if (type.matches(*fContext.fTypes.fUShort)) {
+    } else if (type.matches(*fContext.fTypes->fUShort)) {
         return std::to_string(l.intValue() & 0xffff) + "u";
     } else {
         return std::to_string(l.intValue());

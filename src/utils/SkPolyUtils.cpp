@@ -22,6 +22,7 @@
 #include "src/core/SkTDPQueue.h"
 #include "src/core/SkTInternalLList.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -252,8 +253,9 @@ bool SkIsConvexPolygon(const SkPoint* polygonVerts, int polygonSize) {
 }
 
 struct OffsetEdge {
-    OffsetEdge*   fPrev;
-    OffsetEdge*   fNext;
+    // RAW_PTR_EXCLUSION: Performance: +205% on poly_utils_circle_i and +71% on poly_utils_star_o.
+    RAW_PTR_EXCLUSION OffsetEdge* fPrev;
+    RAW_PTR_EXCLUSION OffsetEdge* fNext;
     OffsetSegment fOffset;
     SkPoint       fIntersection;
     SkScalar      fTValue;
@@ -692,8 +694,10 @@ struct ActiveEdge {
     uint16_t fIndex0;   // indices for previous and next vertex in polygon
     uint16_t fIndex1;
     std::array<ActiveEdge *, 2> fChild;
-    ActiveEdge* fAbove;
-    ActiveEdge* fBelow;
+    // RAW_PTR_EXCLUSION: Bump-allocated in ActiveEdgeList::fAllocation without constructors or
+    // destructors, and poisoned on removal.
+    RAW_PTR_EXCLUSION ActiveEdge* fAbove;
+    RAW_PTR_EXCLUSION ActiveEdge* fBelow;
     int32_t  fRed;
 };
 

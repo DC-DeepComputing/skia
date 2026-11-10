@@ -84,11 +84,11 @@ struct IRHelpers {
     }
 
     std::unique_ptr<Expression> Float(float value) const {
-        return Literal::MakeFloat(Position(), value, fContext.fTypes.fFloat.get());
+        return Literal::MakeFloat(Position(), value, fContext.fTypes->fFloat.get());
     }
 
     std::unique_ptr<Expression> Int(int value) const {
-        return Literal::MakeInt(Position(), value, fContext.fTypes.fInt.get());
+        return Literal::MakeInt(Position(), value, fContext.fTypes->fInt.get());
     }
 
     std::unique_ptr<Expression> CtorXYZW(std::unique_ptr<Expression> xy,
@@ -98,7 +98,7 @@ struct IRHelpers {
         args.push_back(std::move(xy));
         args.push_back(std::move(z));
         args.push_back(std::move(w));
-        return ConstructorCompound::Make(fContext, Position(), *fContext.fTypes.fFloat4,
+        return ConstructorCompound::Make(fContext, Position(), *fContext.fTypes->fFloat4,
                                          std::move(args));
     }
 
