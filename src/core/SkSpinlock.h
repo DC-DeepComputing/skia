@@ -13,6 +13,7 @@
 #include "include/private/SkThreadAnnotations.h"
 
 #include <atomic>
+#include "src/partition_alloc/raw_ref.h"
 
 class SK_CAPABILITY("mutex") SkSpinlock {
 public:
@@ -52,12 +53,12 @@ public:
     SK_ONLY_STACK_ALLOCATABLE;
 
     explicit SkAutoSpinlock(SkSpinlock& mutex) SK_ACQUIRE(mutex) : fSpinlock(mutex) {
-        fSpinlock.acquire();
+        fSpinlock->acquire();
     }
-    ~SkAutoSpinlock() SK_RELEASE_CAPABILITY() { fSpinlock.release(); }
+    ~SkAutoSpinlock() SK_RELEASE_CAPABILITY() { fSpinlock->release(); }
 
 private:
-    SkSpinlock& fSpinlock;
+    const raw_ref<SkSpinlock> fSpinlock;
 };
 
 #endif//SkSpinlock_DEFINED
