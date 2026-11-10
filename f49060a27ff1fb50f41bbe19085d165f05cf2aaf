@@ -16,6 +16,24 @@
       "message": "It seems that this CL broke the bot\nTest-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_FreeType_ASAN_Upload\n\nFAILURE: ../../../../../skia/modules/skparagraph/tests/SkParagraphTest.cpp:4912\t72894.408122 ms [SkParagraph_VeryLongWordParagraph]: ms.count() \u003c 1000\n../../../../../skia/modules/skparagraph/tests/SkParagraphTest.cpp:4912\t72894.408122 ms [SkParagraph_VeryLongWordParagraph]: ms.count() \u003c 1000\n\n// File: modules/skparagraph/src/TextWrapper.cpp\n-            for (auto further \u003d cluster; further !\u003d endOfClusters; ++further) {\n+            auto addWidth \u003d [maxWidth](SkScalar length, const Cluster* c) {\n+                return maxWidth \u003d\u003d 0 ? std::max(length, c-\u003ewidth()) : length + c-\u003ewidth();\n+            };\n+            bool sameWord \u003d\n+                    fWordEnd \u0026\u0026 fWords.empty() \u0026\u0026 cluster \u003e\u003d fWordFrom \u0026\u0026 cluster \u003c fWordEnd;\n+            if (sameWord) {\n+                for (; fWordFrom \u003c cluster; ++fWordFrom) {\n+                    fWordFromLength \u003d addWidth(fWordFromLength, fWordFrom);\n+                }\n+                sameWord \u003d nextWordLength \u003c\u003d fWordFromLength \u0026\u0026\n+                           addWidth(nextWordLength, cluster) \u003e maxWidth;\n+            }",
       "revId": "f49060a27ff1fb50f41bbe19085d165f05cf2aaf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a972ea0_fffaa055",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5246850
+      },
+      "writtenOn": "2026-11-10T10:06:01Z",
+      "side": 1,
+      "message": "Thanks, and sorry for the breakage. The time was not in line breaking. Under ASAN, TArray::emplace_back unpoisons and poisons the whole capacity on each call, so building the cluster table for 300000 clusters is quadratic. The timed layout(300) included that step. Line breaking itself took about 0.2 s of the roughly 7 s that I measured locally with ASAN. Your change in 1407716/1407560 (shape outside the timer, smaller input) fixes it. I checked that the test still fails in Debug+ASAN when the lookAhead change is reverted (about 23 s), so it still guards the regression. In the future, I will run time-bound tests in a Debug+ASAN build before upload.",
+      "parentUuid": "8ab85c85_52570782",
+      "revId": "f49060a27ff1fb50f41bbe19085d165f05cf2aaf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
