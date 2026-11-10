@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/layout/Attribute.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 #include "src/gpu/graphite/vk/VulkanSampler.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkSL {
     class Compiler;
@@ -78,7 +79,7 @@ private:
     explicit VulkanProgramInfo(const VulkanSharedContext* sharedContext)
             : fSharedContext(sharedContext) {}
 
-    const VulkanSharedContext* fSharedContext; // For cleanup
+    raw_ptr<const VulkanSharedContext> fSharedContext; // For cleanup
 
     VkShaderModule fVS = VK_NULL_HANDLE;
     VkShaderModule fFS = VK_NULL_HANDLE;

@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/graphite/task/Task.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <functional>
@@ -48,10 +49,10 @@ public:
 #if defined(SK_DUMP_TASKS)
     void dump(int index, const char* prefix) const override {
         if (index >= 0) {
-            SkDebugf("%s%d: Copy BtoB Task: Src=%p Dst=%p\n", prefix, index, fSrcBuffer,
+            SkDebugf("%s%d: Copy BtoB Task: Src=%p Dst=%p\n", prefix, index, fSrcBuffer.get(),
                 fDstBuffer.get());
         } else {
-            SkDebugf("%sCopy BtoB Task: Src=%p Dst=%p\n", prefix, fSrcBuffer, fDstBuffer.get());
+            SkDebugf("%sCopy BtoB Task: Src=%p Dst=%p\n", prefix, fSrcBuffer.get(), fDstBuffer.get());
         }
     }
 #endif
@@ -63,11 +64,11 @@ private:
                            size_t dstOffset,
                            size_t size);
 
-    const Buffer* fSrcBuffer;
-    size_t        fSrcOffset;
-    sk_sp<Buffer> fDstBuffer;
-    size_t        fDstOffset;
-    size_t        fSize;
+    raw_ptr<const Buffer> fSrcBuffer;
+    size_t                fSrcOffset;
+    sk_sp<Buffer>         fDstBuffer;
+    size_t                fDstOffset;
+    size_t                fSize;
 };
 
 class CopyTextureToBufferTask final : public Task {

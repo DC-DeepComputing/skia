@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #if defined(SK_ENABLE_SPARSE_STRIPS)
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
@@ -215,13 +216,15 @@ public:
 private:
     friend class ClipStack; // For updating clip and order components on depth only draws
 
-    const Transform& fTransform; // Lifetime of the transform must be held longer than the geometry
-    Geometry         fGeometry;
-    Rect             fDrawBounds;
-    Rect             fTransformedShapeBounds;
-    SkIRect          fScissor;
-    DrawOrder        fOrder;
-    BarrierType      fBarrierBeforeDraws;
+    // RAW_PTR_EXCLUSION: Points into SkTBlockList<Transform, 4> fTransforms in DrawListBase;
+    // DrawParams is block- or arena-allocated.
+    RAW_PTR_EXCLUSION const Transform& fTransform; // Lifetime of the transform must be held longer than the geometry
+    Geometry                           fGeometry;
+    Rect                               fDrawBounds;
+    Rect                               fTransformedShapeBounds;
+    SkIRect                            fScissor;
+    DrawOrder                          fOrder;
+    BarrierType                        fBarrierBeforeDraws;
 
     std::optional<StrokeStyle> fStroke; // Not present implies fill
 };

@@ -590,7 +590,7 @@ void MtlCommandBuffer::bindUniformBuffers() {
             }
         } else if (fBoundStorageFallbackTexture) {
             id<MTLTexture> mtlTexture =
-                    static_cast<const MtlTexture*>(fBoundStorageFallbackTexture)->mtlTexture();
+                    static_cast<const MtlTexture*>(fBoundStorageFallbackTexture.get())->mtlTexture();
             if (fActiveGraphicsPipeline->vsUsesStorage()) {
                 fActiveRenderCommandEncoder->setVertexTexture(
                         mtlTexture, MtlGraphicsPipeline::kStorageBufferIndex);
