@@ -9,6 +9,7 @@
 #define SkTLazy_DEFINED
 
 #include "include/private/SkAssert.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 
 #include <optional>
 #include <utility>
@@ -146,6 +147,8 @@ private:
 template <typename T>
 class SkTCopyOnFirstWrite {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     explicit SkTCopyOnFirstWrite(const T& initial) : fObj(&initial) {}
 
     explicit SkTCopyOnFirstWrite(const T* initial) : fObj(initial) {}
@@ -209,8 +212,8 @@ public:
     const T& operator *() const { return *fObj; }
 
 private:
-    const T*         fObj;
     std::optional<T> fLazy;
+    const T*         fObj;
 };
 
 #endif

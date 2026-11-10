@@ -9,6 +9,7 @@
 
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMalloc.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -202,6 +203,8 @@ public:
         uint8_t finalScale(uint32_t sum) const {
             return SkTo<uint8_t>((fWeight * sum + kHalf) >> 32);
         }
+
+        SK_ONLY_STACK_ALLOCATABLE;
 
         uint64_t  fWeight;
         int       fNoChangeCount;

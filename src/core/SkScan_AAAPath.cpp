@@ -14,6 +14,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkFixed.h"
 #include "include/private/SkMath.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkSafe32.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAlphaRuns.h"
@@ -99,6 +100,8 @@ static void safely_add_alpha(SkAlpha* alpha, SkAlpha delta) {
 
 class AdditiveBlitter : public SkBlitter {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     ~AdditiveBlitter() override {}
 
     virtual SkBlitter* getRealBlitter(bool forceRealBlitter = false) = 0;
@@ -138,6 +141,8 @@ public:
 // We need this mask blitter because it significantly accelerates small path filling.
 class MaskAdditiveBlitter : public AdditiveBlitter {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     MaskAdditiveBlitter(SkBlitter*     realBlitter,
                         const SkIRect& ir,
                         const SkIRect& clipBounds,
@@ -281,6 +286,8 @@ void MaskAdditiveBlitter::blitAntiRect(int     x,
 
 class RunBasedAdditiveBlitter : public AdditiveBlitter {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     RunBasedAdditiveBlitter(SkBlitter*     realBlitter,
                             const SkIRect& ir,
                             const SkIRect& clipBounds,
