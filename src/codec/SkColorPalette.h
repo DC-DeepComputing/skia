@@ -12,6 +12,8 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 
+#include <memory>
+
 /** \class SkColorPalette
 
     SkColorPalette holds an array of SkPMColors (premultiplied 32-bit colors) used by
@@ -39,11 +41,11 @@ public:
     }
 
     /** Return the array of colors for reading. */
-    const SkPMColor* readColors() const { return fColors; }
+    const SkPMColor* readColors() const { return fColors.get(); }
 
 private:
-    SkPMColor*  fColors;
-    int         fCount;
+    std::unique_ptr<SkPMColor[]> fColors;
+    int                          fCount;
 
     using INHERITED = SkRefCnt;
 };

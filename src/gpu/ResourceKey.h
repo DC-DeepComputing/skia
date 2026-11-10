@@ -414,6 +414,8 @@ public:
 
     class Builder {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         Builder(FixedSizeKey* key) : fKey(key) {}
 
         void finish() {

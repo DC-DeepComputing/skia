@@ -19,6 +19,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <memory>
 #include <string>
 #include <type_traits>
 
@@ -57,9 +58,7 @@ public:
      *  Construct a JSON writer that will serialize all the generated JSON to 'stream'.
      */
     SkJSONWriter(SkWStream* stream, SkSerialProcs serialProcs, Mode mode = Mode::kFast)
-            : fBlock(new char[kBlockSize])
-            , fWrite(fBlock)
-            , fBlockEnd(fBlock + kBlockSize)
+            : fBlock(std::make_unique<char[]>(kBlockSize))
             , fStream(stream)
             , fMode(mode)
             , fState(State::kStart)
@@ -70,7 +69,6 @@ public:
 
     ~SkJSONWriter() {
         this->flush();
-        delete[] fBlock;
         SkASSERT(fScopeStack.size() == 1);
         SkASSERT(fNewlineStack.size() == 1);
     }
@@ -79,9 +77,9 @@ public:
      *  Force all buffered output to be flushed to the underlying stream.
      */
     void flush() {
-        if (fWrite != fBlock) {
-            fStream->write(fBlock, fWrite - fBlock);
-            fWrite = fBlock;
+        if (fWrite > 0) {
+            fStream->write(fBlock.get(), fWrite);
+            fWrite = 0;
         }
     }
 
@@ -368,7 +366,7 @@ private:
     }
 
     void write(const char* buf, size_t length) {
-        if (static_cast<size_t>(fBlockEnd - fWrite) < length) {
+        if (kBlockSize - fWrite < length) {
             // Don't worry about splitting writes that overflow our block.
             this->flush();
         }
@@ -376,7 +374,7 @@ private:
             // Send particularly large writes straight through to the stream (unbuffered).
             fStream->write(buf, length);
         } else {
-            memcpy(fWrite, buf, length);
+            memcpy(fBlock.get() + fWrite, buf, length);
             fWrite += length;
         }
     }
@@ -410,9 +408,8 @@ private:
         }
     }
 
-    char* fBlock;
-    char* fWrite;
-    char* fBlockEnd;
+    std::unique_ptr<char[]> fBlock;
+    size_t fWrite = 0;
 
     raw_ptr<SkWStream> fStream;
     Mode fMode;
