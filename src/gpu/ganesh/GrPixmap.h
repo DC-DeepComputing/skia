@@ -87,10 +87,10 @@ protected:
     }
 
 private:
+    sk_sp<SkData> fPixelStorage;
     T* fAddr = nullptr;
     size_t fRowBytes = 0;
     GrImageInfo fInfo;
-    sk_sp<SkData> fPixelStorage;
 };
 
 /** A pixmap with mutable pixels. */

@@ -43,20 +43,19 @@ void* GrCpuVertexAllocator::lock(size_t stride, int eagerCount) {
     SkASSERT(!fLockStride && !fVertices && !fVertexData);
     SkASSERT(stride && eagerCount);
 
-    fVertices = sk_malloc_throw(stride, eagerCount);
+    fVertices.reset(sk_malloc_throw(stride, eagerCount));
     fLockStride = stride;
 
-    return fVertices;
+    return fVertices.get();
 }
 
 void GrCpuVertexAllocator::unlock(int actualCount) {
     SkASSERT(fLockStride && fVertices && !fVertexData);
 
-    fVertices = sk_realloc_throw(fVertices, actualCount * fLockStride);
+    fVertices.reset(sk_realloc_throw(fVertices.release(), actualCount * fLockStride));
 
-    fVertexData = GrThreadSafeCache::MakeVertexData(fVertices, actualCount, fLockStride);
+    fVertexData = GrThreadSafeCache::MakeVertexData(fVertices.release(), actualCount, fLockStride);
 
-    fVertices = nullptr;
     fLockStride = 0;
 }
 

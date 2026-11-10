@@ -13,6 +13,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkDebug.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/Device.h"
@@ -113,6 +114,8 @@ public:
     // not confuse users with output that looks like a testing failure.
     class AutoSuppressWarningMessages {
     public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
         AutoSuppressWarningMessages(GrRecordingContext* context) : fContext(context) {
             ++fContext->fSuppressWarningMessages;
         }

@@ -12,6 +12,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/shaders/gradients/SkLinearGradient.h"
 
 #include <array>
@@ -52,6 +53,8 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
         // Should be of similar magnitude to the draw area of the tests so that the gradient
         // sampling is done at an appropriate scale.
         inline static constexpr SkScalar kGradientScale = 256.0f;
+
+        SK_ONLY_STACK_ALLOCATABLE;
 
         RandomParams(SkRandom* r);
 
