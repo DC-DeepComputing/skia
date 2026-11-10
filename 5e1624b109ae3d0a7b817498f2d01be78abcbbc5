@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7aade290_93c209a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3438316
+      },
+      "writtenOn": "2026-11-10T18:11:00Z",
+      "side": 1,
+      "message": "Thanks for the contribution, I ran a Chrome Canary job to see if this CL would roll into Chrome nicely, however the job failed because this changes rendering behavior, so it seems like it won\u0027t if this landed. Because of that we can\u0027t prioritize this fix currently since this would require work to stage into Chrome.",
+      "revId": "5e1624b109ae3d0a7b817498f2d01be78abcbbc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
