@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <limits>
 #include <optional>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -206,7 +207,7 @@ private:
         uint64_t fUniformKey;
 
         // Backpointer to the draw that produced the sort key
-        const Draw* fDraw;
+        raw_ptr<const Draw> fDraw;
 
 // https://issues.skia.org/issues/485303056
 #if defined(__clang__)
