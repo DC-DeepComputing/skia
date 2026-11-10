@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4af089bb_47889dae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-10T17:14:38Z",
+      "side": 1,
+      "message": "Thanks, Florin. The code is the same as in the reviewed change; the Flutter test that broke the roll now accepts both values. I will land it after the ASAN run on this patchset finishes.",
+      "revId": "889c8a0f93662560a4bdfa5a731d667303ce1b9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
