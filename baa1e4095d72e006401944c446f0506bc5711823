@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1827fa1_dc28b090",
+        "filename": "gn/bench.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-10T20:47:55Z",
+      "side": 0,
+      "message": "Note for follow up CLs touching benching and tooling: We are trying to move to Bazel and off of GN. Make sure when you touch gni files and gn files, we also touch related Bazel files. There might be growing pains until we get a single source of truth for these file lists (exporting from Bazel -\u003e gni), but in the meantime please be on the lookout.",
+      "revId": "baa1e4095d72e006401944c446f0506bc5711823",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
