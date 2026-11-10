@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 /** \class SkColorPalette
 
@@ -35,15 +36,15 @@ public:
      */
     SkPMColor operator[](int index) const {
         SkASSERT(fColors != nullptr && (unsigned)index < (unsigned)fCount);
-        return fColors[index];
+        return fColors.get()[index];
     }
 
     /** Return the array of colors for reading. */
-    const SkPMColor* readColors() const { return fColors; }
+    const SkPMColor* readColors() const { return fColors.get(); }
 
 private:
-    SkPMColor*  fColors;
-    int         fCount;
+    raw_ptr<SkPMColor> fColors;
+    int                fCount;
 
     using INHERITED = SkRefCnt;
 };

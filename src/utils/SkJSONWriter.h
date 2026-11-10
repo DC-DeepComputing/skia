@@ -16,6 +16,7 @@
 #include "include/private/SkTArray.h"
 #include "src/core/SkUTF.h"
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <cstring>
@@ -410,9 +411,10 @@ private:
         }
     }
 
-    char* fBlock;
-    char* fWrite;
-    char* fBlockEnd;
+    // RAW_PTR_EXCLUSION: Owned internal scratch buffer; fWrite/fBlockEnd are cursor/end pointers.
+    RAW_PTR_EXCLUSION char* fBlock;
+    RAW_PTR_EXCLUSION char* fWrite;
+    RAW_PTR_EXCLUSION char* fBlockEnd;
 
     raw_ptr<SkWStream> fStream;
     Mode fMode;

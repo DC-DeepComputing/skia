@@ -17,9 +17,11 @@ SkColorPalette::SkColorPalette(const SkPMColor colors[], int count) {
     fCount = count;
     fColors = reinterpret_cast<SkPMColor*>(sk_malloc_throw(count * sizeof(SkPMColor)));
 
-    memcpy(fColors, colors, count * sizeof(SkPMColor));
+    memcpy(fColors.get(), colors, count * sizeof(SkPMColor));
 }
 
 SkColorPalette::~SkColorPalette() {
-    sk_free(fColors);
+    SkPMColor* colors = fColors.get();
+    fColors = nullptr;
+    sk_free(colors);
 }

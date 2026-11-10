@@ -12,6 +12,7 @@
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/utils/SkBitSet.h"
 
 #include <cstddef>
@@ -79,7 +80,8 @@ struct SpecializedCallKey {
                fParentSpecializationIndex == other.fParentSpecializationIndex;
     }
 
-    const FunctionCall* fStablePointer = nullptr;
+    // RAW_PTR_EXCLUSION: Opaque identity key (never dereferenced; may outlive cloned AST node).
+    RAW_PTR_EXCLUSION const FunctionCall* fStablePointer = nullptr;
     SpecializationIndex fParentSpecializationIndex = Analysis::kUnspecialized;
 };
 

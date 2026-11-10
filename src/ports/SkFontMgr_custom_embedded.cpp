@@ -9,11 +9,14 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/ports/SkFontMgr_data.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/ports/SkFontMgr_custom.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
-struct SkEmbeddedResource { const uint8_t* data; size_t size; };
-struct SkEmbeddedResourceHeader { const SkEmbeddedResource* entries; int count; };
+// RAW_PTR_EXCLUSION: Static embedded font tables in read-only binary data.
+struct SkEmbeddedResource { RAW_PTR_EXCLUSION const uint8_t* data; size_t size; };
+struct SkEmbeddedResourceHeader { RAW_PTR_EXCLUSION const SkEmbeddedResource* entries; int count; };
 
 static void load_font_from_data(const SkFontScanner* scanner,
                                 std::unique_ptr<SkMemoryStream> stream, int index,
@@ -21,6 +24,8 @@ static void load_font_from_data(const SkFontScanner* scanner,
 
 class EmbeddedSystemFontLoader : public SkFontMgr_Custom::SystemFontLoader {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     EmbeddedSystemFontLoader(const SkEmbeddedResourceHeader* header) : fHeader(header) { }
 
     void loadSystemFonts(const SkFontScanner* scanner,
@@ -44,6 +49,8 @@ public:
 
 class DataFontLoader : public SkFontMgr_Custom::SystemFontLoader {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     DataFontLoader(sk_sp<SkData>* datas, int n) : fDatas(datas), fNum(n) { }
 
     void loadSystemFonts(const SkFontScanner* scanner,
