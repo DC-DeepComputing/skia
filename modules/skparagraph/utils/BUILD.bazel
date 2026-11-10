@@ -14,4 +14,5 @@ UTILS_FILES = [
 split_srcs_and_hdrs(
     name = "utils",
     files = UTILS_FILES,
+    visibility = ["//modules/skparagraph/bench:__pkg__"],
 )

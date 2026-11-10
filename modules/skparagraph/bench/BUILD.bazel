@@ -1,5 +1,17 @@
+load("//bazel:skia_rules.bzl", "skia_filegroup")
+
 package(
     default_applicable_licenses = ["//:license"],
 )
 
 licenses(["notice"])
+
+skia_filegroup(
+    name = "bench_srcs",
+    srcs = [
+        "ParagraphBench.cpp",
+        "//modules/skparagraph/utils:utils_hdrs",
+        "//modules/skparagraph/utils:utils_srcs",
+    ],
+    visibility = ["//bench:__pkg__"],
+)
