@@ -424,28 +424,6 @@ bool Run::isResolved() const {
     return true;
 }
 
-Run* Cluster::runOrNull() const {
-    if (fRunIndex >= fOwner->runs().size()) {
-        return nullptr;
-    }
-    return &fOwner->run(fRunIndex);
-}
-
-Run& Cluster::run() const {
-    SkASSERT(fRunIndex < fOwner->runs().size());
-    return fOwner->run(fRunIndex);
-}
-
-SkFont Cluster::font() const {
-    SkASSERT(fRunIndex < fOwner->runs().size());
-    return fOwner->run(fRunIndex).font();
-}
-
-bool Cluster::isSoftBreak() const {
-    return fOwner->codeUnitHasProperty(fTextRange.end,
-                                       SkUnicode::CodeUnitFlags::kSoftLineBreakBefore);
-}
-
 bool Cluster::isSoftHyphen() const {
     auto text = fOwner->text();
     const char* p = text.begin() + fTextRange.start;
