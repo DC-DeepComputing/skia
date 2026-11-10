@@ -9,6 +9,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"runtime"
 
 	"github.com/chromedp/chromedp"
 	"github.com/jcgregorio/logger"
@@ -66,6 +67,11 @@ func newChromeContext(
 		chromedp.Flag("log-level", "1"), // WARNING+
 		chromedp.CombinedOutput(chromeStderr),
 	)
+	if runtime.GOOS == "linux" {
+		// Headless chrome on Linux defaults WebGL to SwiftShader (--use-angle=swiftshader-webgl)
+		// unless an ANGLE backend is given explicitly. Pick Vulkan to get the real GPU.
+		execOpts = append(execOpts, chromedp.Flag("use-angle", "vulkan"))
+	}
 	chromeCtx, cancelChrome := chromedp.NewExecAllocator(ctx, execOpts...)
 
 	opts := []chromedp.ContextOption{chromedp.WithErrorf(sklog.Errorf)}
