@@ -11,6 +11,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/utils/SkNoDrawCanvas.h"
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/ParagraphBuilder.h"
 #include "modules/skparagraph/include/ParagraphCache.h"
@@ -310,6 +311,215 @@ struct ParagraphCacheHitUnresolvedBench final : public WarmRelayoutBase {
     }
 };
 
+// Base class for cold benchmarks that measure ParagraphBuilder + first layout with ParagraphCache
+// disabled while keeping typeface tables warm
+struct ColdLayoutBase : public ParagraphBenchBase {
+    virtual void buildAndLayout() = 0;
+
+    // Measures uncached build, SkUnicode analysis, HarfBuzz shaping, and line breaking
+    void onDraw(int loops, SkCanvas*) override {
+        while (loops-- > 0) {
+            this->buildAndLayout();
+        }
+    }
+};
+
+// Measures uncached build, SkUnicode code-unit analysis, HarfBuzz shaping, and line breaking on
+// ~1.4 KB of English prose (b7194156a0, 4a09b7aac5 -1.8..-5.2%)
+struct ParagraphLongColdBench final : public ColdLayoutBase {
+    const char* onGetName() override { return "paragraph_long_cold"; }
+
+    // Prebuilds input text and styles, disables ParagraphCache, and warms typeface glyph tables
+    void onDelayedSetup() override {
+        if (!this->initEnv(/*enableCache=*/false)) {
+            return;
+        }
+        if (!load_english_text(
+                    /*minBytes=*/0, /*copies=*/2, /*insertSoftHyphens=*/false, &fText)) {
+            return;
+        }
+        fTextStyle = make_text_style();
+        fParaStyle = make_paragraph_style(fTextStyle);
+        this->buildAndLayout();
+        SkASSERT_RELEASE(fParagraph->lineNumber() >= 20);
+        SkASSERT_RELEASE(fParagraph->unresolvedGlyphs() == 0);
+    }
+
+    // Builds and lays out a fresh paragraph from prebuilt UTF-8 text and styles
+    void buildAndLayout() override {
+        fParagraph = build_single_style_paragraph(fText, fParaStyle, fTextStyle, fFonts, fUnicode);
+        fParagraph->layout(kDefaultWidth);
+    }
+
+    std::string fText;
+    TextStyle fTextStyle;
+    ParagraphStyle fParaStyle;
+};
+
+// Measures cold OneLineShaper run splitting across 40 alternating 16pt/12pt style runs at width
+// 650 (StyleRunsAlternating_Cold: b7194156a0 -4.8%, 4a09b7aac5 -5.2%)
+struct ParagraphStyleRunsColdBench final : public ColdLayoutBase {
+    static constexpr SkScalar kWidth = 650;
+    static constexpr int kChunks = 40;
+
+    const char* onGetName() override { return "paragraph_style_runs_cold"; }
+
+    // Prebuilds alternating 16pt and 12pt Roboto styles so OneLineShaper cannot coalesce adjacent
+    // runs when only Roboto-Regular.ttf is registered
+    void onDelayedSetup() override {
+        if (!this->initEnv(/*enableCache=*/false)) {
+            return;
+        }
+        fStyleLarge = make_text_style(16);
+        fStyleSmall = make_text_style(12);
+        fParaStyle = make_paragraph_style(fStyleLarge);
+        this->buildAndLayout();
+        SkASSERT_RELEASE(fParagraph->lineNumber() >= 5);
+        SkASSERT_RELEASE(fParagraph->unresolvedGlyphs() == 0);
+    }
+
+    // Pushes kChunks alternating-size runs and performs uncached shaping and layout
+    void buildAndLayout() override {
+        constexpr char kChunk[] = "## heading **bold** text ";
+        auto builder = ParagraphBuilder::make(fParaStyle, fFonts, fUnicode);
+        for (int i = 0; i < kChunks; ++i) {
+            builder->pushStyle(i % 2 == 0 ? fStyleLarge : fStyleSmall);
+            builder->addText(kChunk, sizeof(kChunk) - 1);
+            builder->pop();
+        }
+        fParagraph = builder->Build();
+        fParagraph->layout(kWidth);
+    }
+
+    TextStyle fStyleLarge;
+    TextStyle fStyleSmall;
+    ParagraphStyle fParaStyle;
+};
+
+// Measures cold shaping region segmentation across 200 inline placeholders (Placeholders200_Cold:
+// b7194156a0 -3.8%, 8a256a9888 -3.2%, 4a09b7aac5 -2.8%)
+struct ParagraphPlaceholdersColdBench final : public ColdLayoutBase {
+    static constexpr int kPlaceholders = 200;
+
+    const char* onGetName() override { return "paragraph_placeholders_cold"; }
+
+    // Prebuilds text and placeholder styles, disables ParagraphCache, and verifies all 200 boxes
+    void onDelayedSetup() override {
+        if (!this->initEnv(/*enableCache=*/false)) {
+            return;
+        }
+        fTextStyle = make_text_style();
+        fParaStyle = make_paragraph_style(fTextStyle);
+        fPlaceholder = PlaceholderStyle(
+                20, 14, PlaceholderAlignment::kBaseline, TextBaseline::kAlphabetic, 0);
+        this->buildAndLayout();
+        SkASSERT_RELEASE(fParagraph->lineNumber() >= 20);
+        SkASSERT_RELEASE(fParagraph->getRectsForPlaceholders().size() == kPlaceholders);
+        SkASSERT_RELEASE(fParagraph->unresolvedGlyphs() == 0);
+    }
+
+    // Builds 200 text+placeholder pairs and performs uncached shaping and line wrapping
+    void buildAndLayout() override {
+        constexpr char kChunk[] = "word and ";
+        auto builder = ParagraphBuilder::make(fParaStyle, fFonts, fUnicode);
+        builder->pushStyle(fTextStyle);
+        for (int i = 0; i < kPlaceholders; ++i) {
+            builder->addText(kChunk, sizeof(kChunk) - 1);
+            builder->addPlaceholder(fPlaceholder);
+        }
+        builder->pop();
+        fParagraph = builder->Build();
+        fParagraph->layout(kDefaultWidth);
+    }
+
+    TextStyle fTextStyle;
+    ParagraphStyle fParaStyle;
+    PlaceholderStyle fPlaceholder;
+};
+
+// Base class for paint-only benchmarks drawing a pre-laid-out paragraph into a zero-growth
+// SkNoDrawCanvas after warming TextLine's SkTextBlob cache once
+struct PaintBenchBase : public ParagraphBenchBase {
+    static constexpr int kCanvasWidth = 2000;
+    static constexpr int kCanvasHeight = 3000;
+
+    // Lays out the paragraph, verifies line/glyph/canvas bounds so SkNoDrawCanvas never
+    // quick-rejects, and warms TextLine::fTextBlobCache once
+    void finishPaintSetup(size_t minLines) {
+        fParagraph->layout(kDefaultWidth);
+        SkASSERT_RELEASE(fParagraph->lineNumber() >= minLines);
+        SkASSERT_RELEASE(fParagraph->unresolvedGlyphs() == 0);
+        SkASSERT_RELEASE(fParagraph->getMaxWidth() <= kCanvasWidth &&
+                         fParagraph->getHeight() <= kCanvasHeight);
+        fParagraph->paint(&fCanvas, 0, 0);
+    }
+
+    // Measures Paragraph::paint into SkNoDrawCanvas without rasterization or SkPicture growth
+    void onDraw(int loops, SkCanvas*) override {
+        while (loops-- > 0) {
+            fParagraph->paint(&fCanvas, 0, 0);
+        }
+    }
+
+    SkNoDrawCanvas fCanvas{kCanvasWidth, kCanvasHeight};
+};
+
+// Measures steady-state Paragraph::paint of ~1.4 KB of multi-line prose into SkNoDrawCanvas
+// (PaintLarge)
+struct ParagraphLongPaintBench final : public PaintBenchBase {
+    const char* onGetName() override { return "paragraph_long_paint"; }
+
+    // Lays out English prose once and populates cached SkTextBlobs ahead of timed paint loops
+    void onDelayedSetup() override {
+        if (!this->initEnv(/*enableCache=*/true)) {
+            return;
+        }
+        std::string text;
+        if (!load_english_text(
+                    /*minBytes=*/0, /*copies=*/2, /*insertSoftHyphens=*/false, &text)) {
+            return;
+        }
+        TextStyle textStyle = make_text_style();
+        fParagraph = build_single_style_paragraph(
+                text, make_paragraph_style(textStyle), textStyle, fFonts, fUnicode);
+        this->finishPaintSetup(/*minLines=*/20);
+    }
+};
+
+// Measures Decorations::paint across underline/overline/line-through in solid, dotted, and wavy
+// styles into SkNoDrawCanvas (PaintDecoration: d83c30b090 +4.4%)
+struct ParagraphDecorationsPaintBench final : public PaintBenchBase {
+    const char* onGetName() override { return "paragraph_decorations_paint"; }
+
+    // Builds three decorated runs with opaque decoration color so SkNoDrawCanvas never skips draws
+    void onDelayedSetup() override {
+        if (!this->initEnv(/*enableCache=*/true)) {
+            return;
+        }
+        constexpr char kSentence[] =
+                "Hello world! This is a simple sentence to test drawing. Hello world! "
+                "This is a simple sentence to test drawing.";
+        TextStyle baseStyle = make_text_style();
+        baseStyle.setDecoration(static_cast<TextDecoration>(TextDecoration::kUnderline |
+                                                            TextDecoration::kOverline |
+                                                            TextDecoration::kLineThrough));
+        baseStyle.setDecorationColor(SK_ColorBLACK);
+
+        auto builder = ParagraphBuilder::make(make_paragraph_style(baseStyle), fFonts, fUnicode);
+        for (TextDecorationStyle decorStyle : {TextDecorationStyle::kSolid,
+                                               TextDecorationStyle::kDotted,
+                                               TextDecorationStyle::kWavy}) {
+            TextStyle style = baseStyle;
+            style.setDecorationStyle(decorStyle);
+            builder->pushStyle(style);
+            builder->addText(kSentence, sizeof(kSentence) - 1);
+            builder->pop();
+        }
+        fParagraph = builder->Build();
+        this->finishPaintSetup(/*minLines=*/8);
+    }
+};
+
 }  // namespace
 
 // Pins single-line warm relayout overhead (ShortLayout: e0d79efbf1 +5.3%, 8a256a9888 -4.9%)
@@ -368,5 +578,10 @@ DEF_BENCH(return new WarmRelayoutBench({
 });)
 
 DEF_BENCH(return new ParagraphCacheHitUnresolvedBench;)
+DEF_BENCH(return new ParagraphLongColdBench;)
+DEF_BENCH(return new ParagraphStyleRunsColdBench;)
+DEF_BENCH(return new ParagraphPlaceholdersColdBench;)
+DEF_BENCH(return new ParagraphLongPaintBench;)
+DEF_BENCH(return new ParagraphDecorationsPaintBench;)
 
 #endif  // !defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && !defined(SK_BUILD_FOR_GOOGLE3)
