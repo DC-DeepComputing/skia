@@ -16,6 +16,23 @@
       "message": "Incidentally this reveals that the webgl tests are currently going through Swiftshader, which will be fixed in upcoming CL(s). See the webgl step info under the \u0027run dm\u0027 step: https://task-driver.skia.org/td/s1WbPjYzr5quxS8D6DK1?ifNotFound\u003dhttps%3A%2F%2Fchromium-swarm.appspot.com%2Ftask%3Fid%3D7bdf18c50bc31410",
       "revId": "0f45e5607be706abbba8a5e90c2d79506f4fe7f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ed89a60_7110cb25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-11-10T17:13:06Z",
+      "side": 1,
+      "message": "Forgot to add authors, see my other comment about swiftshader.",
+      "revId": "0f45e5607be706abbba8a5e90c2d79506f4fe7f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
