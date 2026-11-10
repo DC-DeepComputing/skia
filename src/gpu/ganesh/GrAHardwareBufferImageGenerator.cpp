@@ -131,7 +131,7 @@ GrSurfaceProxyView GrAHardwareBufferImageGenerator::makeView(GrRecordingContext*
                                                                    &updateImageProc,
                                                                    &texImageCtx,
                                                                    isProtected,
-                                                                   desc.fFormat,
+                                                                   *desc.fFormat,
                                                                    false);
                 if (!backendTex.isValid()) {
                     return {};

@@ -22,6 +22,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrGpuResource.h"
 #include "src/gpu/ganesh/GrSurface.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #include <atomic>
 #include <cstddef>
@@ -91,7 +92,7 @@ public:
         GrRenderable fRenderable;
         skgpu::Mipmapped fMipmapped;
         int fSampleCnt;
-        const GrBackendFormat& fFormat;
+        const raw_ref<const GrBackendFormat> fFormat;
         GrTextureType fTextureType;
         GrProtected fProtected;
         skgpu::Budgeted fBudgeted;

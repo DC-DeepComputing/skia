@@ -25,6 +25,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -185,7 +186,7 @@ public:
         void addToKey(skgpu::KeyBuilder* b) const;
 
     private:
-        const Attribute* fAttributes = nullptr;
+        raw_ptr<const Attribute, AllowPtrArithmetic> fAttributes;
         int              fRawCount = 0;
         int              fCount = 0;
         size_t           fStride = 0;

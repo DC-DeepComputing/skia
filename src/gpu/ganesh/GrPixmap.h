@@ -17,6 +17,7 @@
 #include "include/private/SkTLogic.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <utility>
@@ -59,7 +60,7 @@ public:
         if (!rect.intersect(bounds)) {
             return {};
         }
-        T* addr = static_cast<sknonstd::copy_const_t<char, T>*>(fAddr) +
+        T* addr = static_cast<sknonstd::copy_const_t<char, T>*>(fAddr.get()) +
                   (rect.fTop - surfacePt->fY) * fRowBytes +
                   (rect.fLeft - surfacePt->fX) * fInfo.bpp();
         surfacePt->fX = rect.fLeft;
@@ -88,7 +89,7 @@ protected:
 
 private:
     sk_sp<SkData> fPixelStorage;
-    T* fAddr = nullptr;
+    raw_ptr<T> fAddr;
     size_t fRowBytes = 0;
     GrImageInfo fInfo;
 };

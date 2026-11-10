@@ -14,6 +14,7 @@
 #include "src/core/SkGlyph.h"
 #include "src/gpu/ganesh/GrAtlasTypes.h"
 #include "src/gpu/ganesh/text/TextStrike.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/text/gpu/PackedGPUGlyphID.h"
 
 #include <cstdint>
@@ -49,7 +50,8 @@ struct GlyphEntry {
 
 /** Adapts GlyphEntry* to conform to GlyphVectors GlyphType requirements. */
 class Glyph {
-    GlyphEntry* fEntry;
+    // RAW_PTR_EXCLUSION: GlyphVector requires GlyphType to be trivially destructible.
+    RAW_PTR_EXCLUSION GlyphEntry* fEntry;
 
     Glyph() = delete;
     Glyph(const Glyph&) = delete;
