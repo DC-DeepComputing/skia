@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7fa1c3c_762b9505",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-10T13:58:26Z",
+      "side": 1,
+      "message": "As all the LLM like to point out, this CL isn\u0027t a complete fix but it is already giant. I propose landing this, if otherwise acceptable, and then landing follow up CLs to address the many lingering issues.",
+      "revId": "3c5df09eb227e8f98b5c6aac8980e83ce769bf2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
