@@ -17,6 +17,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkGradient.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/gpu/graphite/Context.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
@@ -60,6 +61,8 @@ struct AlphaOnlyPaintColorBlock {
 
 struct GradientShaderBlocks {
     struct GradientData {
+        SK_ONLY_STACK_ALLOCATABLE;
+
         // The number of stops stored internal to this data structure before falling back to
         // bitmap storage.
         static constexpr int kNumInternalStorageStops = 8;

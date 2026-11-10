@@ -11,6 +11,7 @@
 #include "include/private/SkAlign.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/gpu/graphite/geom/Rect.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 namespace skgpu::graphite {
 
@@ -60,7 +61,8 @@ private:
     constexpr static int kLeafNodeSize = 16 + (2 + 64) * sizeof(Rect);
     constexpr static int kPadSize = 256;  // For footers and alignment.
     SkArenaAlloc fArena{kLeafNodeSize + kTreeNodeSize + kPadSize*2};
-    Node* fRoot;
+    // RAW_PTR_EXCLUSION: Nodes are allocated in fArena (inline SkArenaAlloc).
+    RAW_PTR_EXCLUSION Node* fRoot;
 };
 
 } // namespace skgpu::graphite

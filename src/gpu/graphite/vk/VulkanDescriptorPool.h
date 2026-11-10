@@ -12,6 +12,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/gpu/graphite/DescriptorData.h"
 
 namespace skgpu::graphite {
@@ -47,11 +48,11 @@ private:
                          VkDescriptorSetLayout);
     ~VulkanDescriptorPool() override;
 
-    const VulkanSharedContext*       fSharedContext;
-    VkDescriptorPool                 fDescPool;
+    raw_ptr<const VulkanSharedContext> fSharedContext;
+    VkDescriptorPool                   fDescPool;
     // The VulkanDescriptorPool has ownership of the VkDescSetLayout used to allocate sets from this
     // pool.
-    VkDescriptorSetLayout            fDescSetLayout;
+    VkDescriptorSetLayout              fDescSetLayout;
 };
 } // namespace skgpu::graphite
 

@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 
@@ -59,7 +60,8 @@ protected:
             , fSize(size)
             , fIsProtected(isProtected) {}
 
-    void* fMapPtr = nullptr;
+    // RAW_PTR_EXCLUSION: GPU driver mapped memory, not managed by PartitionAlloc.
+    RAW_PTR_EXCLUSION void* fMapPtr = nullptr;
 
 private:
     virtual void onMap() = 0;

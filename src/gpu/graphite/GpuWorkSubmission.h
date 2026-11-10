@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/private/SkTArray.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <memory>
 #include <optional>
@@ -54,7 +55,7 @@ private:
     std::unique_ptr<CommandBuffer> fProtectedCommandBuffer;
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
     sk_sp<SkRefCnt> fOutstandingAsyncMapCounter;
-    QueueManager* fQueueManager;
+    raw_ptr<QueueManager> fQueueManager;
 };
 
 } // namespace skgpu::graphite

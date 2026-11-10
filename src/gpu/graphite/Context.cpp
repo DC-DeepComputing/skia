@@ -63,6 +63,7 @@
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/QueueManager.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/RendererProvider.h"
@@ -773,7 +774,7 @@ void Context::finalizeAsyncReadPixels(std::unique_ptr<Recorder> recorder,
     struct AsyncReadFinishContext {
         SkImage::ReadPixelsCallback* fClientCallback;
         SkImage::ReadPixelsContext fClientContext;
-        ClientMappedBufferManager* fMappedBufferManager;
+        raw_ptr<ClientMappedBufferManager> fMappedBufferManager;
         std::array<PixelTransferResult, 4> fTransferResults;
     };
 

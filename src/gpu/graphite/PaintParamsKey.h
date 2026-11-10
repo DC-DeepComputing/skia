@@ -16,6 +16,7 @@
 #include "include/private/SkTArray.h"
 #include "src/core/SkChecksum.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <limits>
 #include <cstring> // for memcmp
@@ -42,6 +43,8 @@ enum class RootBlockType : int32_t {
 };
 
 struct RootNodesInfo {
+    SK_ONLY_STACK_ALLOCATABLE;
+
     const ShaderNode* fSrcColor = nullptr;
     const ShaderNode* fFinalBlend = nullptr;
     const ShaderNode* fClip = nullptr;
@@ -346,7 +349,7 @@ private:
         int fDataSize = -1;
     };
 
-    const ShaderCodeDictionary* fDict;
+    raw_ptr<const ShaderCodeDictionary> fDict;
     skia_private::TArray<StackFrame> fStack;
     bool fLocked = false;
 #endif

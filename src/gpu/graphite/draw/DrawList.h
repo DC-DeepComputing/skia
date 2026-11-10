@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
 #include "src/gpu/graphite/layout/PipelineData.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <limits>
@@ -110,7 +111,8 @@ private:
         const DrawParams& drawParams()          const { return fDrawParams; }
 
     private:
-        const Renderer* fRenderer;
+        // RAW_PTR_EXCLUSION: Renderer is a static singleton in SharedContext; Draw is block-allocated.
+        RAW_PTR_EXCLUSION const Renderer* fRenderer;
         DrawParams fDrawParams;
     };
 
@@ -206,7 +208,8 @@ private:
         uint64_t fUniformKey;
 
         // Backpointer to the draw that produced the sort key
-        const Draw* fDraw;
+        // RAW_PTR_EXCLUSION: Points into SkTBlockList; SortKey is std::sort'd per DrawPass.
+        RAW_PTR_EXCLUSION const Draw* fDraw;
 
 // https://issues.skia.org/issues/485303056
 #if defined(__clang__)

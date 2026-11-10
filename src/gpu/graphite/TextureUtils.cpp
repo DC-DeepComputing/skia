@@ -55,6 +55,7 @@
 #include "src/gpu/graphite/task/CopyTask.h"
 #include "src/gpu/graphite/task/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/task/UploadTask.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <array>
 
@@ -805,7 +806,7 @@ public:
     }
 
 private:
-    skgpu::graphite::Recorder* fRecorder;
+    raw_ptr<skgpu::graphite::Recorder> fRecorder;
 };
 
 } // anonymous namespace

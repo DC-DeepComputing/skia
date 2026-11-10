@@ -81,6 +81,7 @@ skia_cc_library_with_testutil(
         "//src/gpu",
         "//src/gpu/graphite",
         "//src/gpu/vk",
+        "//src/partition_alloc:raw_ptr",
         "//src/sksl/codegen:spirv_validator",
         "//src/utils:shader_utils",
     ],

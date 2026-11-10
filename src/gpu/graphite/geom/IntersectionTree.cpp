@@ -54,8 +54,9 @@ private:
     }
 
     float fSplitCoord;
-    Node* fLo;
-    Node* fHi;
+    // RAW_PTR_EXCLUSION: Nodes are allocated in IntersectionTree::fArena.
+    RAW_PTR_EXCLUSION Node* fLo;
+    RAW_PTR_EXCLUSION Node* fHi;
 };
 
 // Leaf node. Rects are kept in a simple list and intersection testing is performed by brute force.

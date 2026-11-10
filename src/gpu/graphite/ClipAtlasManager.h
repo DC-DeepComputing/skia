@@ -15,6 +15,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/ClipStack.h"
 #include "src/gpu/graphite/DrawAtlas.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -85,7 +86,7 @@ private:
         struct MaskHashEntry {
             SkIRect fBounds;
             DrawAtlas::AtlasLocator fLocator;
-            MaskHashEntry* fNext = nullptr;
+            raw_ptr<MaskHashEntry> fNext;
         };
         struct UniqueKeyHash {
             uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
@@ -108,7 +109,7 @@ private:
         int fListEntryCount = 0;
     };
 
-    Recorder* fRecorder;
+    raw_ptr<Recorder> fRecorder;
     // We have two atlas managers, one for clips that can be keyed via the path keys,
     // and a smaller one for those that can only be keyed by the SaveRecord ID. We keep
     // them separate because the SaveRecord keyed clips will be far more transient, i.e.,

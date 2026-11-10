@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/draw/DrawParams.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/gpu/graphite/layout/PipelineData.h"
 
 #include <cstdint>
@@ -149,10 +150,11 @@ struct Draw {
 
     Draw() = default; // Let it be uninitialized
 
-    const DrawParams* fDrawParams;
+    // RAW_PTR_EXCLUSION: Arena-allocated in DrawListLayer (must remain trivially destructible).
+    RAW_PTR_EXCLUSION const DrawParams* fDrawParams;
     UniformDataCache::Index fUniformIndex;
 
-    Draw* fNext;
+    RAW_PTR_EXCLUSION Draw* fNext;
 };
 static_assert(std::is_trivially_destructible<Draw>::value);
 
@@ -172,13 +174,14 @@ struct BindingList {
 
     Rect fBounds = Rect::InfiniteInverted();
 
-    const RenderStep* fStep;
+    // RAW_PTR_EXCLUSION: Arena-allocated in DrawListLayer without destructors.
+    RAW_PTR_EXCLUSION const RenderStep* fStep;
     LayerKey fKey;
 
     // Maintain a singly-linked list of draws, either prepending to head for front-to-back
     // rendering or appending to tail for back-to-front rendering.
-    Draw* fHead = nullptr;
-    Draw* fTail = nullptr;
+    RAW_PTR_EXCLUSION Draw* fHead = nullptr;
+    RAW_PTR_EXCLUSION Draw* fTail = nullptr;
 
     // Every BindingList always has at least one draw in it, and many might only have the one so
     // store it inline for better memory access.
