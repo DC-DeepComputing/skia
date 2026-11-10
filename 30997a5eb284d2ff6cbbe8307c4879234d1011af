@@ -22,6 +22,30 @@
       },
       "revId": "30997a5eb284d2ff6cbbe8307c4879234d1011af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26abaaa6_9582d894",
+        "filename": "src/core/SkContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-10T20:29:15Z",
+      "side": 1,
+      "message": "Now that SkOpts has been shortened, we require less includes in SkContext.cpp. I like the idea of moving `init_globals_if_needed` to it\u0027s own file; we can do that in a follow up cl",
+      "parentUuid": "cdc242e1_29bb86dd",
+      "range": {
+        "startLine": 36,
+        "startChar": 5,
+        "endLine": 36,
+        "endChar": 27
+      },
+      "revId": "30997a5eb284d2ff6cbbe8307c4879234d1011af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

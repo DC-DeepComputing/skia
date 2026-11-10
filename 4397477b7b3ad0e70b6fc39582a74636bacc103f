@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12d89c9c_ee6c0641",
+        "filename": "src/core/SkGraphics.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-10T20:29:15Z",
+      "side": 1,
+      "message": "`SkContexts::GetGlobalSkContext()` is idempotent, so it is effectively \"already wrapped in an SkOnce\".\n\nthe `SkContexts::GetGlobalSkContext()` works by creating a static SkContext*, and by C++ standards is guaranteed to only be run once. \n\nThe only part that does get run every time is the `return gSkContext` line. I could wrap this `SkContexts::GetGlobalSkContext()` within \"another\" SkOnce to avoid this, but that might be redundant.\n\nLet me know what you think 👍",
+      "parentUuid": "7911b064_c9e45554",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 63
+      },
+      "revId": "4397477b7b3ad0e70b6fc39582a74636bacc103f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "824d39be_8d72cfea",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-11-05T16:52:02Z",
       "side": 1,
       "message": "It is a little off to initial this in SkOpts::Init() since it is its own thing.",
+      "range": {
+        "startLine": 83,
+        "startChar": 12,
+        "endLine": 83,
+        "endChar": 42
+      },
+      "revId": "4397477b7b3ad0e70b6fc39582a74636bacc103f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c342639_106075be",
+        "filename": "src/core/SkOpts.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-10T20:29:15Z",
+      "side": 1,
+      "message": "moved it to SkContext.cpp init_globals_if_needed()",
+      "parentUuid": "824d39be_8d72cfea",
       "range": {
         "startLine": 83,
         "startChar": 12,
@@ -84,6 +132,30 @@
       "side": 1,
       "message": "So Init used to use.\n\n```\nstatic SkOnce once;\nonce(init);\n```\n\nI think this was updated to this pattern to be more \"modern\" cpp friendly since local statics were now thread safe when initialized. I\u0027ll be honest I don\u0027t really have a preference for Once vs static initialization. I think the static reads a little cleaner but is less explicit that it is a one time operation (though anyone who has used c++ in the past 15 years should know that by now).\n\nRegardless all of those protections are moot since we added the SkOnce around all the Init calls. It is just redundant now. So we could just inline init into SkOpts::Init now (and similarly for all the Init_* calls and CacheRunetimeFeatures). Additionally there is no reason to not have SkOpts::Init just call into all these sub Init_* calls. anymore (there was a short attempt where each of these would be called on demand at first use, but that was abandoned quickly).\n\nSo anyways given everything here is how I would structure things.\n\n```\n//\u003e\u003e\u003e\u003e SkContext.cpp\namespace {\nvoid init_globals_if_needed() {\n    static SkOnce once;\n    once([] {\n        SkCpu::CacheRuntimeFeatures();\n        SkOpts::Init();\n    });\n}\n}  // namespace\n\n\nSkContext::SkContext(const SkContextOptions\u0026 options, std::unique_ptr\u003cSkGPUContext\u003e gpuContext)\n        : fGPUContext(std::move(gpuContext)) {\n    if (options.fEnableRuntimeOpts) {\n        init_globals_if_needed();\n    }\n    \n//\u003e\u003e\u003e\u003e\u003e SkOpts.cpp\n// delete init\nvoid Init() {\n// current stuff in init\n...\n    SkOpts::Init_BitmapProcState();\n    SkOpts::Init_BlitMask();\n    SkOpts::Init_BlitRow();\n    SkOpts::Init_Memset();\n    SkOpts::Init_Swizzler();\n}\n\n//\u003e\u003e\u003e\u003e\u003e in all SkFoo_opts.cpp\n// delete init()\nvoid Init_Foo() {\n   // All only init logic moved here\n}",
       "parentUuid": "12987c1b_a1674d8c",
+      "range": {
+        "startLine": 84,
+        "startChar": 29,
+        "endLine": 84,
+        "endChar": 53
+      },
+      "revId": "4397477b7b3ad0e70b6fc39582a74636bacc103f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51fa2437_fb82c6d6",
+        "filename": "src/core/SkOpts.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-10T20:29:15Z",
+      "side": 1,
+      "message": "I inlined the contents of SkOnce into SkOpts::Init() and wrapped it in an SkOnce so that it remained idempotent. \n\nI didn\u0027t edit any of the other SkOpts::Init_**** functions for now as that might belong in a separate CL.",
+      "parentUuid": "52c9f464_c93ee3ce",
       "range": {
         "startLine": 84,
         "startChar": 29,
