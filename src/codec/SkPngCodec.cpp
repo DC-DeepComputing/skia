@@ -21,6 +21,7 @@
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/codec/SkCodecPriv.h"
@@ -85,6 +86,8 @@ static int sk_read_user_chunk(png_structp png_ptr, png_unknown_chunkp chunk) {
 
 class AutoCleanPng : public SkNoncopyable {
 public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
     /*
      *  This class does not take ownership of stream or reader, but if codecPtr
      *  is non-NULL, and decodeBounds succeeds, it will have created a new
@@ -421,7 +424,8 @@ public:
 
 private:
     int                         fRowsWrittenToOutput;
-    void*                       fDst;
+    // RAW_PTR_EXCLUSION: Caller-owned destination pixel buffer advanced per scanline.
+    RAW_PTR_EXCLUSION void*     fDst;
     size_t                      fRowBytes;
 
     // Variables for partial decode
@@ -547,7 +551,8 @@ private:
     const int               fNumberPasses;
     int                     fFirstRow;
     int                     fLastRow;
-    void*                   fDst;
+    // RAW_PTR_EXCLUSION: Caller-owned destination pixel buffer advanced per scanline.
+    RAW_PTR_EXCLUSION void* fDst;
     size_t                  fRowBytes;
     int                     fLinesDecoded;
     bool                    fInterlacedComplete;

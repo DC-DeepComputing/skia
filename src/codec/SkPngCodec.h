@@ -17,6 +17,7 @@
 #include "include/core/SkSpan.h"
 #include "include/private/SkGainmapInfo.h"
 #include "src/codec/SkPngCodecBase.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class SkPngChunkReader;
 class SkPngCompositeChunkReader;
@@ -46,7 +47,8 @@ protected:
 
         explicit operator bool() const { return fPtr != nullptr; }
 
-        void* fPtr;
+        // RAW_PTR_EXCLUSION: Passed by address as png_struct**/png_info** to libpng C API.
+        RAW_PTR_EXCLUSION void* fPtr;
     };
 
     SkPngCodec(SkEncodedInfo&&,

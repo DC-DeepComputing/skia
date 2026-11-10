@@ -93,7 +93,8 @@ private:
 
     // The stable pointer uniquely identifies this FunctionCall across an entire SkSL program.
     // This allows us to clone() a FunctionCall but still find that call in a hash-map.
-    const FunctionCall* fStablePointer = nullptr;
+    // RAW_PTR_EXCLUSION: Opaque identity key (never dereferenced; may outlive original AST node).
+    RAW_PTR_EXCLUSION const FunctionCall* fStablePointer = nullptr;
 
     using INHERITED = Expression;
 };
