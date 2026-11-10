@@ -14,9 +14,12 @@
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkGPUContext.h"
+#include "include/private/SkOnce.h"
 #include "src/capture/SkCapture.h"
 #include "src/capture/SkCaptureManager.h"
 #include "src/core/SkContextPriv.h"
+#include "src/core/SkCpu.h"
+#include "src/core/SkOpts.h"
 #include "src/core/SkResourceCache.h"
 #include "src/core/SkSharedState.h"
 #include "src/core/SkStrikeCache.h"
@@ -24,10 +27,24 @@
 #include "src/core/SkTypefaceCache.h"
 #include "src/cpu/Recorder.h"
 
+namespace {
+void init_globals_if_needed() {
+    static SkOnce once;
+    once([] {
+        SkCpu::CacheRuntimeFeatures();
+        SkOpts::Init();
+    });
+}
+}  // namespace
+
 SkContext::SkContext(const SkContextOptions& options) : SkContext(options, nullptr) {}
 
 SkContext::SkContext(const SkContextOptions& options, std::unique_ptr<SkGPUContext> gpuContext)
         : fGPUContext(std::move(gpuContext)) {
+    if (options.fEnableRuntimeOpts) {
+        init_globals_if_needed();
+    }
+
     if (options.fEnableCapture) {
         fCaptureManager = sk_make_sp<SkCaptureManager>();
     }
@@ -158,8 +175,19 @@ namespace SkContexts {
 // GetGlobalSkContext creates a global SkContext object with only Raster settings. GPU settings can
 // be configured later. This is an intermediary step in the SkContext project, whereby we use this
 // global SkContext object to remove or take away functionality from SkGraphics.
-SkContext* GetGlobalSkContext() {
-    static SkContext* gSkContext = SkContexts::MakeRaster({}).release();
+SkContext* GetGlobalSkContext(bool enableRuntimeOpts) {
+    // Initialize runtime opts outside the static gSkContext lambda so that calling
+    // SkGraphics::Init() still enables runtime CPU optimizations even if an earlier call (such as
+    // SkGraphics::SetFontCacheLimit() or a cache lookup) already created gSkContext with
+    // enableRuntimeOpts = false.
+    if (enableRuntimeOpts) {
+        init_globals_if_needed();
+    }
+    static SkContext* gSkContext = [] {
+        SkContextOptions opts;
+        opts.fEnableRuntimeOpts = false;
+        return SkContexts::MakeRaster(opts).release();
+    }();
     return gSkContext;
 }
 
