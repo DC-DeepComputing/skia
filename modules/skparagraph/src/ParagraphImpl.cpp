@@ -696,7 +696,6 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
 
     // Release the set, do not clear it: a ParagraphCache entry may share it
     fUnresolvedCodepoints.reset();
-    fFontSwitches.clear();
 
     OneLineShaper oneLineShaper(this);
     auto result = oneLineShaper.shape();
@@ -1516,6 +1515,18 @@ SkFont ParagraphImpl::getFontAtUTF16Offset(size_t codeUnitIndex) {
         }
     }
     return SkFont();
+}
+
+// Collects the starting UTF-8 text offset and resolved SkFont of each non-placeholder shaped run
+TArray<ResolvedFontDescriptor> ParagraphImpl::resolvedFonts() const {
+    TArray<ResolvedFontDescriptor> switches;
+    for (const auto& run : fRuns) {
+        // Placeholder runs represent inline widgets rather than shaped text font switches
+        if (!run.isPlaceholder()) {
+            switches.emplace_back(run.textRange().start, run.font());
+        }
+    }
+    return switches;
 }
 
 std::vector<Paragraph::FontInfo> ParagraphImpl::getFonts() const {

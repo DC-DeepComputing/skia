@@ -119,8 +119,7 @@ public:
         , fBidiRegions(paragraph->fBidiRegions)
         , fHasLineBreaks(paragraph->fHasLineBreaks)
         , fHasWhitespacesInside(paragraph->fHasWhitespacesInside)
-        , fTrailingSpaces(paragraph->fTrailingSpaces)
-        , fFontSwitches(paragraph->fFontSwitches) { }
+        , fTrailingSpaces(paragraph->fTrailingSpaces) { }
 
     // Input == key
     ParagraphCacheKey fKey;
@@ -139,8 +138,6 @@ public:
     bool fHasLineBreaks;
     bool fHasWhitespacesInside;
     TextIndex fTrailingSpaces;
-    // Reported through ParagraphImpl::resolvedFonts()
-    TArray<ResolvedFontDescriptor> fFontSwitches;
 };
 
 uint32_t ParagraphCacheKey::mix(uint32_t hash, uint32_t data) {
@@ -336,7 +333,6 @@ void ParagraphCache::updateTo(ParagraphImpl* paragraph, const Entry* entry) {
     paragraph->fHasLineBreaks = entry->fValue->fHasLineBreaks;
     paragraph->fHasWhitespacesInside = entry->fValue->fHasWhitespacesInside;
     paragraph->fTrailingSpaces = entry->fValue->fTrailingSpaces;
-    paragraph->fFontSwitches = entry->fValue->fFontSwitches;
     for (auto& run : paragraph->fRuns) {
         run.setOwner(paragraph);
     }

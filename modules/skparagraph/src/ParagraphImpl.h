@@ -177,7 +177,8 @@ public:
     Run& runByCluster(ClusterIndex clusterIndex);
     SkSpan<Block> blocks(BlockRange blockRange);
     Block& block(BlockIndex blockIndex);
-    skia_private::TArray<ResolvedFontDescriptor> resolvedFonts() const { return fFontSwitches; }
+    // Returns the starting UTF-8 text offset and resolved SkFont for each non-placeholder run
+    skia_private::TArray<ResolvedFontDescriptor> resolvedFonts() const;
 
     void markDirty() override {
         if (fState > kIndexed) {
@@ -288,8 +289,6 @@ private:
 
     skia_private::TArray<TextLine, false> fLines;   // kFormatted   (cached: width, max lines, ellipsis, text align)
     sk_sp<SkPicture> fPicture;          // kRecorded    (cached: text styles)
-
-    skia_private::TArray<ResolvedFontDescriptor> fFontSwitches;
 
     InternalLineMetrics fEmptyMetrics;
     InternalLineMetrics fStrutMetrics;
