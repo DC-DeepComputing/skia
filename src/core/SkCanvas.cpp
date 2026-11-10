@@ -3029,3 +3029,5 @@ SkRasterHandleAllocator::MakeCanvas(std::unique_ptr<SkRasterHandleAllocator> all
     return hndl ? std::unique_ptr<SkCanvas>(new SkCanvas(bm, std::move(alloc), hndl, props))
                 : nullptr;
 }
+
+// MiraclePtr per-pointer experiment: control arm.
