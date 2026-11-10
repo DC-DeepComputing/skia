@@ -848,6 +848,7 @@ if (is_wasm) {
       common = [
         "--sysroot=$skia_emsdk_dir/upstream/emscripten/cache/sysroot",
         "-pthread",
+        "-sSUPPORT_LONGJMP=wasm",  # Required for sj/lj to work with -sJSPI
       ]
       if (skia_wasm_simd) {
         common += [ "-msimd128" ]
@@ -856,14 +857,19 @@ if (is_wasm) {
       ldflags = common
       ldflags += [
         "-sDYNAMIC_EXECUTION=0",  # Disallow eval(): widens portability
-        "-sMIN_WEBGL_VERSION=2",
-        "-sMAX_WEBGL_VERSION=2",
         "-sWASM=1",
         "-sALLOW_MEMORY_GROWTH=1",
         "-sSTACK_SIZE=1048576",  # 1 MB
         "-sEXPORT_ES6=1",
         "-sMODULARIZE=1",  # Do not pollute global JS scope
       ]
+      if (skia_use_webgl) {
+        ldflags += [
+          "-sUSE_WEBGL2=1",
+          "-sMIN_WEBGL_VERSION=2",
+          "-sMAX_WEBGL_VERSION=2",
+        ]
+      }
       if (is_debug) {
         ldflags += [
           "-sASSERTIONS=1",
@@ -878,6 +884,7 @@ if (is_wasm) {
         "-sPROXY_TO_PTHREAD=1",
         "-sEXIT_RUNTIME=1",
         "-sEXPORTED_RUNTIME_METHODS=['FS', 'callMain']",
+        "-sJSPI",
       ]
       if (!is_official_build) {
         resources_dir = rebase_path("//resources", root_build_dir)

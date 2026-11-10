@@ -17,6 +17,12 @@
     async function dm(argv) {
       const exit = Promise.withResolvers();
 
+      // A wasm trap (e.g. failed SkASSERT) on a pthread shows up as an uncaught error on the main
+      // thread, instead of going through the onExit/onAbort handlers.
+      window.addEventListener("error", (e) => {
+        exit.reject(new Error("uncaught: " + (e.error?.message ?? e.message)));
+      });
+
       Module = await createModule({
         noInitialRun: true,
         arguments: argv,
@@ -81,6 +87,31 @@
       } catch (e) {
         console.error(e);
       }
+    }
+
+    // Reports which GL implementation backs WebGL in this browser (e.g. the real GPU vs.
+    // SwiftShader). dm's contexts live on OffscreenCanvas in a worker, but they share this page's
+    // GPU process, so they get the same backend.
+    window.webglInfo = function () {
+      const gl = new OffscreenCanvas(1, 1).getContext("webgl2");
+      if (!gl) {
+        return { error: "could not create a webgl2 context" };
+      }
+      const info = { version: gl.getParameter(gl.VERSION) };
+      const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+      if (dbg) {
+        info.vendor = gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL);
+        info.renderer = gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL);
+      } else {
+        info.vendor = gl.getParameter(gl.VENDOR);
+        info.renderer = gl.getParameter(gl.RENDERER);
+        info.error = "WEBGL_debug_renderer_info unavailable; vendor/renderer are masked";
+      }
+      // Free the context slot rather than waiting for GC.
+      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      // Also logged here because on CQ the console goes to the "dm" log stream but sklog doesn't.
+      console.log("webgl info: " + JSON.stringify(info));
+      return info;
     }
 
     window.run = async function (argv = []) {

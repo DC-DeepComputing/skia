@@ -272,6 +272,18 @@ protected:
         }
 #endif
 
+#if defined(SK_BUILD_FOR_WASM)
+        if (dContext && dContext->backend() == GrBackendApi::kOpenGL) {
+            // WebGL does not specify any compressed texture support as required, so it differs by
+            // browser and hardware:
+            // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Compressed_texture_formats
+            //
+            // We could detect and enable per format with extensions, but that is currently not
+            // done; skip.
+            return DrawResult::kSkip;
+        }
+#endif
+
         if (fType == Type::kNonMultipleOfFour) {
 #if defined(SK_GANESH)
             if (dContext && dContext->backend() == GrBackendApi::kDirect3D) {
