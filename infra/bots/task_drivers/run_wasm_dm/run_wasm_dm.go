@@ -187,6 +187,8 @@ func runDm(ctx context.Context, cd *chromeDriver, local bool, url string, argv *
 		return td.FailStep(ctx, skerr.Fmt("js entrypoint not found"))
 	}
 
+	logWebGLInfo(ctx, cd)
+
 	// Run
 	sklog.Info("page loaded; starting dm run")
 	rc, err := chromedp.Run(cd.ctx,
@@ -202,6 +204,28 @@ func runDm(ctx context.Context, cd *chromeDriver, local bool, url string, argv *
 	}
 
 	return nil
+}
+
+type webglInfo struct {
+	Version  string `json:"version"`
+	Vendor   string `json:"vendor"`
+	Renderer string `json:"renderer"`
+	Error    string `json:"error"`
+}
+
+// logWebGLInfo records which GL implementation backs WebGL (real GPU vs. SwiftShader) on the step,
+// so results can be attributed to the right device. Failures are logged and otherwise ignored.
+func logWebGLInfo(ctx context.Context, cd *chromeDriver) {
+	info, err := chromedp.Run(cd.ctx, chromedp.Evaluate[webglInfo](`window.webglInfo()`))
+	if err != nil {
+		sklog.Warningf("querying webgl info: %s", err)
+		return
+	}
+	if info.Error != "" {
+		sklog.Warningf("webgl info: %s", info.Error)
+	}
+	sklog.Infof("webgl: version=%q vendor=%q renderer=%q", info.Version, info.Vendor, info.Renderer)
+	td.StepText(ctx, "webgl renderer", info.Renderer)
 }
 
 func loadDmJson(path string) (*jsonio.GoldResults, error) {
