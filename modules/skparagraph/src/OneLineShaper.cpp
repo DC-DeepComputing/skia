@@ -179,10 +179,6 @@ void OneLineShaper::finish(const Block& block, SkScalar height, SkScalar& advanc
             continue;
         }
 
-        if (resolvedBlock.fRun != nullptr) {
-            fParagraph->fFontSwitches.emplace_back(resolvedBlock.fText.start, resolvedBlock.fRun->fFont);
-        }
-
         auto run = resolvedBlock.fRun;
         auto glyphs = resolvedBlock.fGlyphs;
         auto text = resolvedBlock.fText;
