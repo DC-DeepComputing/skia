@@ -13,6 +13,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "src/partition_alloc/raw_ptr_exclusion.h"
+
 namespace SkSL { class TraceHook; }
 // state shared by stack_checkpoint and stack_rewind
 struct SkRasterPipelineStage;
@@ -34,7 +36,8 @@ inline static constexpr size_t kMaxScratchPerPatch =
 
 // These structs hold the context data for many of the Raster Pipeline ops.
 struct MemoryCtx {
-    void* pixels;
+    // RAW_PTR_EXCLUSION: Arena/stack SIMD stage context.
+    RAW_PTR_EXCLUSION void* pixels;
     int   stride;
 };
 
@@ -54,7 +57,7 @@ struct MemoryCtx {
 // To do all of this, the pipeline creates a MemoryCtxPatch for each unique MemoryCtx referenced by
 // the pipeline.
 struct MemoryCtxInfo {
-    MemoryCtx* context;
+    RAW_PTR_EXCLUSION MemoryCtx* context;
 
     int bytesPerPixel;
     bool load;
@@ -65,11 +68,11 @@ struct MemoryCtxPatch {
     std::byte scratch[kMaxScratchPerPatch];
 
     MemoryCtxInfo info;
-    void* backup;  // Remembers context->pixels so we can restore it
+    RAW_PTR_EXCLUSION void* backup;  // Remembers context->pixels so we can restore it
 };
 
 struct GatherCtx {
-    const void* pixels;
+    RAW_PTR_EXCLUSION const void* pixels;
     int         stride;
     float       width;
     float       height;
@@ -120,8 +123,8 @@ struct PerlinNoiseCtx {
     float stitchDataInX, stitchDataInY;
     bool stitching;
     int numOctaves;
-    const uint8_t* latticeSelector;  // [256 values]
-    const uint16_t* noiseData;       // [4 channels][256 elements][vector of 2]
+    RAW_PTR_EXCLUSION const uint8_t* latticeSelector;  // [256 values]
+    RAW_PTR_EXCLUSION const uint16_t* noiseData;       // [4 channels][256 elements][vector of 2]
 };
 
 // State used by mipmap_linear_*
@@ -154,7 +157,7 @@ struct CallbackCtx {
     // When called, fn() will have our active pixels available in rgba.
     // When fn() returns, the pipeline will read back those active pixels from read_from.
     float rgba[4 * kMaxStride_highp];
-    float* read_from = rgba;
+    RAW_PTR_EXCLUSION float* read_from = rgba;
 };
 
 struct RewindCtx {
@@ -166,8 +169,8 @@ struct RewindCtx {
     float dg[kMaxStride_highp];
     float db[kMaxStride_highp];
     float da[kMaxStride_highp];
-    std::byte* base;
-    SkRasterPipelineStage* stage;
+    RAW_PTR_EXCLUSION std::byte* base;
+    RAW_PTR_EXCLUSION SkRasterPipelineStage* stage;
 };
 
 constexpr size_t kRGBAChannels = 4;
@@ -176,7 +179,7 @@ struct GradientCtx {
     size_t stopCount;
     std::array<float *, kRGBAChannels> factors;
     std::array<float *, kRGBAChannels> biases;
-    float* ts;
+    RAW_PTR_EXCLUSION float* ts;
 };
 
 struct EvenlySpaced2StopGradientCtx {
@@ -200,13 +203,16 @@ struct EmbossCtx {
 };
 
 struct TablesCtx {
-    const uint8_t *r, *g, *b, *a;
+    RAW_PTR_EXCLUSION const uint8_t* r;
+    RAW_PTR_EXCLUSION const uint8_t* g;
+    RAW_PTR_EXCLUSION const uint8_t* b;
+    RAW_PTR_EXCLUSION const uint8_t* a;
 };
 
 using SkRPOffset = uint32_t;
 
 struct InitLaneMasksCtx {
-    uint8_t* tail;
+    RAW_PTR_EXCLUSION uint8_t* tail;
 };
 
 struct ConstantCtx {
@@ -215,8 +221,8 @@ struct ConstantCtx {
 };
 
 struct UniformCtx {
-    int32_t* dst;
-    const int32_t* src;
+    RAW_PTR_EXCLUSION int32_t* dst;
+    RAW_PTR_EXCLUSION const int32_t* src;
 };
 
 struct BinaryOpCtx {
@@ -244,21 +250,21 @@ struct SwizzleCtx {
 };
 
 struct ShuffleCtx {
-    int32_t* ptr;
+    RAW_PTR_EXCLUSION int32_t* ptr;
     int count;
     uint16_t offsets[16];  // values must be byte offsets (4 * highp-stride * component-index)
 };
 
 struct SwizzleCopyCtx {
-    int32_t* dst;
-    const int32_t* src;   // src values must _not_ overlap dst values
+    RAW_PTR_EXCLUSION int32_t* dst;
+    RAW_PTR_EXCLUSION const int32_t* src;   // src values must _not_ overlap dst values
     uint16_t offsets[4];  // values must be byte offsets (4 * highp-stride * component-index)
 };
 
 struct CopyIndirectCtx {
-    int32_t* dst;
-    const int32_t* src;
-    const uint32_t *indirectOffset;  // this applies to `src` or `dst` based on the op
+    RAW_PTR_EXCLUSION int32_t* dst;
+    RAW_PTR_EXCLUSION const int32_t* src;
+    RAW_PTR_EXCLUSION const uint32_t* indirectOffset;  // this applies to `src` or `dst` based on the op
     uint32_t indirectLimit;          // the indirect offset is clamped to this upper bound
     uint32_t slots;                  // the number of slots to copy
 };
@@ -272,12 +278,12 @@ struct BranchCtx {
 };
 
 struct BranchIfAllLanesActiveCtx : public BranchCtx {
-    uint8_t* tail = nullptr;  // lanes past the tail are _never_ active, so we need to exclude them
+    RAW_PTR_EXCLUSION uint8_t* tail = nullptr;  // lanes past the tail are _never_ active, so we need to exclude them
 };
 
 struct BranchIfEqualCtx : public BranchCtx {
     int value;
-    const int* ptr;
+    RAW_PTR_EXCLUSION const int* ptr;
 };
 
 struct CaseOpCtx {
@@ -286,29 +292,29 @@ struct CaseOpCtx {
 };
 
 struct TraceFuncCtx {
-    const int* traceMask;
-    SkSL::TraceHook* traceHook;
+    RAW_PTR_EXCLUSION const int* traceMask;
+    RAW_PTR_EXCLUSION SkSL::TraceHook* traceHook;
     int funcIdx;
 };
 
 struct TraceScopeCtx {
-    const int* traceMask;
-    SkSL::TraceHook* traceHook;
+    RAW_PTR_EXCLUSION const int* traceMask;
+    RAW_PTR_EXCLUSION SkSL::TraceHook* traceHook;
     int delta;
 };
 
 struct TraceLineCtx {
-    const int* traceMask;
-    SkSL::TraceHook* traceHook;
+    RAW_PTR_EXCLUSION const int* traceMask;
+    RAW_PTR_EXCLUSION SkSL::TraceHook* traceHook;
     int lineNumber;
 };
 
 struct TraceVarCtx {
-    const int* traceMask;
-    SkSL::TraceHook* traceHook;
+    RAW_PTR_EXCLUSION const int* traceMask;
+    RAW_PTR_EXCLUSION SkSL::TraceHook* traceHook;
     int slotIdx, numSlots;
-    const int* data;
-    const uint32_t *indirectOffset;  // can be null; if set, an offset applied to `data`
+    RAW_PTR_EXCLUSION const int* data;
+    RAW_PTR_EXCLUSION const uint32_t* indirectOffset;  // can be null; if set, an offset applied to `data`
     uint32_t indirectLimit;          // the indirect offset is clamped to this upper bound
 };
 

@@ -17,6 +17,7 @@
 #include "include/private/SkTemplates.h"
 #include "src/core/SkBlitRow.h"
 #include "src/core/SkBlitter.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/shaders/SkShaderBase.h"
 
 #include <cstdint>
@@ -50,8 +51,8 @@ public:
     ~SkShaderBlitter() override;
 
 protected:
-    sk_sp<SkShader>         fShader;
-    SkShaderBase::Context* fShaderContext;
+    sk_sp<SkShader>                 fShader;
+    raw_ptr<SkShaderBase::Context>  fShaderContext;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

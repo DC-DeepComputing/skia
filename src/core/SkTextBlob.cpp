@@ -26,6 +26,7 @@
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkTextBlobPriv.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/text/GlyphRun.h"
 
 #include <algorithm>
@@ -39,8 +40,9 @@ using namespace skia_private;
 
 namespace {
 struct RunFontStorageEquivalent {
-    SkScalar fSize, fScaleX;
-    void*    fTypeface;
+    SkScalar                fSize, fScaleX;
+    // RAW_PTR_EXCLUSION: Uninstantiated compile-time sizeof check struct.
+    RAW_PTR_EXCLUSION void* fTypeface;
     SkScalar fSkewX;
     uint32_t fFlags;
 };

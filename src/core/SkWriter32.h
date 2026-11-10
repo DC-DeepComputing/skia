@@ -255,7 +255,8 @@ public:
 private:
     void growToAtLeast(size_t size);
 
-    uint8_t* fData;                    // Points to either fInternal or fExternal.
+    // RAW_PTR_EXCLUSION: Points into inline fInternal union storage or fExternal.
+    RAW_PTR_EXCLUSION uint8_t* fData;  // Points to either fInternal or fExternal.
     size_t fCapacity;                  // Number of bytes we can write to fData.
     size_t fUsed;                      // Number of bytes written.
     raw_ptr<void> fExternal;           // Unmanaged memory block.

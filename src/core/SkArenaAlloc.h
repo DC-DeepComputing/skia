@@ -13,6 +13,7 @@
 #include "include/private/SkAssert.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <array>
@@ -312,9 +313,10 @@ private:
         return (T*)objStart;
     }
 
-    char*          fDtorCursor;
-    char*          fCursor;
-    char*          fEnd;
+    // RAW_PTR_EXCLUSION: Low-level arena block cursors (may point into inline stack storage).
+    RAW_PTR_EXCLUSION char* fDtorCursor;
+    RAW_PTR_EXCLUSION char* fCursor;
+    RAW_PTR_EXCLUSION char* fEnd;
 
     SkFibBlockSizes<std::numeric_limits<uint32_t>::max()> fFibonacciProgression;
 };
@@ -333,7 +335,7 @@ public:
     bool isEmpty();
 
 private:
-    char* const    fFirstBlock;
+    RAW_PTR_EXCLUSION char* const fFirstBlock;
     const uint32_t fFirstSize;
     const uint32_t fFirstHeapAllocationSize;
 };

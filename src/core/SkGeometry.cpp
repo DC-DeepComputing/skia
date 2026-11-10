@@ -20,6 +20,7 @@
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkUtils.h"
 #include "src/core/SkVx.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <array>
@@ -923,7 +924,8 @@ static void test_collaps_duplicates() {
     const SkScalar src5[] = { 0, 1, 1 };
     const SkScalar src6[] = { 0, 1, 2 };
     const struct {
-        const SkScalar* fData;
+        // RAW_PTR_EXCLUSION: Points to local stack test arrays.
+        RAW_PTR_EXCLUSION const SkScalar* fData;
         int fCount;
         int fCollapsedCount;
     } data[] = {
