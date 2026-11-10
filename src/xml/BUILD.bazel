@@ -28,6 +28,7 @@ skia_cc_library(
     features = ["layering_check"],
     visibility = [
         "//modules/svg:__subpackages__",
+        "//src/ports:__pkg__",
         "//src/svg:__pkg__",
     ],
     deps = [

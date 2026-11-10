@@ -69,6 +69,9 @@ public:
     bool parse(const char doc[], size_t len);
     bool parse(SkStream& docStream);
 
+    int getCurrentLineNumber() const;
+    int getCurrentColumnNumber() const;
+
     static void GetNativeErrorString(int nativeErrorCode, SkString* str);
 
 protected:
@@ -83,6 +86,7 @@ protected:
 
 private:
     struct ParsingContext;
+    ParsingContext* fContext = nullptr;
 };
 
 #endif
