@@ -25,6 +25,7 @@
 #include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/ganesh/glsl/GrGLSLVarying.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -185,7 +186,8 @@ public:
         void addToKey(skgpu::KeyBuilder* b) const;
 
     private:
-        const Attribute* fAttributes = nullptr;
+        // RAW_PTR_EXCLUSION: Points to static constexpr Attribute arrays on subclasses.
+        RAW_PTR_EXCLUSION const Attribute* fAttributes = nullptr;
         int              fRawCount = 0;
         int              fCount = 0;
         size_t           fStride = 0;

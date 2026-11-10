@@ -22,6 +22,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrGpuResource.h"
 #include "src/gpu/ganesh/GrSurface.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <atomic>
 #include <cstddef>
@@ -91,7 +92,8 @@ public:
         GrRenderable fRenderable;
         skgpu::Mipmapped fMipmapped;
         int fSampleCnt;
-        const GrBackendFormat& fFormat;
+        // RAW_PTR_EXCLUSION: Transient callback parameter referencing GrSurfaceProxy::fFormat.
+        RAW_PTR_EXCLUSION const GrBackendFormat& fFormat;
         GrTextureType fTextureType;
         GrProtected fProtected;
         skgpu::Budgeted fBudgeted;

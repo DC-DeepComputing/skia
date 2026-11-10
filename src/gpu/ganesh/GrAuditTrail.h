@@ -16,6 +16,7 @@
 #include "src/core/SkTHash.h"
 #include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <memory>
@@ -50,7 +51,7 @@ public:
         }
 
     private:
-        GrAuditTrail* fAuditTrail;
+        raw_ptr<GrAuditTrail> fAuditTrail;
     };
 
     class AutoManageOpsTask {
@@ -77,8 +78,8 @@ public:
         ~AutoCollectOps() { fAuditTrail->setClientID(kGrAuditTrailInvalidID); }
 
     private:
-        AutoEnable fAutoEnable;
-        GrAuditTrail* fAuditTrail;
+        AutoEnable            fAutoEnable;
+        raw_ptr<GrAuditTrail> fAuditTrail;
     };
 
     void pushFrame(const char* framename) {

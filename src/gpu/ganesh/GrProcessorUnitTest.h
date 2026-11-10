@@ -14,6 +14,7 @@
 
 #include "include/core/SkString.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTArray.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"  // IWYU pragma: keep
@@ -59,6 +60,8 @@ public:
     GrProcessorTestData(SkRandom* random, skgpu::ganesh::SurfaceDrawContext* sdc,
                         int maxTreeDepth, SkSpan<const ViewInfo> views,
                         std::unique_ptr<GrFragmentProcessor> inputFP);
+    SK_ONLY_STACK_ALLOCATABLE;
+
     GrProcessorTestData(const GrProcessorTestData&) = delete;
     ~GrProcessorTestData();
 

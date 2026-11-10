@@ -10,8 +10,10 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ganesh/GrThreadSafeCache.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 
@@ -66,6 +68,9 @@ public:
     // Mark "final" as a hint for the compiler to not use the vtable.
     void unlock(int actualCount) final;
 
+public:
+    SK_ONLY_STACK_ALLOCATABLE;
+
 private:
     GrMeshDrawTarget* const fTarget;
     sk_sp<const GrBuffer>* const fVertexBuffer;
@@ -93,7 +98,8 @@ public:
 private:
     sk_sp<GrThreadSafeCache::VertexData> fVertexData;
 
-    void*  fVertices = nullptr;
+    // RAW_PTR_EXCLUSION: Points into locked fVertexData buffer while locked.
+    RAW_PTR_EXCLUSION void* fVertices = nullptr;
     size_t fLockStride = 0;
 };
 

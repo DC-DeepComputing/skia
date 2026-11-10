@@ -17,6 +17,7 @@
 #include "include/private/SkTLogic.h"
 #include "include/private/SkTo.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstddef>
 #include <utility>
@@ -87,7 +88,8 @@ protected:
     }
 
 private:
-    T* fAddr = nullptr;
+    // RAW_PTR_EXCLUSION: Caller-owned or fPixelStorage-backed pixel buffer.
+    RAW_PTR_EXCLUSION T* fAddr = nullptr;
     size_t fRowBytes = 0;
     GrImageInfo fInfo;
     sk_sp<SkData> fPixelStorage;
