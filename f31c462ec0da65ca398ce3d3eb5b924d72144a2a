@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed96a225_2a679f16",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-10T15:50:05Z",
+      "side": 1,
+      "message": "This is gone now I think",
+      "revId": "f31c462ec0da65ca398ce3d3eb5b924d72144a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d671975_1165a56b",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-10T15:50:05Z",
+      "side": 1,
+      "message": "A lot of the extra directories listed here are pretty redundant with the `include/README.md`. I wonder if we should just point to that instead?",
+      "revId": "f31c462ec0da65ca398ce3d3eb5b924d72144a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "560ddcc5_bfb4ff52",
+        "filename": "README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-10T15:50:05Z",
+      "side": 1,
+      "message": "nit: just `dm` for the executable.",
+      "revId": "f31c462ec0da65ca398ce3d3eb5b924d72144a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f0ead83_622b402f",
+        "filename": "include/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-10T15:50:05Z",
+      "side": 1,
+      "message": "stale I think",
+      "revId": "f31c462ec0da65ca398ce3d3eb5b924d72144a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1016be48_676b6605",
+        "filename": "src/core/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-10T15:50:05Z",
+      "side": 1,
+      "message": "I think trying to maintain relative cross references like this is going to lead to out of date information pretty quickly.",
+      "revId": "f31c462ec0da65ca398ce3d3eb5b924d72144a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
