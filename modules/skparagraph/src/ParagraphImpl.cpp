@@ -383,6 +383,10 @@ Cluster::Cluster(ParagraphImpl* owner,
     fIsIntraWordBreak = intraWordBreakLen == fTextRange.width();
     fIsHardBreak = fOwner->codeUnitHasProperty(fTextRange.end,
                                                SkUnicode::CodeUnitFlags::kHardLineBreakBefore);
+    // Cached because line breaking queries it per cluster on every relayout; buildClusterTable
+    // sets all kSoftLineBreakBefore flags before it constructs any cluster
+    fIsSoftBreak = fOwner->codeUnitHasProperty(fTextRange.end,
+                                               SkUnicode::CodeUnitFlags::kSoftLineBreakBefore);
 }
 
 SkScalar Run::calculateWidth(size_t start, size_t end, bool clip) const {
@@ -527,6 +531,14 @@ void ParagraphImpl::buildClusterTable() {
         cluster_count += (run.isPlaceholder() || run.size() == 0) ? 1 : run.size();
         fCodeUnitProperties[run.fTextRange.start] |= SkUnicode::CodeUnitFlags::kGraphemeStart;
         fCodeUnitProperties[run.fTextRange.start] |= SkUnicode::CodeUnitFlags::kGlyphClusterStart;
+        // Set before any cluster exists: Cluster caches kSoftLineBreakBefore at its end, and the
+        // cluster right before a placeholder ends at the placeholder start
+        if (run.isPlaceholder()) {
+            fCodeUnitProperties[run.textRange().start] |=
+                    SkUnicode::CodeUnitFlags::kSoftLineBreakBefore;
+            fCodeUnitProperties[run.textRange().end] |=
+                    SkUnicode::CodeUnitFlags::kSoftLineBreakBefore;
+        }
     }
     if (!fRuns.empty()) {
         fCodeUnitProperties[fRuns.back().textRange().end] |= SkUnicode::CodeUnitFlags::kGraphemeStart;
@@ -546,8 +558,6 @@ void ParagraphImpl::buildClusterTable() {
             // There are no glyphs but we want to have one cluster
             fClusters.emplace_back(
                     this, runIndex, 0ul, 1ul, this->text(run.textRange()), run.advance().fX);
-            fCodeUnitProperties[run.textRange().start] |= SkUnicode::CodeUnitFlags::kSoftLineBreakBefore;
-            fCodeUnitProperties[run.textRange().end] |= SkUnicode::CodeUnitFlags::kSoftLineBreakBefore;
         } else {
             // Walk through the glyph in the direction of input text
             run.iterateThroughClustersInTextOrder([runIndex, this](size_t glyphStart,

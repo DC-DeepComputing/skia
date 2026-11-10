@@ -4,6 +4,8 @@
 
 #include <string>
 #include "include/core/SkSpan.h"
+// The inline TextStretch methods below call Cluster::run() and runOrNull(), defined there
+#include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/TextLine.h"
 
 namespace skia {

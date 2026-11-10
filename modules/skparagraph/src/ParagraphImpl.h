@@ -303,6 +303,30 @@ private:
     bool fHasWhitespacesInside;
     TextIndex fTrailingSpaces;
 };
+
+// Inline so line breaking does not pay an out-of-line call per cluster; defined here because
+// Run.h only has a forward declaration of ParagraphImpl
+
+// Returns the cluster's run, or nullptr for the trailing empty cluster (EMPTY_RUN)
+inline Run* Cluster::runOrNull() const {
+    if (fRunIndex >= fOwner->runs().size()) {
+        return nullptr;
+    }
+    return &fOwner->run(fRunIndex);
+}
+
+// Returns the cluster's run; the cluster must belong to a real run
+inline Run& Cluster::run() const {
+    SkASSERT(fRunIndex < fOwner->runs().size());
+    return fOwner->run(fRunIndex);
+}
+
+// Returns a copy of the font of the cluster's run; the cluster must belong to a real run
+inline SkFont Cluster::font() const {
+    SkASSERT(fRunIndex < fOwner->runs().size());
+    return fOwner->run(fRunIndex).font();
+}
+
 }  // namespace textlayout
 }  // namespace skia
 
