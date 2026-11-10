@@ -15,21 +15,23 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
+#include "include/core/SkFont.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
+#include "include/core/SkRRect.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTileMode.h"
 #include "include/effects/SkDashPathEffect.h"
+#include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "include/svg/SkSVGCanvas.h"
 #include "include/utils/SkParse.h"
 #include "src/shaders/SkImageShader.h"
-#include "src/svg/SkSVGDevice.h"
 #include "src/xml/SkDOM.h"
-#include "src/xml/SkXMLWriter.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
@@ -54,21 +56,23 @@ using namespace skia_private;
     } while (0)
 
 
-static std::unique_ptr<SkCanvas> MakeDOMCanvas(SkDOM* dom, uint32_t flags = 0) {
+static auto MakeDOMCanvas(SkDOM* dom, uint32_t flags = 0) {
     SkSVGCanvas::Options opts;
-    opts.flags = static_cast<SkSVGCanvas::Flags>(flags);
+    opts.flags = static_cast<SkSVGCanvas::Flags>(flags | SkSVGCanvas::kNoPrettyXML_Flag);
     opts.pngEncoder = [](SkWStream* dst, const SkPixmap& src) {
 #if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
         return SkPngRustEncoder::Encode(dst, src, {});
 #else
         return SkPngEncoder::Encode(dst, src, {});
-#endif // defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
+#endif  // defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
     };
-    auto svgDevice = SkSVGDevice::Make(SkISize::Make(100, 100),
-                                       std::make_unique<SkXMLParserWriter>(dom->beginParsing()),
-                                       opts);
-    return svgDevice ? std::make_unique<SkCanvas>(svgDevice)
-                     : nullptr;
+    auto stream = std::make_unique<SkDynamicMemoryWStream>();
+    auto canvas = SkSVGCanvas::Make(SkRect::MakeWH(100, 100), stream.get(), opts);
+    auto deleter = [dom, stream = std::move(stream)](SkCanvas* canvas) {
+        delete canvas;
+        dom->build(*stream->detachAsStream());
+    };
+    return std::unique_ptr<SkCanvas, decltype(deleter)>(canvas.release(), std::move(deleter));
 }
 
 namespace {
@@ -155,7 +159,7 @@ void test_whitespace_pos(skiatest::Reporter* reporter,
         MakeDOMCanvas(&dom)->drawSimpleText(txt, len, SkTextEncoding::kUTF8,
                                             offset.x(), offset.y(), font, paint);
     }
-    check_text_node(reporter, dom, dom.finishParsing(), offset, 0, txt, expected);
+    check_text_node(reporter, dom, dom.getRootNode(), offset, 0, txt, expected);
 
     {
         AutoTArray<SkScalar> xpos(len);
@@ -166,7 +170,7 @@ void test_whitespace_pos(skiatest::Reporter* reporter,
         auto blob = SkTextBlob::MakeFromPosTextH(txt, len, xpos, offset.y(), font);
         MakeDOMCanvas(&dom)->drawTextBlob(blob, 0, 0, paint);
     }
-    check_text_node(reporter, dom, dom.finishParsing(), offset, 1, txt, expected);
+    check_text_node(reporter, dom, dom.getRootNode(), offset, 1, txt, expected);
 
     {
         AutoTArray<SkPoint> pos(len);
@@ -177,7 +181,7 @@ void test_whitespace_pos(skiatest::Reporter* reporter,
         auto blob = SkTextBlob::MakeFromPosText(txt, len, pos, font);
         MakeDOMCanvas(&dom)->drawTextBlob(blob, 0, 0, paint);
     }
-    check_text_node(reporter, dom, dom.finishParsing(), offset, 2, txt, expected);
+    check_text_node(reporter, dom, dom.getRootNode(), offset, 2, txt, expected);
 }
 
 } // namespace
@@ -272,7 +276,7 @@ DEF_TEST(SVGDevice_image_shader_norepeat, reporter) {
     ImageShaderTestSetup(&dom, &paint, imageWidth, imageHeight, rectWidth, rectHeight,
                          SkTileMode::kClamp, SkTileMode::kClamp);
 
-    const SkDOM::Node* root = dom.finishParsing();
+    const SkDOM::Node* root = dom.getRootNode();
 
     const SkDOM::Node *patternNode, *imageNode, *rectNode;
     bool structureAppropriate =
@@ -297,7 +301,7 @@ DEF_TEST(SVGDevice_image_shader_tilex, reporter) {
     ImageShaderTestSetup(&dom, &paint, imageWidth, imageHeight, rectWidth, rectHeight,
                          SkTileMode::kRepeat, SkTileMode::kClamp);
 
-    const SkDOM::Node* root = dom.finishParsing();
+    const SkDOM::Node* root = dom.getRootNode();
     const SkDOM::Node* innerSvg = dom.getFirstChild(root, "svg");
     if (innerSvg == nullptr) {
         ERRORF(reporter, "inner svg element not found");
@@ -327,7 +331,7 @@ DEF_TEST(SVGDevice_image_shader_tiley, reporter) {
     ImageShaderTestSetup(&dom, &paint, imageNodeWidth, imageNodeHeight, rectNodeWidth,
                          rectNodeHeight, SkTileMode::kClamp, SkTileMode::kRepeat);
 
-    const SkDOM::Node* root = dom.finishParsing();
+    const SkDOM::Node* root = dom.getRootNode();
     const SkDOM::Node* innerSvg = dom.getFirstChild(root, "svg");
     if (innerSvg == nullptr) {
         ERRORF(reporter, "inner svg element not found");
@@ -357,7 +361,7 @@ DEF_TEST(SVGDevice_image_shader_tileboth, reporter) {
     ImageShaderTestSetup(&dom, &paint, imageWidth, imageHeight, rectWidth, rectHeight,
                          SkTileMode::kRepeat, SkTileMode::kRepeat);
 
-    const SkDOM::Node* root = dom.finishParsing();
+    const SkDOM::Node* root = dom.getRootNode();
 
     const SkDOM::Node *patternNode, *imageNode, *rectNode;
     const SkDOM::Node* innerSvg = dom.getFirstChild(root, "svg");
@@ -397,7 +401,7 @@ DEF_TEST(SVGDevice_ColorFilters, reporter) {
             SkRect bounds{0, 0, SkIntToScalar(100), SkIntToScalar(100)};
             svgCanvas->drawRect(bounds, paint);
         }
-        const SkDOM::Node* rootElement = dom.finishParsing();
+        const SkDOM::Node* rootElement = dom.getRootNode();
         ABORT_TEST(reporter, !rootElement, "root element not found");
 
         const SkDOM::Node* filterElement = dom.getFirstChild(rootElement, "filter");
@@ -469,7 +473,7 @@ DEF_TEST(SVGDevice_textpath, reporter) {
             auto svgCanvas = MakeDOMCanvas(&dom, flags);
             svgCanvas->drawString("foo", 100, 100, font, paint);
         }
-        const auto* rootElement = dom.finishParsing();
+        const auto* rootElement = dom.getRootNode();
         REPORTER_ASSERT(reporter, rootElement, "root element not found");
         const auto* textElement = dom.getFirstChild(rootElement, "text");
         REPORTER_ASSERT(reporter, !!textElement == !expect_path, "unexpected text element");
@@ -512,7 +516,7 @@ DEF_TEST(SVGDevice_fill_stroke, reporter) {
             MakeDOMCanvas(&dom)->drawRect(SkRect::MakeWH(100, 100), p);
         }
 
-        const auto* root = dom.finishParsing();
+        const auto* root = dom.getRootNode();
         REPORTER_ASSERT(reporter, root, "root element not found");
         const auto* rect = dom.getFirstChild(root, "rect");
         REPORTER_ASSERT(reporter, rect, "rect element not found");
@@ -552,7 +556,7 @@ DEF_TEST(SVGDevice_fill_opacity_black_fill, reporter) {
             svgCanvas->drawRect(bounds, p);
         }
 
-        const SkDOM::Node* rootElement = dom.finishParsing();
+        const SkDOM::Node* rootElement = dom.getRootNode();
         ABORT_TEST(reporter, !rootElement, "root element not found");
 
         const SkDOM::Node* rectElement = dom.getFirstChild(rootElement, "rect");
@@ -574,7 +578,7 @@ DEF_TEST(SVGDevice_fill_rect_hex, reporter) {
         SkRect bounds{0, 0, SkIntToScalar(100), SkIntToScalar(100)};
         svgCanvas->drawRect(bounds, paint);
     }
-    const SkDOM::Node* rootElement = dom.finishParsing();
+    const SkDOM::Node* rootElement = dom.getRootNode();
     ABORT_TEST(reporter, !rootElement, "root element not found");
 
     const SkDOM::Node* rectElement = dom.getFirstChild(rootElement, "rect");
@@ -595,7 +599,7 @@ DEF_TEST(SVGDevice_fill_rect_custom_hex, reporter) {
         paint.setColor(0xFFAA1123);
         svgCanvas->drawRect(bounds, paint);
     }
-    const SkDOM::Node* rootElement = dom.finishParsing();
+    const SkDOM::Node* rootElement = dom.getRootNode();
     ABORT_TEST(reporter, !rootElement, "root element not found");
 
     // Test 0xAABCDE filled rect.
@@ -628,7 +632,7 @@ DEF_TEST(SVGDevice_fill_stroke_rect_hex, reporter) {
         paint.setStrokeWidth(1);
         svgCanvas->drawRect(bounds, paint);
     }
-    const SkDOM::Node* rootElement = dom.finishParsing();
+    const SkDOM::Node* rootElement = dom.getRootNode();
     ABORT_TEST(reporter, !rootElement, "root element not found");
 
     const SkDOM::Node* rectNode = dom.getFirstChild(rootElement, "rect");
@@ -655,7 +659,7 @@ DEF_TEST(SVGDevice_rect_with_path_effect, reporter) {
         svgCanvas->drawRect(SkRect::MakeXYWH(0, 0, 100, 100), paint);
     }
 
-    const auto* rootElement = dom.finishParsing();
+    const auto* rootElement = dom.getRootNode();
     REPORTER_ASSERT(reporter, rootElement, "root element not found");
     const auto* pathElement = dom.getFirstChild(rootElement, "path");
     REPORTER_ASSERT(reporter, pathElement, "path element not found");
@@ -675,7 +679,7 @@ DEF_TEST(SVGDevice_rrect_with_path_effect, reporter) {
         svgCanvas->drawRRect(SkRRect::MakeRectXY(SkRect::MakeXYWH(0, 0, 100, 100), 10, 10), paint);
     }
 
-    const auto* rootElement = dom.finishParsing();
+    const auto* rootElement = dom.getRootNode();
     REPORTER_ASSERT(reporter, rootElement, "root element not found");
     const auto* pathElement = dom.getFirstChild(rootElement, "path");
     REPORTER_ASSERT(reporter, pathElement, "path element not found");
@@ -695,7 +699,7 @@ DEF_TEST(SVGDevice_oval_with_path_effect, reporter) {
         svgCanvas->drawOval(SkRect::MakeXYWH(0, 0, 100, 100), paint);
     }
 
-    const auto* rootElement = dom.finishParsing();
+    const auto* rootElement = dom.getRootNode();
     REPORTER_ASSERT(reporter, rootElement, "root element not found");
     const auto* pathElement = dom.getFirstChild(rootElement, "path");
     REPORTER_ASSERT(reporter, pathElement, "path element not found");
@@ -720,7 +724,7 @@ DEF_TEST(SVGDevice_path_effect, reporter) {
         auto svgCanvas = MakeDOMCanvas(&dom);
         svgCanvas->drawPoints(SkCanvas::kLines_PointMode, points, paint);
     }
-    const auto* rootElement = dom.finishParsing();
+    const auto* rootElement = dom.getRootNode();
     REPORTER_ASSERT(reporter, rootElement, "root element not found");
     const auto* pathElement = dom.getFirstChild(rootElement, "path");
     REPORTER_ASSERT(reporter, pathElement, "path element not found");
@@ -754,7 +758,7 @@ DEF_TEST(SVGDevice_relative_path_encoding, reporter) {
         svgCanvas->drawPath(path, SkPaint());
     }
 
-    const auto* rootElement = dom.finishParsing();
+    const auto* rootElement = dom.getRootNode();
     REPORTER_ASSERT(reporter, rootElement, "root element not found");
     const auto* pathElement = dom.getFirstChild(rootElement, "path");
     REPORTER_ASSERT(reporter, pathElement, "path element not found");
@@ -773,7 +777,7 @@ DEF_TEST(SVGDevice_color_shader, reporter) {
         svgCanvas->drawCircle(100, 100, 100, paint);
     }
 
-    const auto* rootElement = dom.finishParsing();
+    const auto* rootElement = dom.getRootNode();
     REPORTER_ASSERT(reporter, rootElement, "root element not found");
     const auto* ellipseElement = dom.getFirstChild(rootElement, "ellipse");
     REPORTER_ASSERT(reporter, ellipseElement, "ellipse element not found");
