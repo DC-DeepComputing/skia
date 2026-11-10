@@ -913,8 +913,8 @@ DEF_SIMPLE_CANVAS_TEST(TestAnisotropicStrokedEllipse, CtsEnforcement::kNextRelea
                                 t.fPixel.fX, t.fPixel.fY);
             } else {
                 REPORTER_ASSERT(reporter, !actualInShape,
-                                "Expected (%d,%d) to be untouched by stroked ellipse",
-                                t.fPixel.fX, t.fPixel.fY);
+                                "Expected (%d,%d) to be untouched by stroked ellipse but A=%u",
+                                t.fPixel.fX, t.fPixel.fY, SkColorGetA(actualColor));
             }
         }
     };
@@ -968,8 +968,8 @@ DEF_SIMPLE_CANVAS_TEST(TestAnisotropicStrokedEllipticalRRect,
                                 t.fPixel.fX, t.fPixel.fY);
             } else {
                 REPORTER_ASSERT(reporter, !actualInShape,
-                                "Expected (%d,%d) to be untouched by stroked rrect",
-                                t.fPixel.fX, t.fPixel.fY);
+                                "Expected (%d,%d) to be untouched by stroked rrect, but was A=%u",
+                                t.fPixel.fX, t.fPixel.fY, SkColorGetA(actualColor));
             }
         }
     };
