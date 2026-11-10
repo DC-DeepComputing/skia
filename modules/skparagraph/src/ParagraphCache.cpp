@@ -128,8 +128,7 @@ public:
     // Shaped results
     TArray<Run> fRuns;
     size_t fUnresolvedGlyphs;
-    // Shared with the paragraphs, so a cache hit does not copy the set
-    std::shared_ptr<std::unordered_set<SkUnichar>> fUnresolvedCodepoints;
+    std::unordered_set<SkUnichar> fUnresolvedCodepoints;
     TArray<Cluster, true> fClusters;
     TArray<size_t, true> fClustersIndexFromCodeUnit;
     // ICU results

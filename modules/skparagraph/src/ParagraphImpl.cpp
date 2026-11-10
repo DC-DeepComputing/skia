@@ -124,19 +124,14 @@ int32_t ParagraphImpl::unresolvedGlyphs() {
 }
 
 std::unordered_set<SkUnichar> ParagraphImpl::unresolvedCodepoints() {
-    return fUnresolvedCodepoints ? *fUnresolvedCodepoints : std::unordered_set<SkUnichar>();
+    return fUnresolvedCodepoints;
 }
 
 void ParagraphImpl::addUnresolvedCodepoints(TextRange textRange) {
-    if (fUnresolvedCodepoints == nullptr) {
-        fUnresolvedCodepoints = std::make_shared<std::unordered_set<SkUnichar>>();
-    }
-    // No cache entry may see the set change
-    SkASSERT(fUnresolvedCodepoints.use_count() == 1);
     fUnicode->forEachCodepoint(
         &fText[textRange.start], textRange.width(),
         [&](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
-            fUnresolvedCodepoints->emplace(unichar);
+            fUnresolvedCodepoints.emplace(unichar);
         }
     );
 }
@@ -684,8 +679,7 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
         return false;
     }
 
-    // Release the set, do not clear it: a ParagraphCache entry may share it
-    fUnresolvedCodepoints.reset();
+    fUnresolvedCodepoints.clear();
     fFontSwitches.clear();
 
     OneLineShaper oneLineShaper(this);
