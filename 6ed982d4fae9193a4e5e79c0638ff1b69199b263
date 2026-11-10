@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ae1124b_14520f4e",
+        "filename": "src/gpu/ganesh/GrYUVATextureProxies.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-10T15:59:57Z",
+      "side": 1,
+      "message": "\"detached (moved from)\" - to match the following one (and, I think, is clearer).",
+      "range": {
+        "startLine": 31,
+        "startChar": 54,
+        "endLine": 31,
+        "endChar": 64
+      },
+      "revId": "6ed982d4fae9193a4e5e79c0638ff1b69199b263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17307a4e_1c2f7241",
+        "filename": "src/gpu/ganesh/GrYUVATextureProxies.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-10T15:59:57Z",
+      "side": 1,
+      "message": "Add \u0027proxies\u0027 parameter name here please since we reference it in the comment",
+      "revId": "6ed982d4fae9193a4e5e79c0638ff1b69199b263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2b25523_1e60174e",
+        "filename": "src/gpu/ganesh/GrYUVATextureProxies.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-10T15:59:57Z",
+      "side": 1,
+      "message": "Add \u0027views\u0027 parameter name here since we refer to it in the comment",
+      "revId": "6ed982d4fae9193a4e5e79c0638ff1b69199b263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
