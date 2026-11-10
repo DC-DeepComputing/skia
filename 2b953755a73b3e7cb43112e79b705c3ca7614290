@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c42403d_991b8e9b",
+        "filename": "src/xml/SkXMLParser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 3375938
+      },
+      "writtenOn": "2026-11-10T23:21:58Z",
+      "side": 1,
+      "message": "Note: Gemini coded most of this; I don\u0027t 100% agree with its decision here, but there is some precedent, and I can\u0027t obviously say it\u0027s wrong either.\n\n(It does potentially avoid some allocations, but requires more state maintenance, e.g. calling `clear()` in `onStartElement()`. Let me know if you feel strongly about this either way)",
+      "revId": "2b953755a73b3e7cb43112e79b705c3ca7614290",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
