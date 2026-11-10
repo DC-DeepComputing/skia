@@ -15,6 +15,7 @@
 #include "src/core/SkBlitter.h"
 #include <cstdint>
 #include "include/private/SkDebug.h"
+#include "include/private/SkTemplates.h"
 
 class SkPath;
 class SkRegion;
@@ -91,7 +92,7 @@ private:
 
 class SkAAClipBlitter : public SkBlitter {
 public:
-    SkAAClipBlitter() : fScanlineScratch(nullptr) {}
+    SkAAClipBlitter() = default;
     ~SkAAClipBlitter() override;
 
     void init(SkBlitter* blitter, const SkAAClip* aaclip) {
@@ -112,15 +113,15 @@ private:
     const SkAAClip* fAAClip;
     SkIRect         fAAClipBounds;
 
-    // point into fScanlineScratch
-    int16_t*        fRuns;
-    SkAlpha*        fAA;
-
     enum {
         kSize = 32 * 32
     };
-    SkAutoSMalloc<kSize> fGrayMaskScratch;  // used for blitMask
-    void* fScanlineScratch;  // enough for a mask at 32bit, or runs+aa
+    SkAutoSMalloc<kSize>        fGrayMaskScratch;  // used for blitMask
+    skia_private::UniqueVoidPtr fScanlineScratch;  // enough for a mask at 32bit, or runs+aa
+
+    // point into fScanlineScratch (declared after fScanlineScratch so it outlives them)
+    int16_t*                    fRuns = nullptr;
+    SkAlpha*                    fAA = nullptr;
 
     void ensureRunsAndAA();
 };

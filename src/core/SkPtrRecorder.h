@@ -11,6 +11,7 @@
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTDArray.h"
 
 #include <cstdint>
@@ -71,6 +72,8 @@ public:
         /**
          * Return the next ptr in the set or null if the end was reached.
          */
+        SK_ONLY_STACK_ALLOCATABLE;
+
         void* next() {
             return fIndex < fSet.fList.size() ? fSet.fList[fIndex++].fPtr : nullptr;
         }
