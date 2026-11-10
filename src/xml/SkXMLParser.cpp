@@ -140,7 +140,13 @@ struct SkXMLParser::ParsingContext {
 
     explicit ParsingContext(SkXMLParser* parser)
         : fXMLParser(XML_ParserCreate_MM(nullptr, &sk_XML_alloc, nullptr))
-        , fParser(parser) {}
+        , fParser(parser) {
+        fParser->fContext = this;
+    }
+
+    ~ParsingContext() {
+        fParser->fContext = nullptr;
+    }
 
     static void XMLCALL start_element_handler(void* data,
                                               const char* tag,
@@ -279,6 +285,14 @@ bool SkXMLParser::parse(const char doc[], size_t len)
 {
     SkMemoryStream docStream(doc, len);
     return this->parse(docStream);
+}
+
+int SkXMLParser::getCurrentLineNumber() const {
+    return fContext ? SkToInt(sk_xml_current_line(fContext->fXMLParser)) : -1;
+}
+
+int SkXMLParser::getCurrentColumnNumber() const {
+    return fContext ? SkToInt(sk_xml_current_column(fContext->fXMLParser)) : -1;
 }
 
 void SkXMLParser::GetNativeErrorString(int error, SkString* str)

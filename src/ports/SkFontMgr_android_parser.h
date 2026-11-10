@@ -9,17 +9,17 @@
 #define SkFontMgr_android_parser_DEFINED
 
 #include "include/core/SkFontArguments.h"
-#include "include/core/SkFontMgr.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
-#include "include/private/SkTDArray.h"
 #include "src/core/SkTHash.h"
 
 #include <climits>
 #include <limits>
+#include <memory>
+#include <string_view>
 #include <vector>
 
 /** \class SkLanguage
@@ -121,27 +121,27 @@ void GetCustomFontFamilies(std::vector<std::unique_ptr<FontFamily>>& fontFamilie
 }  // namespace SkFontMgr_Android_Parser
 
 
-/** Parses a null terminated string into an integer type, checking for overflow.
+/** Parses a string into an integer type, checking for overflow.
  *  http://www.w3.org/TR/html-markup/datatypes.html#common.data.integer.non-negative-def
  *
  *  If the string cannot be parsed into 'value', returns false and does not change 'value'.
  */
-template <typename T> bool parse_non_negative_integer(const char* s, T* value) {
+template <typename T> bool parse_non_negative_integer(std::string_view s, T* value) {
     static_assert(std::numeric_limits<T>::is_integer, "T_must_be_integer");
 
-    if (*s == '\0') {
+    if (s.empty()) {
         return false;
     }
 
     const T nMax = std::numeric_limits<T>::max() / 10;
     const T dMax = std::numeric_limits<T>::max() - (nMax * 10);
     T n = 0;
-    for (; *s; ++s) {
+    for (char c : s) {
         // Check if digit
-        if (*s < '0' || '9' < *s) {
+        if (c < '0' || '9' < c) {
             return false;
         }
-        T d = *s - '0';
+        T d = c - '0';
         // Check for overflow
         if (n > nMax || (n == nMax && d > dMax)) {
             return false;
@@ -152,7 +152,7 @@ template <typename T> bool parse_non_negative_integer(const char* s, T* value) {
     return true;
 }
 
-/** Parses a null terminated string into a signed fixed point value with bias N.
+/** Parses a string into a signed fixed point value with bias N.
  *
  *  Like http://www.w3.org/TR/html-markup/datatypes.html#common.data.float-def ,
  *  but may start with '.' and does not support 'e'. '-?((:digit:+(.:digit:+)?)|(.:digit:+))'
@@ -163,17 +163,17 @@ template <typename T> bool parse_non_negative_integer(const char* s, T* value) {
  *
  *  If the string cannot be parsed into 'value', returns false and does not change 'value'.
  */
-template <int N, typename T> bool parse_fixed(const char* s, T* value) {
+template <int N, typename T> bool parse_fixed(std::string_view s, T* value) {
     static_assert(std::numeric_limits<T>::is_integer, "T_must_be_integer");
     static_assert(std::numeric_limits<T>::is_signed, "T_must_be_signed");
     static_assert(sizeof(T) * CHAR_BIT - N >= 5, "N_must_leave_four_bits_plus_sign");
 
     bool negate = false;
-    if (*s == '-') {
-        ++s;
+    if (!s.empty() && s.front() == '-') {
+        s.remove_prefix(1);
         negate = true;
     }
-    if (*s == '\0') {
+    if (s.empty()) {
         return false;
     }
 
@@ -181,27 +181,27 @@ template <int N, typename T> bool parse_fixed(const char* s, T* value) {
     const T dMax = (std::numeric_limits<T>::max() >> N) - (nMax * 10);
     T n = 0;
     T frac = 0;
-    for (; *s; ++s) {
+    for (; !s.empty(); s.remove_prefix(1)) {
+        char c = s.front();
         // Check if digit
-        if (*s < '0' || '9' < *s) {
+        if (c < '0' || '9' < c) {
             // If it wasn't a digit, check if it is a '.' followed by something.
-            if (*s != '.' || s[1] == '\0') {
+            if (c != '.' || s.size() < 2) {
                 return false;
             }
-            // Find the end, verify digits.
-            for (++s; *s; ++s) {
-                if (*s < '0' || '9' < *s) {
+            s.remove_prefix(1);
+            // Verify digits and read back toward the '.'.
+            for (; !s.empty(); s.remove_suffix(1)) {
+                char f = s.back();
+                if (f < '0' || '9' < f) {
                     return false;
                 }
-            }
-            // Read back toward the '.'.
-            for (--s; *s != '.'; --s) {
-                T d = *s - '0';
+                T d = f - '0';
                 frac = (frac + (d << N)) / 10; // This requires four bits overhead.
             }
             break;
         }
-        T d = *s - '0';
+        T d = c - '0';
         // Check for overflow
         if (n > nMax || (n == nMax && d > dMax)) {
             return false;

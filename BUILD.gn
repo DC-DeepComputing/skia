@@ -327,7 +327,7 @@ optional("android_utils") {
 optional("fontmgr_android_parser") {
   enabled = skia_use_expat
 
-  deps = [ "//third_party/expat" ]
+  deps = [ ":xml" ]
   sources = skia_ports_fontmgr_android_parser_sources
 }
 
