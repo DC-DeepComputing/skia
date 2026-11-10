@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00610b03_30f1b6bc",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-10T21:38:59Z",
+      "side": 0,
+      "message": "Why are we allowed to delete this? Can we clarify in the commit message?\n\nI think b/256860862 mentions that this is is (was?) a problem, maybe that\u0027s good context to link?",
+      "revId": "93688bd50ed9e9c9df5d0413ad844707cab535ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

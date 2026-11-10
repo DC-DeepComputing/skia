@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3071d892_c33f0604",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-10T21:38:59Z",
+      "side": 0,
+      "message": "nit: Mention rationale for changes like these in the commit message with something like \"This CL also removes a removed test that breaks the nanobench target\".",
+      "revId": "90d8a5c0e83a5b3764225fff0272a700d5d9ed94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

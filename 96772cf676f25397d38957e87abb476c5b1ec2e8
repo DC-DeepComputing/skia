@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d97636e_bd811642",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-10T21:38:59Z",
+      "side": 1,
+      "message": "Thank you so much for tackling this. This cleans up a lot of stale Windows build paths.",
+      "revId": "96772cf676f25397d38957e87abb476c5b1ec2e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35a86bcf_de4802bc",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-10T21:38:59Z",
+      "side": 1,
+      "message": "Tl;dr: Documentation and watch the tree after landing.\n\nThis needs to be documented, it\u0027s not super obvious why this toolchain worked on our bots up until now but not locally. I think they were silently finding another linker and using that one instead. They will be using the specified one here, which might introduce changes.\n\nHelpful context might be https://skia-review.git.corp.google.com/c/skia/+/1287416 where the fuse-ld flag was removed.",
+      "range": {
+        "startLine": 357,
+        "startChar": 20,
+        "endLine": 358,
+        "endChar": 42
+      },
+      "revId": "96772cf676f25397d38957e87abb476c5b1ec2e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4960f6b_8892d4ce",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-10T21:38:59Z",
+      "side": 1,
+      "message": "Hmmm, maybe we should add these linkopts per target that needs them. Things like standard C++ library \"libcpmt.lib\" and other \"core\" libs live here, things like OpenGL and debug tools should be per target. Wdyt?\n\nFor example: dwrite.lib is already included in linkopts for `//src/ports:fontmgr_win_dw`, so there\u0027s a precedent for some of these being per-target. This will mean that we add these missing libs per target. It would still be worth adding a comment here clarifying this Bazel pattern.\n\nMay",
+      "range": {
+        "startLine": 367,
+        "startChar": 20,
+        "endLine": 373,
+        "endChar": 64
+      },
+      "revId": "96772cf676f25397d38957e87abb476c5b1ec2e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
