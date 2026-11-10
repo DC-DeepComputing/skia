@@ -5,95 +5,113 @@
 
 #if !defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && !defined(SK_BUILD_FOR_GOOGLE3)
 
-#include "modules/skparagraph/include/FontCollection.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkFontStyle.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
+#include "include/core/SkTypes.h"
 #include "modules/skparagraph/include/Paragraph.h"
-#include "modules/skparagraph/src/ParagraphBuilderImpl.h"
-#include "modules/skparagraph/src/ParagraphImpl.h"
-#include "modules/skshaper/utils/FactoryHelpers.h"
-#include "tools/Resources.h"
-#include "tools/fonts/FontToolUtils.h"
-
-#include <cfloat>
-#include <string>
-#include "include/core/SkPictureRecorder.h"
+#include "modules/skparagraph/include/ParagraphBuilder.h"
+#include "modules/skparagraph/include/ParagraphCache.h"
+#include "modules/skparagraph/include/ParagraphStyle.h"
+#include "modules/skparagraph/include/TextStyle.h"
 #include "modules/skparagraph/utils/TestFontCollection.h"
+#include "modules/skunicode/include/SkUnicode_icu.h"
+#include "tools/Resources.h"
+
+#include <memory>
+#include <string>
 
 using namespace skia::textlayout;
+
 namespace {
-struct ParagraphBench : public Benchmark {
-    ParagraphBench(SkScalar width, const char* r, const char* n)
-            : fResource(r), fName(n), fWidth(width) {}
-    sk_sp<SkData> fData;
-    const char* fResource;
-    const char* fName;
-    SkScalar fWidth;
-    const char* onGetName() override { return fName; }
-    bool isSuitableFor(Backend backend) override { return backend == Backend::kNonRendering; }
-    void onDelayedSetup() override { fData = GetResourceAsData(fResource); }
-    void onDraw(int loops, SkCanvas*) override {
-        if (!fData) {
-            return;
-        }
 
-        const char* text = (const char*)fData->data();
+constexpr SkScalar kDefaultWidth = 300;
 
-        auto fontCollection = sk_make_sp<FontCollection>();
-        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
-        ParagraphStyle paragraph_style;
-        paragraph_style.turnHintingOff();
-        ParagraphBuilderImpl builder(
-                paragraph_style, fontCollection, SkShapers::BestAvailableUnicode());
-        builder.addText(text);
-        auto paragraph = builder.Build();
+// Builds a Roboto TextStyle backed by resources/fonts/Roboto-Regular.ttf with opaque ink
+TextStyle make_text_style(SkScalar fontSize = 16) {
+    TextStyle style;
+    style.setFontFamilies({SkString("Roboto")});
+    style.setFontSize(fontSize);
+    style.setColor(SK_ColorBLACK);
+    return style;
+}
 
-        SkPictureRecorder rec;
-        SkCanvas* canvas = rec.beginRecording({0,0, 2000,3000});
-        while (loops-- > 0) {
-            paragraph->layout(fWidth);
-            paragraph->paint(canvas, 0, 0);
-            paragraph->markDirty();
-            fontCollection->getParagraphCache()->reset();
-        }
+// Builds a ParagraphStyle with hinting off so layout metrics do not depend on hinting settings
+ParagraphStyle make_paragraph_style(const TextStyle& textStyle) {
+    ParagraphStyle style;
+    style.turnHintingOff();
+    style.setTextStyle(textStyle);
+    return style;
+}
+
+// Shared hermetic environment for SkParagraph CPU benchmarks using repository fonts and ICU
+struct ParagraphBenchBase : public Benchmark {
+    // Skips rendering configs and runs where icudtl.dat or font resources were unavailable in setup
+    bool isSuitableFor(Backend backend) override {
+        return backend == Backend::kNonRendering && fParagraph != nullptr;
     }
+
+    // Initializes ICU and Roboto-Regular.ttf from resources/fonts with explicit ParagraphCache
+    // state; returns false when icudtl.dat or font resources are absent because nanobench runs
+    // delayedSetup before isSuitableFor
+    bool initEnv(bool enableCache) {
+        fUnicode = SkUnicodes::ICU::Make();
+        if (!fUnicode || !GetResourceAsData("fonts/Roboto-Regular.ttf")) {
+            return false;
+        }
+        fFonts = sk_make_sp<TestFontCollection>(
+                GetResourcePath("fonts").c_str(), /*testOnly=*/false, /*loadFonts=*/false);
+        if (!fFonts->addFontFromFile("Roboto-Regular.ttf")) {
+            return false;
+        }
+        SkASSERT_RELEASE(!fFonts->findTypefaces({SkString("Roboto")}, SkFontStyle()).empty());
+        fFonts->getParagraphCache()->turnOn(enableCache);
+        return true;
+    }
+
+    sk_sp<TestFontCollection> fFonts;
+    sk_sp<SkUnicode> fUnicode;
+    std::unique_ptr<Paragraph> fParagraph;
 };
 
-// Every layout is a ParagraphCache hit for a text that no font covers, so the cost of restoring
-// the unresolved codepoints from the cache shows up here
-struct ParagraphCacheHitUnresolvedBench : public Benchmark {
-    std::unique_ptr<Paragraph> fParagraph;
+// Pins ParagraphCache hit restore cost when non-space codepoints are unresolved (f2f4ac0e78
+// +33.2%, ee27aa24cf -42.0%, f49060a27f -45.5%)
+struct ParagraphCacheHitUnresolvedBench final : public ParagraphBenchBase {
     const char* onGetName() override { return "paragraph_cache_hit_unresolved"; }
-    bool isSuitableFor(Backend backend) override { return backend == Backend::kNonRendering; }
+
+    // Populates ParagraphCache once with 205 Roboto spaces and 819 unresolved PUA code units
     void onDelayedSetup() override {
-        auto fontCollection = sk_make_sp<FontCollection>();
-        fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
-        // Without fallback the Private Use Area codepoints stay unresolved on every platform
-        fontCollection->disableFontFallback();
+        if (!this->initEnv(/*enableCache=*/true)) {
+            return;
+        }
         std::u16string text;
+        text.reserve(1024);
         for (char16_t i = 0; i < 1024; ++i) {
             text.push_back(i % 5 == 0 ? u' ' : static_cast<char16_t>(0xE000 + i));
         }
-        ParagraphBuilderImpl builder(ParagraphStyle(), fontCollection,
-                                     SkShapers::BestAvailableUnicode());
-        builder.addText(text);
-        fParagraph = builder.Build();
-        // Puts the shaped text into the cache
-        fParagraph->layout(300);
+        TextStyle textStyle = make_text_style();
+        auto builder = ParagraphBuilder::make(make_paragraph_style(textStyle), fFonts, fUnicode);
+        builder->pushStyle(textStyle);
+        builder->addText(text);
+        builder->pop();
+        fParagraph = builder->Build();
+        fParagraph->layout(kDefaultWidth);
+        SkASSERT_RELEASE(fParagraph->lineNumber() > 1);
+        SkASSERT_RELEASE(fParagraph->unresolvedGlyphs() == 819);
     }
+
+    // Measures warm relayout from the cached shaped paragraph without reshaping
     void onDraw(int loops, SkCanvas*) override {
         while (loops-- > 0) {
             fParagraph->markDirty();
-            fParagraph->layout(300);
+            fParagraph->layout(kDefaultWidth);
         }
     }
 };
+
 }  // namespace
 
 DEF_BENCH(return new ParagraphCacheHitUnresolvedBench;)
-
-#define PARAGRAPH_BENCH(X) DEF_BENCH(return new ParagraphBench(50000, "text/" #X ".txt", "paragraph_" #X);)
-//PARAGRAPH_BENCH(arabic)
-//PARAGRAPH_BENCH(emoji)
-PARAGRAPH_BENCH(english)
-#undef PARAGRAPH_BENCH
 
 #endif  // !defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && !defined(SK_BUILD_FOR_GOOGLE3)
