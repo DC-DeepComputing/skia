@@ -45,15 +45,15 @@ public:
             switch (fVerbs[fVerbsIdx]) {
                 case SkPathVerb::kMove:
                     if (!hasGeometry) {
-                        fMidpoint = {0,0};
+                        fMidpointOffset = {0, 0};
                         fMidpointWeight = 0;
                         this->advance();  // Resets fPtsIdx to 0 and advances fPoints.
                         fPtsIdx = 1;  // Increment fPtsIdx past the kMove.
                         continue;
                     }
                     if (fPoints[0] != fPoints[fPtsIdx - 1]) {
-                        // There's an implicit close at the end. Add the start point to our mean.
-                        fMidpoint += fPoints[0];
+                        // There's an implicit close at the end. fPoints[0] - fPoints[0] == 0, so
+                        // only increment the weight.
                         ++fMidpointWeight;
                     }
                     return true;
@@ -72,13 +72,13 @@ public:
                     fPtsIdx += 3;
                     break;
             }
-            fMidpoint += fPoints[fPtsIdx - 1];
+            fMidpointOffset += fPoints[fPtsIdx - 1] - fPoints[0];
             ++fMidpointWeight;
             hasGeometry = true;
         }
         if (hasGeometry && fPoints[0] != fPoints[fPtsIdx - 1]) {
-            // There's an implicit close at the end. Add the start point to our mean.
-            fMidpoint += fPoints[0];
+            // There's an implicit close at the end. fPoints[0] - fPoints[0] == 0, so only
+            // increment the weight.
             ++fMidpointWeight;
         }
         return hasGeometry;
@@ -89,7 +89,7 @@ public:
         return SkPathPriv::Iterate({fVerbs, (size_t)fVerbsIdx}, fPoints, fWeights);
     }
 
-    SkPoint currentMidpoint() { return fMidpoint * (1.f / fMidpointWeight); }
+    SkPoint currentMidpoint() { return fPoints[0] + fMidpointOffset * (1.f / fMidpointWeight); }
 
 private:
     void advance() {
@@ -114,7 +114,7 @@ private:
     const float* fWeights;
     int fWtsIdx = 0;
 
-    SkPoint fMidpoint;
+    SkPoint fMidpointOffset;
     int fMidpointWeight;
 };
 

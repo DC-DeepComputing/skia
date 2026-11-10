@@ -606,6 +606,7 @@ filegroup(
         "graphite/SubgroupComputeTest.cpp",
         "graphite/SubmitWithFinishProcTest.cpp",
         "graphite/SwizzleTest.cpp",
+        "graphite/TessellationPrecisionTest.cpp",
         "graphite/TextureFormatTest.cpp",
         "graphite/TextureProxyTest.cpp",
         "graphite/TransformTest.cpp",

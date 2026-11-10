@@ -781,36 +781,40 @@ private:
 
     void chopAndWriteConics(float2 p0, float2 p1, float2 p2, float w, int numPatches) {
         InnerTriangulator triangulator(numPatches, sk_bit_cast<SkPoint>(p0));
-        // Load the conic in 3d homogeneous (unprojected) space.
-        float4 h0 = float4(p0,1,1);
-        float4 h1 = float4(p1,1,1) * w;
-        float4 h2 = float4(p2,1,1);
+        // Shift relative to p0 before unprojecting p1 by w so large local coordinates do not
+        // round out of bounds during homogeneous subdivision.
+        float2 baseCoord = p0;
+        float4 h0 = float4(0, 0, 1, 1);
+        float4 h1 = float4(p1 - baseCoord, 1, 1) * w;
+        float4 h2 = float4(p2 - baseCoord, 1, 1);
+        float2 prevEndpoint = p0;
         for (; numPatches >= 2; --numPatches) {
-            // Chop in homogeneous space.
+            // Chop in homogeneous space relative to baseCoord.
             float T = 1.f/numPatches;
             float4 ab = mix(h0, h1, T);
             float4 bc = mix(h1, h2, T);
             float4 abc = mix(ab, bc, T);
 
             // Project and write the 1st conic.
-            float2 midpoint = abc.xy() / abc.w();
-            this->writeConicPatch(h0.xy() / h0.w(),
-                                  ab.xy() / ab.w(),
+            float2 midpoint = baseCoord + abc.xy() / abc.w();
+            this->writeConicPatch(prevEndpoint,
+                                  baseCoord + ab.xy() / ab.w(),
                                   midpoint,
                                   ab.w() / sqrtf(h0.w() * abc.w()));
             if constexpr (kAddTrianglesWhenChopping) {
                 this->writeTriangleStack(triangulator.pushVertex(sk_bit_cast<SkPoint>(midpoint)));
             }
             std::tie(h0, h1) = {abc, bc};  // Save the 2nd conic (in homogeneous space).
+            prevEndpoint = midpoint;
         }
-        // Project and write the remaining conic.
+        // Project and write the remaining conic, preserving exact p2 at the end.
         SkASSERT(numPatches == 1);
-        this->writeConicPatch(h0.xy() / h0.w(),
-                              h1.xy() / h1.w(),
-                              h2.xy(), // h2.w == 1
+        this->writeConicPatch(prevEndpoint,
+                              baseCoord + h1.xy() / h1.w(),
+                              p2,  // h2.w == 1
                               h1.w() / sqrtf(h0.w()));
         if constexpr (kAddTrianglesWhenChopping) {
-            this->writeTriangleStack(triangulator.pushVertex(sk_bit_cast<SkPoint>(h2.xy())));
+            this->writeTriangleStack(triangulator.pushVertex(sk_bit_cast<SkPoint>(p2)));
             this->writeTriangleStack(triangulator.close());
         }
     }

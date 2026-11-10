@@ -123,12 +123,11 @@ std::string TessellateCurvesRenderStep::vertexSkSL(const RootNodesInfo&) const {
             // TODO: Approximate perspective scaling to match how PatchWriter is configured (or
             // provide explicit tessellation level in instance data instead of replicating
             // work).
-            "float2x2 vectorXform = float2x2(localToDevice[0].xy, localToDevice[1].xy);\n"
-            "float2 localCoord = tessellate_filled_curve("
-                    "vectorXform, resolveLevel_and_idx.x, resolveLevel_and_idx.y, p01, p23, %s);\n"
-            "float4 devPosition = localToDevice * float4(localCoord, 0.0, 1.0);\n"
-            "devPosition.z = depth;\n"
-            "stepLocalCoords = localCoord;\n",
+            "float4 devAndLocalCoords = tessellate_filled_curve("
+            "localToDevice, resolveLevel_and_idx.x, resolveLevel_and_idx.y, "
+            "p01, p23, %s);\n"
+            "float4 devPosition = float4(devAndLocalCoords.xy, depth, 1.0);\n"
+            "stepLocalCoords = devAndLocalCoords.zw;\n",
             fInfinitySupport ? "curve_type_using_inf_support(p23)" : "curveType"));
 }
 

@@ -181,12 +181,13 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> MiddleOutShader::makeProgramIm
             v->codeAppend(
             "float resolveLevel = resolveLevel_and_idx.x;"
             "float idxInResolveLevel = resolveLevel_and_idx.y;"
-            "float2 localcoord;");
+            "float2 localcoord, vertexpos;");
             if (middleOutShader.fAttribs & PatchAttribs::kFanPoint) {
                 v->codeAppend(
                 // A negative resolve level means this is the fan point.
                 "if (resolveLevel < 0) {"
                     "localcoord = fanPointAttrib;"
+                    "vertexpos = AFFINE_MATRIX * localcoord + TRANSLATE;"
                 "} else ");  // Fall through to next if (). Trailing space is important.
             }
             v->codeAppend(
@@ -195,6 +196,7 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> MiddleOutShader::makeProgramIm
                 "localcoord = (resolveLevel != 0) ? p01.zw"
                            ": (idxInResolveLevel != 0) ? p23.xy"
                                                       ": p01.xy;"
+                "vertexpos = AFFINE_MATRIX * localcoord + TRANSLATE;"
             "} else {"
                 "float2 p0=p01.xy, p1=p01.zw, p2=p23.xy, p3=p23.zw;"
                 "float w = -1;"  // w < 0 tells us to treat the instance as an integral cubic.
@@ -205,7 +207,6 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> MiddleOutShader::makeProgramIm
                     "maxResolveLevel = wangs_formula_conic_log2(PRECISION, AFFINE_MATRIX * p0,"
                                                                           "AFFINE_MATRIX * p1,"
                                                                           "AFFINE_MATRIX * p2, w);"
-                    "p1 *= w;"  // Unproject p1.
                     "p3 = p2;"  // Duplicate the endpoint for shared code that also runs on cubics.
                 "} else {"
                     // The patch is an integral cubic.
@@ -228,8 +229,20 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> MiddleOutShader::makeProgramIm
                 "if (0 < fixedVertexID && fixedVertexID < MAX_FIXED_SEGMENTS) {"
                     "float T = fixedVertexID * (1 / MAX_FIXED_SEGMENTS);"
 
-                    // Evaluate at T. Use De Casteljau's for its accuracy and stability.
-                    "float2 ab = mix(p0, p1, T);"
+                    // Shift control points relative to p0 before unprojecting p1 by w and running
+                    // De Casteljau so large local coordinates do not lose precision.
+                    "float2 baseCoord = p0;"
+                    "p1 -= baseCoord;"
+                    "p2 -= baseCoord;"
+                    "if (w < 0) {"
+                        "p3 -= baseCoord;"
+                    "} else {"
+                        "p1 *= w;"  // Unproject p1 relative to baseCoord.
+                        "p3 = p2;"
+                    "}"
+
+                    // Evaluate at T relative to baseCoord (where p0 - baseCoord == 0).
+                    "float2 ab = p1 * T;"
                     "float2 bc = mix(p1, p2, T);"
                     "float2 cd = mix(p2, p3, T);"
                     "float2 abc = mix(ab, bc, T);"
@@ -241,12 +254,16 @@ std::unique_ptr<GrGeometryProcessor::ProgramImpl> MiddleOutShader::makeProgramIm
                     "float v = w + 1 - u;"  // == mix(w, 1, T)
                     "float uv = mix(u, v, T);"
 
-                    "localcoord = (w < 0) ?" /*cubic*/ "abcd:" /*conic*/ "abc/uv;"
+                    "float2 curveOffset = (w < 0) ?" /*cubic*/ "abcd:" /*conic*/ "abc/uv;"
+                    "localcoord = baseCoord + curveOffset;"
+                    "float2 devBase = fma(AFFINE_MATRIX[0], baseCoord.xx,"
+                                         "fma(AFFINE_MATRIX[1], baseCoord.yy, TRANSLATE));"
+                    "vertexpos = devBase + AFFINE_MATRIX * curveOffset;"
                 "} else {"
                     "localcoord = (fixedVertexID == 0) ? p0.xy : p3.xy;"
+                    "vertexpos = AFFINE_MATRIX * localcoord + TRANSLATE;"
                 "}"
-            "}"
-            "float2 vertexpos = AFFINE_MATRIX * localcoord + TRANSLATE;");
+            "}");
             gpArgs->fLocalCoordVar.set(SkSLType::kFloat2, "localcoord");
             gpArgs->fPositionVar.set(SkSLType::kFloat2, "vertexpos");
             if (middleOutShader.fAttribs & PatchAttribs::kColor) {

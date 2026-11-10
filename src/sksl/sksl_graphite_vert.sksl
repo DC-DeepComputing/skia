@@ -142,19 +142,22 @@ $pure float4 $unchecked_mix(float4 a, float4 b, float4 T) {
     return fma(b - a, T, a);
 }
 
-// Compute a vertex position for the curve described by p01 and p23 packed control points,
-// tessellated to the given resolve level, and assuming it will be drawn as a filled curve.
-$pure float2 tessellate_filled_curve(float2x2 vectorXform,
+// Compute device (xy) and local (zw) vertex positions for the curve described by p01 and p23
+// packed control points, tessellated to the given resolve level, assuming a filled curve.
+$pure float4 tessellate_filled_curve(float4x4 localToDevice,
                                      float resolveLevel, float idxInResolveLevel,
                                      float4 p01, float4 p23,
                                      float curveType) {
-    float2 localcoord;
+    float2 devCoord;
+    float2 localCoord;
     if ($is_triangular_conic_curve(curveType)) {
         // This patch is an exact triangle.
-        localcoord = (resolveLevel != 0)      ? p01.zw
+        localCoord = (resolveLevel != 0)      ? p01.zw
                    : (idxInResolveLevel != 0) ? p23.xy
                                               : p01.xy;
+        devCoord = (localToDevice * float4(localCoord, 0.0, 1.0)).xy;
     } else {
+        float2x2 vectorXform = float2x2(localToDevice[0].xy, localToDevice[1].xy);
         float2 p0=p01.xy, p1=p01.zw, p2=p23.xy, p3=p23.zw;
         float w = -1;  // w < 0 tells us to treat the instance as an integral cubic.
         float maxResolveLevel;
@@ -164,7 +167,6 @@ $pure float2 tessellate_filled_curve(float2x2 vectorXform,
             maxResolveLevel = $wangs_formula_conic_log2(vectorXform*p0,
                                                         vectorXform*p1,
                                                         vectorXform*p2, w);
-            p1 *= w;  // Unproject p1.
             p3 = p2;  // Duplicate the endpoint for shared code that also runs on cubics.
         } else {
             // The patch is an integral cubic.
@@ -185,8 +187,20 @@ $pure float2 tessellate_filled_curve(float2x2 vectorXform,
         if (0 < fixedVertexID && fixedVertexID < 32) {
             float T = fixedVertexID * (1 / 32.0);
 
-            // Evaluate at T. Use De Casteljau's for its accuracy and stability.
-            float2 ab = mix(p0, p1, T);
+            // Shift control points relative to p0 before unprojecting p1 by w and running
+            // De Casteljau so large local coordinates do not lose precision before translation.
+            float2 baseCoord = p0;
+            p1 -= baseCoord;
+            p2 -= baseCoord;
+            if (w < 0) {
+                p3 -= baseCoord;
+            } else {
+                p1 *= w;  // Unproject p1 relative to baseCoord.
+                p3 = p2;
+            }
+
+            // Evaluate at T relative to baseCoord (where p0 - baseCoord == 0).
+            float2 ab = p1 * T;
             float2 bc = mix(p1, p2, T);
             float2 cd = mix(p2, p3, T);
             float2 abc = mix(ab, bc, T);
@@ -198,12 +212,19 @@ $pure float2 tessellate_filled_curve(float2x2 vectorXform,
             float v = w + 1 - u;  // == mix(w, 1, T)
             float uv = mix(u, v, T);
 
-            localcoord = (w < 0) ? /*cubic*/ abcd : /*conic*/ abc/uv;
+            float2 curveOffset = (w < 0) ? /*cubic*/ abcd : /*conic*/ abc/uv;
+            localCoord = baseCoord + curveOffset;
+            // Use explicit fma so fast-math shader compilers cannot reassociate curveOffset back
+            // into baseCoord before applying the translation in localToDevice[3].xy.
+            float2 devBase = fma(localToDevice[0].xy, baseCoord.xx,
+                                 fma(localToDevice[1].xy, baseCoord.yy, localToDevice[3].xy));
+            devCoord = devBase + vectorXform * curveOffset;
         } else {
-            localcoord = (fixedVertexID == 0) ? p0.xy : p3.xy;
+            localCoord = (fixedVertexID == 0) ? p0.xy : p3.xy;
+            devCoord = (localToDevice * float4(localCoord, 0.0, 1.0)).xy;
         }
     }
-    return localcoord;
+    return float4(devCoord, localCoord);
 }
 
 // Device coords are in xy, local coords are in zw, since for now perspective isn't supported.
@@ -254,6 +275,8 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
         numRadialSegmentsPerRadian = $num_radial_segments_per_radian(maxScale * strokeParams.x);
     }
 
+    float2 localP0 = p0;
+    float2 localP3 = p3;
     if (isHairline) {
         // Hairline case. Transform the points before tessellation. We can still hold off on the
         // translate until the end; we just need to perform the scale and skew right now.
@@ -269,6 +292,8 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
     float2 tan0 = $robust_normalize_diff((p0 == p1) ? ((p1 == p2) ? p3 : p2) : p1, p0);
     float2 tan1 = $robust_normalize_diff(p3, (p3 == p2) ? ((p2 == p1) ? p0 : p1) : p2);
     float2 prevTan = $robust_normalize_diff(p0, lastControlPoint);
+    float2 capOffset0 = float2(0.0);
+    float2 capOffset3 = float2(0.0);
     if (tan0 == float2(0)) {
         // The stroke is a point, which is a special case for square or circle caps.
         joinType = 0;
@@ -279,20 +304,21 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
             tan1 = float2(-1,0);
         } else {
             // This is a special case representing a stroke-width square, or half-square cap
-            // (depending on the value of lastControlPoint).
+            // (depending on the value of lastControlPoint). Keep the cap offset separate from p0/p3
+            // so small strokeRadius offsets are not lost when p0 sits at huge coordinates.
             w = -1;
             tan0 = prevTan;
             tan1 = prevTan;
             if (prevTan == float2(0.0, 0.0)) {
-                // A square cap, so adjust both p0,p1 and p2,p3 to shift by the stroke radius in
-                // opposite directions along the X axis
-                p2 = p3 = p0 + strokeRadius * float2(1.0, 0.0);
-                p0 = p1 = p0 - strokeRadius * float2(1.0, 0.0);
+                // A square cap, so shift the start and end by the stroke radius in opposite
+                // directions along the X axis.
+                capOffset3 = strokeRadius * float2(1.0, 0.0);
+                capOffset0 = -capOffset3;
                 prevTan = tan0 = tan1 = float2(1.0, 0.0);
             } else {
                 // A half-square, so behave as a lineTo from p0 to a strokeRadius outset away from
                 // the prior tangent point
-                p2 = p3 = p0 + strokeRadius * prevTan;
+                capOffset3 = strokeRadius * prevTan;
             }
         }
     }
@@ -350,6 +376,8 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
         numRadialSegments = numEdgesInJoin - 2;
         numParametricSegments = 1;  // Joins don't have parametric segments.
         p3 = p2 = p1 = p0;  // Colocate all points on the junction point.
+        localP3 = localP0;
+        capOffset3 = capOffset0;
         // Shift combinedEdgeID to the range [-1, numRadialSegments]. This duplicates the first
         // edge and lands one edge at the very end of the join. (The duplicated final edge will
         // actually come from the section of our strip that belongs to the stroke.)
@@ -395,8 +423,15 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
         strokeOutset *= $miter_extent(cosTheta, joinType/*miterLimit*/);
     }
 
-    float2 tangent, strokeCoord;
+    float2 tangent, localBaseCoord, strokeOffset;
     if (combinedEdgeID != 0 && !isFinalEdge) {
+        // Shift control points relative to p0 before unprojecting p1 by w and running De Casteljau
+        // so large local coordinates do not lose precision before translation.
+        localBaseCoord = localP0;
+        p1 -= p0;
+        p2 -= p0;
+        p3 -= p0;
+
         // Compute the location and tangent direction of the stroke edge with the integral id
         // "combinedEdgeID", where combinedEdgeID is the sorted-order index of parametric and radial
         // edges. Start by finding the tangent function's power basis coefficients. These define a
@@ -404,8 +439,8 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
         //                                                 |T^2|
         //     Tangent_Direction(T) = dx,dy = |A  2B  C| * |T  |
         //                                    |.   .  .|   |1  |
-        float2 A, B, C = p1 - p0;
-        float2 D = p3 - p0;
+        float2 A, B, C = p1;
+        float2 D = p3;
         if (w >= 0.0) {
             // P0..P2 represent a conic and P3==P2. The derivative of a conic has a cumbersome
             // order-4 denominator. However, this isn't necessary if we are only interested in a
@@ -511,8 +546,8 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
         // T value for combinedEdgeID is whichever is larger.
         float T = max(parametricT, radialT);
 
-        // Evaluate the cubic at T. Use De Casteljau's for its accuracy and stability.
-        float2 ab = $unchecked_mix(p0, p1, T);
+        // Evaluate the cubic at T relative to baseCoord (where p0 - baseCoord == 0).
+        float2 ab = p1 * T;
         float2 bc = $unchecked_mix(p1, p2, T);
         float2 cd = $unchecked_mix(p2, p3, T);
         float2 abc = $unchecked_mix(ab, bc, T);
@@ -533,27 +568,33 @@ $pure float4 tessellate_stroked_curve(float edgeID, float maxEdges,
                                : $robust_normalize_diff(bcd, abc);
         }
 
-        strokeCoord = (w >= 0.0) ? abc/uv : abcd;
+        strokeOffset = (w >= 0.0) ? abc/uv : abcd;
     } else {
         // Edges at the beginning and end of the strip use exact endpoints and tangents. This
         // ensures crack-free seaming between instances.
         tangent = (combinedEdgeID == 0) ? tan0 : tan1;
-        strokeCoord = (combinedEdgeID == 0) ? p0 : p3;
+        localBaseCoord = (combinedEdgeID == 0) ? localP0 : localP3;
+        strokeOffset = (combinedEdgeID == 0) ? capOffset0 : capOffset3;
     }
 
     // At this point 'tangent' is normalized, so the orthogonal vector is also normalized.
     float2 ortho = float2(tangent.y, -tangent.x);
-    strokeCoord += ortho * (strokeRadius * strokeOutset);
+    strokeOffset += ortho * (strokeRadius * strokeOutset);
 
+    // Transform localBaseCoord to device space using explicit fma so fast-math shader compilers
+    // cannot reassociate strokeOffset back into localBaseCoord before cancelling with translate.
+    float2 devBase = fma(affineMatrix[0], localBaseCoord.xx,
+                         fma(affineMatrix[1], localBaseCoord.yy, translate));
     if (isHairline) {
         // Hairline case. The scale and skew already happened before tessellation.
         // TODO: There's probably a more efficient way to tessellate the hairline that lets us
         // avoid inverting the affine matrix to get back to local coords, but it's just a 2x2 so
         // this works for now.
-        return float4(strokeCoord + translate, inverse(affineMatrix) * strokeCoord);
+        return float4(devBase + strokeOffset,
+                      localBaseCoord + inverse(affineMatrix) * strokeOffset);
     } else {
-        // Normal case. Do the transform after tessellation.
-        return float4(affineMatrix * strokeCoord + translate, strokeCoord);
+        return float4(devBase + affineMatrix * strokeOffset,
+                      localBaseCoord + strokeOffset);
     }
 }
 

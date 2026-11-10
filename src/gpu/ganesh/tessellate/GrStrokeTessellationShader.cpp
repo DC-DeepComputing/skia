@@ -310,6 +310,7 @@ void GrStrokeTessellationShader::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpAr
     "}"
     );
 
+    args.fVertBuilder->codeAppend("float2 localP0 = p0, localP3 = p3;");
     if (shader.stroke().isHairlineStyle()) {
         // Hairline case. Transform the points before tessellation. We can still hold off on the
         // translate until the end; we just need to perform the scale and skew right now.
@@ -406,6 +407,7 @@ void GrStrokeTessellationShader::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpAr
         "numRadialSegments = numEdgesInJoin - 2;"
         "numParametricSegments = 1;"  // Joins don't have parametric segments.
         "p3 = p2 = p1 = p0;"  // Colocate all points on the junction point.
+        "localP3 = localP0;"
         // Shift combinedEdgeID to the range [-1, numRadialSegments]. This duplicates the first
         // edge and lands one edge at the very end of the join. (The duplicated final edge will
         // actually come from the section of our strip that belongs to the stroke.)
@@ -469,6 +471,7 @@ void GrStrokeTessellationShader::Impl::emitTessellationCode(
     //
     //     // Values provided by either uniforms or attribs.
     //     float2 p0, p1, p2, p3;
+    //     float2 localP0, localP3;
     //     float w;
     //     float STROKE_RADIUS;
     //     float 2x2 AFFINE_MATRIX;
@@ -484,8 +487,14 @@ void GrStrokeTessellationShader::Impl::emitTessellationCode(
     //     float strokeOutset;
     //
     code->appendf(
-    "float2 tangent, strokeCoord;"
+    "float2 tangent, localBaseCoord, strokeOffset;"
     "if (combinedEdgeID != 0 && !isFinalEdge) {"
+        // Shift control points relative to p0 before unprojecting p1 by w and running De Casteljau
+        // so large local coordinates do not lose precision before translation.
+        "localBaseCoord = localP0;"
+        "p1 -= p0;"
+        "p2 -= p0;"
+        "p3 -= p0;"
         // Compute the location and tangent direction of the stroke edge with the integral id
         // "combinedEdgeID", where combinedEdgeID is the sorted-order index of parametric and radial
         // edges. Start by finding the tangent function's power basis coefficients. These define a
@@ -493,8 +502,8 @@ void GrStrokeTessellationShader::Impl::emitTessellationCode(
         //                                                 |T^2|
         //     Tangent_Direction(T) = dx,dy = |A  2B  C| * |T  |
         //                                    |.   .  .|   |1  |
-        "float2 A, B, C = p1 - p0;"
-        "float2 D = p3 - p0;"
+        "float2 A, B, C = p1;"
+        "float2 D = p3;"
         "if (w >= 0.0) {"
             // P0..P2 represent a conic and P3==P2. The derivative of a conic has a cumbersome
             // order-4 denominator. However, this isn't necessary if we are only interested in a
@@ -602,8 +611,8 @@ void GrStrokeTessellationShader::Impl::emitTessellationCode(
         // T value for combinedEdgeID is whichever is larger.
         "float T = max(parametricT, radialT);"
 
-        // Evaluate the cubic at T. Use De Casteljau's for its accuracy and stability.
-        "float2 ab = unchecked_mix(p0, p1, T);"
+        // Evaluate the cubic at T relative to p0 (where p0 - p0 == 0).
+        "float2 ab = p1 * T;"
         "float2 bc = unchecked_mix(p1, p2, T);"
         "float2 cd = unchecked_mix(p2, p3, T);"
         "float2 abc = unchecked_mix(ab, bc, T);"
@@ -624,32 +633,36 @@ void GrStrokeTessellationShader::Impl::emitTessellationCode(
                                ": robust_normalize_diff(bcd, abc);"
         "}"
 
-        "strokeCoord = (w >= 0.0) ? abc/uv : abcd;"
+        "strokeOffset = (w >= 0.0) ? abc/uv : abcd;"
     "} else {"
         // Edges at the beginning and end of the strip use exact endpoints and tangents. This
         // ensures crack-free seaming between instances.
         "tangent = (combinedEdgeID == 0) ? tan0 : tan1;"
-        "strokeCoord = (combinedEdgeID == 0) ? p0 : p3;"
+        "localBaseCoord = (combinedEdgeID == 0) ? localP0 : localP3;"
+        "strokeOffset = float2(0.0);"
     "}", skgpu::tess::kMaxResolveLevel /* Parametric/radial sort loop count. */);
 
     code->append(
     // At this point 'tangent' is normalized, so the orthogonal vector is also normalized.
     "float2 ortho = float2(tangent.y, -tangent.x);"
-    "strokeCoord += ortho * (STROKE_RADIUS * strokeOutset);");
+    "strokeOffset += ortho * (STROKE_RADIUS * strokeOutset);"
+    // Transform localBaseCoord to device space using explicit fma so fast-math shader compilers
+    // cannot reassociate strokeOffset back into localBaseCoord before cancelling with TRANSLATE.
+    "float2 devBase = fma(AFFINE_MATRIX[0], localBaseCoord.xx,"
+                         "fma(AFFINE_MATRIX[1], localBaseCoord.yy, TRANSLATE));");
 
     if (!shader.stroke().isHairlineStyle()) {
-        // Normal case. Do the transform after tessellation.
-        code->append("float2 devCoord = AFFINE_MATRIX * strokeCoord + TRANSLATE;");
-        gpArgs->fPositionVar.set(SkSLType::kFloat2, "devCoord");
-        gpArgs->fLocalCoordVar.set(SkSLType::kFloat2, "strokeCoord");
+        code->append(
+        "float2 devCoord = devBase + AFFINE_MATRIX * strokeOffset;"
+        "float2 localCoord = localBaseCoord + strokeOffset;");
     } else {
         // Hairline case. The scale and skew already happened before tessellation.
         code->append(
-        "float2 devCoord = strokeCoord + TRANSLATE;"
-        "float2 localCoord = inverse(AFFINE_MATRIX) * strokeCoord;");
-        gpArgs->fPositionVar.set(SkSLType::kFloat2, "devCoord");
-        gpArgs->fLocalCoordVar.set(SkSLType::kFloat2, "localCoord");
+        "float2 devCoord = devBase + strokeOffset;"
+        "float2 localCoord = localBaseCoord + inverse(AFFINE_MATRIX) * strokeOffset;");
     }
+    gpArgs->fPositionVar.set(SkSLType::kFloat2, "devCoord");
+    gpArgs->fLocalCoordVar.set(SkSLType::kFloat2, "localCoord");
 }
 
 void GrStrokeTessellationShader::Impl::emitFragmentCode(const GrStrokeTessellationShader& shader,
