@@ -369,7 +369,8 @@ bool SkInsetConvexPolygon(const SkPoint* inputPolygonVerts, int inputPolygonSize
     }
 
     // set up
-    AutoSTMalloc<64, OffsetEdge> edgeData(inputPolygonSize);
+    STArray<64, OffsetEdge> edgeData;
+    edgeData.push_back_n(inputPolygonSize);
     int prev = inputPolygonSize - 1;
     for (int curr = 0; curr < inputPolygonSize; prev = curr, ++curr) {
         int next = (curr + 1) % inputPolygonSize;

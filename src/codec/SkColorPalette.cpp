@@ -6,20 +6,18 @@
  */
 #include "src/codec/SkColorPalette.h"
 
-#include "include/private/SkMalloc.h"
 
 #include <cstring>
 
-SkColorPalette::SkColorPalette(const SkPMColor colors[], int count) {
+SkColorPalette::SkColorPalette(const SkPMColor colors[], int count)
+        : fColors(std::make_unique<SkPMColor[]>(count))
+        , fCount(count) {
     SkASSERT(0 == count || colors);
     SkASSERT(count >= 0 && count <= 256);
 
-    fCount = count;
-    fColors = reinterpret_cast<SkPMColor*>(sk_malloc_throw(count * sizeof(SkPMColor)));
-
-    memcpy(fColors, colors, count * sizeof(SkPMColor));
+    if (count > 0) {
+        memcpy(fColors.get(), colors, count * sizeof(SkPMColor));
+    }
 }
 
-SkColorPalette::~SkColorPalette() {
-    sk_free(fColors);
-}
+SkColorPalette::~SkColorPalette() = default;
