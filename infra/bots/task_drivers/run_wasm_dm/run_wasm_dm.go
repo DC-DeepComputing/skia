@@ -188,6 +188,7 @@ func runDm(ctx context.Context, cd *chromeDriver, local bool, url string, argv *
 	}
 
 	logWebGLInfo(ctx, cd)
+	cd.LogGPUInfo(ctx)
 
 	// Run
 	sklog.Info("page loaded; starting dm run")

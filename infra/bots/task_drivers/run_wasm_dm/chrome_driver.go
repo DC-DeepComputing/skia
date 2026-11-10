@@ -95,6 +95,62 @@ func newChromeContext(
 	}
 }
 
+// gpuPageTextJs returns chrome://gpu as plain text. The page is built from nested web components, so
+// document.body.innerText misses everything inside their shadow roots.
+const gpuPageTextJs = `(() => {
+  const blocks = new Set(["DIV", "LI", "TR", "H1", "H2", "H3", "H4", "P", "UL", "TABLE"]);
+  const walk = (node) => {
+    let text = "";
+    if (node.shadowRoot) {
+      text += walk(node.shadowRoot);
+    }
+    for (const child of node.childNodes) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        text += child.textContent.replace(/\s+/g, " ");
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        if (child.tagName === "STYLE" || child.tagName === "SCRIPT") {
+          continue;
+        }
+        text += walk(child);
+        if (blocks.has(child.tagName)) {
+          text += "\n";
+        }
+      }
+    }
+    return text;
+  };
+  return walk(document.body).split("\n").map((l) => l.trim()).filter((l) => l).join("\n");
+})()`
+
+// LogGPUInfo writes the text of chrome://gpu to a log stream on the current step. It shows which GL
+// implementation chrome picked and, when it fell back to software, why (e.g. GPU process errors).
+// It uses its own tab so the harness page is left alone. Failures are logged and otherwise ignored.
+func (cd *chromeDriver) LogGPUInfo(ctx context.Context) {
+	tabCtx, cancelTab := chromedp.NewContext(cd.ctx)
+	defer cancelTab()
+
+	if _, err := chromedp.Run(tabCtx, chromedp.Navigate("chrome://gpu")); err != nil {
+		sklog.Warningf("loading chrome://gpu: %s", err)
+		return
+	}
+	// The page fills in asynchronously.
+	if _, err := chromedp.Run(tabCtx, chromedp.Poll[bool](
+		fmt.Sprintf(`%s.includes("Driver Information")`, gpuPageTextJs),
+		chromedp.WithPollingTimeout(10*time.Second),
+	)); err != nil {
+		sklog.Warningf("waiting for chrome://gpu: %s", err)
+		// Log whatever is there.
+	}
+	text, err := chromedp.Run(tabCtx, chromedp.Evaluate[string](gpuPageTextJs))
+	if err != nil {
+		sklog.Warningf("reading chrome://gpu: %s", err)
+		return
+	}
+	if _, err := io.WriteString(td.NewLogStream(ctx, "chrome gpu info", td.SeverityInfo), text); err != nil {
+		sklog.Warningf("writing chrome://gpu: %s", err)
+	}
+}
+
 func attachConsole(ctx context.Context, logger *logger.Logger) context.CancelFunc {
 	ctx, cancel := context.WithCancel(ctx)
 	console := chromedp.Console(ctx)
