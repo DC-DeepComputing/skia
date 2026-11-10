@@ -11,6 +11,7 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -46,7 +47,7 @@ private:
     VulkanImageView(const VulkanSharedContext*, VkImageView, Usage, sk_sp<VulkanYcbcrConversion>);
 
     // Since we're not derived from Resource we need to store the context for deletion later
-    const VulkanSharedContext* fSharedContext;
+    raw_ptr<const VulkanSharedContext> fSharedContext;
     VkImageView  fImageView;
     Usage fUsage;
     sk_sp<VulkanYcbcrConversion> fYcbcrConversion;

@@ -21,6 +21,7 @@
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 
@@ -289,8 +290,8 @@ private:
         //             This acts as a dependency barrier; clipped draws affected by this rawElement
         //             must be inserted into or after the latest layer+list across all their
         //             dependcy depth draws.
-        DrawParams* fCaptureParams;
-        Layer* fInsertion;
+        raw_ptr<DrawParams> fCaptureParams;
+        raw_ptr<Layer>      fInsertion;
     };
 
     // Represents a saved point in the clip stack, and manages the life time of elements added to
@@ -383,7 +384,7 @@ private:
     RawElement::Stack fElements;
     SaveRecord::Stack fSaves; // always has one wide open record at the top
 
-    Device* fDevice; // the device this clip stack is coupled with
+    raw_ptr<Device> fDevice; // the device this clip stack is coupled with
 };
 
 // Clip element iteration

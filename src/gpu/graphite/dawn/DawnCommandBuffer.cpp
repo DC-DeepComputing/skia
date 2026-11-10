@@ -1008,7 +1008,7 @@ void DawnCommandBuffer::syncUniformBuffers() {
             if (i == 2 && !useStorageBuffers) {
                 if (fBoundStorageFallbackTexture) {
                     bindGroupEntries[i].textureView =
-                            static_cast<const DawnTexture*>(fBoundStorageFallbackTexture)
+                            static_cast<const DawnTexture*>(fBoundStorageFallbackTexture.get())
                                     ->sampleTextureView();
                 } else {
                     SkASSERT(!fActiveGraphicsPipeline->usesStorageBuffer());

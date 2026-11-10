@@ -11,7 +11,9 @@
 #include "include/private/SkLog.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/draw/DrawPass.h"
+#include "src/gpu/graphite/mtl/MtlGraphicsPipeline.h"
 #include "src/gpu/graphite/mtl/MtlResourceProvider.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <memory>
 
@@ -163,11 +165,11 @@ private:
     sk_sp<MtlRenderCommandEncoder> fActiveRenderCommandEncoder;
     sk_sp<MtlComputeCommandEncoder> fActiveComputeCommandEncoder;
     sk_sp<MtlBlitCommandEncoder> fActiveBlitCommandEncoder;
-    const MtlGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
+    raw_ptr<const MtlGraphicsPipeline> fActiveGraphicsPipeline;
 
     std::array<BindBufferInfo, 5> fBoundUniformBuffers;
     bool fBoundUniformBuffersDirty = false;
-    const Texture* fBoundStorageFallbackTexture = nullptr;
+    raw_ptr<const Texture> fBoundStorageFallbackTexture;
 
     id<MTLBuffer> fCurrentIndexBuffer;
     id<MTLBuffer> fCurrentIndirectBuffer;
@@ -176,8 +178,8 @@ private:
 
     // The command buffer will outlive the MtlQueueManager which owns the MTLCommandQueue.
     id<MTLCommandQueue> fQueue;
-    const MtlSharedContext* fSharedContext;
-    MtlResourceProvider* fResourceProvider;
+    raw_ptr<const MtlSharedContext> fSharedContext;
+    raw_ptr<MtlResourceProvider>    fResourceProvider;
 
     // If true, the draw commands being added are entirely offscreen and can be skipped.
     // This can happen if a recording is being replayed with a transform that moves the recorded

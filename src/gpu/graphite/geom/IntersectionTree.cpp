@@ -54,8 +54,10 @@ private:
     }
 
     float fSplitCoord;
-    Node* fLo;
-    Node* fHi;
+    // RAW_PTR_EXCLUSION: Performance: +120% on IntersectionTree_1000 (keeps TreeNode trivially
+    // destructible in SkArenaAlloc).
+    RAW_PTR_EXCLUSION Node* fLo;
+    RAW_PTR_EXCLUSION Node* fHi;
 };
 
 // Leaf node. Rects are kept in a simple list and intersection testing is performed by brute force.

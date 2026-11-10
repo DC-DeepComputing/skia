@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/geom/NonMSAAClip.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
+#include "src/partition_alloc/raw_ref.h"
 
 #if defined(SK_ENABLE_SPARSE_STRIPS)
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
@@ -180,7 +181,7 @@ public:
             , fBarrierBeforeDraws(barrierBeforeDraws)
             , fStroke(stroke ? std::optional<StrokeStyle>(*stroke) : std::nullopt) {}
 
-    const Transform& transform() const { return fTransform; }
+    const Transform& transform() const { return *fTransform; }
     const Geometry&  geometry()  const { return fGeometry;  }
     DrawOrder        order()     const { return fOrder;     }
 
@@ -215,13 +216,13 @@ public:
 private:
     friend class ClipStack; // For updating clip and order components on depth only draws
 
-    const Transform& fTransform; // Lifetime of the transform must be held longer than the geometry
-    Geometry         fGeometry;
-    Rect             fDrawBounds;
-    Rect             fTransformedShapeBounds;
-    SkIRect          fScissor;
-    DrawOrder        fOrder;
-    BarrierType      fBarrierBeforeDraws;
+    const raw_ref<const Transform> fTransform; // Lifetime of the transform must be held longer than the geometry
+    Geometry                       fGeometry;
+    Rect                           fDrawBounds;
+    Rect                           fTransformedShapeBounds;
+    SkIRect                        fScissor;
+    DrawOrder                      fOrder;
+    BarrierType                    fBarrierBeforeDraws;
 
     std::optional<StrokeStyle> fStroke; // Not present implies fill
 };

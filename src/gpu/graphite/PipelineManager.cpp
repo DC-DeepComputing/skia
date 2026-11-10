@@ -212,7 +212,7 @@ void PipelineManager::addTaskToWorkList(SharedContext* sharedContext,
             int workList = priority == Priority::kLow ? kLowPriorityWorkList
                                                       : kHighPriorityWorkList;
 
-            PipelineManagerUtils::AddWork(fExecutor, workList, std::move(task));
+            PipelineManagerUtils::AddWork(fExecutor.get(), workList, std::move(task));
             return;
         }
     }
