@@ -84,6 +84,7 @@
 #include "src/gpu/graphite/task/SynchronizeToCpuTask.h"
 #include "src/gpu/graphite/task/Task.h"
 #include "src/image/SkSurface_Base.h"
+#include "src/partition_alloc/raw_ptr.h"
 #include "src/sksl/SkSLGraphiteModules.h"
 
 #include <algorithm>
@@ -773,7 +774,7 @@ void Context::finalizeAsyncReadPixels(std::unique_ptr<Recorder> recorder,
     struct AsyncReadFinishContext {
         SkImage::ReadPixelsCallback* fClientCallback;
         SkImage::ReadPixelsContext fClientContext;
-        ClientMappedBufferManager* fMappedBufferManager;
+        raw_ptr<ClientMappedBufferManager> fMappedBufferManager;
         std::array<PixelTransferResult, 4> fTransferResults;
     };
 

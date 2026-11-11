@@ -9,6 +9,7 @@
 #define skgpu_graphite_DescriptorTypes_DEFINED
 
 #include "include/private/SkEnumBitMask.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 
@@ -62,7 +63,7 @@ struct DescriptorData {
     uint32_t fCount;
     int fBindingIndex;
     SkEnumBitMask<PipelineStageFlags> fPipelineStageFlags;
-    const Sampler* fImmutableSampler;
+    raw_ptr<const Sampler> fImmutableSampler;
 };
 
 }  // namespace skgpu::graphite

@@ -9,6 +9,7 @@
 #define skgpu_graphite_VulkanRenderPass_DEFINED
 
 #include "src/gpu/graphite/Resource.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/SkTArray.h"
@@ -53,7 +54,7 @@ private:
 
     VulkanRenderPass(const VulkanSharedContext*, VkRenderPass, VkExtent2D granularity);
 
-    const VulkanSharedContext* fSharedContext;
+    raw_ptr<const VulkanSharedContext> fSharedContext;
     VkRenderPass fRenderPass;
     VkExtent2D fGranularity;
 };

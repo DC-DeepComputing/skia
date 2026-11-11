@@ -18,6 +18,7 @@
 #include "src/core/SkVx.h"
 #include "src/gpu/graphite/draw/DrawOrder.h"
 #include "src/gpu/graphite/geom/Rect.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <cstdint>
 #include <cstring>
@@ -306,7 +307,7 @@ private:
     // to upgrade to the grid manager again.
     std::unique_ptr<GridBoundsManager>       fGridManager;
 
-    BoundsManager*                           fCurrentManager;
+    raw_ptr<BoundsManager>                   fCurrentManager;
 
     void updateCurrentManagerIfNeeded() {
         if (fCurrentManager == fGridManager.get() ||

@@ -72,5 +72,6 @@ skia_objc_library_with_testutil(
         "//src/gpu",
         "//src/gpu/graphite",
         "//src/gpu/mtl:gpu_mtl",
+        "//src/partition_alloc:raw_ptr",
     ],
 )

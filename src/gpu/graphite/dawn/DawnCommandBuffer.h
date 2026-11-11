@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
+#include "src/gpu/graphite/dawn/DawnTexture.h"
 #include "src/gpu/graphite/draw/DrawPass.h"
 #include "src/partition_alloc/raw_ptr.h"
 
@@ -163,15 +164,15 @@ private:
     bool fBoundUniformBuffersDirty = false;
 
     std::array<BindBufferInfo, DawnGraphicsPipeline::kMaxNumUniformBuffers> fBoundUniforms;
-    const Texture* fBoundStorageFallbackTexture = nullptr;
+    raw_ptr<const Texture> fBoundStorageFallbackTexture;
 
     wgpu::CommandEncoder fCommandEncoder;
     wgpu::RenderPassEncoder fActiveRenderPassEncoder;
     wgpu::ComputePassEncoder fActiveComputePassEncoder;
 
     struct ResolveStepEmulationInfo {
-        const DawnTexture* fMSAATexture;
-        const DawnTexture* fResolveTexture;
+        raw_ptr<const DawnTexture> fMSAATexture;
+        raw_ptr<const DawnTexture> fResolveTexture;
         SkIPoint fMSAAAOffset;
         SkIRect fResolveArea;
     };

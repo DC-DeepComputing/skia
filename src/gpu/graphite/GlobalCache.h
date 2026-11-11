@@ -17,6 +17,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <functional>
 
@@ -224,7 +225,7 @@ private:
 
 #if defined(GPU_TEST_UTILS)
     skia_private::TArray<StaticVertexCopyRanges> fStaticVertexInfo SK_GUARDED_BY(fSpinLock);
-    const Buffer* fStaticVertexBuffer SK_GUARDED_BY(fSpinLock);
+    raw_ptr<const Buffer> fStaticVertexBuffer SK_GUARDED_BY(fSpinLock);
 #endif
 };
 

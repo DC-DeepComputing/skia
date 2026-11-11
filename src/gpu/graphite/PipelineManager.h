@@ -14,6 +14,7 @@
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkSpinlock.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu {
 class UniqueKey;
@@ -110,7 +111,7 @@ private:
     // The executor is obtained from ContextOptions. It is up to the client to ensure it
     // exists past the Context's destruction. The Context does call PipelineManager::shutDown
     // from its destructor to end its use.
-    ExecutorType* fExecutor SK_GUARDED_BY(fSpinLock) = nullptr;
+    raw_ptr<ExecutorType> fExecutor SK_GUARDED_BY(fSpinLock);
 };
 
 } // namespace skgpu::graphite
