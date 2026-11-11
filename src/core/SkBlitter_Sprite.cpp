@@ -30,6 +30,7 @@
 #include <cstring>
 #include <optional>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 struct SkIRect;
 struct SkMask;
@@ -181,7 +182,7 @@ public:
     }
 
 private:
-    SkArenaAlloc*              fAlloc;
+    raw_ptr<SkArenaAlloc, DanglingUntriaged> fAlloc;
     SkBlitter*                 fBlitter;
     SkRasterPipelineContexts::MemoryCtx fSrcPtr;
     SkColor4f                  fPaintColor;
