@@ -38,6 +38,11 @@
 #pragma clang diagnostic error "-Wconversion"
 #endif
 
+#if defined(SK_CODEC_DECODES_PNG_WITH_RUST_LIMIT_READ) && \
+        !defined(SK_CODEC_DECODES_PNG_WITH_RUST_FINISH_DECODING)
+#error "SK_CODEC_DECODES_PNG_WITH_RUST_LIMIT_READ requires SK_CODEC_DECODES_PNG_WITH_RUST_FINISH_DECODING"
+#endif
+
 namespace {
 
 SkEncodedInfo::Color ToColor(rust_png::ColorType colorType, const rust_png::Reader& reader) {
