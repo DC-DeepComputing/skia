@@ -57,11 +57,15 @@ public:
     sk_sp<SkSurface> makeBitmapSurface(const SkImageInfo& imageInfo,
                                        const SkSurfaceProps* surfaceProps = nullptr);
 
+    sk_sp<SkSurface> makeSurface() override;
+
 private:
     // TODO (b/412351769): Implement this so we can capture from a CPU Recorder.
     SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
     void createCaptureBreakpoint(SkSurface*) final;
     void deregisterCaptureCanvas(SkCanvas*) final {}
+
+    sk_sp<SkImage> makeImage(sk_sp<SkImage> image) override;
 };
 
 inline Recorder* AsRecorder(SkRecorder* recorder) {

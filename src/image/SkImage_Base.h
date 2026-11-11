@@ -182,6 +182,8 @@ public:
         return fPixelStorages;
     }
 
+    static sk_sp<SkImage> MakeRecorderBackedImage(SkRecorder* recorder, sk_sp<SkImage> image);
+
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID, sk_sp<SkPixelStorage> backingStorage);
     // fPixelStorages is protected since SkImage_Raster needs access in ctor
