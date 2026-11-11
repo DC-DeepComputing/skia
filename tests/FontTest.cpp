@@ -8,6 +8,7 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTo.h"
@@ -44,7 +45,7 @@ static SkFont serialize_deserialize(const SkFont& font, skiatest::Reporter* repo
     SkReadBuffer rb(storage.get(), size);
     sk_sp<SkTypeface> cloneTypeface = font.refTypeface();
     if (count) {
-        rb.setTypefaceArray(&cloneTypeface, 1);
+        rb.setTypefaceArray(SkSpanFromRef(cloneTypeface), 1);
     }
     SkFont clone;
     REPORTER_ASSERT(reporter, SkFontPriv::Unflatten(&clone, rb));

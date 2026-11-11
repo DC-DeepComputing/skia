@@ -178,7 +178,7 @@ void DDLPromiseImageHelper::CreateBETexturesForPromiseImage(GrDirectContext* dir
         auto markFinished = [](void* context) {
             *(bool*)context = true;
         };
-        auto backendTex = direct->createBackendTexture(mipLevels.get(),
+        auto backendTex = direct->createBackendTexture(SkSpan(mipLevels.get(), info->numMipLevels()),
                                                        info->numMipLevels(),
                                                        kTopLeft_GrSurfaceOrigin,
                                                        GrRenderable::kNo,

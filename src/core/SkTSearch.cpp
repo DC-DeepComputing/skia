@@ -6,6 +6,7 @@
  */
 
 
+#include "include/core/SkSpan.h"
 #include "src/core/SkTSearch.h"
 
 #include "include/private/SkMalloc.h"
@@ -13,19 +14,19 @@
 #include <cstring>
 #include <ctype.h>
 
-static inline const char* index_into_base(const char*const* base, int index,
+static inline const char* index_into_base(SkSpan<const char *const>base, int index,
                                           size_t elemSize)
 {
-    return *(const char*const*)((const char*)base + index * elemSize);
+    return *(const char*const*)((const char*)base.data() + index * elemSize);
 }
 
-int SkStrSearch(const char*const* base, int count, const char target[],
+int SkStrSearch(SkSpan<const char *const>base, int count, const char target[],
                 size_t target_len, size_t elemSize)
 {
     if (count <= 0)
         return ~0;
 
-    SkASSERT(base != nullptr);
+    SkASSERT(!base.empty());
 
     int lo = 0;
     int hi = count - 1;
@@ -55,13 +56,13 @@ int SkStrSearch(const char*const* base, int count, const char target[],
     return hi;
 }
 
-int SkStrSearch(const char*const* base, int count, const char target[],
+int SkStrSearch(SkSpan<const char *const>base, int count, const char target[],
                 size_t elemSize)
 {
     return SkStrSearch(base, count, target, strlen(target), elemSize);
 }
 
-int SkStrLCSearch(const char*const* base, int count, const char target[],
+int SkStrLCSearch(SkSpan<const char *const>base, int count, const char target[],
                   size_t len, size_t elemSize)
 {
     SkASSERT(target);
@@ -71,7 +72,7 @@ int SkStrLCSearch(const char*const* base, int count, const char target[],
     return SkStrSearch(base, count, tolc.lc(), len, elemSize);
 }
 
-int SkStrLCSearch(const char*const* base, int count, const char target[],
+int SkStrLCSearch(SkSpan<const char *const>base, int count, const char target[],
                   size_t elemSize)
 {
     return SkStrLCSearch(base, count, target, strlen(target), elemSize);

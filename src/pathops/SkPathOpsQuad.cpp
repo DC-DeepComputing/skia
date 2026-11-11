@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkSpan.h"
 #include "src/pathops/SkPathOpsQuad.h"
 
 #include "src/pathops/SkIntersections.h"
@@ -237,7 +238,7 @@ SkDPoint SkDQuad::ptAtT(double t) const {
     return result;
 }
 
-static double interp_quad_coords(const double* src, double t) {
+static double interp_quad_coords(SkSpan<const double> src, double t) {
     if (0 == t) {
         return src[0];
     }
@@ -287,12 +288,12 @@ SkDQuad SkDQuad::subDivide(double t1, double t2) const {
         return *this;
     }
     SkDQuad dst;
-    double ax = dst[0].fX = interp_quad_coords(&fPts[0].fX, t1);
-    double ay = dst[0].fY = interp_quad_coords(&fPts[0].fY, t1);
-    double dx = interp_quad_coords(&fPts[0].fX, (t1 + t2) / 2);
-    double dy = interp_quad_coords(&fPts[0].fY, (t1 + t2) / 2);
-    double cx = dst[2].fX = interp_quad_coords(&fPts[0].fX, t2);
-    double cy = dst[2].fY = interp_quad_coords(&fPts[0].fY, t2);
+    double ax = dst[0].fX = interp_quad_coords(SkSpan(&fPts[0].fX, 6), t1);
+    double ay = dst[0].fY = interp_quad_coords(SkSpan(&fPts[0].fY, 5), t1);
+    double dx = interp_quad_coords(SkSpan(&fPts[0].fX, 6), (t1 + t2) / 2);
+    double dy = interp_quad_coords(SkSpan(&fPts[0].fY, 5), (t1 + t2) / 2);
+    double cx = dst[2].fX = interp_quad_coords(SkSpan(&fPts[0].fX, 6), t2);
+    double cy = dst[2].fY = interp_quad_coords(SkSpan(&fPts[0].fY, 5), t2);
     /* bx = */ dst[1].fX = 2 * dx - (ax + cx) / 2;
     /* by = */ dst[1].fY = 2 * dy - (ay + cy) / 2;
     return dst;
@@ -341,7 +342,7 @@ SkDPoint SkDQuad::subDivide(const SkDPoint& a, const SkDPoint& c, double t1, dou
 }
 
 /* classic one t subdivision */
-static void interp_quad_coords(const double* src, double* dst, double t) {
+static void interp_quad_coords(SkSpan<const double> src, SkSpan<double> dst, double t) {
     double ab = SkDInterp(src[0], src[2], t);
     double bc = SkDInterp(src[2], src[4], t);
     dst[0] = src[0];
@@ -354,8 +355,8 @@ static void interp_quad_coords(const double* src, double* dst, double t) {
 SkDQuadPair SkDQuad::chopAt(double t) const
 {
     SkDQuadPair dst;
-    interp_quad_coords(&fPts[0].fX, &dst.pts[0].fX, t);
-    interp_quad_coords(&fPts[0].fY, &dst.pts[0].fY, t);
+    interp_quad_coords(SkSpan(&fPts[0].fX, 6), SkSpan(&dst.pts[0].fX, 10), t);
+    interp_quad_coords(SkSpan(&fPts[0].fY, 5), SkSpan(&dst.pts[0].fY, 9), t);
     return dst;
 }
 
@@ -381,7 +382,7 @@ static int valid_unit_divide(double numer, double denom, double* ratio)
     B = 2(b - a)
     Solve for t, only if it fits between 0 < t < 1
 */
-int SkDQuad::FindExtrema(const double src[], double tValue[1]) {
+int SkDQuad::FindExtrema(SkSpan<const double> src, double tValue[1]) {
     /*  At + B == 0
         t = -B / A
     */

@@ -6,6 +6,8 @@
  */
 #include "src/core/SkMasks.h"
 
+#include <array>
+
 #include "include/private/SkDebug.h"
 
 /*
@@ -13,7 +15,7 @@
  * Used to convert 1-7 bit color components into 8-bit color components
  *
  */
-static constexpr uint8_t n_bit_to_8_bit_lookup_table[] = {
+static constexpr auto n_bit_to_8_bit_lookup_table = std::to_array<uint8_t>({
     // 1 bit
     0, 255,
     // 2 bits
@@ -39,7 +41,7 @@ static constexpr uint8_t n_bit_to_8_bit_lookup_table[] = {
     173, 175, 177, 179, 181, 183, 185, 187, 189, 191, 193, 195, 197, 199, 201,
     203, 205, 207, 209, 211, 213, 215, 217, 219, 221, 223, 225, 227, 229, 231,
     233, 235, 237, 239, 241, 243, 245, 247, 249, 251, 253, 255
-};
+,});
 
 /*
  *

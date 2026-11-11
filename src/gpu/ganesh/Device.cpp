@@ -1188,7 +1188,7 @@ GrRenderTargetProxy* Device::targetProxy() {
 }
 
 bool Device::wait(int numSemaphores,
-                  const GrBackendSemaphore* waitSemaphores,
+                  SkSpan<const GrBackendSemaphore>waitSemaphores,
                   bool deleteSemaphoresAfterWait) {
     ASSERT_SINGLE_OWNER
 

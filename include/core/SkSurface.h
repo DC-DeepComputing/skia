@@ -6,6 +6,8 @@
  */
 
 #ifndef SkSurface_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkSurface_DEFINED
 
 #include "include/core/SkImage.h"
@@ -651,7 +653,7 @@ public:
         @paramm deleteSemaphoresAfterWait  who owns and should delete the semaphores
         @return                            true if GPU is waiting on semaphores
     */
-    bool wait(int numSemaphores, const GrBackendSemaphore* waitSemaphores,
+    bool wait(int numSemaphores, SkSpan<const GrBackendSemaphore>waitSemaphores,
               bool deleteSemaphoresAfterWait = true);
 
     /** Initializes GrSurfaceCharacterization that can be used to perform GPU back-end

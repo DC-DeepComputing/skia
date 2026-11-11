@@ -203,7 +203,7 @@ public:
     }
 
     void setupBuffer(SkReadBuffer& buffer) const {
-        buffer.setTypefaceArray(fArray.get(), fCount);
+        buffer.setTypefaceArray(SkSpan(fArray.get(), fCount), fCount);
     }
 
 protected:

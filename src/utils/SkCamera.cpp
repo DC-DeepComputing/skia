@@ -5,16 +5,19 @@
  * found in the LICENSE file.
  */
 
+#include <cstdint>
+#include "include/core/SkSpan.h"
+#include "include/private/SkTo.h"
 #include "include/utils/SkCamera.h"
 
-static SkScalar SkScalarDotDiv(int count, const SkScalar a[], int step_a,
-                               const SkScalar b[], int step_b,
+static SkScalar SkScalarDotDiv(int count, SkSpan<const SkScalar> a, int step_a,
+                               SkSpan<const SkScalar> b, int step_b,
                                SkScalar denom) {
     SkScalar prod = 0;
     for (int i = 0; i < count; i++) {
         prod += a[0] * b[0];
-        a += step_a;
-        b += step_b;
+        a= a.subspan(SkTo<size_t>(step_a));
+        b= b.subspan(SkTo<size_t>(step_b));
     }
     return prod / denom;
 }
@@ -116,8 +119,8 @@ void SkCamera3D::patchToMatrix(const SkPatch3D& quilt, SkMatrix* matrix) const {
         fNeedToUpdate = false;
     }
 
-    const SkScalar* mapPtr = (const SkScalar*)(const void*)&fOrientation;
-    const SkScalar* patchPtr;
+    SkSpan<const SkScalar> mapPtr(reinterpret_cast<const SkScalar*>(&fOrientation), 9);
+    SkSpan<const SkScalar>patchPtr;
 
     SkV3 diff = quilt.fOrigin - fLocation;
     SkScalar dot = diff.dot({mapPtr[6], mapPtr[7], mapPtr[8]});
@@ -131,19 +134,19 @@ void SkCamera3D::patchToMatrix(const SkPatch3D& quilt, SkMatrix* matrix) const {
     // The divide by 'dot' isn't strictly necessary as the homogeneous divide would do much the
     // same thing (it's just scaling the entire matrix by 1/dot). It looks like it's normalizing
     // the matrix into some canonical space.
-    patchPtr = (const SkScalar*)&quilt;
+    patchPtr = SkSpan(reinterpret_cast<const SkScalar*>(&quilt), 9);
     matrix->set(SkMatrix::kMScaleX, SkScalarDotDiv(3, patchPtr, 1, mapPtr, 1, dot));
-    matrix->set(SkMatrix::kMSkewY,  SkScalarDotDiv(3, patchPtr, 1, mapPtr+3, 1, dot));
-    matrix->set(SkMatrix::kMPersp0, SkScalarDotDiv(3, patchPtr, 1, mapPtr+6, 1, dot));
+    matrix->set(SkMatrix::kMSkewY,  SkScalarDotDiv(3, patchPtr, 1, mapPtr.subspan(3u), 1, dot));
+    matrix->set(SkMatrix::kMPersp0, SkScalarDotDiv(3, patchPtr, 1, mapPtr.subspan(6u), 1, dot));
 
-    patchPtr += 3;
+    patchPtr= patchPtr.subspan(3u);
     matrix->set(SkMatrix::kMSkewX,  SkScalarDotDiv(3, patchPtr, 1, mapPtr, 1, dot));
-    matrix->set(SkMatrix::kMScaleY, SkScalarDotDiv(3, patchPtr, 1, mapPtr+3, 1, dot));
-    matrix->set(SkMatrix::kMPersp1, SkScalarDotDiv(3, patchPtr, 1, mapPtr+6, 1, dot));
+    matrix->set(SkMatrix::kMScaleY, SkScalarDotDiv(3, patchPtr, 1, mapPtr.subspan(3u), 1, dot));
+    matrix->set(SkMatrix::kMPersp1, SkScalarDotDiv(3, patchPtr, 1, mapPtr.subspan(6u), 1, dot));
 
-    patchPtr = (const SkScalar*)(const void*)&diff;
+    patchPtr = SkSpan(reinterpret_cast<const SkScalar*>(&diff), 3);
     matrix->set(SkMatrix::kMTransX, SkScalarDotDiv(3, patchPtr, 1, mapPtr, 1, dot));
-    matrix->set(SkMatrix::kMTransY, SkScalarDotDiv(3, patchPtr, 1, mapPtr+3, 1, dot));
+    matrix->set(SkMatrix::kMTransY, SkScalarDotDiv(3, patchPtr, 1, mapPtr.subspan(3u), 1, dot));
     matrix->set(SkMatrix::kMPersp2, SK_Scalar1);
 }
 

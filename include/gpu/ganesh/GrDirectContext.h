@@ -6,6 +6,8 @@
  */
 
 #ifndef GrDirectContext_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrDirectContext_DEFINED
 
 #include "include/core/SkColor.h"
@@ -35,7 +37,7 @@ class GrResourceCache;
 class GrResourceProvider;
 class SkData;
 class SkImage;
-class SkPixmap;
+#include "include/core/SkPixmap.h"
 class SkSurface;
 class SkTaskGroup;
 class SkTraceMemoryDump;
@@ -672,7 +674,7 @@ public:
      * For the Vulkan backend the layout of the created VkImage will be:
      *      VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
      */
-    GrBackendTexture createBackendTexture(const SkPixmap srcData[],
+    GrBackendTexture createBackendTexture(SkSpan<const SkPixmap> srcData,
                                           int numLevels,
                                           GrSurfaceOrigin,
                                           GrRenderable,
@@ -693,7 +695,7 @@ public:
                                            std::string_view label = {});
 
     // Deprecated versions that do not take origin and assume top-left.
-    GrBackendTexture createBackendTexture(const SkPixmap srcData[],
+    GrBackendTexture createBackendTexture(SkSpan<const SkPixmap> srcData,
                                           int numLevels,
                                           GrRenderable renderable,
                                           GrProtected isProtected,
@@ -758,7 +760,7 @@ public:
      *      VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
      */
     bool updateBackendTexture(const GrBackendTexture&,
-                              const SkPixmap srcData[],
+                              SkSpan<const SkPixmap> srcData,
                               int numLevels,
                               GrSurfaceOrigin = kTopLeft_GrSurfaceOrigin,
                               GrGpuFinishedProc finishedProc = nullptr,
@@ -773,7 +775,7 @@ public:
                               GrGpuFinishedProc finishedProc = nullptr,
                               GrGpuFinishedContext finishedContext = nullptr) {
         return this->updateBackendTexture(texture,
-                                          &srcData,
+                                          SkSpanFromRef(srcData),
                                           1,
                                           textureOrigin,
                                           finishedProc,
@@ -782,7 +784,7 @@ public:
 
     // Deprecated version that does not take origin and assumes top-left.
     bool updateBackendTexture(const GrBackendTexture& texture,
-                             const SkPixmap srcData[],
+                             SkSpan<const SkPixmap> srcData,
                              int numLevels,
                              GrGpuFinishedProc finishedProc,
                              GrGpuFinishedContext finishedContext);

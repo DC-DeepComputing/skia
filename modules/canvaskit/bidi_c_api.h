@@ -67,7 +67,7 @@ inline int computeCodeUnitFlags(const uint16_t* text, int textCount, uint16_t* o
     // SkUnicode::computeCodeUnitFlags expects char16_t* but does not mutate the buffer when
     // replaceTabs is false
     char16_t* utf16 = reinterpret_cast<char16_t*>(const_cast<uint16_t*>(text));
-    if (!getBidiUnicode()->computeCodeUnitFlags(utf16, textCount, false, &flags)) {
+    if (!getBidiUnicode()->computeCodeUnitFlags(SkSpan(utf16, textCount), textCount, false, &flags)) {
         return 0;
     }
     for (int i = 0; i < textCount; i++) {

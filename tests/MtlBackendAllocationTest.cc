@@ -199,7 +199,7 @@ DEF_GANESH_TEST_FOR_METAL_CONTEXT(MtlBackendAllocationTest, reporter, ctxInfo) {
                                                    GrRenderable renderable) {
                         SkASSERT(srcData && numLevels);
                         return ManagedBackendTexture::MakeWithData(dContext,
-                                                                   srcData,
+                                                                   SkSpan(srcData, numLevels),
                                                                    numLevels,
                                                                    origin,
                                                                    renderable,

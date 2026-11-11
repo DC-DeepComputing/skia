@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -353,7 +354,7 @@ void basic_transfer_from_test(skiatest::Reporter* reporter, const sk_gpu_test::C
                                                            skgpu::Budgeted::kNo,
                                                            skgpu::Mipmapped::kNo,
                                                            GrProtected::kNo,
-                                                           &data,
+                                                           SkSpanFromRef(data),
                                                            /*label=*/{});
     if (!tex) {
         return;

@@ -6,6 +6,8 @@
  */
 
 #ifndef GrResourceProvider_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrResourceProvider_DEFINED
 
 #include "include/core/SkRefCnt.h"
@@ -113,7 +115,7 @@ public:
                                    skgpu::Budgeted budgeted,
                                    skgpu::Mipmapped mipmapped,
                                    skgpu::Protected isProtected,
-                                   const GrMipLevel texels[],
+                                   SkSpan<const GrMipLevel> texels,
                                    std::string_view label);
 
     /**
@@ -399,7 +401,7 @@ private:
     GrColorType prepareLevels(const GrBackendFormat& format,
                               GrColorType,
                               SkISize baseSize,
-                              const GrMipLevel texels[],
+                              SkSpan<const GrMipLevel> texels,
                               int mipLevelCount,
                               TempLevels*,
                               TempLevelDatas*) const;
@@ -412,7 +414,7 @@ private:
     sk_sp<GrTexture> writePixels(sk_sp<GrTexture> texture,
                                  GrColorType colorType,
                                  SkISize baseSize,
-                                 const GrMipLevel texels[],
+                                 SkSpan<const GrMipLevel> texels,
                                  int mipLevelCount) const;
 
     GrResourceCache* cache() { return fCache; }

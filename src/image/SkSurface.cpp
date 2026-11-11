@@ -18,6 +18,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkImageInfoPriv.h"
@@ -237,7 +238,7 @@ skgpu::graphite::Recorder* SkSurface::recorder() const { return asConstSB(this)-
 
 SkRecorder* SkSurface::baseRecorder() const { return asConstSB(this)->onGetBaseRecorder(); }
 
-bool SkSurface::wait(int numSemaphores, const GrBackendSemaphore* waitSemaphores,
+bool SkSurface::wait(int numSemaphores, SkSpan<const GrBackendSemaphore>waitSemaphores,
                      bool deleteSemaphoresAfterWait) {
     return asSB(this)->onWait(numSemaphores, waitSemaphores, deleteSemaphoresAfterWait);
 }
