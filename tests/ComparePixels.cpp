@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkConvertPixels.h"
@@ -22,10 +23,11 @@
                            src.info(), src.         addr(), src.rowBytes());
 }
 
-static bool compare_colors(int x, int y,
-                           const float rgbaA[],
-                           const float rgbaB[],
-                           const float tolRGBA[4],
+static bool compare_colors(int x,
+                           int y,
+                           SkSpan<const float, 4> rgbaA,
+                           SkSpan<const float, 4> rgbaB,
+                           SkSpan<const float, 4> tolRGBA,
                            std::function<ComparePixmapsErrorReporter>& error) {
     std::array<float, 4> diffs;
     bool bad = false;
@@ -42,13 +44,30 @@ static bool compare_colors(int x, int y,
     return true;
 }
 
+// DEPRECATED: use the SkSpan overload.
+static bool compare_colors(int x,
+                           int y,
+                           const float rgbaA[4],
+                           const float rgbaB[4],
+                           SkSpan<const float, 4> tolRGBA,
+                           std::function<ComparePixmapsErrorReporter>& error) {
+    // TODO(crbug.com/582862856): Remove once pixmap rows can be handed out as spans. Callers
+    // pass pointers to 4 consecutive floats (one RGBA_F32 pixel).
+    return compare_colors(x,
+                          y,
+                          SK_UNSAFE_TODO(SkSpan<const float, 4>(rgbaA, 4)),
+                          SK_UNSAFE_TODO(SkSpan<const float, 4>(rgbaB, 4)),
+                          tolRGBA,
+                          error);
+}
+
 bool ComparePixels(const SkPixmap& a,
                    const SkPixmap& b,
-                   const float tolRGBA[4],
+                   SkSpan<const float, 4> tolRGBA,
                    std::function<ComparePixmapsErrorReporter>& error) {
     if (a.dimensions() != b.dimensions()) {
-        static constexpr float kEmptyDiffs[4] = {};
-        error(-1, -1, kEmptyDiffs);
+        static constexpr std::array<float, 4> kEmptyDiffs = {};
+        error(-1, -1, kEmptyDiffs.data());
         return false;
     }
 
@@ -95,7 +114,7 @@ bool ComparePixels(const SkPixmap& a,
 
 bool CheckSolidPixels(const SkColor4f& col,
                       const SkPixmap& pixmap,
-                      const float tolRGBA[4],
+                      SkSpan<const float, 4> tolRGBA,
                       std::function<ComparePixmapsErrorReporter>& error) {
     size_t floatBpp = SkColorTypeBytesPerPixel(kRGBA_F32_SkColorType);
 
