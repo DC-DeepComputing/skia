@@ -22,6 +22,8 @@ SPARSE_STRIPS_FILES = [
     "StripGenerator.h",
     "StripProcessorScalar.h",
     "StripProcessorSimd.h",
+    "StrokeFlatten.cpp",
+    "StrokeFlatten.h",
     "Tiler.h",
     "WindingHistogram.h",
 ]

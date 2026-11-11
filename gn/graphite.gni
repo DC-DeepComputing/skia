@@ -529,6 +529,8 @@ skia_graphite_sparse_strips_sources = [
   "$_src/gpu/graphite/sparse_strips/StripGenerator.h",
   "$_src/gpu/graphite/sparse_strips/StripProcessorScalar.h",
   "$_src/gpu/graphite/sparse_strips/StripProcessorSimd.h",
+  "$_src/gpu/graphite/sparse_strips/StrokeFlatten.cpp",
+  "$_src/gpu/graphite/sparse_strips/StrokeFlatten.h",
   "$_src/gpu/graphite/sparse_strips/Tiler.h",
   "$_src/gpu/graphite/sparse_strips/WindingHistogram.h",
 ]
