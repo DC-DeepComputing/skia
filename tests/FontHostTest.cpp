@@ -7,8 +7,10 @@
 
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -28,6 +30,7 @@
 #include <cstdint>
 #include <cstring>
 #include <memory>
+#include <optional>
 #include <string>
 
 using namespace skia_private;
@@ -290,6 +293,56 @@ DEF_TEST(FontHost, reporter) {
     test_fontstream(reporter);
     test_advances(reporter);
     test_symbolfont(reporter);
+}
+
+// Verify that degenerate font matrices (zero size or zero horizontal scale, which bypasses
+// SkFont::setupForAsPaths canonicalization) yield zero advances, empty bounds, and empty paths
+DEF_TEST(FontHost_DegenerateMatrix, reporter) {
+    sk_sp<SkData> data = GetResourceAsData("fonts/Roboto-Regular.ttf");
+    REPORTER_ASSERT(reporter, data);
+    if (!data) {
+        return;
+    }
+    sk_sp<SkFontMgr> fontMgr = ToolUtils::TestFontMgr();
+    REPORTER_ASSERT(reporter, fontMgr);
+    sk_sp<SkTypeface> typeface = fontMgr->makeFromData(std::move(data));
+    REPORTER_ASSERT(reporter, typeface);
+    if (!typeface) {
+        return;
+    }
+
+    constexpr const char* kText = "BOOO";
+    constexpr size_t kGlyphCount = 4;
+    std::array<SkGlyphID, kGlyphCount> glyphs{};
+    const size_t count =
+            SkFont(typeface, 16).textToGlyphs(kText, strlen(kText), SkTextEncoding::kUTF8, glyphs);
+    REPORTER_ASSERT(reporter, count == glyphs.size());
+    for (SkGlyphID glyph : glyphs) {
+        REPORTER_ASSERT(reporter, glyph != 0);
+    }
+
+    SkFont zeroSize(typeface, 0);
+    SkFont zeroScaleX(typeface, 16);
+    zeroScaleX.setScaleX(0);
+
+    for (const SkFont& font : {zeroSize, zeroScaleX}) {
+        std::array<SkScalar, kGlyphCount> widths;
+        std::array<SkRect, kGlyphCount> bounds;
+        widths.fill(-1);
+        bounds.fill(SkRect::MakeWH(1, 1));
+        font.getWidthsBounds(glyphs, widths, bounds, nullptr);
+
+        for (size_t i = 0; i < kGlyphCount; ++i) {
+            REPORTER_ASSERT(reporter, widths[i] == 0);
+            REPORTER_ASSERT(reporter, bounds[i].isEmpty());
+
+            std::optional<SkPath> path = font.getPath(glyphs[i]);
+            REPORTER_ASSERT(reporter, path.has_value());
+            if (path.has_value()) {
+                REPORTER_ASSERT(reporter, path->getBounds().isEmpty());
+            }
+        }
+    }
 }
 
 // need tests for SkStrSearch
