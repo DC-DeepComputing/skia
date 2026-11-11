@@ -20,6 +20,28 @@
 
 namespace skgpu::graphite {
 
+namespace {
+
+// The scratch buffers are kept across draws, unless a large path grew them past this. Freeing
+// those bounds the memory held between draws, and one allocation is negligible next to processing
+// that many points or tiles.
+constexpr size_t kMaxRetainedScratchBytes = 1 << 20;
+
+}  // anonymous namespace
+
+struct StripGenerator::Scratch {
+    Polyline fPolyline;
+    Flatten fFlatten;
+    Tiles<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight> fTiles;
+
+    bool isLarge() const {
+        const size_t pointBytes =
+                sizeof(SkPoint) * static_cast<size_t>(fPolyline.points().capacity());
+        const size_t tileBytes = sizeof(Tile) * static_cast<size_t>(fTiles.getTiles().capacity());
+        return pointBytes > kMaxRetainedScratchBytes || tileBytes > kMaxRetainedScratchBytes;
+    }
+};
+
 StripGenerator::StripGenerator(int width,
                                int height,
                                const SparseStripConfig::LUTArray& maskLUT,
@@ -30,6 +52,7 @@ StripGenerator::StripGenerator(int width,
         , fRecorder(recorder)
         , fWindingHistogram((height + SparseStripConfig::kTileHeight - 1) /
                             SparseStripConfig::kTileHeight)
+        , fScratch(std::make_unique<Scratch>())
         , fCulled(true) {}
 
 StripGenerator::~StripGenerator() = default;
@@ -39,6 +62,17 @@ bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm) {
 }
 
 bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
+    const bool success = this->processGeometryImpl(path, ctm, clip);
+    // The polyline and tiles have been consumed: the results are in fEnds and fWides.
+    if (fScratch->isLarge()) {
+        fScratch = std::make_unique<Scratch>();
+    }
+    return success;
+}
+
+bool StripGenerator::processGeometryImpl(const SkPath& path,
+                                         const SkMatrix& ctm,
+                                         const SkIRect& clip) {
     fEnds.clear();
     fWides.clear();
 
@@ -57,9 +91,9 @@ bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, co
         return false;
     }
 
-    Flatten flattener;
-    Polyline polyline;
-    flattener.processPaths<FlattenMode::kSimd>(path, ctm, tileClip, &polyline);
+    Polyline& polyline = fScratch->fPolyline;
+    polyline.reset();
+    fScratch->fFlatten.processPaths<FlattenMode::kSimd>(path, ctm, tileClip, &polyline);
 
     if (polyline.count() == 0 && !path.isInverseFillType()) {
         return true;
@@ -78,7 +112,8 @@ bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, co
     }
 #endif
 
-    Tiles<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight> tiler;
+    auto& tiler = fScratch->fTiles;
+    tiler.reset();
     fCulled = tiler.makeTilesMSAA(polyline, tileClip, &fWindingHistogram);
     tiler.sortTiles();
 

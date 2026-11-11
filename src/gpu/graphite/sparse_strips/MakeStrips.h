@@ -362,8 +362,10 @@ private:
                 SkPoint::Make(prevX + static_cast<float>(kTileWidth),
                               prevY + static_cast<float>(kTileHeight))};
 
+        // Read through data(): this runs per tile, and i < tiles.size().
+        const Tile* tileData = tiles.data();
         for (size_t i = 0; i < totalCount; ++i) {
-            Tile tile = tiles[i];
+            Tile tile = tileData[i];
 
             // Determine tile traversal events
             bool rowStart = (tile.y != prevTile.y);

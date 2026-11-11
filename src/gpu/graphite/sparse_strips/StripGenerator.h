@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 
 #include <cstdint>
+#include <memory>
 
 class SkMatrix;
 class SkPath;
@@ -40,6 +41,11 @@ public:
     bool cleanupNullCaps();
 
 private:
+    // The Polyline, Flatten and Tiles that processGeometry() works in.
+    struct Scratch;
+
+    bool processGeometryImpl(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip);
+
     int fWidth;
     int fHeight;
     const SparseStripConfig::LUTArray& fMaskLUT;
@@ -47,6 +53,8 @@ private:
     EndCaps fEnds;
     WideTiles fWides;
     WindingHistogram fWindingHistogram;
+    // Kept across draws, so that steady state draws don't allocate.
+    std::unique_ptr<Scratch> fScratch;
     bool fCulled;
 };
 

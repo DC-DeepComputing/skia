@@ -10,6 +10,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkTDArray.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 
@@ -48,20 +49,11 @@ public:
         if (pts.empty()) {
             return;
         }
-
-        fPoints.reserve(fPoints.size() + pts.size());
-
-        // Cache the last point in a local register.
-        // Note: If fPoints.back() is a NaN sentinel, pt != lastPt correctly evaluates to true.
-        SkPoint lastPt = fPoints.empty() ? SkPoint{SK_ScalarNaN, SK_ScalarNaN} : fPoints.back();
-
+        BulkWriter writer(this, static_cast<int>(pts.size()));
         for (SkPoint pt : pts) {
-            SkASSERT(!std::isnan(pt.fX) && !std::isnan(pt.fY));
-            if (pt != lastPt) {
-                fPoints.push_back(pt);
-                lastPt = pt;
-            }
+            writer.append(pt);
         }
+        writer.commit();
     }
 
     // Bulk writing for producers of many points: beginBulk() returns room for up to 'maxCount'
@@ -80,14 +72,56 @@ public:
         fPoints.resize(fPoints.size() + count);
     }
 
+    // Writes up to 'maxCount' points through a cursor into the space reserved by beginBulk() and,
+    // like appendPoint(), skips consecutive duplicates. Call commit() after the last append().
+    class BulkWriter {
+    public:
+        BulkWriter(Polyline* polyline, int maxCount)
+                : fPolyline(polyline)
+                , fLast(polyline->lastPoint())
+                , fStart(polyline->beginBulk(maxCount))
+                , fDst(fStart) {
+#if defined(SK_DEBUG)
+            fEnd = fStart + maxCount;
+#endif
+        }
+
+        SK_ALWAYS_INLINE void append(SkPoint pt) {
+            SkASSERT(!std::isnan(pt.fX) && !std::isnan(pt.fY));
+#if defined(SK_DEBUG)
+            SkASSERT(fDst < fEnd);
+#endif
+            // A NaN sentinel compares unequal to every point.
+            if (pt != fLast) {
+                *fDst++ = pt;
+                fLast = pt;
+            }
+        }
+
+        void commit() { fPolyline->endBulk(static_cast<int>(fDst - fStart)); }
+
+    private:
+        Polyline* fPolyline;
+        SkPoint fLast;
+        SkPoint* fStart;
+        SkPoint* fDst;
+#if defined(SK_DEBUG)
+        SkPoint* fEnd;
+#endif
+    };
+
     void appendSentinel() {
         if (!fPoints.empty() && !std::isnan(fPoints.back().fX)) {
             fPoints.push_back({SK_ScalarNaN, SK_ScalarNaN});
         }
     }
 
+    // Unchecked in release builds: this runs per tile in the coverage loops, and the index comes
+    // from a tile generated from these points.
     Line getLine(uint32_t index) const {
-        return {fPoints[index], fPoints[index + 1]};
+        SkASSERT(static_cast<size_t>(index) + 1 < static_cast<size_t>(fPoints.size()));
+        const SkPoint* pts = fPoints.data();
+        return {pts[index], pts[index + 1]};
     }
 
     class LineIterator {
@@ -158,6 +192,11 @@ public:
     const SkTDArray<SkPoint>& points() const { return fPoints; }
 
 private:
+    // The last point, or a NaN sentinel if there are none.
+    SkPoint lastPoint() const {
+        return fPoints.empty() ? SkPoint{SK_ScalarNaN, SK_ScalarNaN} : fPoints.back();
+    }
+
     SkTDArray<SkPoint> fPoints;
 };
 

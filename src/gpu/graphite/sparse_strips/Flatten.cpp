@@ -329,12 +329,14 @@ SK_ALWAYS_INLINE void Flatten::flattenQuadScalar(const SkPoint pts[3], Polyline*
             std::ceil(0.5 / kSqrtQuadTolerance * params.fCurvatureIntegral)));
     double step = 1.0 / numSegments;
 
+    Polyline::BulkWriter writer(polyline, static_cast<int>(numSegments));
     for (uint32_t i = 1; i < numSegments; ++i) {
         double u = i * step;
         double t = determine_quad_subdiv_t(params, u);
-        polyline->appendPoint(eval_quad_scalar(pts, static_cast<float>(t)));
+        writer.append(eval_quad_scalar(pts, static_cast<float>(t)));
     }
-    polyline->appendPoint(pts[2]);
+    writer.append(pts[2]);
+    writer.commit();
 }
 
 template <double kSqrtQuadTol>

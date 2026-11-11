@@ -706,6 +706,52 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_StripGeneratorHis
                     gen.wides().size());
 }
 
+// StripGenerator keeps its polyline and tiles across draws, and frees them after a draw that grew
+// them past a limit. Neither may affect later draws, which must match a fresh generator's.
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_StripGeneratorScratchReuse,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kToBeDetermined) {
+    auto recorder = context->makeRecorder();
+    const SparseStripConfig::LUTArray lut = GenerateMSAALUT();
+    constexpr int kDeviceSize = 64;
+    const SkIRect clip = SkIRect::MakeWH(kDeviceSize, kDeviceSize);
+
+    // A closed zigzag of 150k short segments, whose polyline and tiles exceed what is kept.
+    SkPathBuilder zigzag;
+    zigzag.moveTo(2.0f, 30.5f);
+    for (int i = 1; i < 150000; ++i) {
+        zigzag.lineTo(2.0f + static_cast<float>(i % 60), (i & 1) ? 33.0f : 30.5f);
+    }
+    const SkPath large = zigzag.close().detach();
+    const SkPath enclosing =
+            SkPathBuilder()
+                    .addRect(SkRect::MakeLTRB(
+                            -20.0f, -20.0f, kDeviceSize + 20.0f, kDeviceSize + 20.0f))
+                    .detach();
+    const SkPath sliver = make_right_crossing_sliver();
+
+    StripGenerator gen(kDeviceSize, kDeviceSize, lut, recorder.get());
+    const SkPath* draws[] = {&sliver, &large, &enclosing, &sliver, &large, &sliver};
+    for (const SkPath* path : draws) {
+        StripGenerator fresh(kDeviceSize, kDeviceSize, lut, recorder.get());
+        REPORTER_ASSERT(reporter, gen.processGeometry(*path, SkMatrix::I(), clip));
+        REPORTER_ASSERT(reporter, fresh.processGeometry(*path, SkMatrix::I(), clip));
+        REPORTER_ASSERT(reporter,
+                        gen.ends().size() == fresh.ends().size(),
+                        "Expected %zu EndCaps, got %zu",
+                        fresh.ends().size(),
+                        gen.ends().size());
+        bool widesMatch = gen.wides().size() == fresh.wides().size();
+        for (size_t i = 0; widesMatch && i < gen.wides().size(); ++i) {
+            const auto& got = gen.wides().tiles()[static_cast<int>(i)];
+            const auto& want = fresh.wides().tiles()[static_cast<int>(i)];
+            widesMatch = got.fX == want.fX && got.fY == want.fY && got.fWidth == want.fWidth;
+        }
+        REPORTER_ASSERT(reporter, widesMatch, "WideTiles differ from a fresh StripGenerator's");
+    }
+}
+
 DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_SKP_SIMD_4x4,
                                          reporter,
                                          context,
