@@ -3192,6 +3192,11 @@ if (skia_enable_tools) {
   if (skia_use_libpng_decode && skia_enable_tools_that_might_need_ganesh) {
     test_app("nanobench") {
       sources = [
+        "bench/BenchLogger.cpp",
+        "bench/BenchLogger.h",
+        "bench/Benchmark.cpp",
+        "bench/Benchmark.h",
+        "bench/ResultsWriter.h",
         "bench/nanobench.cpp",
         "bench/nanobench.h",
       ]

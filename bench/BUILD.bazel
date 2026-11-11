@@ -48,12 +48,10 @@ skia_filegroup(
         "BlurImageFilterBench.cpp",
         "BlurRectBench.cpp",
         "BlurRectsBench.cpp",
-        "BulkRectBench.cpp",
         "CanvasSaveRestoreBench.cpp",
         "ChartBench.cpp",
         "ChecksumBench.cpp",
         "ChromeBench.cpp",
-        "ClearBench.cpp",
         "ClipMaskBench.cpp",
         "ClipStrategyBench.cpp",
         "CmapBench.cpp",
@@ -115,7 +113,6 @@ skia_filegroup(
         "MorphologyBench.cpp",
         "MutexBench.cpp",
         "PDFBench.cpp",
-        "ParagraphBench.cpp",
         "PatchBench.cpp",
         "PathBench.cpp",
         "PathIterBench.cpp",
@@ -165,11 +162,37 @@ skia_filegroup(
         "TriangulatorBench.cpp",
         "TypefaceBench.cpp",
         "VertBench.cpp",
-        "VertexColorSpaceBench.cpp",
         "WebpBlendBench.cpp",
         "WritePixelsBench.cpp",
         "WriterBench.cpp",
         "gUniqueGlyphIDs.h",
+    ],
+)
+
+skia_filegroup(
+    name = "graphite_bench_sources",
+    srcs = [
+        "graphite/BoundsManagerBench.cpp",
+        "graphite/IntersectionTreeBench.cpp",
+    ],
+)
+
+skia_filegroup(
+    name = "sparse_strips_bench_sources",
+    srcs = [
+        "graphite/sparse_strips/CoverageBench.cpp",
+        "graphite/sparse_strips/CullBench.cpp",
+        "graphite/sparse_strips/FlattenBench.cpp",
+        "graphite/sparse_strips/TilerBench.cpp",
+    ],
+)
+
+skia_filegroup(
+    name = "ganesh_bench_sources",
+    srcs = [
+        "BulkRectBench.cpp",
+        "ClearBench.cpp",
+        "VertexColorSpaceBench.cpp",
     ],
 )
 
@@ -186,6 +209,7 @@ skia_cc_binary(
         "nanobench.cpp",
         "nanobench.h",
         ":bench_sources",
+        ":ganesh_bench_sources",
         "//tools/flags:common_flags_config",
     ],
     data = [

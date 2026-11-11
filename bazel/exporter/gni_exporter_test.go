@@ -121,6 +121,8 @@ func TestMakeRelativeFilePathForGNI_MatchingRootDir_Success(t *testing.T) {
 	test("src", "src/core/file.cpp", "$_src/core/file.cpp")
 	test("include", "include/core/file.h", "$_include/core/file.h")
 	test("modules", "modules/mod/file.cpp", "$_modules/mod/file.cpp")
+	test("bench", "bench/foo_bench.cpp", "$_bench/foo_bench.cpp")
+	test("tests", "tests/foo_test.cpp", "$_tests/foo_test.cpp")
 }
 
 func TestMakeRelativeFilePathForGNI_IndalidInput_ReturnError(t *testing.T) {
