@@ -115,7 +115,6 @@ skia_filegroup(
         "MorphologyBench.cpp",
         "MutexBench.cpp",
         "PDFBench.cpp",
-        "ParagraphBench.cpp",
         "PatchBench.cpp",
         "PathBench.cpp",
         "PathIterBench.cpp",
@@ -186,6 +185,7 @@ skia_cc_binary(
         "nanobench.cpp",
         "nanobench.h",
         ":bench_sources",
+        "//modules/skparagraph/bench:bench_srcs",
         "//tools/flags:common_flags_config",
     ],
     data = [

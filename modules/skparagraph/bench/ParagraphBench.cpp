@@ -7,8 +7,7 @@
 
 #include "modules/skparagraph/include/FontCollection.h"
 #include "modules/skparagraph/include/Paragraph.h"
-#include "modules/skparagraph/src/ParagraphBuilderImpl.h"
-#include "modules/skparagraph/src/ParagraphImpl.h"
+#include "modules/skparagraph/include/ParagraphBuilder.h"
 #include "modules/skshaper/utils/FactoryHelpers.h"
 #include "tools/Resources.h"
 #include "tools/fonts/FontToolUtils.h"
@@ -16,7 +15,6 @@
 #include <cfloat>
 #include <string>
 #include "include/core/SkPictureRecorder.h"
-#include "modules/skparagraph/utils/TestFontCollection.h"
 
 using namespace skia::textlayout;
 namespace {
@@ -41,10 +39,10 @@ struct ParagraphBench : public Benchmark {
         fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
         ParagraphStyle paragraph_style;
         paragraph_style.turnHintingOff();
-        ParagraphBuilderImpl builder(
+        std::unique_ptr<ParagraphBuilder> builder = ParagraphBuilder::make(
                 paragraph_style, fontCollection, SkShapers::BestAvailableUnicode());
-        builder.addText(text);
-        auto paragraph = builder.Build();
+        builder->addText(text, fData->size());
+        auto paragraph = builder->Build();
 
         SkPictureRecorder rec;
         SkCanvas* canvas = rec.beginRecording({0,0, 2000,3000});
@@ -72,10 +70,10 @@ struct ParagraphCacheHitUnresolvedBench : public Benchmark {
         for (char16_t i = 0; i < 1024; ++i) {
             text.push_back(i % 5 == 0 ? u' ' : static_cast<char16_t>(0xE000 + i));
         }
-        ParagraphBuilderImpl builder(ParagraphStyle(), fontCollection,
-                                     SkShapers::BestAvailableUnicode());
-        builder.addText(text);
-        fParagraph = builder.Build();
+        std::unique_ptr<ParagraphBuilder> builder = ParagraphBuilder::make(
+                ParagraphStyle(), fontCollection, SkShapers::BestAvailableUnicode());
+        builder->addText(text);
+        fParagraph = builder->Build();
         // Puts the shaped text into the cache
         fParagraph->layout(300);
     }
