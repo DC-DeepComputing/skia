@@ -33,6 +33,23 @@
       "message": "Ping if this can land. Thank you! @nscobie@google.com",
       "revId": "84935c84dd3834b13a703016fa2e797049197442",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21dcf2b6_908903e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2026-11-11T16:18:08Z",
+      "side": 1,
+      "message": "Sorry, was OOO. Proxying LGTM",
+      "revId": "84935c84dd3834b13a703016fa2e797049197442",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
