@@ -45,6 +45,8 @@ public:
 
     virtual skcpu::Recorder* cpuRecorder() = 0;
 
+    virtual sk_sp<SkSurface> makeSurface() = 0;
+
 protected:
     skia_private::TArray<sk_sp<SkCaptureAsset>> fCapturedPictures;
 
