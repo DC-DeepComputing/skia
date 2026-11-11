@@ -24,7 +24,9 @@
 #include <memory>
 #include <optional>
 
+class SkBitmap;
 class SkCanvas;
+class SkImage;
 class SkPixmap;
 class SkTraceMemoryDump;
 struct SkISize;
@@ -284,6 +286,8 @@ private:
     SkCanvas* makeCaptureCanvas(SkCanvas*) override;
     void createCaptureBreakpoint(SkSurface*) override;
     void deregisterCaptureCanvas(SkCanvas*) override;
+
+    sk_sp<SkImage> makeBitmapImage(const SkBitmap&) override;
 
     sk_sp<SharedContext> fSharedContext;
     ResourceProvider* fResourceProvider; // May point to the Context's resource provider
