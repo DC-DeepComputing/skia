@@ -39,6 +39,30 @@
       },
       "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22f1b1c2_83d33172",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1119,
+      "author": {
+        "id": 5303896
+      },
+      "writtenOn": "2026-11-11T21:04:41Z",
+      "side": 1,
+      "message": "Please correct me if my understanding is wrong. The maskToDevice transform is used to project some cached 2d glyph atlas to screen space, and if we are projecting with perspective then the fragment shader already needs to interpolate correctly in regards to perspective over that atlas. I would expect that the perspective of the glyph atlas should be the same as the perspective of the shader effect so we can just reuse the W for interpolation instead of doing extra math in the fragment shader. Is this a bad assumption to make?",
+      "parentUuid": "0e9e9225_18c210fc",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1119,
+        "endChar": 53
+      },
+      "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
