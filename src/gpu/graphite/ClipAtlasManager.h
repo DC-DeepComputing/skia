@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <memory>
 #include <string_view>
+#include "src/partition_alloc/raw_ptr.h"
 
 struct SkIPoint;
 
@@ -85,7 +86,7 @@ private:
         struct MaskHashEntry {
             SkIRect fBounds;
             DrawAtlas::AtlasLocator fLocator;
-            MaskHashEntry* fNext = nullptr;
+            raw_ptr<MaskHashEntry> fNext = nullptr;
         };
         struct UniqueKeyHash {
             uint32_t operator()(const skgpu::UniqueKey& key) const { return key.hash(); }
