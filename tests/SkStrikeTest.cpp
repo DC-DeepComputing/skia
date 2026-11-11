@@ -389,3 +389,225 @@ DEF_TEST(SkScalerContext_GetImageNonDeterministicBounds, reporter) {
     }
 }
 
+DEF_TEST(SkScalerContext_GetImageNoOpFilterDivergentFormats, reporter) {
+    class DivergentFormatTypeface final : public TestEmptyTypeface {
+    public:
+        DivergentFormatTypeface(SkRect firstBounds,
+                                SkRect secondBounds,
+                                SkMask::Format firstFormat,
+                                SkMask::Format secondFormat)
+                : fFirstBounds(firstBounds)
+                , fSecondBounds(secondBounds)
+                , fFirstFormat(firstFormat)
+                , fSecondFormat(secondFormat) {}
+
+    protected:
+        std::unique_ptr<SkScalerContext> onCreateScalerContext(
+                const SkScalerContextEffects& effects, const SkDescriptor* desc) const override {
+            class ScalerContext final : public SkScalerContext {
+            public:
+                ScalerContext(DivergentFormatTypeface& tf,
+                              const SkScalerContextEffects& effects,
+                              const SkDescriptor* desc)
+                        : SkScalerContext(tf, effects, desc), fOwner(tf) {}
+
+            protected:
+                GlyphMetrics generateMetrics(const SkGlyph&, SkArenaAlloc*) override {
+                    const bool isFirst = (fMetricsCallCount++ == 0);
+                    GlyphMetrics mx(isFirst ? fOwner.fFirstFormat : fOwner.fSecondFormat);
+                    mx.neverRequestPath = true;
+                    mx.bounds = isFirst ? fOwner.fFirstBounds : fOwner.fSecondBounds;
+                    return mx;
+                }
+
+                void generateImage(const SkGlyph& glyph, void* imageBuffer) override {
+                    switch (glyph.maskFormat()) {
+                        case SkMask::kBW_Format:
+                            memset(imageBuffer, 0xFF, glyph.imageSize());
+                            break;
+                        case SkMask::kLCD16_Format: {
+                            for (int y = 0; y < glyph.height(); ++y) {
+                                uint16_t* row = reinterpret_cast<uint16_t*>(
+                                        static_cast<uint8_t*>(imageBuffer) + y * glyph.rowBytes());
+                                for (int x = 0; x < glyph.width(); ++x) {
+                                    row[x] = 0x1234;
+                                }
+                            }
+                            break;
+                        }
+                        case SkMask::kARGB32_Format: {
+                            for (int y = 0; y < glyph.height(); ++y) {
+                                uint32_t* row = reinterpret_cast<uint32_t*>(
+                                        static_cast<uint8_t*>(imageBuffer) + y * glyph.rowBytes());
+                                for (int x = 0; x < glyph.width(); ++x) {
+                                    row[x] = 0xFF112233;
+                                }
+                            }
+                            break;
+                        }
+                        default:
+                            memset(imageBuffer, 0x7F, glyph.imageSize());
+                            break;
+                    }
+                }
+
+                std::optional<GeneratedPath> generatePath(const SkGlyph&) override {
+                    return std::nullopt;
+                }
+
+                void generateFontMetrics(SkFontMetrics*) override {}
+
+            private:
+                const DivergentFormatTypeface& fOwner;
+                int fMetricsCallCount = 0;
+            };
+
+            return std::make_unique<ScalerContext>(
+                    *const_cast<DivergentFormatTypeface*>(this), effects, desc);
+        }
+
+    private:
+        const SkRect fFirstBounds;
+        const SkRect fSecondBounds;
+        const SkMask::Format fFirstFormat;
+        const SkMask::Format fSecondFormat;
+    };
+
+    // A tiny positive sigma creates a non-null blur filter whose filterMask() returns false
+    // (hasNoBlur()), exercising SkScalerContext::getImage()'s fallback intersection copy on
+    // non-A8 mask formats.
+    sk_sp<SkMaskFilter> noOpBlur = SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 0.005f);
+    REPORTER_ASSERT(reporter, noOpBlur != nullptr);
+
+    // 1. kBW_Format (1 bit/pixel): 8x2 (2-byte buffer) shifted by (+3, +1) and (-3, -1).
+    for (bool shiftPositive : {true, false}) {
+        const SkRect second =
+                shiftPositive ? SkRect::MakeXYWH(3, 1, 8, 2) : SkRect::MakeXYWH(-3, -1, 8, 2);
+        sk_sp<SkTypeface> tf = sk_make_sp<DivergentFormatTypeface>(
+                SkRect::MakeWH(8, 2), second, SkMask::kBW_Format, SkMask::kBW_Format);
+        SkFont font(tf, 16.0f);
+        font.setEdging(SkFont::Edging::kAlias);
+        SkPaint paint;
+        paint.setMaskFilter(noOpBlur);
+
+        SkStrikeSpec strikeSpec =
+                SkStrikeSpec::MakeMask(font,
+                                       paint,
+                                       SkSurfaceProps(0, kUnknown_SkPixelGeometry),
+                                       SkScalerContextFlags::kNone,
+                                       SkMatrix::I());
+        std::unique_ptr<SkScalerContext> ctx = strikeSpec.createScalerContext();
+
+        SkArenaAlloc alloc{256};
+        SkGlyph glyph = ctx->makeGlyph(SkPackedGlyphID((SkGlyphID)1), &alloc);
+        REPORTER_ASSERT(reporter, glyph.maskFormat() == SkMask::kBW_Format);
+        REPORTER_ASSERT(reporter, glyph.imageSize() == 2);
+        REPORTER_ASSERT(reporter, glyph.setImage(&alloc, ctx.get()));
+
+        const uint8_t* bytes = static_cast<const uint8_t*>(glyph.image());
+        if (shiftPositive) {
+            REPORTER_ASSERT(reporter, bytes[0] == 0x00);
+            REPORTER_ASSERT(reporter, bytes[1] == 0x1F);
+        } else {
+            REPORTER_ASSERT(reporter, bytes[0] == 0xF8);
+            REPORTER_ASSERT(reporter, bytes[1] == 0x00);
+        }
+    }
+
+    // 2. kLCD16_Format (2 bytes/pixel): odd horizontal pixel shift (+3, +1) must preserve 16-bit
+    // pixel alignment rather than shifting by 3 bytes.
+    {
+        sk_sp<SkTypeface> tf = sk_make_sp<DivergentFormatTypeface>(SkRect::MakeWH(6, 3),
+                                                                   SkRect::MakeXYWH(3, 1, 6, 3),
+                                                                   SkMask::kLCD16_Format,
+                                                                   SkMask::kLCD16_Format);
+        SkFont font(tf, 16.0f);
+        font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
+        SkPaint paint;
+        paint.setMaskFilter(noOpBlur);
+
+        SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(font,
+                                                         paint,
+                                                         SkSurfaceProps(0, kRGB_H_SkPixelGeometry),
+                                                         SkScalerContextFlags::kNone,
+                                                         SkMatrix::I());
+        std::unique_ptr<SkScalerContext> ctx = strikeSpec.createScalerContext();
+
+        SkArenaAlloc alloc{256};
+        SkGlyph glyph = ctx->makeGlyph(SkPackedGlyphID((SkGlyphID)1), &alloc);
+        REPORTER_ASSERT(reporter, glyph.maskFormat() == SkMask::kLCD16_Format);
+        REPORTER_ASSERT(reporter, glyph.setImage(&alloc, ctx.get()));
+
+        const uint8_t* base = static_cast<const uint8_t*>(glyph.image());
+        for (int y = 0; y < glyph.height(); ++y) {
+            const uint16_t* row = reinterpret_cast<const uint16_t*>(base + y * glyph.rowBytes());
+            for (int x = 0; x < glyph.width(); ++x) {
+                const uint16_t expected = (x >= 3 && y >= 1) ? 0x1234 : 0x0000;
+                REPORTER_ASSERT(reporter, row[x] == expected);
+            }
+        }
+    }
+
+    // 3. kARGB32_Format (4 bytes/pixel): (+3, +1) shift must copy 4 bytes per pixel.
+    {
+        sk_sp<SkTypeface> tf = sk_make_sp<DivergentFormatTypeface>(SkRect::MakeWH(6, 3),
+                                                                   SkRect::MakeXYWH(3, 1, 6, 3),
+                                                                   SkMask::kARGB32_Format,
+                                                                   SkMask::kARGB32_Format);
+        SkFont font(tf, 16.0f);
+        SkPaint paint;
+        paint.setMaskFilter(noOpBlur);
+
+        SkStrikeSpec strikeSpec =
+                SkStrikeSpec::MakeMask(font,
+                                       paint,
+                                       SkSurfaceProps(0, kUnknown_SkPixelGeometry),
+                                       SkScalerContextFlags::kNone,
+                                       SkMatrix::I());
+        std::unique_ptr<SkScalerContext> ctx = strikeSpec.createScalerContext();
+
+        SkArenaAlloc alloc{256};
+        SkGlyph glyph = ctx->makeGlyph(SkPackedGlyphID((SkGlyphID)1), &alloc);
+        REPORTER_ASSERT(reporter, glyph.maskFormat() == SkMask::kARGB32_Format);
+        REPORTER_ASSERT(reporter, glyph.setImage(&alloc, ctx.get()));
+
+        const uint8_t* base = static_cast<const uint8_t*>(glyph.image());
+        for (int y = 0; y < glyph.height(); ++y) {
+            const uint32_t* row = reinterpret_cast<const uint32_t*>(base + y * glyph.rowBytes());
+            for (int x = 0; x < glyph.width(); ++x) {
+                const uint32_t expected = (x >= 3 && y >= 1) ? 0xFF112233u : 0u;
+                REPORTER_ASSERT(reporter, row[x] == expected);
+            }
+        }
+    }
+
+    // 4. Format mismatch across loads (Load 1 kARGB32_Format vs Load 2 kA8_Format) must clear
+    // origGlyph's image rather than crashing or copying mismatched pixel strides.
+    {
+        sk_sp<SkTypeface> tf = sk_make_sp<DivergentFormatTypeface>(SkRect::MakeWH(6, 3),
+                                                                   SkRect::MakeWH(6, 3),
+                                                                   SkMask::kARGB32_Format,
+                                                                   SkMask::kA8_Format);
+        SkFont font(tf, 16.0f);
+        SkPaint paint;
+        paint.setMaskFilter(noOpBlur);
+
+        SkStrikeSpec strikeSpec =
+                SkStrikeSpec::MakeMask(font,
+                                       paint,
+                                       SkSurfaceProps(0, kUnknown_SkPixelGeometry),
+                                       SkScalerContextFlags::kNone,
+                                       SkMatrix::I());
+        std::unique_ptr<SkScalerContext> ctx = strikeSpec.createScalerContext();
+
+        SkArenaAlloc alloc{256};
+        SkGlyph glyph = ctx->makeGlyph(SkPackedGlyphID((SkGlyphID)1), &alloc);
+        REPORTER_ASSERT(reporter, glyph.maskFormat() == SkMask::kARGB32_Format);
+        REPORTER_ASSERT(reporter, glyph.setImage(&alloc, ctx.get()));
+
+        const uint8_t* bytes = static_cast<const uint8_t*>(glyph.image());
+        for (size_t i = 0; i < glyph.imageSize(); ++i) {
+            REPORTER_ASSERT(reporter, bytes[i] == 0);
+        }
+    }
+}

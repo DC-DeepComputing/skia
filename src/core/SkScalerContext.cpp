@@ -791,79 +791,84 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
             memcpy(srcMask.image(), unfilteredGlyph->fImage, imageSize);
         }
 
-        SkASSERT_RELEASE(srcMask.fFormat == origGlyph.fMaskFormat);
         SkMaskBuilder dstMask = SkMaskBuilder(static_cast<uint8_t*>(origGlyph.fImage),
                                               origGlyph.iRect(), origGlyph.rowBytes(),
                                               origGlyph.maskFormat());
         SkIRect origBounds = dstMask.fBounds;
 
-        // If the unfiltered and the filtered bounds diverged so far that they do not
-        // overlap, there is nothing valid to copy; leave origGlyph's image cleared
-        if (!SkIRect::Intersects(srcMask.fBounds, dstMask.fBounds)) {
+        // If the format changed across loads (e.g. filterMask failed on the second load) or the
+        // bounds diverged so far that they do not overlap, leave origGlyph's image cleared.
+        SkIRect commonBounds = dstMask.fBounds;
+        if (srcMask.fFormat != origGlyph.fMaskFormat || !commonBounds.intersect(srcMask.fBounds)) {
             sk_bzero(origGlyph.fImage, origGlyph.imageSize());
             return;
         }
 
-        // Find the intersection of src and dst while updating the fImages.
-        if (srcMask.fBounds.fTop < dstMask.fBounds.fTop) {
-            int32_t topDiff = dstMask.fBounds.fTop - srcMask.fBounds.fTop;
-            srcMask.image() += srcMask.fRowBytes * topDiff;
-            srcMask.bounds().fTop = dstMask.fBounds.fTop;
-        }
-        if (dstMask.fBounds.fTop < srcMask.fBounds.fTop) {
-            int32_t topDiff = srcMask.fBounds.fTop - dstMask.fBounds.fTop;
-            dstMask.image() += dstMask.fRowBytes * topDiff;
-            dstMask.bounds().fTop = srcMask.fBounds.fTop;
-        }
-
-        if (srcMask.fBounds.fLeft < dstMask.fBounds.fLeft) {
-            int32_t leftDiff = dstMask.fBounds.fLeft - srcMask.fBounds.fLeft;
-            srcMask.image() += leftDiff;
-            srcMask.bounds().fLeft = dstMask.fBounds.fLeft;
-        }
-        if (dstMask.fBounds.fLeft < srcMask.fBounds.fLeft) {
-            int32_t leftDiff = srcMask.fBounds.fLeft - dstMask.fBounds.fLeft;
-            dstMask.image() += leftDiff;
-            dstMask.bounds().fLeft = srcMask.fBounds.fLeft;
-        }
-
-        if (srcMask.fBounds.fBottom < dstMask.fBounds.fBottom) {
-            dstMask.bounds().fBottom = srcMask.fBounds.fBottom;
-        }
-        if (dstMask.fBounds.fBottom < srcMask.fBounds.fBottom) {
-            srcMask.bounds().fBottom = dstMask.fBounds.fBottom;
-        }
-
-        if (srcMask.fBounds.fRight < dstMask.fBounds.fRight) {
-            dstMask.bounds().fRight = srcMask.fBounds.fRight;
-        }
-        if (dstMask.fBounds.fRight < srcMask.fBounds.fRight) {
-            srcMask.bounds().fRight = dstMask.fBounds.fRight;
-        }
-
-        SkASSERT(srcMask.fBounds == dstMask.fBounds);
-        int width = srcMask.fBounds.width();
-        int height = srcMask.fBounds.height();
-        int dstRB = dstMask.fRowBytes;
-        int srcRB = srcMask.fRowBytes;
-
-        const uint8_t* src = srcMask.fImage;
-        uint8_t* dst = dstMask.image();
-
-        if (SkMask::k3D_Format == srcMask.fFormat) {
-            // we have to copy 3 times as much
-            height *= 3;
-        }
-
         // If not filling the full original glyph, clear it out first.
-        if (dstMask.fBounds != origBounds) {
-            sk_bzero(origGlyph.fImage, origGlyph.fHeight * origGlyph.rowBytes());
+        if (commonBounds != origBounds) {
+            sk_bzero(origGlyph.fImage, origGlyph.imageSize());
         }
 
-        while (--height >= 0) {
-            memcpy(dst, src, width);
-            src += srcRB;
-            dst += dstRB;
+        const int width = commonBounds.width();
+        const int height = commonBounds.height();
+        const int srcX = commonBounds.fLeft - srcMask.fBounds.fLeft;
+        const int srcY = commonBounds.fTop - srcMask.fBounds.fTop;
+        const int dstX = commonBounds.fLeft - dstMask.fBounds.fLeft;
+        const int dstY = commonBounds.fTop - dstMask.fBounds.fTop;
+        const size_t srcRB = srcMask.fRowBytes;
+        const size_t dstRB = dstMask.fRowBytes;
+
+        if (SkMask::kBW_Format == srcMask.fFormat) {
+            for (int y = 0; y < height; ++y) {
+                const uint8_t* srcRow = srcMask.fImage + static_cast<size_t>(srcY + y) * srcRB;
+                uint8_t* dstRow = dstMask.image() + static_cast<size_t>(dstY + y) * dstRB;
+                for (int x = 0; x < width; ++x) {
+                    const int sx = srcX + x;
+                    const int dx = dstX + x;
+                    const uint8_t bit = (srcRow[sx >> 3] >> (7 - (sx & 7))) & 1;
+                    const uint8_t mask = static_cast<uint8_t>(1u << (7 - (dx & 7)));
+                    if (bit) {
+                        dstRow[dx >> 3] |= mask;
+                    } else {
+                        dstRow[dx >> 3] &= ~mask;
+                    }
+                }
+            }
+        } else {
+            size_t bytesPerPixel = 1;
+            size_t numPlanes = 1;
+            switch (srcMask.fFormat) {
+                case SkMask::kA8_Format:
+                case SkMask::kSDF_Format:
+                    break;
+                case SkMask::k3D_Format:
+                    numPlanes = 3;
+                    break;
+                case SkMask::kLCD16_Format:
+                    bytesPerPixel = sizeof(uint16_t);
+                    break;
+                case SkMask::kARGB32_Format:
+                    bytesPerPixel = sizeof(uint32_t);
+                    break;
+                case SkMask::kBW_Format:
+                    SkUNREACHABLE;
+            }
+            const size_t srcPlaneBytes = static_cast<size_t>(srcMask.fBounds.height()) * srcRB;
+            const size_t dstPlaneBytes = static_cast<size_t>(dstMask.fBounds.height()) * dstRB;
+            const size_t copyRowBytes = static_cast<size_t>(width) * bytesPerPixel;
+            for (size_t plane = 0; plane < numPlanes; ++plane) {
+                const uint8_t* src = srcMask.fImage + plane * srcPlaneBytes +
+                                     static_cast<size_t>(srcY) * srcRB +
+                                     static_cast<size_t>(srcX) * bytesPerPixel;
+                uint8_t* dst = dstMask.image() + plane * dstPlaneBytes +
+                               static_cast<size_t>(dstY) * dstRB +
+                               static_cast<size_t>(dstX) * bytesPerPixel;
+                for (int y = 0; y < height; ++y) {
+                    memcpy(dst, src, copyRowBytes);
+                    src += srcRB;
+                    dst += dstRB;
+                }
+            }
         }
     }
 }
