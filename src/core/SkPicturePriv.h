@@ -58,10 +58,7 @@ public:
 
     static int ApproximateOpCount(const SkPicture* pic, int depth = 0, bool nested = false);
 
-    static uint64_t MakeSharedID(uint32_t pictureID) {
-        uint64_t sharedID = SkSetFourByteTag('p', 'i', 'c', 't');
-        return (sharedID << 32) | pictureID;
-    }
+    static constexpr SkFourByteTag kResourceCacheTag = SkSetFourByteTag('p', 'i', 'c', 't');
 
     static void AddedToCache(const SkPicture* pic) {
         if (pic) {

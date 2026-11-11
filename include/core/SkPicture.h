@@ -157,7 +157,7 @@ public:
 
         @return  identifier for SkPicture
     */
-    uint32_t uniqueID() const { return fUniqueID; }
+    uint64_t uniqueID() const { return fUniqueID; }
 
     /** Returns storage containing SkData describing SkPicture, using optional custom
         encoders.
@@ -296,7 +296,7 @@ private:
     // placeholders provide the bare minimum to operate on an SkPicture
     bool isPlaceholder() const { return !fRecord; }
 
-    const uint32_t fUniqueID;
+    const uint64_t fUniqueID;
     const SkRect fCullRect;
     const size_t fApproxBytesUsedBySubPictures;
     const sk_sp<const SkRecord> fRecord;

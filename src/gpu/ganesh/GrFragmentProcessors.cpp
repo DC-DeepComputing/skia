@@ -734,15 +734,30 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
         info.imageInfo = info.imageInfo.makeColorType(kRGBA_8888_SkColorType);
     }
 
+    struct PictureShaderKeyData {
+        uint64_t pictureID;
+        uint32_t colorSpaceXYZHash;
+        uint32_t colorSpaceTransferFnHash;
+        uint32_t colorType;
+        SkRect tile;
+        SkSize tileScale;
+        SkSurfaceProps props;
+        uint32_t pad;
+    };
+    static_assert(sizeof(PictureShaderKeyData) ==
+                  sizeof(uint64_t) + 3 * sizeof(uint32_t) + sizeof(SkRect) + sizeof(SkSize) +
+                  sizeof(SkSurfaceProps) + sizeof(uint32_t));
+
     static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
     skgpu::UniqueKey key;
-    std::tuple keyData = {dstCS->toXYZD50Hash(),
-                          dstCS->transferFnHash(),
-                          static_cast<uint32_t>(dstColorType),
-                          shader->picture()->uniqueID(),
-                          shader->tile(),
-                          info.tileScale,
-                          info.props};
+    PictureShaderKeyData keyData = {shader->picture()->uniqueID(),
+                                    dstCS->toXYZD50Hash(),
+                                    dstCS->transferFnHash(),
+                                    static_cast<uint32_t>(dstColorType),
+                                    shader->tile(),
+                                    info.tileScale,
+                                    info.props,
+                                    /*pad=*/0};
     skgpu::UniqueKey::Builder builder(
             &key, kDomain, sizeof(keyData) / sizeof(uint32_t), "Picture Shader Image");
     memcpy(&builder[0], &keyData, sizeof(keyData));

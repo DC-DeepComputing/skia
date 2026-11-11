@@ -53,12 +53,15 @@ static inline bool SkShouldPostMessageToBus(
     #define SK_DEFAULT_IMAGE_CACHE_LIMIT     (32 * 1024 * 1024)
 #endif
 
-void SkResourceCache::Key::init(void* nameSpace, uint64_t sharedID, size_t dataSize) {
+void SkResourceCache::Key::init(void* nameSpace,
+                                uint64_t sharedID,
+                                size_t dataSize,
+                                uint32_t sharedIDTag) {
     SkASSERT(SkAlign4(dataSize) == dataSize);
 
     // fCount32 and fHash are not hashed
     static const int kUnhashedLocal32s = 2; // fCache32 + fHash
-    static const int kSharedIDLocal32s = 2; // fSharedID_lo + fSharedID_hi
+    static const int kSharedIDLocal32s = 4; // fSharedID_lo + fSharedID_hi + fSharedIDTag + fPad
     static const int kHashedLocal32s = kSharedIDLocal32s + (sizeof(fNamespace) >> 2);
     static const int kLocal32s = kUnhashedLocal32s + kHashedLocal32s;
 
@@ -69,6 +72,8 @@ void SkResourceCache::Key::init(void* nameSpace, uint64_t sharedID, size_t dataS
     fCount32 = SkToS32(kLocal32s + (dataSize >> 2));
     fSharedID_lo = (uint32_t)(sharedID & 0xFFFFFFFF);
     fSharedID_hi = (uint32_t)(sharedID >> 32);
+    fSharedIDTag = sharedIDTag;
+    fPad = 0;
     fNamespace = nameSpace;
     // skip unhashed fields when computing the hash
     fHash = SkChecksum::Hash32(this->as32() + kUnhashedLocal32s,
@@ -246,7 +251,7 @@ static int gPurgeCallCounter;
 static int gPurgeHitCounter;
 #endif
 
-void SkResourceCache::purgeSharedID(uint64_t sharedID) {
+void SkResourceCache::purgeSharedID(uint64_t sharedID, uint32_t sharedIDTag) {
     if (0 == sharedID) {
         return;
     }
@@ -260,7 +265,8 @@ void SkResourceCache::purgeSharedID(uint64_t sharedID) {
     Rec* rec = fTail;
     while (rec) {
         Rec* prev = rec->fPrev;
-        if (rec->getKey().getSharedID() == sharedID) {
+        if (rec->getKey().getSharedID() == sharedID &&
+            rec->getKey().getSharedIDTag() == sharedIDTag) {
             // even though the "src" is now dead, caches could still be in-flight, so
             // we have to check if it can be removed.
             if (rec->canBePurged()) {
@@ -458,7 +464,7 @@ void SkResourceCache::checkMessages() {
     TArray<PurgeSharedIDMessage> msgs;
     fPurgeSharedIDInbox.poll(&msgs);
     for (int i = 0; i < msgs.size(); ++i) {
-        this->purgeSharedID(msgs[i].fSharedID);
+        this->purgeSharedID(msgs[i].fSharedID, msgs[i].fSharedIDTag);
     }
 }
 
@@ -524,9 +530,10 @@ void SkResourceCache::VisitAll(Visitor visitor, void* context) {
     get_cache()->visitAll(visitor, context);
 }
 
-void SkResourceCache::PostPurgeSharedID(uint64_t sharedID) {
+void SkResourceCache::PostPurgeSharedID(uint64_t sharedID, uint32_t sharedIDTag) {
     if (sharedID) {
-        SkMessageBus<PurgeSharedIDMessage, uint32_t>::Post(PurgeSharedIDMessage(sharedID));
+        SkMessageBus<PurgeSharedIDMessage, uint32_t>::Post(
+                PurgeSharedIDMessage(sharedID, sharedIDTag));
     }
 }
 

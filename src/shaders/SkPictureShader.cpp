@@ -50,7 +50,7 @@ static unsigned gImageFromPictureKeyNamespaceLabel;
 struct ImageFromPictureKey : public SkResourceCache::Key {
 public:
     ImageFromPictureKey(SkColorSpace* colorSpace, SkColorType colorType,
-                        uint32_t pictureID, const SkRect& subset,
+                        uint64_t pictureID, const SkRect& subset,
                         SkSize scale, const SkSurfaceProps& surfaceProps)
         : fColorSpaceXYZHash(colorSpace->toXYZD50Hash())
         , fColorSpaceTransferFnHash(colorSpace->transferFnHash())
@@ -68,8 +68,9 @@ public:
         // This better be packed.
         SkASSERT(sizeof(uint32_t) * (&fEndOfStruct - &fColorSpaceXYZHash) == keySize);
         this->init(&gImageFromPictureKeyNamespaceLabel,
-                   SkPicturePriv::MakeSharedID(pictureID),
-                   keySize);
+                   pictureID,
+                   keySize,
+                   SkPicturePriv::kResourceCacheTag);
     }
 
 private:

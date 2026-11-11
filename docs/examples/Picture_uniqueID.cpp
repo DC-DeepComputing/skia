@@ -6,8 +6,8 @@ void draw(SkCanvas* canvas) {
     SkPictureRecorder recorder;
     recorder.beginRecording({0, 0, 0, 0});
     sk_sp<SkPicture> picture = recorder.finishRecordingAsPicture();
-    SkDebugf("empty picture id = %u\n", picture->uniqueID());
+    SkDebugf("empty picture id = %" PRIu64 "\n", picture->uniqueID());
     sk_sp<SkPicture> placeholder = SkPicture::MakePlaceholder({0, 0, 0, 0});
-    SkDebugf("placeholder id = %u\n", placeholder->uniqueID());
+    SkDebugf("placeholder id = %" PRIu64 "\n", placeholder->uniqueID());
 }
 }  // END FIDDLE

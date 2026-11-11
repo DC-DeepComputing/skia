@@ -12,6 +12,7 @@
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkCanvasPriv.h"
@@ -45,12 +46,10 @@ enum {
 };
 
 /* This handles generating unique IDs */
-static uint32_t next_picture_id() {
-    static std::atomic<uint32_t> nextID{1};
-    uint32_t id;
-    do {
-        id = nextID.fetch_add(+1, std::memory_order_relaxed);
-    } while (id == 0);
+static uint64_t next_picture_id() {
+    static std::atomic<uint64_t> nextID{1};
+    uint64_t id = nextID.fetch_add(1, std::memory_order_relaxed);
+    SkASSERT_RELEASE(id != 0);
     return id;
 }
 
@@ -68,7 +67,7 @@ SkPicture::SkPicture(const SkRect& cull,
 
 SkPicture::~SkPicture() {
     if (fAddedToCache.load()) {
-        SkResourceCache::PostPurgeSharedID(SkPicturePriv::MakeSharedID(fUniqueID));
+        SkResourceCache::PostPurgeSharedID(fUniqueID, SkPicturePriv::kResourceCacheTag);
     }
 }
 

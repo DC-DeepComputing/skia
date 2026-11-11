@@ -63,11 +63,12 @@ void GetImageKeyValues(const SkImage* image, uint32_t keyValues[kNumImageKeyValu
         SkASSERT(SkTFitsIn<uint32_t>(subset.fRight));
         SkASSERT(SkTFitsIn<uint32_t>(subset.fBottom));
 
-        keyValues[1] = 0;              // This empty slot is to disambiguate picture IDs
-        keyValues[2] = subset.fLeft;
-        keyValues[3] = subset.fTop;
-        keyValues[4] = subset.fRight;
-        keyValues[5] = subset.fBottom;
+        keyValues[1] = 0;              // Empty slots [1..2] disambiguate 64-bit picture IDs
+        keyValues[2] = 0;
+        keyValues[3] = subset.fLeft;
+        keyValues[4] = subset.fTop;
+        keyValues[5] = subset.fRight;
+        keyValues[6] = subset.fBottom;
         return;
     }
 

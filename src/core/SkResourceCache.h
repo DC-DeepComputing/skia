@@ -38,8 +38,9 @@ public:
          *  @param nameSpace must be unique per Key subclass.
          *  @param sharedID == 0 means ignore this field, does not support group purging.
          *  @param dataSize is size of fields and data of the subclass, must be a multiple of 4.
+         *  @param sharedIDTag disambiguates full 64-bit sharedID domains (e.g. 'pict').
          */
-        void init(void* nameSpace, uint64_t sharedID, size_t dataSize);
+        void init(void* nameSpace, uint64_t sharedID, size_t dataSize, uint32_t sharedIDTag = 0);
 
         /** Returns the size of this key. */
         size_t size() const {
@@ -48,6 +49,7 @@ public:
 
         void* getNamespace() const { return fNamespace; }
         uint64_t getSharedID() const { return ((uint64_t)fSharedID_hi << 32) | fSharedID_lo; }
+        uint32_t getSharedIDTag() const { return fSharedIDTag; }
 
         // This is only valid after having called init().
         uint32_t hash() const { return fHash; }
@@ -69,6 +71,8 @@ public:
         // split uint64_t into hi and lo so we don't force ourselves to pad on 32bit machines.
         uint32_t fSharedID_lo;
         uint32_t fSharedID_hi;
+        uint32_t fSharedIDTag;
+        uint32_t fPad;  // Explicit zero-padding so fNamespace stays 8-byte aligned on 64-bit.
         // RAW_PTR_EXCLUSION: identifier.
         RAW_PTR_EXCLUSION void* fNamespace;  // A unique namespace tag. This is hashed.
         /* uint32_t fContents32[] */
@@ -116,8 +120,10 @@ public:
 
     // Used with SkMessageBus
     struct PurgeSharedIDMessage {
-        PurgeSharedIDMessage(uint64_t sharedID) : fSharedID(sharedID) {}
+        PurgeSharedIDMessage(uint64_t sharedID, uint32_t sharedIDTag = 0)
+                : fSharedID(sharedID), fSharedIDTag(sharedIDTag) {}
         uint64_t fSharedID;
+        uint32_t fSharedIDTag;
     };
 
     typedef const Rec* ID;
@@ -186,7 +192,7 @@ public:
 
     static sk_sp<SkCachedData> NewCachedData(size_t bytes);
 
-    static void PostPurgeSharedID(uint64_t sharedID);
+    static void PostPurgeSharedID(uint64_t sharedID, uint32_t sharedIDTag = 0);
 
     /**
      *  Call SkDebugf() with diagnostic information about the state of the cache
@@ -247,7 +253,7 @@ public:
      */
     virtual size_t setTotalByteLimit(size_t newLimit);
 
-    virtual void purgeSharedID(uint64_t sharedID);
+    virtual void purgeSharedID(uint64_t sharedID, uint32_t sharedIDTag = 0);
 
     virtual void purgeAll() {
         this->purgeAsNeeded(true);
