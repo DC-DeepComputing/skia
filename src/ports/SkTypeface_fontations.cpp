@@ -26,6 +26,7 @@
 
 #include <optional>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace {
 
@@ -889,7 +890,7 @@ protected:
 
     sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override {
         struct GlyphDrawable : public SkDrawable {
-            SkFontationsScalerContext* fSelf;
+            raw_ptr<SkFontationsScalerContext> fSelf;
             SkGlyph fGlyph;
             GlyphDrawable(SkFontationsScalerContext* self, const SkGlyph& glyph)
                     : fSelf(self), fGlyph(glyph) {}
