@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <limits>
 #include <optional>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -110,7 +111,7 @@ private:
         const DrawParams& drawParams()          const { return fDrawParams; }
 
     private:
-        const Renderer* fRenderer;
+        raw_ptr<const Renderer> fRenderer;
         DrawParams fDrawParams;
     };
 
