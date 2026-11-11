@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c516948_7ff05638",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-11-11T14:49:05Z",
+      "side": 1,
+      "message": "It was relying on Visual Studio being installed on the machine before instead of the provided toolchain.",
+      "parentUuid": "35a86bcf_de4802bc",
+      "range": {
+        "startLine": 357,
+        "startChar": 20,
+        "endLine": 358,
+        "endChar": 42
+      },
+      "revId": "96772cf676f25397d38957e87abb476c5b1ec2e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4960f6b_8892d4ce",
         "filename": "toolchain/windows_toolchain_config.bzl",
         "patchSetId": 3
