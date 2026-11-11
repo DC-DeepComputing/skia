@@ -13,10 +13,12 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
 #include "include/core/SkStrokeRec.h"
 #include "src/core/SkVx.h"
+#include "src/gpu/graphite/sparse_strips/CircularArc.h"
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "tests/graphite/sparse_strips/CullingRepros.h"
@@ -631,6 +633,52 @@ template <FlattenMode kMode> class FlattenTestRunner {
         CheckFlattenedPath(reporter, thickBuilder.detach(), "TrickyStroke_LargeRadius");
     }
 
+    // Conics that are circular arcs are flattened at uniform angles (see CircularArc.h): within
+    // tolerance and watertight, as all paths are, and with every point on the circle. The general
+    // route's points lie up to 20% of the tolerance off it, on its cubics and quads.
+    static void TestCircularArcs(skiatest::Reporter* reporter) {
+        for (float r : {0.5f, 3.0f, 50.0f, 300.0f, 4000.0f}) {
+            CheckFlattenedPath(reporter,
+                               SkPathBuilder().addCircle(0, 0, r).detach(),
+                               SkStringPrintf("Circle_%g", r).c_str());
+        }
+        CheckFlattenedPath(
+                reporter,
+                SkPathBuilder().addRRect(SkRRect::MakeRectXY({0, 0, 300, 200}, 40, 40)).detach(),
+                "RoundRect");
+        CheckFlattenedPath(reporter,
+                           SkPathBuilder().moveTo(0, 0).arcTo({200, 0}, {200, 150}, 60).detach(),
+                           "TangentArc");
+        CheckFlattenedPath(reporter,
+                           SkPathBuilder().arcTo({0, 0, 200, 200}, 30, 250, true).detach(),
+                           "OvalArc");
+        // Ellipses take the general route.
+        CheckFlattenedPath(reporter, SkPathBuilder().addOval({0, 0, 300, 100}).detach(), "Ellipse");
+
+        for (float r : {3.0f, 50.0f, 300.0f}) {
+            const SkPoint center = {2000, 2000};
+            Flatten flattener;
+            Polyline polyline;
+            flattener.processPaths<kMode>(
+                    SkPathBuilder().addCircle(center.fX, center.fY, r).detach(),
+                    SkMatrix(),
+                    kViewDim,
+                    kViewDim,
+                    &polyline);
+            float maxError = 0;
+            for (SkPoint p : polyline.points()) {
+                if (!std::isnan(p.fX)) {
+                    maxError = std::max(maxError, std::abs(SkPoint::Distance(p, center) - r));
+                }
+            }
+            REPORTER_ASSERT(reporter,
+                            maxError <= 2e-6f * r + 1e-3f,
+                            "[CircleOnCircle_%g] max error %g",
+                            r,
+                            maxError);
+        }
+    }
+
 public:
     static void RunAll(skiatest::Reporter* reporter) {
         CheckFlattenedPath(reporter, SkPath(), "EmptyPath");
@@ -725,6 +773,7 @@ public:
         TestCulling(reporter);
         TestCulledContourClosingEdge(reporter);
         TestTrickyStrokes(reporter);
+        TestCircularArcs(reporter);
     }
 };
 
@@ -734,6 +783,49 @@ DEF_TEST(SparseStrips_Flatten_Scalar, reporter) {
 
 DEF_TEST(SparseStrips_Flatten_SIMD, reporter) {
     skgpu::graphite::FlattenTestRunner<FlattenMode::kSimd>::RunAll(reporter);
+}
+
+DEF_TEST(SparseStrips_CircularArc, reporter) {
+    // A quarter circle of radius 100 about (10, 20), as paths emit it.
+    const SkPoint quarter[3] = {{110, 20}, {110, 120}, {10, 120}};
+    CircularArc arc;
+    REPORTER_ASSERT(reporter, CircularArc::Make(quarter, SK_ScalarRoot2Over2, &arc));
+    REPORTER_ASSERT(reporter, std::abs(arc.fRadius - 100) <= 1e-3f);
+    REPORTER_ASSERT(reporter, SkPoint::Distance(arc.fCenter, {10, 20}) <= 1e-3f);
+    REPORTER_ASSERT(reporter, std::abs(arc.fTheta - SK_ScalarPI / 2) <= 1e-5f);
+    REPORTER_ASSERT(reporter, arc.fTurn == 1.0f);
+
+    // ceil(theta * sqrt(radius / (8 * tolerance))) = ceil(pi / 2 * sqrt(50)) = 12.
+    const int n = arc.steps(arc.fRadius, 0.25f);
+    REPORTER_ASSERT(reporter, n == 12, "steps %d", n);
+
+    // The points in between lie on the circle, at uniform angles from the start.
+    SkPoint samples[12 + 7];
+    arc.sample<1>(n, {arc.fRadius}, {samples});
+    for (int k = 1; k < n; ++k) {
+        const float angle = SK_ScalarPI / 2 * static_cast<float>(k) / static_cast<float>(n);
+        const SkPoint expected = {10 + 100 * std::cos(angle), 20 + 100 * std::sin(angle)};
+        REPORTER_ASSERT(
+                reporter, SkPoint::Distance(samples[k - 1], expected) <= 1e-3f, "sample %d", k);
+    }
+
+    // Not circular arcs: the wrong weight, a control polygon that isn't isosceles, a degenerate
+    // conic.
+    REPORTER_ASSERT(reporter, !CircularArc::Make(quarter, 0.5f, &arc));
+    const SkPoint skewed[3] = {{110, 20}, {110, 150}, {10, 120}};
+    REPORTER_ASSERT(reporter, !CircularArc::Make(skewed, SK_ScalarRoot2Over2, &arc));
+    const SkPoint point[3] = {{5, 5}, {5, 5}, {5, 5}};
+    REPORTER_ASSERT(reporter, !CircularArc::Make(point, 1.0f, &arc));
+
+    // Left to the general route: arcs close to a half circle, and very large radii.
+    const float theta = SK_ScalarPI * 179 / 180;
+    const float w = std::cos(theta / 2);
+    const SkPoint nearHalf[3] = {{10, 0},
+                                 {10 / w * std::cos(theta / 2), 10 / w * std::sin(theta / 2)},
+                                 {10 * std::cos(theta), 10 * std::sin(theta)}};
+    REPORTER_ASSERT(reporter, !CircularArc::Make(nearHalf, w, &arc));
+    const SkPoint huge[3] = {{1e6f, 0}, {1e6f, 1e6f}, {0, 1e6f}};
+    REPORTER_ASSERT(reporter, !CircularArc::Make(huge, SK_ScalarRoot2Over2, &arc));
 }
 
 }  // namespace skgpu::graphite

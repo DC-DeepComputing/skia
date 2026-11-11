@@ -9,6 +9,7 @@ licenses(["notice"])
 SPARSE_STRIPS_FILES = [
     "AlphaAtlasManager.cpp",
     "AlphaAtlasManager.h",
+    "CircularArc.h",
     "Flatten.cpp",
     "Flatten.h",
     "FlattenUtils.h",

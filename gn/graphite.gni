@@ -516,6 +516,7 @@ skia_graphite_sparse_strips_sources = [
   "$_src/gpu/graphite/render/WideTileRenderStep.h",
   "$_src/gpu/graphite/sparse_strips/AlphaAtlasManager.cpp",
   "$_src/gpu/graphite/sparse_strips/AlphaAtlasManager.h",
+  "$_src/gpu/graphite/sparse_strips/CircularArc.h",
   "$_src/gpu/graphite/sparse_strips/Flatten.cpp",
   "$_src/gpu/graphite/sparse_strips/Flatten.h",
   "$_src/gpu/graphite/sparse_strips/FlattenUtils.h",

@@ -7,6 +7,7 @@
 #include "src/gpu/graphite/sparse_strips/Flatten.h"
 
 #include "src/core/SkVx.h"
+#include "src/gpu/graphite/sparse_strips/CircularArc.h"
 #include "src/gpu/graphite/sparse_strips/FlattenUtils.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 
@@ -25,6 +26,27 @@ using flatten_utils::split_conic_to_cubics;
 constexpr double kInvCubicErrThreshold =
         flatten_utils::inv_cubic_err_threshold(Flatten::kCubicErrTolerance);
 constexpr float kInvConicToCubicTol = 1.0f / Flatten::kConicToCubicErrTolerance;
+
+// Conics that are circular arcs (circles, round rects, arcTo) are flattened exactly: points on the
+// circle at uniform angles. Their chords use the whole tolerance, unlike the conic -> cubics ->
+// quads route, which spends 20% of it on the approximations. Returns false, appending nothing,
+// for other conics. Otherwise appends the points after pts[0], through pts[2].
+bool flatten_circular_arc(const SkPoint pts[3], float weight, Polyline* polyline) {
+    CircularArc arc;
+    if (!CircularArc::Make(pts, weight, &arc)) {
+        return false;
+    }
+    const int n = arc.steps(arc.fRadius, static_cast<float>(Flatten::kQuadErrTolerance));
+    // Room for the whole vectors written by sample(). Consecutive points are a step apart on the
+    // circle, so none are duplicates.
+    SkPoint* dst = polyline->beginBulk(n + 7);
+    if (n > 1) {
+        arc.sample<1>(n, {arc.fRadius}, {dst});
+    }
+    dst[n - 1] = pts[2];
+    polyline->endBulk(n);
+    return true;
+}
 
 // An intermediate helper struct used to pass values between anonymous namespace functions and
 // Flatten class functions. Used for flattenning both quads and cubics.
@@ -699,6 +721,10 @@ SK_ALWAYS_INLINE void Flatten::processPathsSimdImpl(
             }
         }
 
+        if (flatten_circular_arc(pts, weight, polyline)) {
+            return true;
+        }
+
         SkPoint cubics[kMaxCubicsFromConic][4];
         uint32_t numCubics = split_conic_to_cubics(pts, weight, kInvConicToCubicTol, cubics);
 
@@ -789,6 +815,9 @@ SK_ALWAYS_INLINE void Flatten::processPathsScalarImpl(
                 polyline->appendPoint(pts[2]);
                 return true;
             }
+        }
+        if (flatten_circular_arc(pts, weight, polyline)) {
+            return true;
         }
         const SkPoint* quadPts = fConicToQuad.computeQuads(pts, weight, kQuadErrTolerance);
         int quadCount = fConicToQuad.countQuads();

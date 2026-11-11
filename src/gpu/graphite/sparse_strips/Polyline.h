@@ -9,10 +9,12 @@
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkTDArray.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
 
 #include <cmath>
+#include <limits>
 #include <utility>
 
 namespace skgpu::graphite {
@@ -60,6 +62,22 @@ public:
                 lastPt = pt;
             }
         }
+    }
+
+    // Bulk writing for producers of many points: beginBulk() returns room for up to 'maxCount'
+    // points past the end, and endBulk() commits the first 'count' of them. Unlike appendPoint(),
+    // nothing is de-duplicated; the producer is responsible for that, and for sentinels.
+    SkPoint* beginBulk(int maxCount) {
+        // Checked in release builds too: a negative or overflowing count would under-reserve.
+        SkASSERT_RELEASE(maxCount >= 0 &&
+                         maxCount <= std::numeric_limits<int>::max() - fPoints.size());
+        fPoints.reserve(fPoints.size() + maxCount);
+        return fPoints.end();
+    }
+
+    void endBulk(int count) {
+        SkASSERT(count >= 0 && count <= fPoints.capacity() - fPoints.size());
+        fPoints.resize(fPoints.size() + count);
     }
 
     void appendSentinel() {

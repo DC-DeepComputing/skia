@@ -65,7 +65,9 @@ class Polyline;
  * 4. Lowering Conics:
  *    Conics (rational quadratics) are degree-reduced to standard quadratics using
  *    SkAutoConicToQuads. The curve is recursively chopped in half until the error between the
- *    weighted conic segment and a standard quadratic falls below the tolerance.
+ *    weighted conic segment and a standard quadratic falls below the tolerance. Conics that are
+ *    circular arcs (circles, round rects, arcTo) are flattened exactly instead, at uniform angles
+ *    (see CircularArc.h).
  *
  * 5. Lowering Cubics:
  *    Cubics are approximated by a series of quadratics. We estimate the required number of segments
