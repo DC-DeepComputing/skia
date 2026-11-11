@@ -436,11 +436,12 @@ impl EmbeddedJpegScanner {
     }
 }
 
-/// Read all available bytes from a SkStreamAdapter.
+/// Read up to max_bytes available bytes from a SkStreamAdapter.
 /// Does not block — reads whatever is available.
 fn read_available_from_stream(
     input: &mut cxx::UniquePtr<ffi::SkStreamAdapter>,
     sink: &mut Vec<u8>,
+    max_bytes: usize,
 ) -> Result<usize, ()> {
     let Some(mut stream) = input.as_mut() else {
         return Err(());
@@ -448,8 +449,10 @@ fn read_available_from_stream(
     let initial_sink_len = sink.len();
     let mut buffer = [0u8; 8192];
 
-    loop {
-        let bytes_read = stream.as_mut().read(&mut buffer);
+    while sink.len() - initial_sink_len < max_bytes {
+        let remaining = max_bytes - (sink.len() - initial_sink_len);
+        let to_read = remaining.min(buffer.len());
+        let bytes_read = stream.as_mut().read(&mut buffer[..to_read]);
         if bytes_read == 0 {
             break;
         }
@@ -632,13 +635,19 @@ impl Reader {
     /// Try to read more data from the stream into raw_data, and feed
     /// any new bytes to the segment scanner.
     fn try_read_more(&mut self) {
+        self.try_read_up_to(usize::MAX);
+    }
+
+    fn try_read_up_to(&mut self, max_bytes: usize) -> usize {
         if self.stream_exhausted {
-            return;
+            return 0;
         }
+        let mut bytes_read = 0;
         if let Some(ref mut stream) = self.stream {
-            match read_available_from_stream(stream, &mut self.raw_data.borrow_mut()) {
-                Ok(bytes_read) => {
-                    if bytes_read == 0 {
+            match read_available_from_stream(stream, &mut self.raw_data.borrow_mut(), max_bytes) {
+                Ok(count) => {
+                    bytes_read = count;
+                    if count == 0 {
                         self.stream_exhausted = true;
                     }
                 }
@@ -650,6 +659,7 @@ impl Reader {
 
         // Feed any new bytes to the segment scanner.
         self.advance_scanner();
+        bytes_read
     }
 
     fn advance_scanner(&mut self) {
@@ -703,7 +713,11 @@ impl Reader {
             return DecodingResult::Success;
         }
 
-        self.try_read_more();
+        while !self.scanner.is_done() && !self.scanner.had_error() {
+            if self.try_read_up_to(8192) == 0 {
+                break;
+            }
+        }
 
         let raw_data = self.raw_data.borrow();
         match classify_jpeg_signature(&raw_data) {
@@ -713,21 +727,23 @@ impl Reader {
         drop(raw_data);
 
         let options = zune_core::options::DecoderOptions::default().set_strict_mode(false);
-        let mut decoder = zune_jpeg::JpegDecoder::new_with_options(
-            GrowingJpegCursor::new(Rc::clone(&self.raw_data)),
-            options,
-        );
-        decoder.set_incremental_mode(!self.input_complete);
-
-        match decoder.decode_headers() {
-            Ok(()) => {}
-            Err(ref e) if e.is_recoverable_eof() => {
-                return DecodingResult::IncompleteInput;
+        let mut decoder = loop {
+            let mut decoder = zune_jpeg::JpegDecoder::new_with_options(
+                GrowingJpegCursor::new(Rc::clone(&self.raw_data)),
+                options,
+            );
+            decoder.set_incremental_mode(!self.input_complete);
+            match decoder.decode_headers() {
+                Ok(()) => break decoder,
+                Err(ref e) if e.is_recoverable_eof() => {
+                    // The scanner stops at the SOS marker, before its parameters.
+                    if self.try_read_up_to(8192) == 0 {
+                        return DecodingResult::IncompleteInput;
+                    }
+                }
+                Err(ref e) => return map_zune_error(e),
             }
-            Err(ref e) => {
-                return map_zune_error(e);
-            }
-        }
+        };
 
         let (width, height) = match decoder.dimensions() {
             Some(dims) => dims,
