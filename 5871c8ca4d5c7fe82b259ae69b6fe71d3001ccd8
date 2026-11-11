@@ -140,6 +140,30 @@
       },
       "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "569dc544_f18f31b9",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1119,
+      "author": {
+        "id": 5303896
+      },
+      "writtenOn": "2026-11-11T23:16:04Z",
+      "side": 1,
+      "message": "Thanks, I appreciate all the details/explanations since I\u0027m still learning much of this as I go. I\u0027ll add the comment to the CL.",
+      "parentUuid": "f229a450_e7f219d8",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1119,
+        "endChar": 53
+      },
+      "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
