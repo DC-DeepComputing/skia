@@ -17,6 +17,7 @@
 #include "include/private/SkDebug.h"
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTemplates.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class SkPath;
 class SkRegion;
@@ -73,8 +74,9 @@ private:
     struct RunHead;
     friend class SkAAClipBlitter;
 
-    SkIRect  fBounds;
-    RunHead* fRunHead;
+    SkIRect                   fBounds;
+    // RAW_PTR_EXCLUSION: Intrusively refcounted variable-size RunHead::Alloc block.
+    RAW_PTR_EXCLUSION RunHead* fRunHead;
 
     void freeRuns();
 

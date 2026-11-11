@@ -28,6 +28,7 @@
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkScan.h"
 #include "src/core/SkTSort.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <algorithm>
 #include <array>
@@ -496,8 +497,9 @@ struct Edge {
 
     SkRegionPriv::RunType fX;
     SkRegionPriv::RunType fY0, fY1;
-    uint8_t fFlags;
-    Edge*   fNext;
+    uint8_t                 fFlags;
+    // RAW_PTR_EXCLUSION: Stored in AutoSTMalloc<..., Edge> without constructors or destructors.
+    RAW_PTR_EXCLUSION Edge* fNext;
 
     void set(int x, int y0, int y1) {
         SkASSERT(y0 != y1);

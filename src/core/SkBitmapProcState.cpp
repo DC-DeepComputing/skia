@@ -17,6 +17,7 @@
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkMemset.h"
 #include "src/core/SkMipmapAccessor.h"
+#include "src/image/SkImage_Base.h"
 
 #include <algorithm>
 #include <cstring>
@@ -198,7 +199,7 @@ bool SkBitmapProcState::init(const SkMatrix& inv, SkAlpha paintAlpha,
     fPixmap.reset();
     fBilerp = false;
 
-    auto* access = SkMipmapAccessor::Make(&fAlloc, (const SkImage*)fImage, inv, sampling.mipmap);
+    auto* access = SkMipmapAccessor::Make(&fAlloc, fImage, inv, sampling.mipmap);
     if (!access) {
         return false;
     }

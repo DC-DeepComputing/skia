@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTDArray.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 
@@ -89,7 +90,8 @@ protected:
 
 private:
     struct Pair {
-        void*       fPtr;   // never nullptr
+        // RAW_PTR_EXCLUSION: Stored in SkTDArray without constructors or destructors.
+        RAW_PTR_EXCLUSION void* fPtr;  // never nullptr
         uint32_t    fIndex; // 1...N
     };
 

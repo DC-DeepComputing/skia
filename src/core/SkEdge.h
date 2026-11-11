@@ -14,6 +14,7 @@
 #include "include/private/SkFixed.h"
 #include "include/private/SkMath.h"
 #include "src/core/SkFDot6.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 #include <cstdint>
 #include <utility>
@@ -50,8 +51,9 @@ public:
     };
 
     // Can be used to join edges together
-    SkEdge* fNext;
-    SkEdge* fPrev;
+    // RAW_PTR_EXCLUSION: Allocated in SkArenaAlloc without destructors.
+    RAW_PTR_EXCLUSION SkEdge* fNext;
+    RAW_PTR_EXCLUSION SkEdge* fPrev;
 
     // The current line segment starts at (fX, fFirstY + 0.5). It has slope
     // fDxDy (yes, run over rise, because this is geared toward horizontal scanlines)
