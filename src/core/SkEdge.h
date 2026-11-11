@@ -17,6 +17,7 @@
 
 #include <cstdint>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 struct SkIRect;
 
@@ -50,7 +51,7 @@ public:
     };
 
     // Can be used to join edges together
-    SkEdge* fNext;
+    raw_ptr<SkEdge> fNext;
     SkEdge* fPrev;
 
     // The current line segment starts at (fX, fFirstY + 0.5). It has slope
