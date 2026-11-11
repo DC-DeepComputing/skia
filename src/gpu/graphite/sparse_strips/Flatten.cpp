@@ -27,6 +27,19 @@ constexpr double kInvCubicErrThreshold =
         flatten_utils::inv_cubic_err_threshold(Flatten::kCubicErrTolerance);
 constexpr float kInvConicToCubicTol = 1.0f / Flatten::kConicToCubicErrTolerance;
 
+// Clamps an estimated floating-point segment count to [1, kMaxSegmentsPerCurve] before casting to
+// uint32_t, avoiding undefined behavior on NaN, infinity, or values >= 2^32 and negative sizes in
+// int-indexed buffers.
+template <typename T> SK_ALWAYS_INLINE uint32_t clamp_segment_count(T segments) {
+    if (!(segments > static_cast<T>(1))) {
+        return 1u;
+    }
+    if (!(segments < static_cast<T>(Flatten::kMaxSegmentsPerCurve))) {
+        return Flatten::kMaxSegmentsPerCurve;
+    }
+    return static_cast<uint32_t>(segments);
+}
+
 // Conics that are circular arcs (circles, round rects, arcTo) are flattened exactly: points on the
 // circle at uniform angles. Their chords use the whole tolerance, unlike the conic -> cubics ->
 // quads route, which spends 20% of it on the approximations. Returns false, appending nothing,
@@ -80,7 +93,7 @@ SK_ALWAYS_INLINE FlattenParams estimate_lines_from_quad(const SkPoint pts[3],
     // collapsed control point adds no area. While this shortcut is technically incorrect for
     // "needle-thin" nearly collinear quads, it is extremely unlikely such a path would enclose
     // an MSAA subsample point, rendering extra handling unnecessary.
-    if (std::abs(cross) < Flatten::kEpsilonD) {
+    if (!(std::abs(cross) >= Flatten::kEpsilonD) || !std::isfinite(cross)) {
         return {0.0, 0.0, 0.0, 1.0, 0.0};
     }
 
@@ -90,27 +103,35 @@ SK_ALWAYS_INLINE FlattenParams estimate_lines_from_quad(const SkPoint pts[3],
     // Equivalent to |cross / (|dd| * (x2 - x0))|, but avoids a scenario where (x2 - x0) == 0.
     double ddSq = SkPoint::DotProduct(dd, dd);
     double scale = (cross * cross) / (std::sqrt(ddSq) * ddSq);
+    if (!(scale > 0.0) || !std::isfinite(scale)) {
+        return {0.0, 0.0, 0.0, 1.0, 0.0};
+    }
 
     double a0 = approx_parabola_integral(x0);
     double a2 = approx_parabola_integral(x2);
     double da = a2 - a0;
+    double absDa = std::abs(da);
+    double sqrtScale = std::sqrt(scale);
     double val = 0.0;
 
-    if (std::isfinite(scale)) {
-        double absDa = std::abs(da);
-        double sqrtScale = std::sqrt(scale);
-
-        if (std::signbit(x0) == std::signbit(x2)) {
-            val = absDa * sqrtScale;
-        } else {
-            double xMin = kSqrtErrTolerance / sqrtScale;
-            val = kSqrtErrTolerance * absDa / approx_parabola_integral(xMin);
-        }
+    if (std::signbit(x0) == std::signbit(x2)) {
+        val = absDa * sqrtScale;
+    } else {
+        double xMin = kSqrtErrTolerance / sqrtScale;
+        val = kSqrtErrTolerance * absDa / approx_parabola_integral(xMin);
     }
 
     double u0 = approx_parabola_inv_integral(a0);
     double u2 = approx_parabola_inv_integral(a2);
-    double uScale = 1.0 / (u2 - u0);
+    double du = u2 - u0;
+    if (du == 0.0 || !std::isfinite(du)) {
+        return {0.0, 0.0, 0.0, 1.0, 0.0};
+    }
+    double uScale = 1.0 / du;
+    if (!std::isfinite(a0) || !std::isfinite(da) || !std::isfinite(u0) || !std::isfinite(uScale) ||
+        !std::isfinite(val)) {
+        return {0.0, 0.0, 0.0, 1.0, 0.0};
+    }
 
     return {a0, da, u0, uScale, val};
 }
@@ -325,8 +346,8 @@ SK_ALWAYS_INLINE void Flatten::flattenQuadScalar(const SkPoint pts[3], Polyline*
     // since fCurvatureIntegral = sqrt(a) * W_total. So the required number of segments 'n' to keep
     // the error per segment under `kSqrtQuadTolerance` is:
     // n = fCurvatureIntegral / (kSqrtQuadTolerance * 2).
-    uint32_t numSegments = std::max(1u, static_cast<uint32_t>(
-            std::ceil(0.5 / kSqrtQuadTolerance * params.fCurvatureIntegral)));
+    uint32_t numSegments =
+            clamp_segment_count(std::ceil(0.5 / kSqrtQuadTolerance * params.fCurvatureIntegral));
     double step = 1.0 / numSegments;
 
     Polyline::BulkWriter writer(polyline, static_cast<int>(numSegments));
@@ -371,19 +392,39 @@ SK_ALWAYS_INLINE uint32_t Flatten::flattenCubicScalar(const SkPoint pts[4]) {
         SkPoint quad[3] = {p0, p1, p2};
         FlattenParams params = estimate_lines_from_quad(quad, kSqrtQuadTol);
 
-        fContext.fA0[i] = params.fA0;
-        fContext.fDa[i] = params.fDa;
-        fContext.fU0[i] = params.fU0;
-        fContext.fUScale[i] = params.fUScale;
+        float a0 = static_cast<float>(params.fA0);
+        float da = static_cast<float>(params.fDa);
+        float u0 = static_cast<float>(params.fU0);
+        float uScale = static_cast<float>(params.fUScale);
+        float val = static_cast<float>(params.fCurvatureIntegral);
+        if (!std::isfinite(a0) || !std::isfinite(da) || !std::isfinite(u0) ||
+            !std::isfinite(uScale) || !std::isfinite(val)) {
+            a0 = 0.0f;
+            da = 0.0f;
+            u0 = 0.0f;
+            uScale = 1.0f;
+            val = kEpsilonF;
+        } else {
+            val = std::max(val, kEpsilonF);
+        }
 
-        fContext.fCurvatureIntegral[i] =
-                std::max(static_cast<float>(params.fCurvatureIntegral), kEpsilonF);
+        fContext.fA0[i] = a0;
+        fContext.fDa[i] = da;
+        fContext.fU0[i] = u0;
+        fContext.fUScale[i] = uScale;
+        fContext.fCurvatureIntegral[i] = val;
 
-        curvatureIntegralSum += params.fCurvatureIntegral;
+        curvatureIntegralSum += val;
     }
 
-    uint32_t numSegments = std::max<uint32_t>(
-        1u, static_cast<uint32_t>(std::ceil(0.5 * curvatureIntegralSum / kSqrtQuadTol)));
+    if (!std::isfinite(curvatureIntegralSum)) {
+        fContext.fFlattenedCubics.resize(2);
+        fContext.fFlattenedCubics[1] = pts[3];
+        return 2;
+    }
+
+    uint32_t numSegments =
+            clamp_segment_count(std::ceil(0.5 * curvatureIntegralSum / kSqrtQuadTol));
     uint32_t targetLen = numSegments + 4;
     fContext.fFlattenedCubics.resize(targetLen);
 
@@ -434,8 +475,18 @@ SK_ALWAYS_INLINE uint32_t Flatten::flattenCubicScalar(const SkPoint pts[4]) {
 
 SK_ALWAYS_INLINE void Flatten::flattenQuadSimd(const SkPoint pts[3], Polyline* polyline) {
     FlattenParams params = estimate_lines_from_quad(pts, kSqrtQuadTolerance);
-    uint32_t numSegments = std::max(1u, static_cast<uint32_t>(
-            std::ceil(0.5 / kSqrtQuadTolerance * params.fCurvatureIntegral)));
+    float fDa = static_cast<float>(params.fDa);
+    float fA0 = static_cast<float>(params.fA0);
+    float fU0 = static_cast<float>(params.fU0);
+    float fUScale = static_cast<float>(params.fUScale);
+    if (!std::isfinite(fDa) || !std::isfinite(fA0) || !std::isfinite(fU0) ||
+        !std::isfinite(fUScale)) {
+        this->flattenQuadScalar(pts, polyline);
+        return;
+    }
+
+    uint32_t numSegments =
+            clamp_segment_count(std::ceil(0.5 / kSqrtQuadTolerance * params.fCurvatureIntegral));
 
     float step = 1.0f / numSegments;
 
@@ -447,10 +498,10 @@ SK_ALWAYS_INLINE void Flatten::flattenQuadSimd(const SkPoint pts[3], Polyline* p
     skvx::float8 B = (p1 - p0) * 2.0f;
     skvx::float8 C = p0;
 
-    skvx::float8 vDa = skvx::float8(static_cast<float>(params.fDa));
-    skvx::float8 vA0 = skvx::float8(static_cast<float>(params.fA0));
-    skvx::float8 vU0 = skvx::float8(static_cast<float>(params.fU0));
-    skvx::float8 vUScale = skvx::float8(static_cast<float>(params.fUScale));
+    skvx::float8 vDa = skvx::float8(fDa);
+    skvx::float8 vA0 = skvx::float8(fA0);
+    skvx::float8 vU0 = skvx::float8(fU0);
+    skvx::float8 vUScale = skvx::float8(fUScale);
 
     float out[8];
     for (uint32_t i = 1; i < numSegments; i += 4) {
@@ -560,18 +611,18 @@ SK_ALWAYS_INLINE void Flatten::estimateLinesFromQuadSimd() {
         skvx::float4 cusp = (static_cast<float>(kSqrtQuadTol) * absDa) / approxInt;
 
         skvx::float4 valRaw = skvx::if_then_else(mask, nonCusp, cusp);
-        valRaw = skvx::if_then_else(collinearMask, skvx::float4(0.0f), valRaw);
-        skvx::int4 finiteMask = is_finite_simd(valRaw);
-        skvx::float4 val = skvx::if_then_else(finiteMask, valRaw, skvx::float4(0.0f));
 
         skvx::float8 u0U2 = approx_parabola_inv_integral(skvx::join(a0, a2));
         skvx::float4 u0 = u0U2.lo;
         skvx::float4 u2 = u0U2.hi;
         skvx::float4 uScale = 1.0f / (u2 - u0);
-        u0 = skvx::if_then_else(collinearMask, skvx::float4(0.0f), u0);
-        uScale = skvx::if_then_else(collinearMask, skvx::float4(1.0f), uScale);
-        a0 = skvx::if_then_else(collinearMask, skvx::float4(0.0f), a0);
-        da = skvx::if_then_else(collinearMask, skvx::float4(0.0f), da);
+        skvx::int4 validMask = ~collinearMask & is_finite_simd(valRaw) & is_finite_simd(a0) &
+                               is_finite_simd(da) & is_finite_simd(u0) & is_finite_simd(uScale);
+        skvx::float4 val = skvx::if_then_else(validMask, valRaw, skvx::float4(0.0f));
+        u0 = skvx::if_then_else(validMask, u0, skvx::float4(0.0f));
+        uScale = skvx::if_then_else(validMask, uScale, skvx::float4(1.0f));
+        a0 = skvx::if_then_else(validMask, a0, skvx::float4(0.0f));
+        da = skvx::if_then_else(validMask, da, skvx::float4(0.0f));
 
         a0.store(fContext.fA0.data() + i * 4);
         da.store(fContext.fDa.data() + i * 4);
@@ -635,9 +686,14 @@ uint32_t Flatten::flattenCubicsSimd(SkSpan<const SkPoint[4]> cubics) {
         curvatureIntegralSum += val;
     }
 
-    uint32_t numSegments = std::max<uint32_t>(
-            1,
-            static_cast<uint32_t>(std::ceil(0.5f * curvatureIntegralSum / kSqrtQuadTol)));
+    if (!std::isfinite(curvatureIntegralSum)) {
+        fContext.fFlattenedCubics.resize(2);
+        fContext.fFlattenedCubics[1] = fContext.fEvenPts[totalQuads];
+        return 2;
+    }
+
+    uint32_t numSegments =
+            clamp_segment_count(std::ceil(0.5f * curvatureIntegralSum / kSqrtQuadTol));
     uint32_t targetLen = numSegments + 4;
     fContext.fFlattenedCubics.resize(targetLen);
 

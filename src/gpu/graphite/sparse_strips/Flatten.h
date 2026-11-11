@@ -118,6 +118,10 @@ public:
     // In practice, conics very rarely exceed 64.
     static constexpr uint32_t kMaxQuadsInCtx = kMaxQuadsFromCubic * kMaxCubicsFromConic;
 
+    // Guards against pathological inputs whose estimated segment count would overflow or allocate
+    // unbounded memory.
+    static constexpr uint32_t kMaxSegmentsPerCurve = 1 << 16;
+
     Flatten() = default;
 
     template <FlattenMode kMode>

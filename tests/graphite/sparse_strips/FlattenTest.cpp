@@ -828,4 +828,45 @@ DEF_TEST(SparseStrips_CircularArc, reporter) {
     REPORTER_ASSERT(reporter, !CircularArc::Make(huge, SK_ScalarRoot2Over2, &arc));
 }
 
+// Regression test: curves with extreme finite coordinates whose unclamped parabolic segment count
+// exceeds INT32_MAX or UINT32_MAX must clamp to kMaxSegmentsPerCurve without UB or buffer overruns.
+DEF_TEST(SparseStrips_Flatten_ExtremeSegmentCounts, reporter) {
+    const SkIRect clip = SkIRect::MakeWH(100, 100);
+    // Arch scales chosen so unclamped segment counts land in (INT32_MAX, UINT32_MAX), above
+    // UINT32_MAX, and near float overflow while still entering `clip` so culling/simplification do
+    // not skip subdivision.
+    for (float s : {3e18f, 1e20f, 1e30f, 1e38f}) {
+        const SkPath paths[] = {
+                SkPathBuilder().moveTo(50, 50).quadTo(-s, s, 50, 2 * s).detach(),
+                SkPathBuilder()
+                        .moveTo(50, 50)
+                        .cubicTo(-s, 0.5f * s, -s, 1.5f * s, 50, 2 * s)
+                        .detach(),
+                SkPathBuilder().moveTo(50, 50).conicTo(-s, s, 50, 2 * s, 0.5f).detach(),
+                SkPathBuilder().moveTo(0, 0).quadTo(s, 0, 0, 1e-30f).detach(),
+                SkPathBuilder().moveTo(0, 0).cubicTo(s, 0, s, 1e-30f, 0, 1e-30f).detach(),
+        };
+
+        for (const SkPath& path : paths) {
+            auto checkMode = [&]<FlattenMode kMode>() {
+                Flatten flattener;
+                Polyline polyline;
+                flattener.processPaths<kMode>(path, SkMatrix::I(), clip, &polyline);
+
+                REPORTER_ASSERT(reporter, polyline.count() >= 1);
+                // SkAutoConicToQuads produces up to 32 quads in scalar mode.
+                const int maxExpectedPts = 32 * static_cast<int>(Flatten::kMaxSegmentsPerCurve) + 8;
+                REPORTER_ASSERT(reporter, polyline.points().size() <= maxExpectedPts);
+                for (SkPoint p : polyline.points()) {
+                    if (!std::isnan(p.fX)) {
+                        REPORTER_ASSERT(reporter, !std::isnan(p.fY));
+                    }
+                }
+            };
+            checkMode.template operator()<FlattenMode::kScalar>();
+            checkMode.template operator()<FlattenMode::kSimd>();
+        }
+    }
+}
+
 }  // namespace skgpu::graphite
