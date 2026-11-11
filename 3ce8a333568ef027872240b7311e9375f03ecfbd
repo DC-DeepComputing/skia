@@ -16,6 +16,23 @@
       "message": "Removing myself since I\u0027m not on the Chrome team any more so not active on Chromium, Dawn, Skia, etc.",
       "revId": "3ce8a333568ef027872240b7311e9375f03ecfbd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9351aadd_73e4e4f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-11T23:23:01Z",
+      "side": 1,
+      "message": "Adding Nathan since he is assigned to b/584701908",
+      "revId": "3ce8a333568ef027872240b7311e9375f03ecfbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
