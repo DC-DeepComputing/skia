@@ -36,7 +36,11 @@ struct StripGenerator::Scratch {
     Polyline fPolyline;
     Flatten fFlatten;
     StrokeFlatten fStrokeFlatten;
-    Tiles<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight, /*kRows=*/true> fTiles;
+    Tiles<SparseStripConfig::kTileWidth,
+          SparseStripConfig::kTileHeight,
+          /*kRows=*/true,
+          /*kGrouped=*/true>
+            fTiles;
 
     bool isLarge() const {
         const size_t pointBytes =

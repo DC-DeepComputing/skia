@@ -65,6 +65,15 @@ public:
     SK_ALWAYS_INLINE int32_t coarseWinding() const { return fCoarseWinding; }
     SK_ALWAYS_INLINE void setCoarseWinding(int32_t val) { fCoarseWinding = val; }
 
+    // A line with mask 0 inside the run of a grouped tile (see GroupedTileKey). StripProcessorSimd
+    // has a specialized path for it; here it's an ordinary line.
+    SK_ALWAYS_INLINE void rasterizeInnerLineToTile(uint32_t lineIdx,
+                                                   std::array<SkPoint, 2> tileBounds) {
+        Tile tile;
+        tile.fPackedLineIdxIntersectionMask = lineIdx << IntersectionBits::INT_MASK_SHIFT;
+        this->rasterizeLineToTile(tile, tileBounds);
+    }
+
     // Once all tiles at the same geometric location have been combined, the subsample winding must
     // be converted to alpha values consumable by the fragment shader.
     SK_ALWAYS_INLINE void resolveWindingToAlpha(uint8_t* tileAlphaBase) {

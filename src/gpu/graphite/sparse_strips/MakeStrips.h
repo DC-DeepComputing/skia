@@ -119,8 +119,8 @@ namespace skgpu::graphite {
  */
 class MakeStrips {
 public:
-    template <uint16_t kTileWidth, uint16_t kTileHeight, bool kRows>
-    static bool MsaaScalar(const Tiles<kTileWidth, kTileHeight, kRows>& tileContainer,
+    template <uint16_t kTileWidth, uint16_t kTileHeight, bool kRows, bool kGrouped>
+    static bool MsaaScalar(const Tiles<kTileWidth, kTileHeight, kRows, kGrouped>& tileContainer,
                            WideTiles* wides,
                            EndCaps* ends,
                            AlphaAtlasManager* atlasManager,
@@ -160,8 +160,8 @@ public:
         return success;
     }
 
-    template <uint16_t kTileWidth, uint16_t kTileHeight, bool kRows>
-    static bool MsaaSimd(const Tiles<kTileWidth, kTileHeight, kRows>& tileContainer,
+    template <uint16_t kTileWidth, uint16_t kTileHeight, bool kRows, bool kGrouped>
+    static bool MsaaSimd(const Tiles<kTileWidth, kTileHeight, kRows, kGrouped>& tileContainer,
                          WideTiles* wides,
                          EndCaps* ends,
                          AlphaAtlasManager* atlasManager,
@@ -497,10 +497,12 @@ private:
     // The same traversal, over per-row tiles (Tiles<..., /*kRows=*/true>). Walking the rows in
     // order, with each row's keys (x << 32 | packed line index and mask) sorted, visits the tiles
     // in the flat layout's order, so the events, and hence the outputs, are identical. y comes from
-    // the row, which makes row starts explicit.
-    template <uint16_t kTileWidth, uint16_t kTileHeight, typename Processor>
+    // the row, which makes row starts explicit. Grouped keys (kGrouped) expand into the same tiles,
+    // in the same order: a run's segments are consecutive in the polyline, each rasterized with its
+    // own mask (see GroupedTileKey), the inner ones (mask 0) through the processor's cheaper path.
+    template <uint16_t kTileWidth, uint16_t kTileHeight, bool kGrouped, typename Processor>
     static SK_ALWAYS_INLINE bool TraverseCPU(
-            const Tiles<kTileWidth, kTileHeight, /*kRows=*/true>& tileContainer,
+            const Tiles<kTileWidth, kTileHeight, /*kRows=*/true, kGrouped>& tileContainer,
             WideTiles* wides,
             EndCaps* ends,
             AlphaAtlasManager* atlasManager,
@@ -535,7 +537,7 @@ private:
             const uint64_t* keys = row.data();
             const int keyCount = row.size();
             const uint16_t tileY = static_cast<uint16_t>(y);
-            const uint16_t firstX = static_cast<uint16_t>(keys[0] >> 32);
+            const uint16_t firstX = RowKeyX<kGrouped>(keys[0]);
 
             if (!started) {
                 started = true;
@@ -594,7 +596,7 @@ private:
 
             for (int i = 0; i < keyCount; ++i) {
                 const uint64_t key = keys[i];
-                const uint16_t x = static_cast<uint16_t>(key >> 32);
+                const uint16_t x = RowKeyX<kGrouped>(key);
                 if (x != prevTile.x) {
                     // Tile start: resolve, then carry the coarse winding into the next tile.
                     uint8_t* dst = atlasManager->requestAlphaSpace(kTilePixelCount);
@@ -624,8 +626,27 @@ private:
                 Tile tile;
                 tile.x = x;
                 tile.y = tileY;
-                tile.fPackedLineIdxIntersectionMask = static_cast<uint32_t>(key);
-                processor->rasterizeLineToTile(tile, tileBounds);
+                if constexpr (kGrouped) {
+                    // A run's first and last segments share one call site: a second copy of
+                    // the rasterizer here slows the whole traversal. Inner segments go out of
+                    // line.
+                    tile.fPackedLineIdxIntersectionMask = GroupedTileKey::Packed(key);
+                    uint32_t extra = GroupedTileKey::Extra(key);
+                    for (;;) {
+                        processor->rasterizeLineToTile(tile, tileBounds);
+                        if (extra == 0) {
+                            break;
+                        }
+                        if (extra > 1) {
+                            RasterizeInnerSegments(key, tileBounds, processor);
+                        }
+                        tile.fPackedLineIdxIntersectionMask = GroupedTileKey::LastPacked(key);
+                        extra = 0;
+                    }
+                } else {
+                    tile.fPackedLineIdxIntersectionMask = static_cast<uint32_t>(key);
+                    processor->rasterizeLineToTile(tile, tileBounds);
+                }
             }
         }
 
@@ -668,6 +689,22 @@ private:
                                           processor,
                                           wides);
         return true;
+    }
+
+    // A run's inner segments, strictly between its first and its last, which have mask 0.
+    template <typename Processor>
+    static SK_NEVER_INLINE void RasterizeInnerSegments(uint64_t key,
+                                                       const std::array<SkPoint, 2>& tileBounds,
+                                                       Processor* processor) {
+        const uint32_t firstLine = GroupedTileKey::Packed(key) >> IntersectionBits::INT_MASK_SHIFT;
+        const uint32_t extra = GroupedTileKey::Extra(key);
+        for (uint32_t i = 1; i < extra; ++i) {
+            processor->rasterizeInnerLineToTile(firstLine + i, tileBounds);
+        }
+    }
+
+    template <bool kGrouped> static SK_ALWAYS_INLINE uint16_t RowKeyX(uint64_t key) {
+        return kGrouped ? GroupedTileKey::X(key) : static_cast<uint16_t>(key >> 32);
     }
 
     template <uint16_t kTileWidth, uint16_t kTileHeight>

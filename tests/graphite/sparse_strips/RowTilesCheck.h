@@ -29,16 +29,19 @@ namespace skgpu::graphite {
 
 class Recorder;
 
-// StripGenerator tiles into per-row buffers (Tiles<..., /*kRows=*/true>), while the validators tile
-// flat, to inspect the tiles. RowTilesRun runs MakeStrips over per-row tiles of the same polyline,
-// so that the validators can check that both layouts produce identical output.
-template <uint16_t kTileWidth, uint16_t kTileHeight> struct RowTilesRun {
+// StripGenerator tiles into grouped per-row buffers (Tiles<..., /*kRows=*/true, /*kGrouped=*/true>),
+// while the validators tile flat, to inspect the tiles. RowTilesRun runs MakeStrips over per-row
+// tiles of the same polyline, plain or grouped, so that the validators can check that the layouts
+// produce identical output.
+template <uint16_t kTileWidth, uint16_t kTileHeight, bool kGrouped = false> struct RowTilesRun {
     WideTiles wides;
     EndCaps ends;
     std::unique_ptr<AlphaAtlasManager> atlas;
     SkTDArray<uint8_t> masks;
     SkTDArray<skvx::int8> windings;
     bool isCulled = false;
+    int keys = 0;      // the per-row keys
+    int segments = 0;  // the (segment, tile) pairs they hold, i.e. the flat layout's tiles
 
     void run(Recorder* recorder,
              bool scalar,
@@ -50,9 +53,15 @@ template <uint16_t kTileWidth, uint16_t kTileHeight> struct RowTilesRun {
         WindingHistogram histogram(numTileRows);
         histogram.resize(numTileRows);
         histogram.clear();
-        Tiles<kTileWidth, kTileHeight, /*kRows=*/true> tiles;
+        Tiles<kTileWidth, kTileHeight, /*kRows=*/true, kGrouped> tiles;
         isCulled = tiles.makeTilesMSAA(polyline, clip, &histogram);
         tiles.sortTiles();
+        for (int y = tiles.rowMin(); y < tiles.rowMax(); ++y) {
+            for (const uint64_t key : tiles.getRow(y)) {
+                ++keys;
+                segments += 1 + (kGrouped ? static_cast<int>(GroupedTileKey::Extra(key)) : 0);
+            }
+        }
 
         atlas = std::make_unique<AlphaAtlasManager>(recorder);
         auto observer = [this](uint8_t mask, skvx::int8 winding) {

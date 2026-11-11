@@ -143,13 +143,30 @@ public:
         }
     }
 
-    template <bool kCanonicalYDir>
+    // Rasterizes a line with mask 0 inside the run of a grouped tile (see GroupedTileKey). It
+    // crosses no tile edge and carries no coarse winding, so this is rasterizeLineToTile() with the
+    // mask known: no edge intersections (one division fewer), coarse winding or left fill.
+    SK_ALWAYS_INLINE void rasterizeInnerLineToTile(uint32_t lineIdx,
+                                                   std::array<SkPoint, 2> tileBounds) {
+        const Tile tile;  // Unused: the mask is known to be 0.
+        Line line = fPolyline.getLine(lineIdx);
+        bool canonicalYDir = line.p1.fY >= line.p0.fY;
+        if (canonicalYDir) {
+            this->rasterizeLineToTileImpl</*kCanonicalYDir=*/true, /*kInner=*/true>(
+                    tile, tileBounds, line);
+        } else {
+            this->rasterizeLineToTileImpl</*kCanonicalYDir=*/false, /*kInner=*/true>(
+                    tile, tileBounds, line);
+        }
+    }
+
+    template <bool kCanonicalYDir, bool kInner = false>
     SK_ALWAYS_INLINE void rasterizeLineToTileImpl(const Tile& tile,
                                                   std::array<SkPoint, 2> tileBounds,
                                                   const Line& line) {
         bool canonicalXDir = line.p1.fX >= line.p0.fX;
 
-        uint32_t windingBit = tile.coarseWinding() ? 1 : 0;
+        uint32_t windingBit = (!kInner && tile.coarseWinding()) ? 1 : 0;
         if constexpr (kIsWinding) {
             fCoarseWinding += (kCanonicalYDir ? 1 : -1) * static_cast<int32_t>(windingBit);
         } else {
@@ -167,13 +184,13 @@ public:
                 Tile::ClipToTile<kTileWidth, kTileHeight>(line,
                                                           tileBounds,
                                                           derivs,
-                                                          tile.intersectionMask(),
+                                                          kInner ? 0u : tile.intersectionMask(),
                                                           canonicalXDir,
                                                           kCanonicalYDir);
         SkPoint pTop = clippedLine.p0;
         SkPoint pBot = clippedLine.p1;
 
-        if (tile.hasLeftIntersection()) {
+        if (!kInner && tile.hasLeftIntersection()) {
             float yEdge = (pTop.fX < pBot.fX) ? pTop.fY : pBot.fY;
             this->fillLeft(yEdge, canonicalXDir);
         }

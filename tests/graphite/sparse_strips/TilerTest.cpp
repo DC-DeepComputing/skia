@@ -497,4 +497,82 @@ DEF_TEST(SparseStrips_Tiler_8x8, reporter) {
     skgpu::graphite::TileTestRunner<8, 8>::RunAll(reporter);
 }
 
+// Exercises GroupedTileKey run overflow past kMaxExtra, same-row multi-tile end relocation in
+// mergeEnds(), and reset() across draws, checking exact expansion against flat Tiles<8, 8>.
+DEF_TEST(SparseStrips_Tiler_GroupedRuns, reporter) {
+    constexpr uint16_t kW = 8;
+    constexpr uint16_t kH = 8;
+    const SkIRect clip = SkIRect::MakeWH(64, 64);
+
+    auto checkMatchesFlat = [&](const Polyline& poly,
+                                Tiles<kW, kH, /*kRows=*/true, /*kGrouped=*/true>* grouped,
+                                int maxExpectedKeys) {
+        WindingHistogram histFlat(8), histGrouped(8);
+        histFlat.resize(8);
+        histFlat.clear();
+        histGrouped.resize(8);
+        histGrouped.clear();
+
+        Tiles<kW, kH> flat;
+        const bool culledFlat = flat.makeTilesMSAA(poly, clip, &histFlat);
+        flat.sortTiles();
+
+        grouped->reset();
+        const bool culledGrouped = grouped->makeTilesMSAA(poly, clip, &histGrouped);
+        grouped->sortTiles();
+        REPORTER_ASSERT(reporter, culledFlat == culledGrouped);
+
+        SkTDArray<Tile> expanded;
+        int totalKeys = 0;
+        for (int y = grouped->rowMin(); y < grouped->rowMax(); ++y) {
+            for (const uint64_t key : grouped->getRow(y)) {
+                ++totalKeys;
+                const uint16_t x = GroupedTileKey::X(key);
+                GroupedTileKey::ForEachSegment(key, [&](uint32_t packed, bool /*inner*/) {
+                    Tile t;
+                    t.x = x;
+                    t.y = static_cast<uint16_t>(y);
+                    t.fPackedLineIdxIntersectionMask = packed;
+                    expanded.push_back(t);
+                });
+            }
+        }
+
+        REPORTER_ASSERT(reporter, totalKeys <= maxExpectedKeys);
+        const SkTDArray<Tile>& expected = flat.getTiles();
+        REPORTER_ASSERT(reporter, expanded.size() == expected.size());
+        if (expanded.size() == expected.size()) {
+            for (int i = 0; i < expected.size(); ++i) {
+                REPORTER_ASSERT(reporter, expanded[i].toBits() == expected[i].toBits());
+            }
+        }
+    };
+
+    Tiles<kW, kH, /*kRows=*/true, /*kGrouped=*/true> grouped;
+
+    // 1. > kMaxExtra (2500) consecutive interior segments inside tile (1, 1) split into 2 keys.
+    {
+        Polyline poly;
+        constexpr int kSegments = 2500;
+        poly.appendPoint({9.0f, 9.0f});
+        for (int i = 1; i <= kSegments; ++i) {
+            const float t = static_cast<float>(i) / static_cast<float>(kSegments);
+            poly.appendPoint({9.0f + 5.0f * t, 9.0f + 5.0f * t});
+        }
+        poly.appendSentinel();
+        checkMatchesFlat(poly, &grouped, /*maxExpectedKeys=*/2);
+    }
+
+    // 2. Same-row multi-tile mergeEnds() where removeShuffle() relocates endIdx, followed by reuse.
+    {
+        Polyline poly;
+        poly.appendPoint({9.0f, 2.0f});
+        poly.appendPoint({10.0f, 2.5f});  // single-tile in (1, 0)
+        poly.appendPoint({28.0f, 3.5f});  // crosses (1, 0) -> (2, 0) -> (3, 0) in row 0
+        poly.appendPoint({29.0f, 4.5f});  // single-tile in (3, 0), joins relocated end run
+        poly.appendSentinel();
+        checkMatchesFlat(poly, &grouped, /*maxExpectedKeys=*/3);
+    }
+}
+
 }  // namespace skgpu::graphite

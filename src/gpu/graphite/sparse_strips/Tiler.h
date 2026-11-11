@@ -220,24 +220,108 @@ struct Tile : public IntersectionBits {
 // Make sure the struct is a size convenient to move around, as tiles will be sorted.
 static_assert(sizeof(Tile) == 8);
 
+// Grouped per-row tiles ("PolyTiles", Tiles<..., /*kRows=*/true, /*kGrouped=*/true>) hold one key
+// per run of consecutive segments of the polyline inside one tile, rather than one key per segment
+// and tile. y is implied by the row:
+//
+//  MSB                                                                            LSB
+//  |63--------48|47---------------------21|20--------16|15-------11|10----------0|
+//  |     x      | first line index (27)   | first mask | last mask | extra (11)  |
+//
+//  - The 32 bits under x are the run's first segment's Tile::fPackedLineIdxIntersectionMask, so a
+//    run of one segment is a plain tile.
+//  - extra: the number of segments after the first, which follow it in the polyline.
+//  - last mask: the intersection mask of the last segment, if extra > 0. The segments in between
+//    have mask 0: a segment is only appended while the run's last segment is its first, or has
+//    mask 0 (CanAppend()).
+// So every segment keeps its own mask, and expanding the runs (ForEachSegment()) gives MakeStrips
+// exactly the (segment, mask, tile) triples of plain tiles. Sorting is unchanged: within a tile,
+// runs are ordered by their first line index, and their segments are consecutive, so expanding
+// them visits the segments in the flat layout's order.
+struct GroupedTileKey : public IntersectionBits {
+    static constexpr int kXShift = 48;
+    static constexpr int kPackedShift = 16;
+    static constexpr int kLastShift = 11;
+    static constexpr uint32_t kMaxExtra = (1u << kLastShift) - 1;
+
+    static SK_ALWAYS_INLINE uint64_t Make(uint16_t x, uint32_t packed) {
+        return (uint64_t{x} << kXShift) | (uint64_t{packed} << kPackedShift);
+    }
+    static SK_ALWAYS_INLINE uint16_t X(uint64_t key) {
+        return static_cast<uint16_t>(key >> kXShift);
+    }
+    // The run's first segment: for a plain tile (Extra() == 0), its fPackedLineIdxIntersectionMask.
+    static SK_ALWAYS_INLINE uint32_t Packed(uint64_t key) {
+        return static_cast<uint32_t>(key >> kPackedShift);
+    }
+    static SK_ALWAYS_INLINE uint32_t Extra(uint64_t key) {
+        return static_cast<uint32_t>(key) & kMaxExtra;
+    }
+
+    // True if the run can take the next segment: it isn't full, and its last segment, which would
+    // move inside the run, is its first or has mask 0.
+    static SK_ALWAYS_INLINE bool CanAppend(uint64_t key) {
+        // The low 16 bits are the last mask and extra; the last mask is 0 while extra is.
+        return (static_cast<uint32_t>(key) & 0xFFFF) < kMaxExtra;
+    }
+
+    // Appends the next segment, with its mask in this tile.
+    static SK_ALWAYS_INLINE uint64_t Append(uint64_t key, uint32_t mask) {
+        SkASSERT(CanAppend(key));
+        return key + ((uint64_t{mask} << kLastShift) | 1);
+    }
+
+    // The run's last segment, if Extra() > 0: what its own Tile::fPackedLineIdxIntersectionMask
+    // would be.
+    static SK_ALWAYS_INLINE uint32_t LastPacked(uint64_t key) {
+        const uint32_t firstLine = Packed(key) & ~INTERSECTION_MASK;
+        const uint32_t lastMask = (static_cast<uint32_t>(key) >> kLastShift) & INTERSECTION_MASK;
+        return (firstLine + (Extra(key) << INT_MASK_SHIFT)) | lastMask;
+    }
+
+    // Calls fn(packed, inner) for each segment of the run in 'key', in polyline order, where
+    // 'packed' is what the segment's own Tile::fPackedLineIdxIntersectionMask would be, and 'inner'
+    // is true for the segments strictly inside the run, whose mask is 0.
+    template <typename Fn> static SK_ALWAYS_INLINE void ForEachSegment(uint64_t key, Fn&& fn) {
+        const uint32_t packed = Packed(key);
+        const uint32_t extra = Extra(key);
+        const uint32_t firstMask = packed & INTERSECTION_MASK;
+        const uint32_t lastMask = (static_cast<uint32_t>(key) >> kLastShift) & INTERSECTION_MASK;
+        uint32_t line = packed & ~INTERSECTION_MASK;
+        for (uint32_t i = 0; i <= extra; ++i) {
+            const bool inner = i != 0 && i != extra;
+            fn(line | (i == 0 ? firstMask : 0u) | (i == extra ? lastMask : 0u), inner);
+            line += 1u << INT_MASK_SHIFT;
+        }
+    }
+};
+
 // Container that holds the tiles and manages their state (sorting). Templated to expose the tile
 // size as statically tunable parameter which can be tested within the same compilation unit
-// Tiles are stored in one of two layouts:
+// Tiles are stored in one of three layouts:
 //  - Flat (kRows = false): one buffer of Tiles, sorted globally by Tile::toBits().
 //  - Per row (kRows = true): one buffer of 64-bit keys per tile row, x << 32 |
 //    fPackedLineIdxIntersectionMask, with y implied by the row. The Tiler emits straight into the
 //    rows, so sorting is one small sort per row: about 2x faster than the flat sort, since each row
 //    is sorted in cache and y drops out of the compare. Walking the rows in order yields exactly
 //    the flat order, and dropping y from the key frees 16 bits.
-template <uint16_t kTileWidth, uint16_t kTileHeight, bool kRows = false>
+//  - Grouped per row (kRows = kGrouped = true): the same, with GroupedTileKeys, which use those 16
+//    bits to hold a run of consecutive segments inside one tile in one key. The Tiler runs as for
+//    plain tiles; then a segment's tile at its start point joins the previous segment's run when
+//    that ended in the same cell (see mergeEnds()). There are fewer keys to sort.
+template <uint16_t kTileWidth, uint16_t kTileHeight, bool kRows = false, bool kGrouped = false>
 class Tiles : public IntersectionBits {
+    static_assert(kRows || !kGrouped, "Grouped tiles are stored per row.");
+
 public:
     Tiles() {}
     void reset() {
         fTileBuf.clear();
         if constexpr (kRows) {
             for (int y = fRowMin; y < fRowMax; ++y) {
-                fRows.data()[y].fKeys.clear();
+                Row& row = fRows.data()[y];
+                row.fKeys.clear();
+                row.fSize = 0;
             }
             fRowMin = std::numeric_limits<int>::max();
             fRowMax = 0;
@@ -263,7 +347,8 @@ public:
     // Flat layout only.
     const SkTDArray<Tile>& getTiles() const { return fTileBuf; }
 
-    // Per-row layout only: the rows in [rowMin(), rowMax()) may hold tiles.
+    // Per-row layouts only: the rows in [rowMin(), rowMax()) may hold tiles. Their keys are
+    // GroupedTileKeys if kGrouped.
     int rowMin() const { return fRowMin; }
     int rowMax() const { return fRowMax; }
     const SkTDArray<uint64_t>& getRow(int y) const { return fRows.data()[y].fKeys; }
@@ -349,6 +434,9 @@ public:
         float clipLeftTile = static_cast<float>(minTileX);
         float clipTopTile = static_cast<float>(minTileY);
         float clipRightTile = clip.right() * invW;
+
+        // The run of the previous segment's tile at its end point (kGrouped only).
+        [[maybe_unused]] Run run;
 
         for (auto it = polyline.begin(); it != polyline.end(); ++it) {
             auto [line, lineIdx] = *it;
@@ -452,6 +540,8 @@ public:
             }
 
             if (notSameTile) {
+                // Where the line's tiles at its top and bottom points went (kGrouped only).
+                EndTiles ends;
                 if (lineLeftX == lineRightX) { // Vertical line case
                     uint16_t x = std::min(f32ToU16Sat(lineLeftX),
                                           static_cast<uint16_t>(maxTileX > 0 ? maxTileX - 1 : 0));
@@ -462,7 +552,7 @@ public:
                     if (!isStartCulled) {
                         uint32_t winding = (static_cast<float>(yTopTiles) >= lineTopY) ? W : 0;
                         uint32_t intersectionMask = B | winding;
-                        this->emit(Tile(x, yTopTiles, lineIdx, intersectionMask));
+                        ends.top = this->emit(Tile(x, yTopTiles, lineIdx, intersectionMask));
                     }
 
                     // Process all "fully crossed" tiles (W | T | B).
@@ -478,8 +568,18 @@ public:
                     // processed/culled it via `yStart`.
                     if (p1TileY >= yStart && p1TileY < static_cast<int32_t>(maxTileY)) {
                         uint32_t intersectionMask = W | T;
-                        this->emit(
+                        ends.bottom = this->emit(
                                 Tile(x, static_cast<uint16_t>(p1TileY), lineIdx, intersectionMask));
+                    }
+                    if constexpr (kGrouped) {
+                        const uint32_t topCell = Cell(x, yTopTiles);
+                        const uint32_t bottomCell = Cell(x, static_cast<uint32_t>(p1TileY));
+                        this->mergeEnds(ends,
+                                        static_cast<uint32_t>(lineIdx),
+                                        windingDir > 0,
+                                        topCell,
+                                        bottomCell,
+                                        &run);
                     }
                 } else { // General case
                     float dx = p1X - p0X;
@@ -511,20 +611,54 @@ public:
                     if (crossesEdge) {
                         cullingEventOccurred |= leftCrossing;
                         if (kXDir) {
-                            runLoops</*kXDir=*/true, /*kCrossesEdge=*/true>(
-                                ctx, lineTopY, lineBottomY, yTopTiles, maxTileY, histogram);
+                            runLoops</*kXDir=*/true, /*kCrossesEdge=*/true>(ctx,
+                                                                            lineTopY,
+                                                                            lineBottomY,
+                                                                            yTopTiles,
+                                                                            maxTileY,
+                                                                            histogram,
+                                                                            &ends);
                         } else {
-                            runLoops</*kXDir=*/false, /*kCrossesEdge=*/true>(
-                                ctx, lineTopY, lineBottomY, yTopTiles, maxTileY, histogram);
+                            runLoops</*kXDir=*/false, /*kCrossesEdge=*/true>(ctx,
+                                                                             lineTopY,
+                                                                             lineBottomY,
+                                                                             yTopTiles,
+                                                                             maxTileY,
+                                                                             histogram,
+                                                                             &ends);
                         }
                     } else {
                         if (kXDir) {
-                            runLoops</*kXDir=*/true, /*kCrossesEdge=*/false>(
-                                ctx, lineTopY, lineBottomY, yTopTiles, maxTileY, histogram);
+                            runLoops</*kXDir=*/true, /*kCrossesEdge=*/false>(ctx,
+                                                                             lineTopY,
+                                                                             lineBottomY,
+                                                                             yTopTiles,
+                                                                             maxTileY,
+                                                                             histogram,
+                                                                             &ends);
                         } else {
-                            runLoops</*kXDir=*/false, /*kCrossesEdge=*/false>(
-                                ctx, lineTopY, lineBottomY, yTopTiles, maxTileY, histogram);
+                            runLoops</*kXDir=*/false, /*kCrossesEdge=*/false>(ctx,
+                                                                              lineTopY,
+                                                                              lineBottomY,
+                                                                              yTopTiles,
+                                                                              maxTileY,
+                                                                              histogram,
+                                                                              &ends);
                         }
+                    }
+                    if constexpr (kGrouped) {
+                        // The top and bottom tiles are in the cells of the line's top and bottom
+                        // points.
+                        const uint32_t topCell = Cell(static_cast<uint32_t>(p0TileX),
+                                                      static_cast<uint32_t>(p0TileY));
+                        const uint32_t bottomCell = Cell(static_cast<uint32_t>(p1TileX),
+                                                         static_cast<uint32_t>(p1TileY));
+                        this->mergeEnds(ends,
+                                        static_cast<uint32_t>(lineIdx),
+                                        windingDir > 0,
+                                        topCell,
+                                        bottomCell,
+                                        &run);
                     }
                 }
             } else { // Single tile case
@@ -533,14 +667,20 @@ public:
                                  static_cast<uint16_t>(maxTileX > 0 ? maxTileX - 1 : 0));
                 xClamped = std::max(minTileX, xClamped);
                 uint32_t winding = static_cast<float>(yTopTiles) >= lineTopY ? W : 0;
-                this->emit(Tile(xClamped, yTopTiles, lineIdx, winding));
+                const Tile tile(xClamped, yTopTiles, lineIdx, winding);
+                if constexpr (kGrouped) {
+                    this->mergeSingle(tile, &run);
+                } else {
+                    this->emit(tile);
+                }
             }
         }
 
         if constexpr (kRows) {
-            // Count the growth of the rows this draw touched, for retainedBytes().
+            // Sync each touched row's size and count its growth for retainedBytes().
             for (int y = fRowMin; y < fRowMax; ++y) {
                 Row& row = fRows.data()[y];
+                row.fKeys.resize(row.fSize);
                 fRetainedKeys += static_cast<size_t>(row.fKeys.capacity() - row.fAccountedCapacity);
                 row.fAccountedCapacity = row.fKeys.capacity();
             }
@@ -569,10 +709,46 @@ private:
 
     SkTDArray<Tile> fTileBuf;
 
-    // Per-row layout.
+    // Per-row layout. During makeTilesMSAA(), keys are written directly through fKeys.data()
+    // with capacity reserved on demand and a single resize(fSize) per touched row at the end.
     struct Row {
         SkTDArray<uint64_t> fKeys;
+        int fSize = 0;
         int fAccountedCapacity = 0;  // fKeys' capacity, as counted in fRetainedKeys
+
+        SK_ALWAYS_INLINE void ensureSpace(int count) {
+            if (fKeys.capacity() - fSize < count) {
+                fKeys.reserve(fSize + count);
+            }
+        }
+
+        SK_ALWAYS_INLINE int push(uint64_t key) {
+            this->ensureSpace(1);
+            const int idx = fSize++;
+            fKeys.data()[idx] = key;
+            return idx;
+        }
+
+        SK_ALWAYS_INLINE uint64_t* append(int count) {
+            this->ensureSpace(count);
+            uint64_t* dst = fKeys.data() + fSize;
+            fSize += count;
+            return dst;
+        }
+
+        // Writes 'key' at index idx <= fSize, appending it if idx == fSize without branching.
+        SK_ALWAYS_INLINE void setOrAppend(int idx, uint64_t key) {
+            SkASSERT(idx >= 0 && idx <= fSize);
+            this->ensureSpace(1);
+            fKeys.data()[idx] = key;
+            fSize += static_cast<int>(idx == fSize);
+        }
+
+        SK_ALWAYS_INLINE void removeShuffle(int idx) {
+            SkASSERT(idx >= 0 && idx < fSize);
+            uint64_t* keys = fKeys.data();
+            keys[idx] = keys[--fSize];
+        }
     };
     std::vector<Row> fRows;
     int fRowMin = std::numeric_limits<int>::max();
@@ -580,15 +756,109 @@ private:
     size_t fRetainedKeys = 0;
 
     static SK_ALWAYS_INLINE uint64_t RowKey(const Tile& tile) {
-        return (uint64_t{tile.x} << 32) | tile.fPackedLineIdxIntersectionMask;
+        if constexpr (kGrouped) {
+            return GroupedTileKey::Make(tile.x, tile.fPackedLineIdxIntersectionMask);
+        } else {
+            return (uint64_t{tile.x} << 32) | tile.fPackedLineIdxIntersectionMask;
+        }
     }
 
-    SK_ALWAYS_INLINE void emit(const Tile& tile) {
+    // Returns the tile's index in its row, in the per-row layouts.
+    SK_ALWAYS_INLINE int emit(const Tile& tile) {
         if constexpr (kRows) {
-            fRows.data()[tile.y].fKeys.push_back(RowKey(tile));
+            return fRows.data()[tile.y].push(RowKey(tile));
         } else {
             fTileBuf.push_back(tile);
+            return 0;
         }
+    }
+
+    // ChainMerge (kGrouped only) -----------------------------------------------------------------
+    //
+    // The Tiler runs exactly as for plain tiles. Then a segment's tile at its start point joins the
+    // previous segment's run if that ended in the same cell, and the run can take it
+    // (GroupedTileKey::CanAppend()): its mask goes into the run's key, and its own key is dropped.
+    // That's exact whatever the geometry: a segment has at most one tile per cell, and each keeps
+    // its own mask. So there's no geometric test.
+    //
+    // The row loops don't merge; they only note where the line's top and bottom tiles went, and
+    // mergeEnds() runs after them. Merging inside them, at the end point tiles, cost several times
+    // more per segment, and so did keeping the run in members rather than in locals.
+
+    static constexpr uint64_t kNoRun = ~uint64_t{0};
+
+    static SK_ALWAYS_INLINE uint32_t Cell(uint32_t x, uint32_t y) {
+        return (x & 0xFFFFu) | (y << 16);
+    }
+
+    // The segment and the cell that can join a run.
+    static SK_ALWAYS_INLINE uint64_t Tag(uint32_t lineIdx, uint32_t cell) {
+        return (uint64_t{lineIdx} << 32) | cell;
+    }
+
+    // The run of the previous segment's tile at its end point.
+    struct Run {
+        uint64_t tag = kNoRun;  // the next segment's Tag() in the run's cell, if it can join
+        int idx = 0;            // the run's key's index in its row
+        uint64_t key = 0;
+    };
+
+    // The indices in their rows of a segment's tiles at its top and bottom points, or -1.
+    struct EndTiles {
+        int top = -1;
+        int bottom = -1;
+    };
+
+    // A segment inside one tile: the tile is at both its start and its end point.
+    SK_ALWAYS_INLINE void mergeSingle(const Tile& tile, Run* run) {
+        const uint32_t lineIdx = tile.lineIdx();
+        const uint32_t cell = Cell(tile.x, tile.y);
+        Row& row = fRows.data()[tile.y];
+        // No branches: whether a segment joins depends on the geometry, so they would mispredict.
+        const bool merge = run->tag == Tag(lineIdx, cell);
+        const uint64_t key =
+                merge ? GroupedTileKey::Append(run->key, tile.intersectionMask()) : RowKey(tile);
+        const int idx = merge ? run->idx : row.fSize;
+        row.setOrAppend(idx, key);
+        run->tag = GroupedTileKey::CanAppend(key) ? Tag(lineIdx + 1, cell) : kNoRun;
+        run->idx = idx;
+        run->key = key;
+    }
+
+    // After a segment across several tiles, given where its top and bottom tiles went and their
+    // cells: its tile at its start point (its top if it runs down) joins the run, and its tile at
+    // its end point opens the next one.
+    SK_ALWAYS_INLINE void mergeEnds(const EndTiles& ends,
+                                    uint32_t lineIdx,
+                                    bool down,
+                                    uint32_t topCell,
+                                    uint32_t bottomCell,
+                                    Run* run) {
+        const int startIdx = down ? ends.top : ends.bottom;
+        const uint32_t startCell = down ? topCell : bottomCell;
+        int endIdx = down ? ends.bottom : ends.top;
+        const uint32_t endCell = down ? bottomCell : topCell;
+        if (startIdx >= 0 && run->tag == Tag(lineIdx, startCell)) {
+            Row& startRow = fRows.data()[startCell >> 16];
+            SkASSERT(startIdx < startRow.fSize && run->idx >= 0 && run->idx < startRow.fSize);
+            uint64_t* keys = startRow.fKeys.data();
+            const uint32_t mask = GroupedTileKey::Packed(keys[startIdx]) & INTERSECTION_MASK;
+            keys[run->idx] = GroupedTileKey::Append(run->key, mask);
+            // Drop the start tile's key; the row's last key moves into its place. That's not the
+            // run's key, which is older, but it may be the end tile's.
+            const int last = startRow.fSize - 1;
+            startRow.removeShuffle(startIdx);
+            const bool endMoved = (endCell >> 16) == (startCell >> 16) && endIdx == last;
+            endIdx = endMoved ? startIdx : endIdx;
+        }
+        if (endIdx >= 0) {
+            Row& endRow = fRows.data()[endCell >> 16];
+            SkASSERT(endIdx < endRow.fSize);
+            run->tag = Tag(lineIdx + 1, endCell);  // a run of one segment can take more
+            run->idx = endIdx;
+            run->key = endRow.fKeys.data()[endIdx];
+        }
+        // Else the run's tag names this segment or an earlier one, which no later one matches.
     }
 
     static SK_ALWAYS_INLINE uint16_t DivCeil(uint16_t a, uint16_t b) {
@@ -609,7 +879,7 @@ private:
         return static_cast<int32_t>(std::clamp(v, -65536.0f, 65536.0f));
     }
 
-    template<bool kXDir>
+    template <bool kXDir>
     SK_ALWAYS_INLINE void pushEdge(const LineContext& ctx,
                                    uint16_t xIdx,
                                    uint16_t y,
@@ -619,7 +889,8 @@ private:
                                    uint16_t canonicalEnd,
                                    uint32_t windingInput,
                                    bool checkStart,
-                                   bool checkEnd) {
+                                   bool checkEnd,
+                                   EndTiles* ends) {
         // Determine whether this tile is the true start or end of the line within this horizontal
         // row. We need to account for clamping because the line may start or end off-screen (e.g.,
         // X = -5), but we clamp X to the viewport.
@@ -680,10 +951,23 @@ private:
         mask &= ~(tieBreak | trc);
         mask &= ~((blc | brc) << BOT_SHIFT);
 
-        this->emit(Tile(xIdx, y, ctx.lineIdx, mask));
+        const Tile tile(xIdx, y, ctx.lineIdx, mask);
+        if constexpr (kGrouped) {
+            // Only the top and bottom rows (checkStart, checkEnd) hold the line's tiles at its top
+            // and bottom points. Note where they go for mergeEnds(), without branches.
+            const int idx = this->emit(tile);
+            if (checkStart) {
+                ends->top = notStartTile == 0 ? idx : ends->top;
+            }
+            if (checkEnd) {
+                ends->bottom = notEndTile == 0 ? idx : ends->bottom;
+            }
+        } else {
+            this->emit(tile);
+        }
     }
 
-    template<bool kXDir, bool kCrossesEdge>
+    template <bool kXDir, bool kCrossesEdge>
     SK_ALWAYS_INLINE void processRow(const LineContext& ctx,
                                      uint16_t yIdx,
                                      float rowTopX,
@@ -691,7 +975,8 @@ private:
                                      uint32_t wMask,
                                      bool checkStart,
                                      bool checkEnd,
-                                     WindingHistogram* histogram) {
+                                     WindingHistogram* histogram,
+                                     EndTiles* ends) {
         float lx, rx;
         uint16_t xEndVal;
 
@@ -748,8 +1033,17 @@ private:
             // regardless of direction.
             bool isSingle = xStart == xEndVal;
             uint32_t wLeft = (kXDir || isSingle ? W : 0) & wMask;
-            pushEdge<kXDir>(ctx, xStart, yIdx, rowTopX, rowBottomX, canonicalXStart, canonicalXEnd,
-                            wLeft, checkStart, checkEnd);
+            pushEdge<kXDir>(ctx,
+                            xStart,
+                            yIdx,
+                            rowTopX,
+                            rowBottomX,
+                            canonicalXStart,
+                            canonicalXEnd,
+                            wLeft,
+                            checkStart,
+                            checkEnd,
+                            ends);
 
             // Process all captive "Middle" tiles in this row. These tiles never have vertical
             // crossings, and for the purpose of the intersection mask, are identical as they always
@@ -758,7 +1052,7 @@ private:
             if (innerCount > 0) {
                 uint32_t innerMask = R | L;
                 if constexpr (kRows) {
-                    uint64_t* outKeys = fRows.data()[yIdx].fKeys.append(innerCount);
+                    uint64_t* outKeys = fRows.data()[yIdx].append(innerCount);
                     for (int i = 0; i < innerCount; ++i) {
                         outKeys[i] = RowKey(Tile(xStart + 1 + i, yIdx, ctx.lineIdx, innerMask));
                     }
@@ -774,19 +1068,29 @@ private:
             // tile (i.e., we haven't already processed this exact tile as the Leftmost Tile).
             if (xStart < xEndVal) {
                 uint32_t wRight = (kXDir ? 0 : W) & wMask;
-                pushEdge<kXDir>(ctx, xEndVal, yIdx, rowTopX, rowBottomX, canonicalXStart,
-                                canonicalXEnd, wRight, checkStart, checkEnd);
+                pushEdge<kXDir>(ctx,
+                                xEndVal,
+                                yIdx,
+                                rowTopX,
+                                rowBottomX,
+                                canonicalXStart,
+                                canonicalXEnd,
+                                wRight,
+                                checkStart,
+                                checkEnd,
+                                ends);
             }
         }
     }
 
-    template<bool kXDir, bool kCrossesEdge>
+    template <bool kXDir, bool kCrossesEdge>
     SK_ALWAYS_INLINE void runLoops(const LineContext& ctx,
                                    float lineTopY,
                                    float lineBottomY,
                                    uint16_t yTopTiles,
                                    uint16_t maxTileY,
-                                   WindingHistogram* histogram) {
+                                   WindingHistogram* histogram,
+                                   EndTiles* ends) {
         // Process the Top Row (if visible on screen)
         uint16_t yStart = yTopTiles;
         bool isStartCulled = (lineTopY < ctx.clipTopTile);
@@ -799,8 +1103,15 @@ private:
                                        : ctx.topX + (rowBottomY - ctx.topY) * ctx.xSlope;
             uint32_t mask = y >= lineTopY ? W : 0;
             // The top row might ALSO be the bottom row, so checkEnd = true
-            processRow<kXDir, kCrossesEdge>(ctx, yStart, ctx.topX, rowBottomX, mask,
-                                            /*checkStart=*/true, /*checkEnd=*/true, histogram);
+            processRow<kXDir, kCrossesEdge>(ctx,
+                                            yStart,
+                                            ctx.topX,
+                                            rowBottomX,
+                                            mask,
+                                            /*checkStart=*/true,
+                                            /*checkEnd=*/true,
+                                            histogram,
+                                            ends);
             yStart++;
         }
 
@@ -812,8 +1123,15 @@ private:
             // independently allows the entire loop to auto-vectorize, and is well worth it.
             float rowTopX = ctx.topX + (y - ctx.topY) * ctx.xSlope;
             float rowBottomX = ctx.topX + (y + 1.0f - ctx.topY) * ctx.xSlope;
-            processRow<kXDir, kCrossesEdge>(ctx, yIdx, rowTopX, rowBottomX, 0xffffffff,
-                                            /*checkStart=*/false, /*checkEnd=*/false, histogram);
+            processRow<kXDir, kCrossesEdge>(ctx,
+                                            yIdx,
+                                            rowTopX,
+                                            rowBottomX,
+                                            0xffffffff,
+                                            /*checkStart=*/false,
+                                            /*checkEnd=*/false,
+                                            histogram,
+                                            ends);
         }
 
         // Process the Terminal Row, if it exists. I.e. if it's on-screen AND wasn't already
@@ -824,8 +1142,15 @@ private:
             // have been processed as a starting row.
             float rowTopX = ctx.topX + (y - ctx.topY) * ctx.xSlope;
             // No need to check start (we are past it), but must check end.
-            processRow<kXDir, kCrossesEdge>(ctx, ctx.p1TileY, rowTopX, ctx.bottomX, 0xffffffff,
-                                            /*checkStart=*/false, /*checkEnd=*/true, histogram);
+            processRow<kXDir, kCrossesEdge>(ctx,
+                                            ctx.p1TileY,
+                                            rowTopX,
+                                            ctx.bottomX,
+                                            0xffffffff,
+                                            /*checkStart=*/false,
+                                            /*checkEnd=*/true,
+                                            histogram,
+                                            ends);
         }
     }
 };

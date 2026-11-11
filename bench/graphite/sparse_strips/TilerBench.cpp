@@ -21,14 +21,15 @@ template <uint16_t kTileWidth,
           uint16_t kTileHeight,
           bool kShouldSort,
           BenchmarkDataset kDataset = BenchmarkDataset::kTiger,
-          bool kRows = false>
+          bool kRows = false,
+          bool kGrouped = false>
 class TilerBench : public Benchmark {
 public:
     TilerBench() {
         using DatasetInfo = BenchmarkDatasetInfo<kDataset>;
         fName.printf("SparseStrips_Tiler%s%sBench_%s_%ux%u",
                      kShouldSort ? "Sort" : "",
-                     kRows ? "Rows" : "",
+                     kGrouped ? "Grouped" : (kRows ? "Rows" : ""),
                      DatasetInfo::kName,
                      kTileWidth,
                      kTileHeight);
@@ -52,7 +53,7 @@ protected:
 
     void onDraw(int loops, SkCanvas* /*canvas*/) override {
         using DatasetInfo = BenchmarkDatasetInfo<kDataset>;
-        Tiles<kTileWidth, kTileHeight, kRows> tiler;
+        Tiles<kTileWidth, kTileHeight, kRows, kGrouped> tiler;
         for (int i = 0; i < loops; ++i) {
             tiler.reset();
             tiler.makeTilesMSAA(fPolyline, DatasetInfo::kWidth, DatasetInfo::kHeight);
@@ -89,3 +90,15 @@ DEF_BENCH(return (new skgpu::graphite::TilerBench<8,
                                                   /*kShouldSort=*/true,
                                                   skgpu::graphite::BenchmarkDataset::kMixed,
                                                   /*kRows=*/true>);)
+DEF_BENCH(return (new skgpu::graphite::TilerBench<8,
+                                                  8,
+                                                  /*kShouldSort=*/true,
+                                                  skgpu::graphite::BenchmarkDataset::kTiger,
+                                                  /*kRows=*/true,
+                                                  /*kGrouped=*/true>);)
+DEF_BENCH(return (new skgpu::graphite::TilerBench<8,
+                                                  8,
+                                                  /*kShouldSort=*/true,
+                                                  skgpu::graphite::BenchmarkDataset::kMixed,
+                                                  /*kRows=*/true,
+                                                  /*kGrouped=*/true>);)

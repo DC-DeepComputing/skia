@@ -161,25 +161,35 @@ bool SkpValidator::ValidatePath(skiatest::Reporter* reporter,
                                                   clipRect,
                                                   observer);
 
-    // StripGenerator tiles per row: MakeStrips must produce the same output from per-row tiles.
+    // StripGenerator tiles per row, grouped: MakeStrips must produce the same output from per-row
+    // tiles, plain and grouped, which must hold each of the flat layout's tiles once.
     {
+        auto sameAsFlat = [&](auto& run) {
+            run.run(recorder,
+                    /*scalar=*/false,
+                    polyline,
+                    clipRect,
+                    numTileRows,
+                    localPath.getFillType(),
+                    maskLut);
+            return run.isCulled == isCulled && run.segments == tiler.getTiles().size() &&
+                   SameStripOutput<kTileWidth, kTileHeight>(
+                           wides, ends, atlasManager, run.wides, run.ends, *run.atlas) &&
+                   SameArrays(exactWindings, run.windings);
+        };
         RowTilesRun<kTileWidth, kTileHeight> rows;
-        rows.run(recorder,
-                 /*scalar=*/false,
-                 polyline,
-                 clipRect,
-                 numTileRows,
-                 localPath.getFillType(),
-                 maskLut);
-        const bool same = rows.isCulled == isCulled &&
-                          SameStripOutput<kTileWidth, kTileHeight>(
-                                  wides, ends, atlasManager, rows.wides, rows.ends, *rows.atlas) &&
-                          SameArrays(exactWindings, rows.windings);
+        RowTilesRun<kTileWidth, kTileHeight, /*kGrouped=*/true> grouped;
+        const bool sameRows = sameAsFlat(rows);
+        const bool sameGrouped = sameAsFlat(grouped);
         REPORTER_ASSERT(reporter,
-                        same,
+                        sameRows,
                         "[%s] MakeStrips output from per-row tiles differs from flat tiles",
                         testName);
-        if (!same) {
+        REPORTER_ASSERT(reporter,
+                        sameGrouped,
+                        "[%s] MakeStrips output from grouped per-row tiles differs from flat tiles",
+                        testName);
+        if (!sameRows || !sameGrouped) {
             return false;
         }
     }
