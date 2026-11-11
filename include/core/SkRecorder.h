@@ -13,6 +13,8 @@
 
 class SkCanvas;
 class SkCaptureAsset;
+class SkImage;
+class SkImage_Base;
 class SkSurface;
 
 namespace skcpu {
@@ -42,6 +44,8 @@ public:
 
     virtual skcpu::Recorder* cpuRecorder() = 0;
 
+    virtual sk_sp<SkSurface> makeSurface() = 0;
+
 protected:
     skia_private::TArray<sk_sp<SkCaptureAsset>> fCapturedPictures;
 
@@ -58,6 +62,9 @@ private:
     virtual void createCaptureBreakpoint(SkSurface*) = 0;
     virtual void deregisterCaptureCanvas(SkCanvas*) = 0;
 
+    virtual sk_sp<SkImage> makeImage(sk_sp<SkImage> image) = 0;
+
+    friend class SkImage_Base;
     friend class SkSurface_Base; // for capture functionality
 };
 
