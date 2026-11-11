@@ -86,6 +86,30 @@
       },
       "revId": "96772cf676f25397d38957e87abb476c5b1ec2e8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16c107f6_90666989",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-11T15:34:24Z",
+      "side": 1,
+      "message": "Whoops... didn\u0027t finish.\n\nMaybe the split should be as follows (suggested by AI):\n```\nIf a .lib is part of the standard Win32 desktop baseline (CRT + kernel32, ntdll,\nuser32, gdi32, ole32, advapi32—matching CMake\u0027s CMAKE_CXX_STANDARD_LIBRARIES),\nit lives in `windows_toolchain_config.bzl`.\n\nEverything else is per-target: Feature/backend libraries (dwrite.lib,\nopengl32.lib, d3d12.lib, dxgi.lib, d3dcompiler.lib, dbg\n```",
+      "parentUuid": "a4960f6b_8892d4ce",
+      "range": {
+        "startLine": 367,
+        "startChar": 20,
+        "endLine": 373,
+        "endChar": 64
+      },
+      "revId": "96772cf676f25397d38957e87abb476c5b1ec2e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
