@@ -14,6 +14,7 @@
 
 #include <memory>
 #include <optional>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu {
 class RefCntedCallback;
@@ -54,7 +55,7 @@ private:
     std::unique_ptr<CommandBuffer> fProtectedCommandBuffer;
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
     sk_sp<SkRefCnt> fOutstandingAsyncMapCounter;
-    QueueManager* fQueueManager;
+    raw_ptr<QueueManager> fQueueManager;
 };
 
 } // namespace skgpu::graphite
