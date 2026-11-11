@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1886e75_97a90a86",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-11T19:13:19Z",
+      "side": 1,
+      "message": "I removed makeImage and added makeBitmapImage with this comment\n\n```\n    /**\n     * Creates an SkImage from the provided bitmap backed by this recorder\u0027s target backend.\n     * CPU recorders return a raster SkImage (sharing pixels if immutable, or copying if mutable);\n     * GPU recorders upload the bitmap pixels to a GPU texture.\n     */\n```",
+      "parentUuid": "8ba523d6_8665b070",
+      "range": {
+        "startLine": 63,
+        "startChar": 27,
+        "endLine": 63,
+        "endChar": 36
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ba92f76_9bfbe9bd",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-11-02T15:11:57Z",
       "side": 1,
       "message": "nit: what is the header in include/cpu and the cpp is in src/core? Shouldn\u0027t this be in src/cpu?",
+      "range": {
+        "startLine": 7,
+        "startChar": 18,
+        "endLine": 7,
+        "endChar": 21
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2265c480_84421d1f",
+        "filename": "src/core/Recorder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-11T19:13:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ba92f76_9bfbe9bd",
       "range": {
         "startLine": 7,
         "startChar": 18,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b62033e9_7b75f547",
+        "filename": "src/core/Recorder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-11T19:13:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "869a7d0a_08bb9d54",
+      "range": {
+        "startLine": 26,
+        "startChar": 66,
+        "endLine": 26,
+        "endChar": 71
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20fad09a_fc9a920b",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cd04d3d_7046d8b1",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-11T19:13:19Z",
+      "side": 1,
+      "message": "removed function",
+      "parentUuid": "20fad09a_fc9a920b",
+      "range": {
+        "startLine": 647,
+        "startChar": 25,
+        "endLine": 647,
+        "endChar": 34
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ac2b71c_c37c77d9",
@@ -123,6 +219,30 @@
       "writtenOn": "2026-11-02T15:11:57Z",
       "side": 1,
       "message": "I don\u0027t think this is correct. I\u0027m assuming you\u0027re trying to make a Recorder version of DeferredFromGenerator? IMO FromGenerator should be making an SkImage_Lazy directly and not a Recorder specific one. In fact, I would argue we may not even need to be passing a Recorder into such a factory at all.\n\nAnd if we don\u0027t need this function, then I don\u0027t think we need any of the makeImage stuff you added.",
+      "range": {
+        "startLine": 304,
+        "startChar": 25,
+        "endLine": 304,
+        "endChar": 48
+      },
+      "revId": "caedead14b97c00df0607ff6d6045dd32268e872",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "544f3960_c2c9a637",
+        "filename": "src/image/SkImage_Lazy.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-11T19:13:19Z",
+      "side": 1,
+      "message": "removed this function which led to removing the makeImage codepath",
+      "parentUuid": "8ac2b71c_c37c77d9",
       "range": {
         "startLine": 304,
         "startChar": 25,
