@@ -1916,6 +1916,9 @@ void SurfaceDrawContext::drawShapeUsingPathRenderer(const GrClip* clip,
                                     aaType,
                                     this->colorInfo().isLinearlyBlended()};
     pr->drawPath(args);
+    SkDebugf("Ganesh / backend %d\n", this->fContext->backend());
+    shape.asPath().dump();
+    SkDebugf("\n");
 }
 
 void SurfaceDrawContext::addDrawOp(const GrClip* clip,

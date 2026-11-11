@@ -2035,6 +2035,11 @@ void Device::drawGeometry(const Transform& localToDevice,
         }
 
         StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
+        if (geometry.isShape()) {
+            SkDebugf("Graphite / backend %d\n", this->fRecorder->fSharedContext->backend());
+            geometry.shape().asPath().dump();
+            SkDebugf("\n");
+        }
         fDC->recordDraw(renderer, localToDevice, geometry, clip, order, paintID, dstUsage,
                         scopedDrawBuilder.gatherer(),
                         styleType == SkStrokeRec::kFill_Style ? nullptr : &stroke,
