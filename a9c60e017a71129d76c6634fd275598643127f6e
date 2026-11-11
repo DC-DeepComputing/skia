@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2ad82b3_18fd3dae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-11T19:09:11Z",
+      "side": 1,
+      "message": "Canary-G3 and Canary-Chromium ran on PS2 (later patchsets only change comments in SkFont.h and the description). Canary-G3 hit a wrapper timeout/infrastructure error after all Skia unit tests (CheckTestsSkia) and dependent targets passed with 0 failures.\n\nCanary-Chromium: the reported failure is webgl_conformance_webgl_on_webgpu_tests on linux_optional_gpu_tests_rel (NVIDIA 0x2184, conformance/glsl/implicit/*), https://crrev.com/c/8793577/2. The same suite fails with the same conformance/glsl/implicit tests on the same bot today for unrelated CLs: https://crrev.com/c/8796930 (Dawn roll), https://crrev.com/c/8795587 (ANGLE roll), https://crrev.com/c/8784180 (gpu), https://crrev.com/c/8793035 (regular Skia roll). This CL only changes the UTF-8/UTF-16 glyph count on the CPU text path, so this is a pre-existing WebGL-on-WebGPU failure, not caused by the CL.",
+      "revId": "a9c60e017a71129d76c6634fd275598643127f6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
