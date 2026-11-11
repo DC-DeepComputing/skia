@@ -539,6 +539,29 @@ DEF_SIMPLE_GM(bug6083, canvas, 100, 50) {
     canvas->drawPath(builder.detach(), p);
 }
 
+// Symmetric S-curve cubic ribbon whose inflection chop at t=0.5 produces collinear control points
+// in PathInnerTriangulateOp's HullShader.
+DEF_SIMPLE_GM(cubicpath_collinear_chop_hull, canvas, 570, 440) {
+    SkPath path = SkPathBuilder()
+                  .setIsVolatile(true)
+                  .moveTo(235.754637f, 204.666667f)
+                  .cubicTo(235.754637f, 281.5f, 47.7737455f, 281.5f, 47.7737455f, 358.333333f)
+                  .rLineTo(9.2910995f, 0.0f)
+                  .cubicTo(57.064845f, 281.5f, 245.0457365f, 281.5f, 245.0457365f, 204.666667f)
+                  .close()
+                  .detach();
+
+    canvas->translate(-100.0f, -520.0f);
+    canvas->scale(2.625f, 2.625f);
+
+    SkPaint paint;
+    paint.setColor(SK_ColorBLUE);
+    // Volatile + non-AA routes through TessellationPathRenderer (PathInnerTriangulateOp) by
+    // default on both single-sample and MSAA GPU targets.
+    paint.setAntiAlias(false);
+    canvas->drawPath(path, paint);
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 DEF_GM( return new CubicPathGM; )
@@ -546,3 +569,4 @@ DEF_GM( return new CubicPathShaderGM; )
 DEF_GM( return new CubicClosePathGM; )
 DEF_GM( return new ClippedCubicGM; )
 DEF_GM( return new ClippedCubic2GM; )
+
