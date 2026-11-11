@@ -21,6 +21,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkSL {
 
@@ -121,7 +122,7 @@ private:
                                     std::unique_ptr<Expression>& value);
 
     // RAW_PTR_EXCLUSION: Performance: +2% on sksl_small.
-    RAW_PTR_EXCLUSION Variable* fVar;
+    raw_ptr<Variable> fVar;
     // RAW_PTR_EXCLUSION: Performance: +3.5% on sksl_*.
     RAW_PTR_EXCLUSION const Type& fBaseType;
     int fArraySize;  // zero means "not an array"
