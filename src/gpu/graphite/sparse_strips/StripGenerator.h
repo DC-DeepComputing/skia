@@ -18,6 +18,7 @@
 
 class SkMatrix;
 class SkPath;
+class SkStrokeRec;
 
 namespace skgpu::graphite {
 
@@ -33,6 +34,12 @@ public:
 
     bool processGeometry(const SkPath& path, const SkMatrix& ctm);
     bool processGeometry(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip);
+    // If 'stroke' is not null, 'path' is stroked with it by StrokeFlatten (non-hairline strokes
+    // without fill, and no perspective), otherwise it is filled.
+    bool processGeometry(const SkPath& path,
+                         const SkMatrix& ctm,
+                         const SkIRect& clip,
+                         const SkStrokeRec* stroke);
 
     const EndCaps& ends() const { return fEnds; }
     const WideTiles& wides() const { return fWides; }
@@ -41,10 +48,13 @@ public:
     bool cleanupNullCaps();
 
 private:
-    // The Polyline, Flatten and Tiles that processGeometry() works in.
+    // The Polyline, Flatten, StrokeFlatten and Tiles that processGeometry() works in.
     struct Scratch;
 
-    bool processGeometryImpl(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip);
+    bool processGeometryImpl(const SkPath& path,
+                             const SkMatrix& ctm,
+                             const SkIRect& clip,
+                             const SkStrokeRec* stroke);
 
     int fWidth;
     int fHeight;

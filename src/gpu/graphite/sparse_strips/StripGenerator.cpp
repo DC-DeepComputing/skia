@@ -9,6 +9,8 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathTypes.h"
+#include "include/core/SkStrokeRec.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/sparse_strips/AlphaAtlasManager.h"
@@ -16,6 +18,7 @@
 #include "src/gpu/graphite/sparse_strips/MakeStrips.h"
 #include "src/gpu/graphite/sparse_strips/Polyline.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
+#include "src/gpu/graphite/sparse_strips/StrokeFlatten.h"
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 
 namespace skgpu::graphite {
@@ -32,6 +35,7 @@ constexpr size_t kMaxRetainedScratchBytes = 1 << 20;
 struct StripGenerator::Scratch {
     Polyline fPolyline;
     Flatten fFlatten;
+    StrokeFlatten fStrokeFlatten;
     Tiles<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight> fTiles;
 
     bool isLarge() const {
@@ -62,7 +66,14 @@ bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm) {
 }
 
 bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, const SkIRect& clip) {
-    const bool success = this->processGeometryImpl(path, ctm, clip);
+    return this->processGeometry(path, ctm, clip, /*stroke=*/nullptr);
+}
+
+bool StripGenerator::processGeometry(const SkPath& path,
+                                     const SkMatrix& ctm,
+                                     const SkIRect& clip,
+                                     const SkStrokeRec* stroke) {
+    const bool success = this->processGeometryImpl(path, ctm, clip, stroke);
     // The polyline and tiles have been consumed: the results are in fEnds and fWides.
     if (fScratch->isLarge()) {
         fScratch = std::make_unique<Scratch>();
@@ -72,7 +83,8 @@ bool StripGenerator::processGeometry(const SkPath& path, const SkMatrix& ctm, co
 
 bool StripGenerator::processGeometryImpl(const SkPath& path,
                                          const SkMatrix& ctm,
-                                         const SkIRect& clip) {
+                                         const SkIRect& clip,
+                                         const SkStrokeRec* stroke) {
     fEnds.clear();
     fWides.clear();
 
@@ -93,9 +105,22 @@ bool StripGenerator::processGeometryImpl(const SkPath& path,
 
     Polyline& polyline = fScratch->fPolyline;
     polyline.reset();
-    fScratch->fFlatten.processPaths<FlattenMode::kSimd>(path, ctm, tileClip, &polyline);
+    SkPathFillType fillType = path.getFillType();
+    if (stroke) {
+        // StrokeFlatten fuses SkStroke and Flatten, emitting the stroke's outline directly.
+        if (!fScratch->fStrokeFlatten.processStroke<FlattenMode::kSimd>(
+                    path, ctm, *stroke, tileClip, &polyline)) {
+            return false;
+        }
+        // The outline must be rasterized with the nonzero rule, regardless of the path's own
+        // fill rule. Like SkStroke, the stroke preserves the inverse-ness of the path.
+        fillType = path.isInverseFillType() ? SkPathFillType::kInverseWinding
+                                            : SkPathFillType::kWinding;
+    } else {
+        fScratch->fFlatten.processPaths<FlattenMode::kSimd>(path, ctm, tileClip, &polyline);
+    }
 
-    if (polyline.count() == 0 && !path.isInverseFillType()) {
+    if (polyline.count() == 0 && !SkPathFillType_IsInverse(fillType)) {
         return true;
     }
 
@@ -123,7 +148,7 @@ bool StripGenerator::processGeometryImpl(const SkPath& path,
                     &fWides,
                     &fEnds,
                     atlasManager,
-                    path.getFillType(),
+                    fillType,
                     polyline,
                     fMaskLUT,
                     fCulled,

@@ -6,11 +6,14 @@
  */
 
 #include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
+#include "include/core/SkStrokeRec.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkTDArray.h"
@@ -749,6 +752,113 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_StripGeneratorScr
             widesMatch = got.fX == want.fX && got.fY == want.fY && got.fWidth == want.fWidth;
         }
         REPORTER_ASSERT(reporter, widesMatch, "WideTiles differ from a fresh StripGenerator's");
+    }
+}
+
+// StripGenerator's stroke overload routes through StrokeFlatten and rasterizes the outline with the
+// nonzero rule (preserving inverse fill types), while retaining scratch buffers across fill and
+// stroke draws.
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(SparseStrips_Coverage_StripGeneratorStroke,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kToBeDetermined) {
+    auto recorder = context->makeRecorder();
+    const SparseStripConfig::LUTArray lut = GenerateMSAALUT();
+    constexpr int kDeviceSize = 64;
+    constexpr size_t kDeviceRows = kDeviceSize / SparseStripConfig::kTileHeight;
+    const SkIRect clip = SkIRect::MakeWH(kDeviceSize, kDeviceSize);
+
+    auto sameStrips = [](const StripGenerator& a, const StripGenerator& b) {
+        if (a.ends().size() != b.ends().size() || a.wides().size() != b.wides().size()) {
+            return false;
+        }
+        for (size_t i = 0; i < a.wides().size(); ++i) {
+            const auto& got = a.wides().tiles()[static_cast<int>(i)];
+            const auto& want = b.wides().tiles()[static_cast<int>(i)];
+            if (got.fX != want.fX || got.fY != want.fY || got.fWidth != want.fWidth) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    SkStrokeRec thick(SkStrokeRec::kFill_InitStyle);
+    thick.setStrokeStyle(24.0f);
+    thick.setStrokeParams(SkPaint::kRound_Cap, SkPaint::kRound_Join, /*miterLimit=*/4.0f);
+
+    // Two crossing thick strokes overlap with winding +2 in the center; an even-odd path must still
+    // rasterize its stroke outline with kWinding rather than punching a hole in the center.
+    SkPathBuilder crossBuilder;
+    crossBuilder.moveTo(4.0f, 32.0f).lineTo(60.0f, 32.0f);
+    crossBuilder.moveTo(32.0f, 4.0f).lineTo(32.0f, 60.0f);
+    const SkPath crossWinding = crossBuilder.detach();
+    const SkPath crossEvenOdd = crossWinding.makeFillType(SkPathFillType::kEvenOdd);
+
+    StripGenerator genWinding(kDeviceSize, kDeviceSize, lut, recorder.get());
+    StripGenerator genEvenOdd(kDeviceSize, kDeviceSize, lut, recorder.get());
+    REPORTER_ASSERT(reporter,
+                    genWinding.processGeometry(crossWinding, SkMatrix::I(), clip, &thick));
+    REPORTER_ASSERT(reporter,
+                    genEvenOdd.processGeometry(crossEvenOdd, SkMatrix::I(), clip, &thick));
+    REPORTER_ASSERT(reporter, !genEvenOdd.wides().empty());
+    REPORTER_ASSERT(reporter, sameStrips(genEvenOdd, genWinding));
+
+    // An off-clip normal stroke produces no strips, whereas an off-clip inverse stroke fills every
+    // row of the clip with WideTiles.
+    const SkPath offClip =
+            SkPathBuilder().addRect(SkRect::MakeLTRB(200.0f, 200.0f, 240.0f, 240.0f)).detach();
+    StripGenerator genOff(kDeviceSize, kDeviceSize, lut, recorder.get());
+    REPORTER_ASSERT(reporter, genOff.processGeometry(offClip, SkMatrix::I(), clip, &thick));
+    REPORTER_ASSERT(reporter, genOff.ends().empty() && genOff.wides().empty());
+
+    const SkPath offClipInv = offClip.makeFillType(SkPathFillType::kInverseEvenOdd);
+    REPORTER_ASSERT(reporter, genOff.processGeometry(offClipInv, SkMatrix::I(), clip, &thick));
+    REPORTER_ASSERT(reporter, genOff.ends().empty());
+    REPORTER_ASSERT(reporter, genOff.wides().size() == kDeviceRows);
+
+    // Unsupported stroke configurations return false without leaving stale strips.
+    const SkStrokeRec fillRec(SkStrokeRec::kFill_InitStyle);
+    const SkStrokeRec hairlineRec(SkStrokeRec::kHairline_InitStyle);
+    SkStrokeRec strokeAndFillRec(SkStrokeRec::kFill_InitStyle);
+    strokeAndFillRec.setStrokeStyle(4.0f, /*strokeAndFill=*/true);
+    SkMatrix persp = SkMatrix::I();
+    persp.setPerspX(0.001f);
+
+    REPORTER_ASSERT(reporter, !genOff.processGeometry(crossWinding, SkMatrix::I(), clip, &fillRec));
+    REPORTER_ASSERT(reporter, genOff.ends().empty() && genOff.wides().empty());
+    REPORTER_ASSERT(reporter,
+                    !genOff.processGeometry(crossWinding, SkMatrix::I(), clip, &hairlineRec));
+    REPORTER_ASSERT(reporter,
+                    !genOff.processGeometry(crossWinding, SkMatrix::I(), clip, &strokeAndFillRec));
+    REPORTER_ASSERT(reporter, !genOff.processGeometry(crossWinding, persp, clip, &thick));
+
+    // Interleaved fill and stroke draws on a single StripGenerator match fresh generators.
+    const SkPath curve = SkPathBuilder()
+                                 .moveTo(8.0f, 52.0f)
+                                 .cubicTo(8.0f, 8.0f, 56.0f, 56.0f, 56.0f, 12.0f)
+                                 .detach();
+    SkStrokeRec medium(SkStrokeRec::kFill_InitStyle);
+    medium.setStrokeStyle(5.0f);
+    medium.setStrokeParams(SkPaint::kSquare_Cap, SkPaint::kMiter_Join, /*miterLimit=*/4.0f);
+
+    struct Draw {
+        const SkPath* path;
+        const SkStrokeRec* stroke;
+    };
+    const Draw draws[] = {
+            {&curve, &medium},
+            {&crossWinding, nullptr},
+            {&crossEvenOdd, &thick},
+            {&offClipInv, &medium},
+            {&curve, nullptr},
+            {&curve, &medium},
+    };
+    StripGenerator reused(kDeviceSize, kDeviceSize, lut, recorder.get());
+    for (const Draw& d : draws) {
+        StripGenerator fresh(kDeviceSize, kDeviceSize, lut, recorder.get());
+        REPORTER_ASSERT(reporter, reused.processGeometry(*d.path, SkMatrix::I(), clip, d.stroke));
+        REPORTER_ASSERT(reporter, fresh.processGeometry(*d.path, SkMatrix::I(), clip, d.stroke));
+        REPORTER_ASSERT(reporter, sameStrips(reused, fresh));
     }
 }
 

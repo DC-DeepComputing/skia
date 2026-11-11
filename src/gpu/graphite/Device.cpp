@@ -1759,13 +1759,15 @@ void Device::drawGeometry(const Transform& localToDevice,
     if (renderer && renderer->step(0).renderStepID() == RenderStep::RenderStepID::kEndCap) {
         SkASSERT(localToDevice.valid());
         SkASSERT(fStripGenerator);
-        SkASSERT(style.isFillStyle());
+        SkASSERT(style.isFillStyle() || styleType == SkStrokeRec::kStroke_Style);
 
         const SkPath& finalPath = geometry.shape().asPath();
         SkMatrix ctm = localToDevice.matrix().asM33();
-
         SkIRect clipBounds = clip.drawBounds().makeRoundOut().asSkIRect();
-        if (!fStripGenerator->processGeometry(finalPath, ctm, clipBounds)) {
+
+        // Strokes are stroked and flattened in a single pass by StrokeFlatten.
+        const SkStrokeRec* stroke = style.isFillStyle() ? nullptr : &style;
+        if (!fStripGenerator->processGeometry(finalPath, ctm, clipBounds, stroke)) {
             SKIA_LOG_E("Failed to process geometry for sparse strips!");
             return;
         }
@@ -2251,10 +2253,18 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
 
         case PathRendererStrategy::kCPUSparseStripsMSAA8:
 #if defined(SK_ENABLE_SPARSE_STRIPS)
-            if (style.isFillStyle()) {
+        {
+            // Fills are flattened by Flatten, and strokes can be stroked and flattened in a single
+            // pass by StrokeFlatten (hairlines and stroke-and-fill fall back to tessellation).
+            // Stroke routing is currently disabled and will be enabled separately.
+            constexpr bool kEnableStrokeSparseStrips = false;
+            if (style.isFillStyle() ||
+                (kEnableStrokeSparseStrips && type == SkStrokeRec::kStroke_Style &&
+                 localToDevice.type() != Transform::Type::kPerspective)) {
                 return {renderers->sparseStripsEndCap(), nullptr};
             }
             break;
+        }
 #else
             // Atlas in the future
             break;
