@@ -386,10 +386,13 @@ SkScalar SkFontPriv::ApproximateTransformedTextSize(const SkFont& font, const Sk
 
 size_t SkFontPriv::CountTextElements(const void* text, size_t byteLength, SkTextEncoding encoding) {
     switch (encoding) {
+        // SkUTF returns -1 for malformed text; it must not wrap to SIZE_MAX and size buffers
         case SkTextEncoding::kUTF8:
-            return SkUTF::CountUTF8(reinterpret_cast<const char*>(text), byteLength);
+            return SkToSizeT(
+                    std::max(SkUTF::CountUTF8(reinterpret_cast<const char*>(text), byteLength), 0));
         case SkTextEncoding::kUTF16:
-            return SkUTF::CountUTF16(reinterpret_cast<const uint16_t*>(text), byteLength);
+            return SkToSizeT(std::max(
+                    SkUTF::CountUTF16(reinterpret_cast<const uint16_t*>(text), byteLength), 0));
         case SkTextEncoding::kUTF32:
             return byteLength >> 2;
         case SkTextEncoding::kGlyphID:

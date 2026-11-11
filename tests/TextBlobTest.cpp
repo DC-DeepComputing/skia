@@ -647,3 +647,39 @@ DEF_TEST(SkCanvas_drawTextBlob_b513820666, reporter) {
     SkCanvas* canvas = surface->getCanvas();
     canvas->drawPicture(newPicture);
 }
+
+// Blob factories and drawSimpleText size glyph storage from countText; malformed UTF-8/UTF-16
+// must give no blob and draw nothing instead of allocating a wrapped error count
+DEF_TEST(TextBlob_MalformedUTF, reporter) {
+    const uint16_t loneHigh[] = {0xD835};
+    const char truncated[] = "a\xC3";
+    struct {
+        const void* data;
+        size_t byteLength;
+        SkTextEncoding encoding;
+    } const kInputs[] = {
+            {loneHigh, sizeof(loneHigh), SkTextEncoding::kUTF16},
+            {truncated, 2, SkTextEncoding::kUTF8},
+    };
+
+    const SkFont font = ToolUtils::DefaultPortableFont();
+    const SkPoint pos[4] = {};
+    const SkScalar xpos[4] = {};
+    const SkRSXform xforms[4] = {};
+    sk_sp<SkSurface> surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(16, 16));
+    REPORTER_ASSERT(reporter, surface);
+    for (const auto& t : kInputs) {
+        REPORTER_ASSERT(reporter,
+                        !SkTextBlob::MakeFromText(t.data, t.byteLength, font, t.encoding));
+        REPORTER_ASSERT(reporter,
+                        !SkTextBlob::MakeFromPosText(t.data, t.byteLength, pos, font, t.encoding));
+        REPORTER_ASSERT(
+                reporter,
+                !SkTextBlob::MakeFromPosTextH(t.data, t.byteLength, xpos, 0, font, t.encoding));
+        REPORTER_ASSERT(
+                reporter,
+                !SkTextBlob::MakeFromRSXform(t.data, t.byteLength, xforms, font, t.encoding));
+        surface->getCanvas()->drawSimpleText(
+                t.data, t.byteLength, t.encoding, 0, 0, font, SkPaint());
+    }
+}
