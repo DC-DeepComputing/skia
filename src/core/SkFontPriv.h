@@ -80,7 +80,8 @@ public:
         return SkIsFinite(font.getSize(), font.getScaleX(), font.getSkewX());
     }
 
-    // Returns the number of elements (characters or glyphs) in the array.
+    // Returns the number of elements (characters or glyphs) in the array, or 0 when UTF-8 or
+    // UTF-16 text is malformed
     static size_t CountTextElements(const void* text, size_t byteLength, SkTextEncoding);
 
     static void GlyphsToUnichars(const SkFont&, const SkGlyphID glyphs[], int count, SkUnichar[]);
