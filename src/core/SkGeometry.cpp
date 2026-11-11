@@ -26,6 +26,7 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace {
 
@@ -923,7 +924,7 @@ static void test_collaps_duplicates() {
     const SkScalar src5[] = { 0, 1, 1 };
     const SkScalar src6[] = { 0, 1, 2 };
     const struct {
-        const SkScalar* fData;
+        raw_ptr<const SkScalar> fData;
         int fCount;
         int fCollapsedCount;
     } data[] = {
