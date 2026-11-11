@@ -559,12 +559,25 @@ private:
         SwarPixel* rowSubsampleWindings = fSubsampleWinding[row];
 
         uint8_t invertByte = kIsWinding ? 0xff : 1;
-        if (xStart == xEnd) {
-            uint8_t combinedMask = leftMask & rightMask;
+        if (xEnd - xStart <= 1) {
+            // The span is at most two pixels wide, as it is in every row of a steep line. Process
+            // exactly two pixels rather than branching on the width, which is unpredictable from
+            // row to row. If the span is a single pixel, the second pixel gets a zero mask and no
+            // inversion, which leaves it unchanged.
+            const bool single = xStart == xEnd;
+            const int32_t secondX = std::min<int32_t>(xStart + 1, kTileWidth - 1);
             processPixel<kCanonicalYDir, /*kIsEdgePixel=*/true>(
-                    &rowSubsampleWindings[xStart], combinedMask, leftInvert ? invertByte : 0,
-                    tFixed, params.fMaskRowLut);
-            tFixed += params.fStepXFixed;
+                    &rowSubsampleWindings[xStart],
+                    single ? (leftMask & rightMask) : leftMask,
+                    leftInvert ? invertByte : 0,
+                    tFixed,
+                    params.fMaskRowLut);
+            processPixel<kCanonicalYDir, /*kIsEdgePixel=*/true>(
+                    &rowSubsampleWindings[secondX],
+                    single ? 0 : rightMask,
+                    (!single && rightInvert) ? invertByte : 0,
+                    tFixed + params.fStepXFixed,
+                    params.fMaskRowLut);
         } else {
             processPixel<kCanonicalYDir, /*kIsEdgePixel=*/true>(
                     &rowSubsampleWindings[xStart], leftMask, leftInvert ? invertByte : 0, tFixed,
