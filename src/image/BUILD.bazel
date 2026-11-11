@@ -11,6 +11,7 @@ IMAGE_FILES = [
     "SkImageGeneratorPriv.h",
     "SkImage_Base.cpp",
     "SkImage_Base.h",
+    "SkImage_Factories.cpp",
     "SkImage_Lazy.cpp",
     "SkImage_Lazy.h",
     "SkImage_LazyFactories.cpp",
