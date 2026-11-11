@@ -56,6 +56,30 @@
       },
       "revId": "43f9771e4e222bd0f77a41a0e0fdbf89ba0e7b4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71b99e7e_e173be6f",
+        "filename": "tools/ganesh/gl/webgl/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4432225
+      },
+      "writtenOn": "2026-11-11T16:27:14Z",
+      "side": 1,
+      "message": "Correct, no bazel yet. Presubmit checks or the housekeeper bot (can\u0027t recall which) fails without this file alongside the new source file.",
+      "parentUuid": "d2bde43e_9fe2fe20",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 1
+      },
+      "revId": "43f9771e4e222bd0f77a41a0e0fdbf89ba0e7b4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
