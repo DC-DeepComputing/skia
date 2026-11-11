@@ -16,6 +16,29 @@
       "message": "PTAL\n\nNew test prior to fix: https://screenshot.corp.google.com/image/212abterg8f58.png \nNew test after fix: https://screenshot.corp.google.com/image/1ohd93l2eadc0.png",
       "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e9e9225_18c210fc",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-11T20:26:40Z",
+      "side": 1,
+      "message": "I think this should be emitted as a `float3` and we rely on the fragment shader division you added previously. If we divide in the vertex shader, it won\u0027t have perspective interpolation with respect to `localToDevice` since the vertex transform and W values are from `maskToDevice`.",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1119,
+        "endChar": 53
+      },
+      "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
