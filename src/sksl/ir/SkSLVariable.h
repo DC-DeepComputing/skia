@@ -143,7 +143,7 @@ public:
 
 private:
     // RAW_PTR_EXCLUSION: Performance: +2% on sksl_small.
-    RAW_PTR_EXCLUSION IRNode* fDeclaringElement = nullptr;
+    raw_ptr<IRNode> fDeclaringElement = nullptr;
     ModifierFlags fModifierFlags;
     Position fModifiersPosition;
     VariableStorage fStorage;
