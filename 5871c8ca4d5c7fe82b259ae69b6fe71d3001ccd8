@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5aa7b9b_3b2a485a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-11T21:25:22Z",
+      "side": 1,
+      "message": "The 2.5D `asM33()` change across the three text `RenderStep`s and `text_vertex_fn` makes sense and lines up with `VertexFiller::boundsAndDeviceMatrix` (where `sk_Position.w \u003d position.w` already carries the device-space `w` for perspective varying interpolation).\n\nOne test coverage note on `persptext_shader` in `gm/persptext.cpp`: because `SubRunControl::isSDFT` returns true for perspective outline text and the font uses `kAntiAlias`, `persptext_shader` exercises `SDFTextRenderStep` only. Would it be worth also exercising `SDFTextLCDRenderStep` (e.g. `kSubpixelAntiAlias` when the target surface has LCD pixel geometry) and `BitmapTextRenderStep` (e.g. an `kA8` bitmap glyph from `SkCustomTypefaceBuilder`, or a `Slug` recorded at identity and drawn under perspective) in the GM or a `DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS` pixel test?",
+      "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0e9e9225_18c210fc",
         "filename": "src/sksl/sksl_graphite_vert.sksl",
         "patchSetId": 1
