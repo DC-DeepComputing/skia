@@ -12,6 +12,7 @@
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/ir/SkSLExpression.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkSL {
 
@@ -66,7 +67,7 @@ private:
 
     std::unique_ptr<Expression> fSelf;
     // RAW_PTR_EXCLUSION: Performance: +2% on sksl_skrp_large.
-    RAW_PTR_EXCLUSION const FunctionDeclaration* fOverloadChain;
+    raw_ptr<const FunctionDeclaration> fOverloadChain;
 
     using INHERITED = Expression;
 };
