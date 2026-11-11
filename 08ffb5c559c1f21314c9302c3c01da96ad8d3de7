@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3097f36f_8f11b411",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-11T23:20:03Z",
+      "side": 1,
+      "message": "A RenderStep that advertises `kInverseFillsScissor` is required to just render a pixel-aligned rect matching `params.scissor()`. Given that, my expectation would be that any sort of numerically unstable transform would manifest as errors in the computed local coordinates, but not in the fragment coords that are touched.\n\nDid Agent Smith find a way to still exploit this?",
+      "range": {
+        "startLine": 91,
+        "startChar": 8,
+        "endLine": 91,
+        "endChar": 77
+      },
+      "revId": "08ffb5c559c1f21314c9302c3c01da96ad8d3de7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f23f89b_0e6565b3",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-11T23:20:03Z",
+      "side": 1,
+      "message": "If we are scissoring every dst-reading draw to its own draw bounds, we\u0027ll be thrashing the scissor state.  If we pass in the aggregate dst read bounds that will be used for the texture copy (which I think we know at this point since DrawList accumulates it before snapping, right?), then we just have to return the intersection of that and `params.scissor()` and not worry about rounding out the `drawBounds`.",
+      "range": {
+        "startLine": 122,
+        "startChar": 16,
+        "endLine": 122,
+        "endChar": 30
+      },
+      "revId": "08ffb5c559c1f21314c9302c3c01da96ad8d3de7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8913ed1e_e3ca8cbc",
+        "filename": "src/gpu/graphite/Renderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-11T23:20:03Z",
+      "side": 1,
+      "message": "returning nullopt means don\u0027t change the scissor, shouldn\u0027t we want to return an empty scissor rect to disable rendering entirely?\n\nFor that matter, it is a little unexpected that we\u0027d both encounter a `drawBounds` that was empty or inverted (but I can\u0027t rule out we didn\u0027t get here from the update to drawBounds for `kIgnoreInverseFill` above).",
+      "range": {
+        "startLine": 126,
+        "startChar": 49,
+        "endLine": 126,
+        "endChar": 62
+      },
+      "revId": "08ffb5c559c1f21314c9302c3c01da96ad8d3de7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5a2541d_9aa3f4b8",
+        "filename": "src/gpu/graphite/draw/DrawParams.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-11T23:20:03Z",
+      "side": 1,
+      "message": "I was going to suggest that we add a BarrierType enum that represents accessing the texture copy, in order to keep the size of DrawParams from expanding, although that abuses the notion of barrier.\n\nGood comments here justifying that the more general fReadsDst still fits.  One possible improvement (avoiding discarding information), is that the `SkEnumBitmask\u003cDstUsage\u003e` used to derive this value also fits in 1 byte I believe, so we could just keep that around?",
+      "range": {
+        "startLine": 227,
+        "startChar": 4,
+        "endLine": 228,
+        "endChar": 87
+      },
+      "revId": "08ffb5c559c1f21314c9302c3c01da96ad8d3de7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
