@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f53e9b1_36fb9bb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-11T23:14:53Z",
+      "side": 1,
+      "message": "Sounds good — keeping `persptext_shader` as a single GM makes sense since all three text `RenderStep`s share `text_vertex_fn` and have identical `kFloat3x3` / `asM33()` `localToDevice` plumbing. LGTM!",
+      "parentUuid": "c9e4cf90_07104f03",
+      "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e9e9225_18c210fc",
