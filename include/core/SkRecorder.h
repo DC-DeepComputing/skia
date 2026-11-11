@@ -45,6 +45,11 @@ public:
 
     virtual skcpu::Recorder* cpuRecorder() = 0;
 
+    sk_sp<SkSurface> makeSurface(const SkImageInfo& imageInfo,
+                                 const SkSurfaceProps* surfaceProps = nullptr) {
+        return this->onMakeSurface();
+    };
+
 protected:
     skia_private::TArray<sk_sp<SkCaptureAsset>> fCapturedPictures;
 
@@ -67,6 +72,8 @@ private:
      * GPU recorders upload the bitmap pixels to a GPU texture.
      */
     virtual sk_sp<SkImage> makeBitmapImage(const SkBitmap&) = 0;
+
+    virtual sk_sp<SkSurface> onMakeSurface() = 0;
 
     friend class SkImage_Base;
     friend class SkSurface_Base; // for capture functionality

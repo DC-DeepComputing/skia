@@ -63,6 +63,8 @@ private:
     void createCaptureBreakpoint(SkSurface*) final;
     void deregisterCaptureCanvas(SkCanvas*) final {}
 
+    sk_sp<SkSurface> onMakeSurface() override;
+
     sk_sp<SkImage> makeBitmapImage(const SkBitmap&) override;
 };
 
