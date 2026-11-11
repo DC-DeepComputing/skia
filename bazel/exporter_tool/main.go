@@ -18,6 +18,28 @@ import (
 )
 
 var gniExportDescs = []exporter.GNIExportDesc{
+	{GNI: "gn/bench.gni", Vars: []exporter.GNIFileListExportDesc{
+		{Var: "bench_sources",
+			Rules: []string{
+				"//bench:bench_sources",
+			},
+		},
+		{Var: "graphite_bench_sources",
+			Rules: []string{
+				"//bench:graphite_bench_sources",
+			},
+		},
+		{Var: "sparse_strips_bench_sources",
+			Rules: []string{
+				"//bench:sparse_strips_bench_sources",
+			},
+		},
+		{Var: "ganesh_bench_sources",
+			Rules: []string{
+				"//bench:ganesh_bench_sources",
+			},
+		},
+	}},
 	{GNI: "gn/codec.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_codec_public",
 			Rules: []string{
@@ -695,6 +717,59 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "sksl_skrp_tests", Rules: []string{"//resources/sksl:sksl_skrp_tests"}},
 		{Var: "sksl_spirv_tests", Rules: []string{"//resources/sksl:sksl_spirv_tests"}},
 		{Var: "sksl_wgsl_tests", Rules: []string{"//resources/sksl:sksl_wgsl_tests"}},
+	}},
+	{GNI: "gn/tests.gni", Vars: []exporter.GNIFileListExportDesc{
+		{Var: "tests_sources",
+			Rules: []string{
+				"//tests:tests_sources",
+				"//tests:gn_only_tests",
+			}},
+		{Var: "graphite_tests_sources",
+			Rules: []string{
+				"//tests:graphite_tests_sources",
+				"//tests:gn_only_graphite_tests",
+			}},
+		{Var: "precompile_tests_sources",
+			Rules: []string{
+				"//tests:graphite_precompile_tests_sources",
+			}},
+		{Var: "sparse_strips_test_sources",
+			Rules: []string{
+				"//tests:graphite_sparse_strips_test_sources",
+			}},
+		{Var: "graphite_dawn_tests_sources",
+			Rules: []string{
+				"//tests:graphite_dawn_tests_sources",
+			}},
+		{Var: "graphite_metal_tests_sources",
+			Rules: []string{
+				"//tests:graphite_metal_tests_sources",
+			}},
+		{Var: "graphite_vulkan_tests_sources",
+			Rules: []string{
+				"//tests:graphite_vulkan_tests_sources",
+			}},
+		{Var: "pathops_tests_sources",
+			Rules: []string{
+				"//tests:pathops_tests_sources",
+			}},
+		{Var: "ganesh_tests_sources",
+			Rules: []string{
+				"//tests:ganesh_tests_sources",
+				"//tests:gn_only_ganesh_tests",
+			}},
+		{Var: "ganesh_gl_tests_sources",
+			Rules: []string{
+				"//tests:ganesh_gl_tests_sources",
+			}},
+		{Var: "ganesh_metal_tests_sources",
+			Rules: []string{
+				"//tests:ganesh_metal_tests_sources",
+			}},
+		{Var: "jpeg_gainmap_tests_sources",
+			Rules: []string{
+				"//tests:jpeg_gainmap_tests_sources",
+			}},
 	}},
 	{GNI: "gn/utils.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_utils_public",
