@@ -13,6 +13,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
@@ -73,18 +74,17 @@ protected:
         }
 
         struct Polygons {
-            const SkPoint* fPoints;
-            size_t fPointNum;
+            SkSpan<const SkPoint> fPoints;
         };
         auto pgs = std::to_array<Polygons>({
-                Polygons{p0.data(), std::size(p0)},
-                Polygons{p1.data(), std::size(p1)},
-                Polygons{p2.data(), std::size(p2)},
-                Polygons{p3.data(), std::size(p3)},
-                Polygons{p4.data(), std::size(p4)},
-                Polygons{p5.data(), std::size(p5)},
-                Polygons{p6.data(), std::size(p6)},
-                Polygons{p7.data(), std::size(p7)}
+                Polygons{p0},
+                Polygons{p1},
+                Polygons{p2},
+                Polygons{p3},
+                Polygons{p4},
+                Polygons{p5},
+                Polygons{p6},
+                Polygons{p7},
         });
 
         SkASSERT(std::size(pgs) == kNumPolygons);
@@ -92,7 +92,7 @@ protected:
             SkPathBuilder b;
             b.moveTo(pgs[pgIndex].fPoints[0].fX,
                      pgs[pgIndex].fPoints[0].fY);
-            for (size_t ptIndex = 1; ptIndex < pgs[pgIndex].fPointNum; ++ptIndex) {
+            for (size_t ptIndex = 1; ptIndex < pgs[pgIndex].fPoints.size(); ++ptIndex) {
                 b.lineTo(pgs[pgIndex].fPoints[ptIndex].fX,
                          pgs[pgIndex].fPoints[ptIndex].fY);
             }

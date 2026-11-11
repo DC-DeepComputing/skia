@@ -6,6 +6,7 @@
  */
 #include "bench/Benchmark.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "src/core/SkMatrixUtils.h"
 #include "src/core/SkRandom.h"
@@ -66,7 +67,7 @@ private:
 // having unknown values in our arrays can throw off the timing a lot, perhaps
 // handling NaN values is a lot slower. Anyway, this is just meant to put
 // reasonable values in our arrays.
-template <typename T> void init9(T array[9]) {
+template <typename T> void init9(SkSpan<T, 9> array) {
     SkRandom rand;
     for (int i = 0; i < 9; i++) {
         array[i] = rand.nextSScalar1();
