@@ -33,6 +33,29 @@
       "message": "Infra stuff LGTM but would appreciate Florin\u0027s eyes on tools/...",
       "revId": "43f9771e4e222bd0f77a41a0e0fdbf89ba0e7b4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2bde43e_9fe2fe20",
+        "filename": "tools/ganesh/gl/webgl/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-11T16:19:16Z",
+      "side": 1,
+      "message": "I don\u0027t see this referenced in other bazel files, I\u0027m guessing bazel builds are not wired up yet?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 1
+      },
+      "revId": "43f9771e4e222bd0f77a41a0e0fdbf89ba0e7b4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
