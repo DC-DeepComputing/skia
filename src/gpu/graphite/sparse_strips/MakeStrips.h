@@ -119,8 +119,8 @@ namespace skgpu::graphite {
  */
 class MakeStrips {
 public:
-    template <uint16_t kTileWidth, uint16_t kTileHeight>
-    static bool MsaaScalar(const Tiles<kTileWidth, kTileHeight>& tileContainer,
+    template <uint16_t kTileWidth, uint16_t kTileHeight, bool kRows>
+    static bool MsaaScalar(const Tiles<kTileWidth, kTileHeight, kRows>& tileContainer,
                            WideTiles* wides,
                            EndCaps* ends,
                            AlphaAtlasManager* atlasManager,
@@ -131,7 +131,8 @@ public:
                            const WindingHistogram& windingHistogram,
                            const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
-                           , MsaaExactMaskObserver observer = nullptr
+                           ,
+                           MsaaExactMaskObserver observer = nullptr
 #endif
     ) {
         bool success = true;
@@ -159,8 +160,8 @@ public:
         return success;
     }
 
-    template <uint16_t kTileWidth, uint16_t kTileHeight>
-    static bool MsaaSimd(const Tiles<kTileWidth, kTileHeight>& tileContainer,
+    template <uint16_t kTileWidth, uint16_t kTileHeight, bool kRows>
+    static bool MsaaSimd(const Tiles<kTileWidth, kTileHeight, kRows>& tileContainer,
                          WideTiles* wides,
                          EndCaps* ends,
                          AlphaAtlasManager* atlasManager,
@@ -171,7 +172,8 @@ public:
                          const WindingHistogram& windingHistogram,
                          const SkIRect& clipRect
 #if defined(GPU_TEST_UTILS)
-                         , MsaaExactMaskObserver observer = nullptr
+                         ,
+                         MsaaExactMaskObserver observer = nullptr
 #endif
     ) {
         bool success = true;
@@ -490,6 +492,191 @@ private:
                                           processor,
                                           wides);
         return true;
+    }
+
+    // The same traversal, over per-row tiles (Tiles<..., /*kRows=*/true>). Walking the rows in
+    // order, with each row's keys (x << 32 | packed line index and mask) sorted, visits the tiles
+    // in the flat layout's order, so the events, and hence the outputs, are identical. y comes from
+    // the row, which makes row starts explicit.
+    template <uint16_t kTileWidth, uint16_t kTileHeight, typename Processor>
+    static SK_ALWAYS_INLINE bool TraverseCPU(
+            const Tiles<kTileWidth, kTileHeight, /*kRows=*/true>& tileContainer,
+            WideTiles* wides,
+            EndCaps* ends,
+            AlphaAtlasManager* atlasManager,
+            bool isCulled,
+            const WindingHistogram& windingHistogram,
+            const SkIRect& clipRect,
+            bool isInverse,
+            Processor* processor) {
+        constexpr size_t kTilePixelCount = kTileWidth * kTileHeight;
+
+        if (clipRect.isEmpty() || clipRect.right() <= 0 || clipRect.bottom() <= 0) {
+            return true;
+        }
+
+        uint16_t minTileY = static_cast<uint16_t>(std::max(0, clipRect.top()) / kTileHeight);
+        uint16_t totalRows =
+                static_cast<uint16_t>((clipRect.bottom() + kTileHeight - 1) / kTileHeight);
+        if (isCulled) {
+            totalRows = std::min<uint16_t>(totalRows, windingHistogram.size());
+        }
+
+        bool started = false;
+        Tile prevTile;  // Only its x and y are used.
+        uint16_t runStartX = 0;
+        std::array<SkPoint, 2> tileBounds;
+
+        for (int y = tileContainer.rowMin(); y < tileContainer.rowMax(); ++y) {
+            const SkTDArray<uint64_t>& row = tileContainer.getRow(y);
+            if (row.empty()) {
+                continue;
+            }
+            const uint64_t* keys = row.data();
+            const int keyCount = row.size();
+            const uint16_t tileY = static_cast<uint16_t>(y);
+            const uint16_t firstX = static_cast<uint16_t>(keys[0] >> 32);
+
+            if (!started) {
+                started = true;
+                ProcessEmptyTileRows<kTileHeight>(minTileY,
+                                                  tileY,
+                                                  clipRect,
+                                                  isCulled,
+                                                  isInverse,
+                                                  windingHistogram,
+                                                  processor,
+                                                  wides);
+            } else {
+                // Row start: resolve the previous row's last tile, and close out its row.
+                uint8_t* dst = atlasManager->requestAlphaSpace(kTilePixelCount);
+                if (!dst) {
+                    return false;
+                }
+                processor->resolveWindingToAlpha(dst);
+                if (!FinalizeRun<kTileWidth, kTileHeight>(
+                            runStartX, prevTile, atlasManager, ends)) {
+                    return false;
+                }
+                bool shouldFill = processor->ShouldFill(processor->coarseWinding()) ^ isInverse;
+                if (shouldFill) {
+                    uint16_t runEndX = (prevTile.x + 1) * kTileWidth;
+                    uint16_t clipRight = static_cast<uint16_t>(clipRect.right());
+                    if (clipRight > runEndX) {
+                        wides->addTile(runEndX, prevTile.y * kTileHeight, clipRight - runEndX);
+                    }
+                }
+                ProcessEmptyTileRows<kTileHeight>(prevTile.y + 1,
+                                                  tileY,
+                                                  clipRect,
+                                                  isCulled,
+                                                  isInverse,
+                                                  windingHistogram,
+                                                  processor,
+                                                  wides);
+            }
+
+            // Seed the coarse winding for the row, and emit any leading WideTile from clip left.
+            int32_t windingDelta = isCulled ? windingHistogram[tileY] : 0;
+            processor->setCoarseWinding(windingDelta);
+            processor->clearWithCoarseWinding();
+            if (processor->ShouldFill(windingDelta) ^ isInverse) {
+                uint16_t wideStartX = static_cast<uint16_t>(clipRect.left());
+                uint16_t wideEndX = firstX * kTileWidth;
+                if (wideEndX > wideStartX) {
+                    wides->addTile(wideStartX, tileY * kTileHeight, wideEndX - wideStartX);
+                }
+            }
+            runStartX = firstX;
+            prevTile.x = firstX;
+            prevTile.y = tileY;
+            tileBounds = TileBounds<kTileWidth, kTileHeight>(firstX, tileY);
+
+            for (int i = 0; i < keyCount; ++i) {
+                const uint64_t key = keys[i];
+                const uint16_t x = static_cast<uint16_t>(key >> 32);
+                if (x != prevTile.x) {
+                    // Tile start: resolve, then carry the coarse winding into the next tile.
+                    uint8_t* dst = atlasManager->requestAlphaSpace(kTilePixelCount);
+                    if (!dst) {
+                        return false;
+                    }
+                    processor->resolveWindingToAlpha(dst);
+                    processor->clearWithCoarseWinding();
+                    if (x != prevTile.x + 1) {
+                        // Segment start: finalize the run, and fill the gap if inside.
+                        if (!FinalizeRun<kTileWidth, kTileHeight>(
+                                    runStartX, prevTile, atlasManager, ends)) {
+                            return false;
+                        }
+                        uint16_t runEndX = (prevTile.x + 1) * kTileWidth;
+                        if (processor->ShouldFill(processor->coarseWinding()) ^ isInverse) {
+                            uint16_t wideEndX = x * kTileWidth;
+                            if (wideEndX > runEndX) {
+                                wides->addTile(runEndX, tileY * kTileHeight, wideEndX - runEndX);
+                            }
+                        }
+                        runStartX = x;
+                    }
+                    prevTile.x = x;
+                    tileBounds = TileBounds<kTileWidth, kTileHeight>(x, tileY);
+                }
+                Tile tile;
+                tile.x = x;
+                tile.y = tileY;
+                tile.fPackedLineIdxIntersectionMask = static_cast<uint32_t>(key);
+                processor->rasterizeLineToTile(tile, tileBounds);
+            }
+        }
+
+        if (!started) {
+            ProcessEmptyTileRows<kTileHeight>(minTileY,
+                                              totalRows,
+                                              clipRect,
+                                              isCulled,
+                                              isInverse,
+                                              windingHistogram,
+                                              processor,
+                                              wides);
+            return true;
+        }
+
+        // Process the last tile and finalize, as the flat traversal does.
+        uint8_t* dst = atlasManager->requestAlphaSpace(kTilePixelCount);
+        if (!dst) {
+            return false;
+        }
+        processor->resolveWindingToAlpha(dst);
+        if (!FinalizeRun<kTileWidth, kTileHeight>(runStartX, prevTile, atlasManager, ends)) {
+            return false;
+        }
+        bool shouldFill = processor->ShouldFill(processor->coarseWinding()) ^ isInverse;
+        if (shouldFill) {
+            uint16_t runEndX = (prevTile.x + 1) * kTileWidth;
+            uint16_t clipRight = static_cast<uint16_t>(clipRect.right());
+            if (clipRight > runEndX) {
+                wides->addTile(runEndX, prevTile.y * kTileHeight, clipRight - runEndX);
+            }
+        }
+
+        ProcessEmptyTileRows<kTileHeight>(prevTile.y + 1,
+                                          totalRows,
+                                          clipRect,
+                                          isCulled,
+                                          isInverse,
+                                          windingHistogram,
+                                          processor,
+                                          wides);
+        return true;
+    }
+
+    template <uint16_t kTileWidth, uint16_t kTileHeight>
+    static SK_ALWAYS_INLINE std::array<SkPoint, 2> TileBounds(uint16_t tileX, uint16_t tileY) {
+        float x = static_cast<float>(tileX * kTileWidth);
+        float y = static_cast<float>(tileY * kTileHeight);
+        return {SkPoint::Make(x, y),
+                SkPoint::Make(x + static_cast<float>(kTileWidth),
+                              y + static_cast<float>(kTileHeight))};
     }
 };
 

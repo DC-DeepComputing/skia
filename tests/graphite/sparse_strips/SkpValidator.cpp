@@ -28,6 +28,7 @@
 #include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
 #include "tests/graphite/sparse_strips/OracleValidator.h"
+#include "tests/graphite/sparse_strips/RowTilesCheck.h"
 #include "tools/ToolUtils.h"
 
 #include <algorithm>
@@ -159,6 +160,29 @@ bool SkpValidator::ValidatePath(skiatest::Reporter* reporter,
                                                   windingHistogram,
                                                   clipRect,
                                                   observer);
+
+    // StripGenerator tiles per row: MakeStrips must produce the same output from per-row tiles.
+    {
+        RowTilesRun<kTileWidth, kTileHeight> rows;
+        rows.run(recorder,
+                 /*scalar=*/false,
+                 polyline,
+                 clipRect,
+                 numTileRows,
+                 localPath.getFillType(),
+                 maskLut);
+        const bool same = rows.isCulled == isCulled &&
+                          SameStripOutput<kTileWidth, kTileHeight>(
+                                  wides, ends, atlasManager, rows.wides, rows.ends, *rows.atlas) &&
+                          SameArrays(exactWindings, rows.windings);
+        REPORTER_ASSERT(reporter,
+                        same,
+                        "[%s] MakeStrips output from per-row tiles differs from flat tiles",
+                        testName);
+        if (!same) {
+            return false;
+        }
+    }
 
     OracleValidator<kTileWidth, kTileHeight> validator(
             localPath,

@@ -23,10 +23,10 @@
 
 namespace skgpu::graphite {
 
-template <uint16_t kTileWidth, uint16_t kTileHeight, BenchmarkDataset kDataset>
+template <uint16_t kTileWidth, uint16_t kTileHeight, BenchmarkDataset kDataset, bool kRows = false>
 class CoverageBench : public Benchmark {
 public:
-    using MakeStripsFn = bool (*)(const Tiles<kTileWidth, kTileHeight>&,
+    using MakeStripsFn = bool (*)(const Tiles<kTileWidth, kTileHeight, kRows>&,
                                   WideTiles*,
                                   EndCaps*,
                                   AlphaAtlasManager*,
@@ -40,7 +40,12 @@ public:
 
     CoverageBench(const char* name, MakeStripsFn func) : fFunc(func), fLUT(GenerateMSAALUT()) {
         using DatasetInfo = BenchmarkDatasetInfo<kDataset>;
-        fName.printf("SparseStrips_%s_%s_%ux%u", name, DatasetInfo::kName, kTileWidth, kTileHeight);
+        fName.printf("SparseStrips_%s%s_%s_%ux%u",
+                     name,
+                     kRows ? "Rows" : "",
+                     DatasetInfo::kName,
+                     kTileWidth,
+                     kTileHeight);
     }
 
 protected:
@@ -84,7 +89,7 @@ private:
     SkString fName;
     MakeStripsFn fFunc;
     Polyline fPolyline;
-    Tiles<kTileWidth, kTileHeight> fTiles;
+    Tiles<kTileWidth, kTileHeight, kRows> fTiles;
     WindingHistogram fHistogram;
     SkIRect fClip;
     bool fCulled = false;
@@ -118,3 +123,14 @@ DEF_BENCH(return (new skgpu::graphite::CoverageBench<8, 8,
                                                      skgpu::graphite::BenchmarkDataset::kMixed>(
                                                      "CoverageBenchSimd",
                                                      &skgpu::graphite::MakeStrips::MsaaSimd));)
+
+DEF_BENCH(return (new skgpu::graphite::CoverageBench<8,
+                                                     8,
+                                                     skgpu::graphite::BenchmarkDataset::kTiger,
+                                                     /*kRows=*/true>(
+        "CoverageBenchSimd", &skgpu::graphite::MakeStrips::MsaaSimd));)
+DEF_BENCH(return (new skgpu::graphite::CoverageBench<8,
+                                                     8,
+                                                     skgpu::graphite::BenchmarkDataset::kMixed,
+                                                     /*kRows=*/true>(
+        "CoverageBenchSimd", &skgpu::graphite::MakeStrips::MsaaSimd));)

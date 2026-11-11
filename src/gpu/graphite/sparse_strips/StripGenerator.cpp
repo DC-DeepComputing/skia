@@ -36,12 +36,12 @@ struct StripGenerator::Scratch {
     Polyline fPolyline;
     Flatten fFlatten;
     StrokeFlatten fStrokeFlatten;
-    Tiles<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight> fTiles;
+    Tiles<SparseStripConfig::kTileWidth, SparseStripConfig::kTileHeight, /*kRows=*/true> fTiles;
 
     bool isLarge() const {
         const size_t pointBytes =
                 sizeof(SkPoint) * static_cast<size_t>(fPolyline.points().capacity());
-        const size_t tileBytes = sizeof(Tile) * static_cast<size_t>(fTiles.getTiles().capacity());
+        const size_t tileBytes = fTiles.retainedBytes();
         return pointBytes > kMaxRetainedScratchBytes || tileBytes > kMaxRetainedScratchBytes;
     }
 };

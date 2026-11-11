@@ -10,6 +10,7 @@
 
 #include "src/gpu/graphite/sparse_strips/SparseStripsConfig.h"
 #include "src/gpu/graphite/sparse_strips/SparseStripsTypes.h"
+#include "src/gpu/graphite/sparse_strips/Tiler.h"
 #include "tests/Test.h"
 
 #include <array>
@@ -29,7 +30,6 @@ class Polyline;
 class Recorder;
 class WideTiles;
 class WindingHistogram;
-template <uint16_t kTileWidth, uint16_t kTileHeight> class Tiles;
 
 // The FastValidator is a faster alternative to the Oracle that is intended to run on CQ. Like the
 // Oracle, it validates subpixel winding by naively carrying the scanline across the viewport.

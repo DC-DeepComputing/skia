@@ -22,6 +22,7 @@
 #include <limits>
 #include <string>
 #include <tuple>
+#include <vector>
 
 namespace skgpu::graphite {
 
@@ -221,23 +222,60 @@ static_assert(sizeof(Tile) == 8);
 
 // Container that holds the tiles and manages their state (sorting). Templated to expose the tile
 // size as statically tunable parameter which can be tested within the same compilation unit
-template <uint16_t kTileWidth, uint16_t kTileHeight>
+// Tiles are stored in one of two layouts:
+//  - Flat (kRows = false): one buffer of Tiles, sorted globally by Tile::toBits().
+//  - Per row (kRows = true): one buffer of 64-bit keys per tile row, x << 32 |
+//    fPackedLineIdxIntersectionMask, with y implied by the row. The Tiler emits straight into the
+//    rows, so sorting is one small sort per row: about 2x faster than the flat sort, since each row
+//    is sorted in cache and y drops out of the compare. Walking the rows in order yields exactly
+//    the flat order, and dropping y from the key frees 16 bits.
+template <uint16_t kTileWidth, uint16_t kTileHeight, bool kRows = false>
 class Tiles : public IntersectionBits {
 public:
     Tiles() {}
     void reset() {
         fTileBuf.clear();
+        if constexpr (kRows) {
+            for (int y = fRowMin; y < fRowMax; ++y) {
+                fRows.data()[y].fKeys.clear();
+            }
+            fRowMin = std::numeric_limits<int>::max();
+            fRowMax = 0;
+        }
     }
 
     void sortTiles(int32_t offset) {
+        static_assert(!kRows, "Sort per-row tiles with sortTiles().");
         std::sort(fTileBuf.begin() + offset, fTileBuf.end());
     }
 
     void sortTiles() {
-        sortTiles(0);
+        if constexpr (kRows) {
+            for (int y = fRowMin; y < fRowMax; ++y) {
+                SkTDArray<uint64_t>& keys = fRows.data()[y].fKeys;
+                std::sort(keys.begin(), keys.end());
+            }
+        } else {
+            this->sortTiles(0);
+        }
     }
 
+    // Flat layout only.
     const SkTDArray<Tile>& getTiles() const { return fTileBuf; }
+
+    // Per-row layout only: the rows in [rowMin(), rowMax()) may hold tiles.
+    int rowMin() const { return fRowMin; }
+    int rowMax() const { return fRowMax; }
+    const SkTDArray<uint64_t>& getRow(int y) const { return fRows.data()[y].fKeys; }
+
+    // The bytes of tile storage, which reset() retains.
+    size_t retainedBytes() const {
+        if constexpr (kRows) {
+            return sizeof(uint64_t) * fRetainedKeys + sizeof(Row) * fRows.capacity();
+        } else {
+            return sizeof(Tile) * static_cast<size_t>(fTileBuf.capacity());
+        }
+    }
 
     // This function has two purposes:
     //     1) The viewport is divided into tiles, whose dimensions are given by the template
@@ -302,6 +340,11 @@ public:
         uint16_t minTileY = f32ToU16Sat(clip.top() * invH);
         uint16_t maxTileX = DivCeil(clip.right(), kTileWidth);
         uint16_t maxTileY = DivCeil(clip.bottom(), kTileHeight);
+        if constexpr (kRows) {
+            if (fRows.size() < static_cast<size_t>(maxTileY)) {
+                fRows.resize(maxTileY);
+            }
+        }
 
         float clipLeftTile = static_cast<float>(minTileX);
         float clipTopTile = static_cast<float>(minTileY);
@@ -362,6 +405,10 @@ public:
                 // gives stronger signal.
                 continue;
             }
+            if constexpr (kRows) {
+                fRowMin = std::min(fRowMin, static_cast<int>(yTopTiles));
+                fRowMax = std::max(fRowMax, static_cast<int>(yBottomTiles));
+            }
 
             int32_t p0TileX = f32ToI32Sat(std::floor(lineTopX));
             int32_t p0TileY = f32ToI32Sat(std::floor(lineTopY));
@@ -415,7 +462,7 @@ public:
                     if (!isStartCulled) {
                         uint32_t winding = (static_cast<float>(yTopTiles) >= lineTopY) ? W : 0;
                         uint32_t intersectionMask = B | winding;
-                        fTileBuf.push_back(Tile(x, yTopTiles, lineIdx, intersectionMask));
+                        this->emit(Tile(x, yTopTiles, lineIdx, intersectionMask));
                     }
 
                     // Process all "fully crossed" tiles (W | T | B).
@@ -423,8 +470,7 @@ public:
                     int32_t yEndIdx = std::min(p1TileY, static_cast<int32_t>(maxTileY));
                     for (int32_t yIdx = yStart; yIdx < yEndIdx; ++yIdx) {
                         uint32_t intersectionMask = W | T | B;
-                        fTileBuf.push_back(
-                            Tile(x, static_cast<uint16_t>(yIdx), lineIdx, intersectionMask));
+                        this->emit(Tile(x, static_cast<uint16_t>(yIdx), lineIdx, intersectionMask));
                     }
 
                     // Process the terminal tile (W | T), if it exists. We only emit this if the
@@ -432,8 +478,8 @@ public:
                     // processed/culled it via `yStart`.
                     if (p1TileY >= yStart && p1TileY < static_cast<int32_t>(maxTileY)) {
                         uint32_t intersectionMask = W | T;
-                        fTileBuf.push_back(
-                            Tile(x, static_cast<uint16_t>(p1TileY), lineIdx, intersectionMask));
+                        this->emit(
+                                Tile(x, static_cast<uint16_t>(p1TileY), lineIdx, intersectionMask));
                     }
                 } else { // General case
                     float dx = p1X - p0X;
@@ -487,10 +533,18 @@ public:
                                  static_cast<uint16_t>(maxTileX > 0 ? maxTileX - 1 : 0));
                 xClamped = std::max(minTileX, xClamped);
                 uint32_t winding = static_cast<float>(yTopTiles) >= lineTopY ? W : 0;
-                fTileBuf.push_back(Tile(xClamped, yTopTiles, lineIdx, winding));
+                this->emit(Tile(xClamped, yTopTiles, lineIdx, winding));
             }
         }
 
+        if constexpr (kRows) {
+            // Count the growth of the rows this draw touched, for retainedBytes().
+            for (int y = fRowMin; y < fRowMax; ++y) {
+                Row& row = fRows.data()[y];
+                fRetainedKeys += static_cast<size_t>(row.fKeys.capacity() - row.fAccountedCapacity);
+                row.fAccountedCapacity = row.fKeys.capacity();
+            }
+        }
         return cullingEventOccurred;
     }
 
@@ -514,6 +568,28 @@ private:
     };
 
     SkTDArray<Tile> fTileBuf;
+
+    // Per-row layout.
+    struct Row {
+        SkTDArray<uint64_t> fKeys;
+        int fAccountedCapacity = 0;  // fKeys' capacity, as counted in fRetainedKeys
+    };
+    std::vector<Row> fRows;
+    int fRowMin = std::numeric_limits<int>::max();
+    int fRowMax = 0;
+    size_t fRetainedKeys = 0;
+
+    static SK_ALWAYS_INLINE uint64_t RowKey(const Tile& tile) {
+        return (uint64_t{tile.x} << 32) | tile.fPackedLineIdxIntersectionMask;
+    }
+
+    SK_ALWAYS_INLINE void emit(const Tile& tile) {
+        if constexpr (kRows) {
+            fRows.data()[tile.y].fKeys.push_back(RowKey(tile));
+        } else {
+            fTileBuf.push_back(tile);
+        }
+    }
 
     static SK_ALWAYS_INLINE uint16_t DivCeil(uint16_t a, uint16_t b) {
         return (a + b - 1) / b;
@@ -604,7 +680,7 @@ private:
         mask &= ~(tieBreak | trc);
         mask &= ~((blc | brc) << BOT_SHIFT);
 
-        fTileBuf.push_back(Tile(xIdx, y, ctx.lineIdx, mask));
+        this->emit(Tile(xIdx, y, ctx.lineIdx, mask));
     }
 
     template<bool kXDir, bool kCrossesEdge>
@@ -681,9 +757,16 @@ private:
             int innerCount = static_cast<int>(xEndVal) - static_cast<int>(xStart) - 1;
             if (innerCount > 0) {
                 uint32_t innerMask = R | L;
-                Tile* outTiles = fTileBuf.append(innerCount);
-                for (int i = 0; i < innerCount; ++i) {
-                    outTiles[i] = Tile(xStart + 1 + i, yIdx, ctx.lineIdx, innerMask);
+                if constexpr (kRows) {
+                    uint64_t* outKeys = fRows.data()[yIdx].fKeys.append(innerCount);
+                    for (int i = 0; i < innerCount; ++i) {
+                        outKeys[i] = RowKey(Tile(xStart + 1 + i, yIdx, ctx.lineIdx, innerMask));
+                    }
+                } else {
+                    Tile* outTiles = fTileBuf.append(innerCount);
+                    for (int i = 0; i < innerCount; ++i) {
+                        outTiles[i] = Tile(xStart + 1 + i, yIdx, ctx.lineIdx, innerMask);
+                    }
                 }
             }
 

@@ -384,6 +384,7 @@ sparse_strips_test_sources = [
   "$_tests/graphite/sparse_strips/OracleValidator.cpp",
   "$_tests/graphite/sparse_strips/OracleValidator.h",
   "$_tests/graphite/sparse_strips/PolylineTest.cpp",
+  "$_tests/graphite/sparse_strips/RowTilesCheck.h",
   "$_tests/graphite/sparse_strips/SkpValidator.cpp",
   "$_tests/graphite/sparse_strips/SkpValidator.h",
   "$_tests/graphite/sparse_strips/StrokeFlattenTest.cpp",

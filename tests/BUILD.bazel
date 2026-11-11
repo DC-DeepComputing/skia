@@ -657,6 +657,7 @@ filegroup(
         "graphite/sparse_strips/OracleValidator.cpp",
         "graphite/sparse_strips/OracleValidator.h",
         "graphite/sparse_strips/PolylineTest.cpp",
+        "graphite/sparse_strips/RowTilesCheck.h",
         "graphite/sparse_strips/SkpValidator.cpp",
         "graphite/sparse_strips/SkpValidator.h",
         "graphite/sparse_strips/StrokeFlattenTest.cpp",

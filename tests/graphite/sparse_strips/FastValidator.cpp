@@ -29,6 +29,7 @@
 #include "src/gpu/graphite/sparse_strips/WindingHistogram.h"
 #include "tests/Test.h"
 #include "tests/graphite/sparse_strips/CoverageTestUtils.h"
+#include "tests/graphite/sparse_strips/RowTilesCheck.h"
 
 #include <algorithm>
 #include <array>
@@ -672,6 +673,29 @@ bool FastValidator<kTileWidth, kTileHeight>::ValidatePath(
                        windingHistogram,
                        clipRect,
                        observer);
+    }
+
+    // StripGenerator tiles per row: MakeStrips must produce the same output from per-row tiles.
+    if (!stripFunc || stripFunc == &RunScalarWinding || stripFunc == &RunSimdWinding) {
+        RowTilesRun<kTileWidth, kTileHeight> rows;
+        rows.run(recorder,
+                 stripFunc == &RunScalarWinding,
+                 testPolyline,
+                 clipRect,
+                 numTileRows,
+                 path.getFillType(),
+                 maskLut);
+        const bool same = rows.isCulled == isCulled &&
+                          SameStripOutput<kTileWidth, kTileHeight>(
+                                  wides, ends, atlasManager, rows.wides, rows.ends, *rows.atlas) &&
+                          SameArrays(exactMasks, rows.masks);
+        REPORTER_ASSERT(reporter,
+                        same,
+                        "[%s] MakeStrips output from per-row tiles differs from flat tiles",
+                        testName);
+        if (!same) {
+            return false;
+        }
     }
 
     return ValidateStripOutput(reporter,

@@ -17,14 +17,21 @@
 
 namespace skgpu::graphite {
 
-template<uint16_t kTileWidth, uint16_t kTileHeight, bool kShouldSort,
-         BenchmarkDataset kDataset = BenchmarkDataset::kTiger>
+template <uint16_t kTileWidth,
+          uint16_t kTileHeight,
+          bool kShouldSort,
+          BenchmarkDataset kDataset = BenchmarkDataset::kTiger,
+          bool kRows = false>
 class TilerBench : public Benchmark {
 public:
     TilerBench() {
         using DatasetInfo = BenchmarkDatasetInfo<kDataset>;
-        fName.printf("SparseStrips_Tiler%sBench_%s_%ux%u",
-                     kShouldSort ? "Sort" : "", DatasetInfo::kName, kTileWidth, kTileHeight);
+        fName.printf("SparseStrips_Tiler%s%sBench_%s_%ux%u",
+                     kShouldSort ? "Sort" : "",
+                     kRows ? "Rows" : "",
+                     DatasetInfo::kName,
+                     kTileWidth,
+                     kTileHeight);
     }
 
 protected:
@@ -45,7 +52,7 @@ protected:
 
     void onDraw(int loops, SkCanvas* /*canvas*/) override {
         using DatasetInfo = BenchmarkDatasetInfo<kDataset>;
-        Tiles<kTileWidth, kTileHeight> tiler;
+        Tiles<kTileWidth, kTileHeight, kRows> tiler;
         for (int i = 0; i < loops; ++i) {
             tiler.reset();
             tiler.makeTilesMSAA(fPolyline, DatasetInfo::kWidth, DatasetInfo::kHeight);
@@ -67,3 +74,18 @@ DEF_BENCH(return (new skgpu::graphite::TilerBench<4, 4, /*kShouldSort=*/false>);
 DEF_BENCH(return (new skgpu::graphite::TilerBench<8, 8, /*kShouldSort=*/false>); )
 DEF_BENCH(return (new skgpu::graphite::TilerBench<4, 4, /*kShouldSort=*/true>); )
 DEF_BENCH(return (new skgpu::graphite::TilerBench<8, 8, /*kShouldSort=*/true>); )
+
+DEF_BENCH(return (new skgpu::graphite::TilerBench<8,
+                                                  8,
+                                                  /*kShouldSort=*/true,
+                                                  skgpu::graphite::BenchmarkDataset::kTiger,
+                                                  /*kRows=*/true>);)
+DEF_BENCH(return (new skgpu::graphite::TilerBench<8,
+                                                  8,
+                                                  /*kShouldSort=*/true,
+                                                  skgpu::graphite::BenchmarkDataset::kMixed>);)
+DEF_BENCH(return (new skgpu::graphite::TilerBench<8,
+                                                  8,
+                                                  /*kShouldSort=*/true,
+                                                  skgpu::graphite::BenchmarkDataset::kMixed,
+                                                  /*kRows=*/true>);)
