@@ -1031,9 +1031,16 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     if (!run->leftToRight()) {
         std::swap(start, end);
     }
-    result.pos = start->startPos();
-    result.size = (end->isHardBreak() ? end->startPos() : end->endPos()) - start->startPos();
-    auto textStartInRun = run->positionX(start->startPos());
+    // A hard line break takes no space, so leave out its glyphs. It ends the range logically,
+    // so it is the rightmost cluster in a LTR run and the leftmost one in a RTL run.
+    if (run->leftToRight()) {
+        result.pos = start->startPos();
+        result.size = (end->isHardBreak() ? end->startPos() : end->endPos()) - result.pos;
+    } else {
+        result.pos = start->isHardBreak() ? start->endPos() : start->startPos();
+        result.size = end->endPos() - result.pos;
+    }
+    auto textStartInRun = run->positionX(result.pos);
     auto textStartInLine = runOffsetInLine + textOffsetInRunInLine;
     if (!run->leftToRight()) {
         std::swap(start, end);
@@ -1069,7 +1076,15 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         size_t startG0 = start->startPos();
         size_t startG1 = start->endPos();
         size_t endG0 = end->startPos();
-        size_t endG1 = end->isHardBreak() ? end->startPos() : end->endPos();
+        size_t endG1 = end->endPos();
+        if (end->isHardBreak()) {
+            // Leave out the hard line break glyphs (see above)
+            if (run->leftToRight()) {
+                endG1 = endG0;
+            } else {
+                endG0 = endG1;
+            }
+        }
         bool isolated = false;
 
         if (startSplit) {

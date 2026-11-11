@@ -13204,3 +13204,82 @@ DEF_TEST(SkParagraph_EllipsisAfterHardLineBreak, reporter) {
     }
 #endif
 }
+
+// A RTL line ending with a hard line break must measure like the same text at the paragraph end
+// (the break glyph is drawn nowhere, so it must not shift boxes or hit testing).
+UNIX_ONLY_TEST(SkParagraph_RTLHardLineBreakBoxes, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    TestCanvas canvas("SkParagraph_RTLHardLineBreakBoxes.png");
+
+    ParagraphStyle paragraph_style;
+    paragraph_style.setTextDirection(TextDirection::kRtl);
+    TextStyle text_style;
+    // The font must give the line break glyph an advance for the test to be meaningful
+    text_style.setFontFamilies({SkString("Noto Naskh Arabic")});
+    text_style.setFontSize(20);
+    text_style.setColor(SK_ColorBLACK);
+
+    const std::u16string line =
+            u"\u0645\u0631\u062D\u0628\u0627 \u0628\u0627\u0644\u0639\u0627\u0644\u0645";
+    const size_t n = line.size();
+    for (auto lineBreak : {u"\n", u"\u2028", u"\u2029"}) {
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection, get_unicode());
+        builder.pushStyle(text_style);
+        builder.addText(line + lineBreak + line);
+        auto paragraph = builder.Build();
+        paragraph->layout(400);
+        paragraph->paint(canvas.get(), 0, 0);
+        canvas.get()->translate(0, paragraph->getHeight());
+
+        auto first =
+                paragraph->getRectsForRange(0, n, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        auto withBreak = paragraph->getRectsForRange(
+                0, n + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        auto lineBreakBox = paragraph->getRectsForRange(
+                n, n + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        auto last = paragraph->getRectsForRange(
+                n + 1, 2 * n + 1, RectHeightStyle::kTight, RectWidthStyle::kTight);
+        REPORTER_ASSERT(reporter,
+                        first.size() == 1 && withBreak.size() == 1 && lineBreakBox.size() == 1 &&
+                                last.size() == 1);
+        if (first.size() != 1 || withBreak.size() != 1 || lineBreakBox.size() != 1 ||
+            last.size() != 1) {
+            continue;
+        }
+        REPORTER_ASSERT(reporter, SkScalarNearlyEqual(last[0].rect.fRight, 400, EPSILON100));
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(first[0].rect.fLeft, last[0].rect.fLeft, EPSILON100));
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(first[0].rect.fRight, last[0].rect.fRight, EPSILON100));
+        REPORTER_ASSERT(
+                reporter,
+                SkScalarNearlyEqual(withBreak[0].rect.fLeft, last[0].rect.fLeft, EPSILON100));
+        REPORTER_ASSERT(
+                reporter,
+                SkScalarNearlyEqual(withBreak[0].rect.fRight, last[0].rect.fRight, EPSILON100));
+        // The line break has an empty box at the visual end of the line
+        REPORTER_ASSERT(
+                reporter,
+                SkScalarNearlyEqual(lineBreakBox[0].rect.fLeft, last[0].rect.fLeft, EPSILON100));
+        REPORTER_ASSERT(
+                reporter,
+                SkScalarNearlyEqual(lineBreakBox[0].rect.fRight, last[0].rect.fLeft, EPSILON100));
+
+        // Both lines hit test the same way
+        auto y1 = first[0].rect.centerY();
+        auto y2 = last[0].rect.centerY();
+        for (SkScalar x = 0; x < 400; x += 1) {
+            auto pos1 = paragraph->getGlyphPositionAtCoordinate(x, y1);
+            auto pos2 = paragraph->getGlyphPositionAtCoordinate(x, y2);
+            REPORTER_ASSERT(reporter,
+                            pos1.position + SkToInt(n + 1) == pos2.position &&
+                                    pos1.affinity == pos2.affinity,
+                            "x=%f: %d != %d - %zu",
+                            x,
+                            pos1.position,
+                            pos2.position,
+                            n + 1);
+        }
+    }
+}
