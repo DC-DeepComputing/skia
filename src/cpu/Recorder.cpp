@@ -6,10 +6,12 @@
  */
 #include "src/cpu/Recorder.h"
 
+#include "include/core/SkImage.h"
 #include "include/core/SkTypes.h"
 #include "src/capture/SkCaptureManager.h"
 
 #include <memory>
+#include <utility>
 
 namespace skcpu {
 
@@ -19,5 +21,9 @@ Recorder* Recorder::TODO() {
 }
 
 void Recorder::createCaptureBreakpoint(SkSurface*) {}
+
+sk_sp<SkImage> Recorder::makeBitmapImage(const SkBitmap& bm) {
+    return SkImages::RasterFromBitmap(bm);
+}
 
 }  // namespace skcpu

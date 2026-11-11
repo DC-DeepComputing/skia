@@ -36,6 +36,7 @@
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Device.h"
+#include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/ProxyCache.h"
 #include "src/gpu/graphite/QueueManager.h"
@@ -50,6 +51,7 @@
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureProxyView.h"
+#include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/buffer/BufferManager.h"
 #include "src/gpu/graphite/buffer/UploadBufferManager.h"
 #include "src/gpu/graphite/layout/PipelineData.h"
@@ -336,6 +338,19 @@ void Recorder::deregisterCaptureCanvas(SkCanvas* canvas) {
     if (fSharedContext->captureManager()) {
         fSharedContext->captureManager()->deregisterCaptureCanvas(canvas);
     }
+}
+
+sk_sp<SkImage> Recorder::makeBitmapImage(const SkBitmap& bitmap) {
+    auto view = MakeBitmapProxyView(this,
+                                    bitmap,
+                                    /*mipmapsIn=*/nullptr,
+                                    Mipmapped::kNo,
+                                    skgpu::Budgeted::kNo,
+                                    "RasterBitmapTexture");
+    if (!view) {
+        return nullptr;
+    }
+    return sk_make_sp<Image>(std::move(view), bitmap.info().colorInfo());
 }
 
 void Recorder::registerDevice(sk_sp<Device> device) {

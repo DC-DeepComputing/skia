@@ -10,9 +10,7 @@
 #include "src/capture/SkCaptureAsset.h"
 #include "src/cpu/Recorder.h"
 
-SkRecorder* SkRecorder::TODO() {
-    return skcpu::Recorder::TODO();
-}
+SkRecorder* SkRecorder::TODO() { return skcpu::Recorder::TODO(); }
 
 SkRecorder::SkRecorder() = default;
 SkRecorder::~SkRecorder() = default;

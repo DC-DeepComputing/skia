@@ -182,6 +182,12 @@ public:
         return fPixelStorages;
     }
 
+    static sk_sp<SkImage> MakeBitmapImage(SkRecorder* recorder, const SkBitmap& bitmap);
+
+    static bool ValidArgs(const SkImageInfo& info, size_t rowBytes, size_t* minSize);
+
+    static void ReleaseData(void* addr, void* context);
+
 protected:
     SkImage_Base(const SkImageInfo& info, uint32_t uniqueID, sk_sp<SkPixelStorage> backingStorage);
     // fPixelStorages is protected since SkImage_Raster needs access in ctor
