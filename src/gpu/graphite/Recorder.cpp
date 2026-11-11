@@ -169,6 +169,7 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
 
 Recorder::~Recorder() {
     ASSERT_SINGLE_OWNER
+    SkASSERT(fFlushingTrackedDevicesDepth == 0);
     // Any finished procs that haven't been passed to a Recording fail
     for (int i = 0; i < fFinishedProcs.size(); ++i) {
         fFinishedProcs[i]->setFailureResult();
@@ -351,11 +352,34 @@ void Recorder::registerDevice(sk_sp<Device> device) {
 
 void Recorder::deregisterDevice(const Device* device) {
     ASSERT_SINGLE_OWNER
-    for (int i = 0; i < fTrackedDevices.size(); ++i) {
+    SkASSERT(fFlushingTrackedDevicesDepth >= 0);
+    for (int i = fTrackedDevices.size() - 1; i >= 0; --i) {
         if (fTrackedDevices[i].get() == device) {
-            // Don't modify the list structure of fTrackedDevices within this loop
-            fTrackedDevices[i] = nullptr;
+            if (fFlushingTrackedDevicesDepth > 0) {
+                // Don't modify the list structure of fTrackedDevices while it is being iterated.
+                fTrackedDevices[i] = nullptr;
+            } else {
+                // Move out first so any final ~Device() runs after fTrackedDevices is consistent.
+                sk_sp<Device> removed = std::move(fTrackedDevices[i]);
+                fTrackedDevices.removeShuffle(i);
+            }
             break;
+        }
+    }
+}
+
+void Recorder::compactTrackedDevices() {
+    ASSERT_SINGLE_OWNER
+    SkASSERT(fFlushingTrackedDevicesDepth >= 0);
+    if (fFlushingTrackedDevicesDepth > 0) {
+        return;
+    }
+    int i = 0;
+    while (i < fTrackedDevices.size()) {
+        if (!fTrackedDevices[i]) {
+            fTrackedDevices.removeShuffle(i);
+        } else {
+            ++i;
         }
     }
 }
@@ -559,6 +583,7 @@ void Recorder::freeGpuResources() {
     // This is technically not GPU memory, but there's no other place for the client to tell us to
     // clean this up, and without any cleanup it can grow unbounded.
     fStrikeCache->freeAll();
+    this->compactTrackedDevices();
 }
 
 void Recorder::performDeferredCleanup(
@@ -568,6 +593,7 @@ void Recorder::performDeferredCleanup(
 
     auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
     fResourceProvider->purgeResourcesNotUsedSince(purgeTime, microsMaxPurgingDur);
+    this->compactTrackedDevices();
 }
 
 size_t Recorder::currentBudgetedBytes() const {
@@ -635,12 +661,14 @@ void RecorderPriv::add(sk_sp<Task> task) {
 }
 
 void RecorderPriv::flushTrackedDevices(const TextureProxy* dependency) {
+    ASSERT_SINGLE_OWNER_PRIV
     // This version of flushTrackedDevices() must be re-entrant because it is entirely possible for
     // client-owned surfaces to read and write to each other, where this will be called with
     // different textures for `dependency`. The recursion stops once the encountered surfaces have
     // snapped remaining pending work from their DrawContext. But because we might recurse, we do
-    // not perform any cleanup of the fTrackedDevices list. That is deferred until snap() time.
-
+    // not perform any cleanup of the fTrackedDevices list. That is deferred until snap() time (or
+    // explicit cleanup in freeGpuResources() / performDeferredCleanup()).
+    TrackedDevicesFlushScope flushGuard(fRecorder);
     for (int i = 0; i < fRecorder->fTrackedDevices.size(); ++i) {
         // Entries may be set to null from a call to deregisterDevice(), which will be cleaned up
         // along with any immutable or uniquely held Devices once everything is snapped.
@@ -663,14 +691,18 @@ void RecorderPriv::flushTrackedDevices(const TextureProxy* dependency) {
 void RecorderPriv::flushTrackedDevices(SK_DUMP_TASKS_CODE(const char* flushSource)) {
     ASSERT_SINGLE_OWNER_PRIV
     SkASSERT(!fRecorder->fIsFlushingTrackedDevices);
+    SkASSERT(fRecorder->fFlushingTrackedDevicesDepth == 0);
     SkDEBUGCODE(fRecorder->fIsFlushingTrackedDevices = true);
 
-    for (int i = 0; i < fRecorder->fTrackedDevices.size(); ++i) {
-        // Entries may be set to null from a call to deregisterDevice(), which will be cleaned up
-        // along with any immutable or uniquely held Devices once everything is flushed.
-        Device* device = fRecorder->fTrackedDevices[i].get();
-        if (device) {
-            device->flushPendingWork(/*drawContext=*/nullptr);
+    {
+        TrackedDevicesFlushScope flushGuard(fRecorder);
+        for (int i = 0; i < fRecorder->fTrackedDevices.size(); ++i) {
+            // Entries may be set to null from a call to deregisterDevice(), which will be cleaned
+            // up along with any immutable or uniquely held Devices once everything is flushed.
+            Device* device = fRecorder->fTrackedDevices[i].get();
+            if (device) {
+                device->flushPendingWork(/*drawContext=*/nullptr);
+            }
         }
     }
 
@@ -685,20 +717,27 @@ void RecorderPriv::flushTrackedDevices(SK_DUMP_TASKS_CODE(const char* flushSourc
 #endif
 
     // This version of flushTrackedDevices() is not re-entrant, so it *does* perform the final
-    // cleanup on the fTrackedDevices.
-    int i = 0;
-    while (i < fRecorder->fTrackedDevices.size()) {
-        Device* device = fRecorder->fTrackedDevices[i].get();
-        if (!device || !device->recorder() || device->unique()) {
-            if (device) {
-                device->abandonRecorder(); // Keep ~Device() happy
+    // cleanup on the fTrackedDevices. Guard iteration in case ~Device() triggers callbacks that
+    // deregister another tracked Device, then compact any resulting null entries.
+    {
+        TrackedDevicesFlushScope cleanupGuard(fRecorder);
+        int i = 0;
+        while (i < fRecorder->fTrackedDevices.size()) {
+            Device* device = fRecorder->fTrackedDevices[i].get();
+            if (!device || !device->recorder() || device->unique()) {
+                if (device) {
+                    device->abandonRecorder(); // Keep ~Device() happy
+                }
+                // Move out first so any final ~Device() runs after fTrackedDevices is consistent.
+                sk_sp<Device> removed = std::move(fRecorder->fTrackedDevices[i]);
+                fRecorder->fTrackedDevices.removeShuffle(i);
+                // Keep i as-is to process what was just shuffled to the ith index.
+            } else {
+                i++;
             }
-            fRecorder->fTrackedDevices.removeShuffle(i);
-            // Keep i as-is to process what was just shuffled to the ith index.
-        } else {
-            i++;
         }
     }
+    fRecorder->compactTrackedDevices();
 
     SkDEBUGCODE(fRecorder->fIsFlushingTrackedDevices = false);
 }

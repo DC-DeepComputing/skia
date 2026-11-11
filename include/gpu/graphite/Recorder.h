@@ -280,6 +280,9 @@ private:
     // pointers, we can look into only registering SkSurface Devices.
     void registerDevice(sk_sp<Device>);
     void deregisterDevice(const Device*);
+    // Removes null entries left by deregisterDevice() during an active flush; no-op while a flush
+    // scope is active (fFlushingTrackedDevicesDepth > 0).
+    void compactTrackedDevices();
 
     SkCanvas* makeCaptureCanvas(SkCanvas*) override;
     void createCaptureBreakpoint(SkSurface*) override;
@@ -306,10 +309,13 @@ private:
 
     // Iterating over tracked devices in flushTrackedDevices() needs to be re-entrant and support
     // additions to fTrackedDevices if registerDevice() is triggered by a temporary device during
-    // flushing. Removals are handled by setting elements to null; final clean up is handled at the
-    // end of the initial call to flushTrackedDevices().
+    // flushing. When fFlushingTrackedDevicesDepth > 0, deregisterDevice() sets elements to null so
+    // active iteration indices remain valid; those null entries persist until the next full
+    // flushTrackedDevices() (e.g. snap() or updateBackendTexture()), freeGpuResources(), or
+    // performDeferredCleanup(). When fFlushingTrackedDevicesDepth == 0, deregisterDevice() removes
+    // the entry immediately.
     skia_private::TArray<sk_sp<Device>> fTrackedDevices;
-    int fFlushingDevicesIndex = -1;
+    int fFlushingTrackedDevicesDepth = 0;
 
     uint32_t fUniqueID;  // Needed for MessageBox handling for text
     uint32_t fNextRecordingID = 1;
