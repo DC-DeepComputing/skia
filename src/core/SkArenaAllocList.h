@@ -9,7 +9,8 @@
 #define SkArenaAllocList_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "src/core/SkArenaAlloc.h" // IWYU pragma: keep
+#include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr.h" // IWYU pragma: keep
 
 #include <utility>
 
@@ -42,7 +43,7 @@ public:
     private:
         friend class SkArenaAllocList;
         explicit Iter(Node* node) : fCurr(node) {}
-        Node* fCurr = nullptr;
+        raw_ptr<Node> fCurr = nullptr;
     };
 
     Iter begin() { return Iter(fHead); }
