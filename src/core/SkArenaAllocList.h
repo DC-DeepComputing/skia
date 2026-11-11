@@ -9,7 +9,8 @@
 #define SkArenaAllocList_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "src/core/SkArenaAlloc.h" // IWYU pragma: keep
+#include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr.h" // IWYU pragma: keep
 
 #include <utility>
 
@@ -54,7 +55,7 @@ private:
         template <typename... Args>
         Node(Args... args) : fT(std::forward<Args>(args)...) {}
         T fT;
-        Node* fNext = nullptr;
+        raw_ptr<Node> fNext = nullptr;
     };
     Node* fHead = nullptr;
     Node* fTail = nullptr;
