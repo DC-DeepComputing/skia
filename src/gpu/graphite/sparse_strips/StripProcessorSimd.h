@@ -19,6 +19,8 @@
 #include <cstdint>
 #include <cstring>
 #include <limits>
+#include <type_traits>
+#include <utility>
 
 namespace skgpu::graphite {
 
@@ -57,6 +59,8 @@ public:
 
     SK_ALWAYS_INLINE void clearWinding(uint8_t val) {
         std::memset(fSubsampleWinding, val, sizeof(fSubsampleWinding));
+        std::memset(fFillDeltas, 0, sizeof(fFillDeltas));
+        fFillRows = 0;
     }
 
     SK_ALWAYS_INLINE void clearWithCoarseWinding() {
@@ -87,7 +91,33 @@ public:
     // Convert the winding to alpha in row sized chunks. Technically, processChunk could be renamed
     // to processRow, but it is intended to be flexible, so that if the tile width were to exceed
     // the simd width, the row could be proccessed in serial chunks.
+    //
+    // This also applies the deferred whole-pixel fills (see fFillDeltas). For 4 and 8 wide tiles,
+    // each row is loaded once, and its fills are added in registers before it is resolved.
     SK_ALWAYS_INLINE void resolveWindingToAlpha(uint8_t* tileAlphaBase) {
+        if constexpr (kTileWidth == 8 || kTileWidth == 4) {
+            using RowBytes = skvx::Vec<kTileWidth * 8, uint8_t>;
+            for (int32_t row = 0; row < kTileHeight; ++row) {
+                RowBytes winding = RowBytes::Load(fSubsampleWinding[row]);
+                if ((fFillRows & (1u << row)) != 0) {
+                    this->addRowFills(row, &winding);
+#if defined(GPU_TEST_UTILS)
+                    if (fObserver) {
+                        // observeChunk() reads the winding from fSubsampleWinding.
+                        winding.store(fSubsampleWinding[row]);
+                    }
+#endif
+                }
+                this->processChunkWinding<kTileWidth>(
+                        sk_bit_cast<skvx::Vec<kTileWidth * 2, uint32_t>>(winding),
+                        row,
+                        /*column=*/0,
+                        tileAlphaBase);
+                tileAlphaBase += kTileWidth;
+            }
+            return;
+        }
+        this->applyFills();
         for (int32_t row = 0; row < kTileHeight; ++row) {
             if constexpr (kTileWidth % 8 == 0) {
                 for (int32_t column = 0; column < kTileWidth; column += 8) {
@@ -229,20 +259,6 @@ private:
         bool fSortedXDir;
     };
 
-    template <int N>
-    SK_ALWAYS_INLINE static void ApplyWinding(SwarPixel* target, uint32_t fillVal) {
-        auto vSubsampleWinding = skvx::Vec<N, uint32_t>::Load(target);
-        skvx::Vec<N, uint32_t> vFill(fillVal);
-        if constexpr (kIsWinding) {
-            auto windingBytes = sk_bit_cast<skvx::Vec<N * 4, uint8_t>>(vSubsampleWinding);
-            auto fillBytes = sk_bit_cast<skvx::Vec<N * 4, uint8_t>>(vFill);
-            vSubsampleWinding = sk_bit_cast<skvx::Vec<N, uint32_t>>(windingBytes + fillBytes);
-        } else {
-            vSubsampleWinding ^= vFill;
-        }
-        vSubsampleWinding.store(target);
-    }
-
     // Evaluate the subsamples against the winding rule to determine which are "active" (covered).
     // For Even-Odd no processing is required. For the Non-Zero case, we compare subsample winding
     // against the empty SWAR mask. In SkVX, the result of !=, true, is ~0, so we mask away any
@@ -319,8 +335,19 @@ private:
     SK_ALWAYS_INLINE void processChunk(int32_t row,
                                        int32_t column,
                                        uint8_t* tileAlphaBase) {
-        auto vSubsampleWinding =
-                skvx::Vec<kChunkSize * 2, uint32_t>::Load(&fSubsampleWinding[row][column]);
+        this->processChunkWinding<kChunkSize>(
+                skvx::Vec<kChunkSize * 2, uint32_t>::Load(&fSubsampleWinding[row][column]),
+                row,
+                column,
+                tileAlphaBase);
+    }
+
+    // As processChunk(), for a chunk of winding that is already loaded.
+    template <int kChunkSize>
+    SK_ALWAYS_INLINE void processChunkWinding(skvx::Vec<kChunkSize * 2, uint32_t> vSubsampleWinding,
+                                              [[maybe_unused]] int32_t row,
+                                              [[maybe_unused]] int32_t column,
+                                              uint8_t* tileAlphaBase) {
         auto actives = GetActivesWide(vSubsampleWinding);
 
         skvx::Vec<kChunkSize, uint32_t> activeLo;
@@ -445,18 +472,10 @@ private:
             fillByte = 1;
         }
 
-        uint32_t fill32 = fillByte * 0x01010101u;
+        // Whole rows: a fill delta at column 0 reaches every column (see fFillDeltas).
         int32_t startY = static_cast<int32_t>(std::ceil(yEdge));
         for (int32_t row = startY; row < kTileHeight; ++row) {
-            if constexpr (kTileWidth % 8 == 0) {
-                for (int32_t column = 0; column < kTileWidth; column += 8) {
-                    ApplyWinding<16>(&fSubsampleWinding[row][column], fill32);
-                }
-            } else if constexpr (kTileWidth % 4 == 0) {
-                for (int32_t column = 0; column < kTileWidth; column += 4) {
-                    ApplyWinding<8>(&fSubsampleWinding[row][column], fill32);
-                }
-            }
+            this->addFillDelta(row, /*column=*/0, fillByte);
         }
     }
 
@@ -565,36 +584,92 @@ private:
             tFixed += params.fStepXFixed;
         }
 
-        if (crossedTop) {
+        if (crossedTop && xEnd < kTileWidth - 1) {
+            // The pixels right of the span are covered whole, so their fill is deferred (see
+            // fFillDeltas).
             uint8_t fillByte;
             if constexpr (kIsWinding) {
                 fillByte = kCanonicalYDir ? 1 : 0xFF;
             } else {
                 fillByte = 1;
             }
+            this->addFillDelta(row, xEnd + 1, fillByte);
+        }
+    }
 
-            int32_t column = xEnd + 1;
-            uint32_t fill32 = fillByte * 0x01010101u;
-            if constexpr (kTileWidth >= 8) {
-                while (column + 8 <= kTileWidth) {
-                    ApplyWinding<16>(&fSubsampleWinding[row][column], fill32);
-                    column += 8;
-                }
-            } else if constexpr (kTileWidth >= 4) {
-                while (column + 4 <= kTileWidth) {
-                    ApplyWinding<8>(&fSubsampleWinding[row][column], fill32);
-                    column += 4;
-                }
+    // Fills that cover whole pixels (all of their subsamples) are deferred: the fill right of a
+    // span in a row that the line crosses, and fillLeft's rows. Each is recorded as a delta at its
+    // first column, and resolveWindingToAlpha() adds each row's prefix sum of deltas across its
+    // columns to every subsample of the row's pixels. A segment-row then costs one byte rather than
+    // a read-modify-write of up to kTileWidth pixels, and since the adds commute, the result is
+    // identical. fFillRows marks the rows that have deltas.
+    static_assert(kTileHeight <= 32);
+    SK_ALWAYS_INLINE void addFillDelta(int32_t row, int32_t column, uint8_t fillByte) {
+        uint8_t& delta = fFillDeltas[row][column];
+        if constexpr (kIsWinding) {
+            delta = static_cast<uint8_t>(delta + fillByte);
+        } else {
+            delta ^= fillByte;
+        }
+        fFillRows |= 1u << row;
+    }
+
+    // One byte lane per column of a row (4 and 8 wide tiles).
+    using FillWord = std::conditional_t<kTileWidth == 8, uint64_t, uint32_t>;
+
+    // Adds the byte lanes of a and b, without carries between lanes.
+    static SK_ALWAYS_INLINE FillWord AddBytes(FillWord a, FillWord b) {
+        constexpr FillWord kLow7 = static_cast<FillWord>(~FillWord{0} / 0xFF * 0x7F);
+        constexpr FillWord kHigh = static_cast<FillWord>(~FillWord{0} / 0xFF * 0x80);
+        return ((a & kLow7) + (b & kLow7)) ^ ((a ^ b) & kHigh);
+    }
+
+    // Repeats each column's byte for its pixel's 8 subsamples.
+    template <size_t... I>
+    SK_ALWAYS_INLINE static skvx::Vec<kTileWidth * 8, uint8_t> ExpandColumns(
+            skvx::Vec<kTileWidth, uint8_t> columns, std::index_sequence<I...>) {
+        return skvx::shuffle<static_cast<int>(I / 8)...>(columns);
+    }
+
+    // Adds the row's fills to its winding, in registers (4 and 8 wide tiles).
+    SK_ALWAYS_INLINE void addRowFills(int32_t row, skvx::Vec<kTileWidth * 8, uint8_t>* winding) {
+        static_assert(kTileWidth == 8 || kTileWidth == 4);
+        // Prefix sum across the columns: log2(kTileWidth) shifted adds of the byte lanes.
+        FillWord sums;
+        std::memcpy(&sums, fFillDeltas[row], sizeof(sums));
+        for (int shift = 8; shift < 8 * kTileWidth; shift *= 2) {
+            if constexpr (kIsWinding) {
+                sums = AddBytes(sums, sums << shift);
+            } else {
+                sums ^= sums << shift;
             }
+        }
+        const skvx::Vec<kTileWidth * 8, uint8_t> fill =
+                ExpandColumns(skvx::Vec<kTileWidth, uint8_t>::Load(&sums),
+                              std::make_index_sequence<kTileWidth * 8>{});
+        if constexpr (kIsWinding) {
+            *winding += fill;
+        } else {
+            *winding ^= fill;
+        }
+    }
 
-            const PixelBytes pFill(fillByte);
-            for (; column < kTileWidth; ++column) {
+    // Applies the fills to fSubsampleWinding (other tile widths).
+    SK_ALWAYS_INLINE void applyFills() {
+        for (int32_t row = 0; row < kTileHeight; ++row) {
+            if ((fFillRows & (1u << row)) == 0) {
+                continue;
+            }
+            uint8_t sum = 0;
+            for (int32_t column = 0; column < kTileWidth; ++column) {
                 PixelBytes pSubsampleWinding =
                         sk_bit_cast<PixelBytes>(fSubsampleWinding[row][column]);
                 if constexpr (kIsWinding) {
-                    pSubsampleWinding += pFill;
+                    sum = static_cast<uint8_t>(sum + fFillDeltas[row][column]);
+                    pSubsampleWinding += PixelBytes(sum);
                 } else {
-                    pSubsampleWinding ^= pFill;
+                    sum ^= fFillDeltas[row][column];
+                    pSubsampleWinding ^= PixelBytes(sum);
                 }
                 fSubsampleWinding[row][column] = sk_bit_cast<SwarPixel>(pSubsampleWinding);
             }
@@ -602,6 +677,8 @@ private:
     }
 
     SwarPixel fSubsampleWinding[kTileHeight][kTileWidth];
+    uint8_t fFillDeltas[kTileHeight][kTileWidth];
+    uint32_t fFillRows;
     int32_t fCoarseWinding;
     bool fIsInverse;
     const Polyline& fPolyline;
