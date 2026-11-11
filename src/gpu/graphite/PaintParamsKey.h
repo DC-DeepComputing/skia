@@ -18,7 +18,8 @@
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
 
 #include <limits>
-#include <cstring> // for memcmp
+#include <cstring>
+#include "src/partition_alloc/raw_ptr.h" // for memcmp
 
 class SkArenaAlloc;
 class SkMeshSpecification;
@@ -346,7 +347,7 @@ private:
         int fDataSize = -1;
     };
 
-    const ShaderCodeDictionary* fDict;
+    raw_ptr<const ShaderCodeDictionary> fDict;
     skia_private::TArray<StackFrame> fStack;
     bool fLocked = false;
 #endif
