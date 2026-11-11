@@ -9,9 +9,11 @@
 #ifndef SkFlate_DEFINED
 #define SkFlate_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
-#include <cstddef>
 
+#include <cstddef>
+#include <cstdint>
 #include <memory>
 
 /**
@@ -44,7 +46,12 @@ public:
         write() will fail. Subsequent calls to finalize() do nothing. */
     void finalize();
 
+    /** Compresses and buffers 'input'; returns false after finalize(). */
+    bool write(SkSpan<const uint8_t> input);
+
     // The SkWStream interface:
+    // Forwards to the SkSpan overload.
+    // TODO(crbug.com/582862856): Drop once SkWStream::write takes an SkSpan.
     bool write(const void*, size_t) override;
     size_t bytesWritten() const override;
 

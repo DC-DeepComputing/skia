@@ -8,7 +8,9 @@
 #include "src/utils/SkFloatToDecimal.h"
 
 #include "include/core/SkTypes.h"
+#include "include/private/SkTo.h"
 
+#include <array>
 #include <cfloat>
 #include <cmath>
 
@@ -141,13 +143,13 @@ unsigned SkFloatToDecimal(float value, char output[kMaximumSkFloatToDecimalLengt
     }
     SkASSERT(d > 0);
     // SkASSERT(value == (float)(d * pow(10.0, decimalShift)));
-    unsigned char buffer[9]; // decimal value buffer.
+    std::array<unsigned char, 9> buffer;  // decimal value buffer.
     int bufferIndex = 0;
     do {
         buffer[bufferIndex++] = d % 10;
         d /= 10;
     } while (d != 0);
-    SkASSERT(bufferIndex <= (int)sizeof(buffer) && bufferIndex > 0);
+    SkASSERT(bufferIndex <= SkToInt(buffer.size()) && bufferIndex > 0);
     if (decimalShift >= 0) {
         do {
             --bufferIndex;
