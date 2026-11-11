@@ -9,15 +9,28 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkFont.h"
+#include "include/core/SkFontStyle.h"
+#include "include/core/SkFontTypes.h"
+#include "include/core/SkM44.h"
+#include "include/core/SkMatrix.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/core/SkVertices.h"
+#include "include/effects/SkGradient.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/utils/SkTextUtils.h"
 
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/draw/DrawListBase.h"
+#include "tools/fonts/FontToolUtils.h"
+
+#include <array>
+#include <cstdlib>
 
 namespace skgpu::graphite {
 
@@ -145,6 +158,137 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DeviceTestClipRenderStepLimits,
 
     std::unique_ptr<Recording> recording = recorder->snap();
     REPORTER_ASSERT(reporter, recording != nullptr);
+}
+
+// Verifies that SDF, bitmap, and LCD text RenderSteps sample paint shaders (including lifted
+// affine local matrices) at the same local coordinates as a rect under 3D perspective transforms
+DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(DeviceTestPerspectiveTextShaders,
+                                         reporter,
+                                         context,
+                                         CtsEnforcement::kNextRelease) {
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
+    const SkImageInfo ii = SkImageInfo::Make(
+            {320, 140}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+
+    SkM44 persp;
+    persp.setRC(3, 2, -1.0f / 280.0f);
+    const SkM44 xform = SkM44::Translate(160.0f, 70.0f) * persp *
+                        SkM44::Rotate({0, 1, 0}, -SK_ScalarPI / 5) *
+                        SkM44::Rotate({1, 0, 0}, SK_ScalarPI / 6);
+
+    constexpr SkPoint kPts[2] = {{0.0f, 0.0f}, {20.0f, 16.0f}};
+    constexpr SkColor4f kColors[4] = {
+            SkColors::kBlue, SkColors::kBlue, SkColors::kRed, SkColors::kRed};
+    constexpr float kPos[4] = {0.0f, 0.5f, 0.5f, 1.0f};
+    sk_sp<SkShader> shader = SkShaders::LinearGradient(
+                                     kPts, {{kColors, kPos, SkTileMode::kRepeat}, {}})
+                                     ->makeWithLocalMatrix(SkMatrix::Scale(1.25f, 0.8f));
+
+    auto renderToBitmap = [&](const SkSurfaceProps& props, auto drawFn) {
+        sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder.get(), ii, skgpu::Mipmapped::kNo,
+                                                         &props);
+        SkASSERT(surf);
+        drawFn(surf->getCanvas());
+        SkBitmap bm;
+        bm.allocPixels(ii);
+        SkAssertResult(surf->readPixels(bm, 0, 0));
+        return bm;
+    };
+
+    const SkSurfaceProps defaultProps;
+    const SkBitmap refBm = renderToBitmap(defaultProps, [&](SkCanvas* c) {
+        c->clear(SK_ColorGREEN);
+        c->concat(xform);
+        SkPaint p;
+        p.setShader(shader);
+        c->drawRect({-150, -55, 150, 55}, p);
+    });
+
+    struct Case {
+        SkFont::Edging edging;
+        SkPixelGeometry geometry;
+    };
+    constexpr std::array<Case, 3> kCases = {{
+            {SkFont::Edging::kAntiAlias, kUnknown_SkPixelGeometry},
+            {SkFont::Edging::kAlias, kUnknown_SkPixelGeometry},
+            {SkFont::Edging::kSubpixelAntiAlias, kRGB_H_SkPixelGeometry},
+    }};
+
+    sk_sp<SkTypeface> tf = ToolUtils::CreatePortableTypeface("serif", SkFontStyle::Bold());
+    for (const Case& tc : kCases) {
+        const SkSurfaceProps props(0, tc.geometry);
+        SkFont font(tf, 42.0f);
+        font.setEdging(tc.edging);
+
+        const SkBitmap maskBm = renderToBitmap(props, [&](SkCanvas* c) {
+            c->clear(SK_ColorBLACK);
+            c->concat(xform);
+            SkPaint white;
+            white.setColor(SK_ColorWHITE);
+            SkTextUtils::DrawString(c, "PERSP", 0.0f, 14.0f, font, white,
+                                    SkTextUtils::kCenter_Align);
+        });
+        const SkBitmap textBm = renderToBitmap(props, [&](SkCanvas* c) {
+            c->clear(SK_ColorGREEN);
+            c->concat(xform);
+            SkPaint p;
+            p.setShader(shader);
+            SkTextUtils::DrawString(c, "PERSP", 0.0f, 14.0f, font, p,
+                                    SkTextUtils::kCenter_Align);
+        });
+
+        int interiorPixels = 0;
+        int bluePixels = 0;
+        int redPixels = 0;
+        int mismatchedPixels = 0;
+        for (int y = 1; y < ii.height() - 1; ++y) {
+            for (int x = 1; x < ii.width() - 1; ++x) {
+                // Require a 3x3 solid-white neighborhood so LCD subpixel fringes are excluded
+                bool solid = true;
+                for (int dy = -1; dy <= 1 && solid; ++dy) {
+                    for (int dx = -1; dx <= 1 && solid; ++dx) {
+                        solid = maskBm.getColor(x + dx, y + dy) == SK_ColorWHITE;
+                    }
+                }
+                if (!solid) {
+                    continue;
+                }
+                ++interiorPixels;
+                const SkColor got = textBm.getColor(x, y);
+                const SkColor want = refBm.getColor(x, y);
+                if (SkColorGetB(want) > 200 && SkColorGetR(want) < 50) {
+                    ++bluePixels;
+                } else if (SkColorGetR(want) > 200 && SkColorGetB(want) < 50) {
+                    ++redPixels;
+                }
+                if (std::abs(int(SkColorGetR(got)) - int(SkColorGetR(want))) > 8 ||
+                    std::abs(int(SkColorGetG(got)) - int(SkColorGetG(want))) > 8 ||
+                    std::abs(int(SkColorGetB(got)) - int(SkColorGetB(want))) > 8) {
+                    ++mismatchedPixels;
+                }
+            }
+        }
+        REPORTER_ASSERT(reporter, interiorPixels > 20, "edging=%d interior=%d",
+                        int(tc.edging), interiorPixels);
+        REPORTER_ASSERT(reporter, bluePixels > 5 && redPixels > 5,
+                        "edging=%d blue=%d red=%d", int(tc.edging), bluePixels, redPixels);
+        REPORTER_ASSERT(reporter, mismatchedPixels == 0,
+                        "edging=%d mismatches=%d/%d", int(tc.edging), mismatchedPixels,
+                        interiorPixels);
+    }
+
+    // Edge-on 3D rotation has an invertible 4x4 Transform whose 2.5D asM33() projection is
+    // singular; drawing must be culled cleanly without shading stray pixels
+    const SkBitmap edgeOnBm = renderToBitmap(defaultProps, [&](SkCanvas* c) {
+        c->clear(SK_ColorGREEN);
+        c->translate(160.0f, 70.0f);
+        c->concat(SkM44::Rotate({0, 1, 0}, SK_ScalarPI / 2));
+        SkFont font(tf, 42.0f);
+        SkPaint p;
+        p.setShader(shader);
+        SkTextUtils::DrawString(c, "PERSP", 0.0f, 14.0f, font, p, SkTextUtils::kCenter_Align);
+    });
+    REPORTER_ASSERT(reporter, edgeOnBm.getColor(160, 70) == SK_ColorGREEN);
 }
 
 }  // namespace skgpu::graphite
