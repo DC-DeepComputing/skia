@@ -17,6 +17,7 @@
 #include <cstdint>
 #include <memory>
 #include <string>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkSL {
 
@@ -78,7 +79,7 @@ public:
 
 private:
     // RAW_PTR_EXCLUSION: Performance: +3% on sksl_large.
-    RAW_PTR_EXCLUSION const Variable* fVariable;
+    raw_ptr<const Variable> fVariable;
     VariableRefKind fRefKind;
 
     using INHERITED = Expression;
