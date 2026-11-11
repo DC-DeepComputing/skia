@@ -7,14 +7,17 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
 #include "include/core/SkData.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageGenerator.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "src/codec/SkCodecImageGenerator.h"
 #include "src/image/SkImageGeneratorPriv.h"
+#include "src/image/SkImage_Base.h"
 
 #include <memory>
 #include <optional>
@@ -55,6 +58,31 @@ sk_sp<SkImage> DeferredFromEncodedData(sk_sp<const SkData> encoded,
         return nullptr;
     }
     return DeferredFromGenerator(SkImageGenerators::MakeFromEncoded(std::move(encoded), alphaType));
+}
+
+sk_sp<SkImage> FromData(SkRecorder* recorder,
+                        sk_sp<const SkData> encoded,
+                        std::optional<SkAlphaType> alphaType) {
+    if (!recorder || !encoded || encoded->empty()) {
+        return nullptr;
+    }
+
+    std::unique_ptr<SkImageGenerator> generator =
+            SkImageGenerators::MakeFromEncoded(std::move(encoded), alphaType);
+    if (!generator) {
+        return nullptr;
+    }
+
+    SkBitmap bitmap;
+    if (!bitmap.tryAllocPixels(generator->getInfo())) {
+        return nullptr;
+    }
+    if (!generator->getPixels(bitmap.pixmap())) {
+        return nullptr;
+    }
+    bitmap.setImmutable();
+
+    return SkImage_Base::MakeBitmapImage(recorder, bitmap);
 }
 
 }  // namespace SkImages

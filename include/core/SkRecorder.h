@@ -11,8 +11,11 @@
 #include "include/private/SkAPI.h"
 #include "include/private/SkTArray.h"
 
+class SkBitmap;
 class SkCanvas;
 class SkCaptureAsset;
+class SkImage;
+class SkImage_Base;
 class SkSurface;
 
 namespace skcpu {
@@ -58,6 +61,14 @@ private:
     virtual void createCaptureBreakpoint(SkSurface*) = 0;
     virtual void deregisterCaptureCanvas(SkCanvas*) = 0;
 
+    /**
+     * Creates an SkImage from the provided bitmap backed by this recorder's target backend.
+     * CPU recorders return a raster SkImage (sharing pixels if immutable, or copying if mutable);
+     * GPU recorders upload the bitmap pixels to a GPU texture.
+     */
+    virtual sk_sp<SkImage> makeBitmapImage(const SkBitmap&) = 0;
+
+    friend class SkImage_Base;
     friend class SkSurface_Base; // for capture functionality
 };
 
