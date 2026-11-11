@@ -15,6 +15,7 @@
 
 #include <cstddef>
 #include <functional>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -63,7 +64,7 @@ private:
                            size_t dstOffset,
                            size_t size);
 
-    const Buffer* fSrcBuffer;
+    raw_ptr<const Buffer> fSrcBuffer;
     size_t        fSrcOffset;
     sk_sp<Buffer> fDstBuffer;
     size_t        fDstOffset;
