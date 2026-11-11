@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab7226b1_1f7cd8a0",
+        "filename": "tests/CanvasTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-11T17:28:04Z",
+      "side": 1,
+      "message": "Did a tab sneak in here ?",
+      "range": {
+        "startLine": 908,
+        "startChar": 0,
+        "endLine": 908,
+        "endChar": 5
+      },
+      "revId": "6274a083827f34f8edc38d8aaea62693b4fc480d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
