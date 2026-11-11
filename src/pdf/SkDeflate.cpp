@@ -7,7 +7,9 @@
 
 #include "src/pdf/SkDeflate.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
+#include "include/private/SkAttributes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTFitsIn.h"
@@ -16,8 +18,8 @@
 #include "src/partition_alloc/raw_ptr.h"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
-#include <cstring>
 
 #include <zlib.h>
 
@@ -49,19 +51,18 @@ void skia_free_func(void*, void* address) { sk_free(address); }
 static void do_deflate(int flush,
                        z_stream* zStream,
                        SkWStream* out,
-                       unsigned char* inBuffer,
-                       size_t inBufferSize) {
-    zStream->next_in = inBuffer;
-    zStream->avail_in = SkToInt(inBufferSize);
-    unsigned char outBuffer[SKDEFLATEWSTREAM_OUTPUT_BUFFER_SIZE];
+                       SkSpan<unsigned char> in) {
+    zStream->next_in = in.data();
+    zStream->avail_in = SkToInt(in.size());
+    std::array<unsigned char, SKDEFLATEWSTREAM_OUTPUT_BUFFER_SIZE> outBuffer;
     SkDEBUGCODE(int returnValue;)
     do {
-        zStream->next_out = outBuffer;
-        zStream->avail_out = sizeof(outBuffer);
+        zStream->next_out = outBuffer.data();
+        zStream->avail_out = outBuffer.size();
         SkDEBUGCODE(returnValue =) deflate(zStream, flush);
         SkASSERT(!zStream->msg);
 
-        out->write(outBuffer, sizeof(outBuffer) - zStream->avail_out);
+        out->write(outBuffer.data(), outBuffer.size() - zStream->avail_out);
     } while (zStream->avail_in || !zStream->avail_out);
     SkASSERT(flush == Z_FINISH
                  ? returnValue == Z_STREAM_END
@@ -71,7 +72,7 @@ static void do_deflate(int flush,
 // Hide all zlib impl details.
 struct SkDeflateWStream::Impl {
     raw_ptr<SkWStream> fOut;
-    unsigned char fInBuffer[SKDEFLATEWSTREAM_INPUT_BUFFER_SIZE];
+    std::array<unsigned char, SKDEFLATEWSTREAM_INPUT_BUFFER_SIZE> fInBuffer;
     size_t fInBufferIndex;
     z_stream fZStream;
 };
@@ -110,31 +111,40 @@ void SkDeflateWStream::finalize() {
     if (!fImpl->fOut) {
         return;
     }
-    do_deflate(Z_FINISH, &fImpl->fZStream, fImpl->fOut, fImpl->fInBuffer,
-               fImpl->fInBufferIndex);
+    do_deflate(Z_FINISH,
+               &fImpl->fZStream,
+               fImpl->fOut,
+               SkSpan(fImpl->fInBuffer).first(fImpl->fInBufferIndex));
     (void)deflateEnd(&fImpl->fZStream);
     fImpl->fOut = nullptr;
 }
 
 bool SkDeflateWStream::write(const void* void_buffer, size_t len) {
+    // TODO(crbug.com/582862856): SkWStream::write is a (ptr, len) virtual; the caller guarantees
+    // void_buffer holds len bytes.
+    return this->write(SK_UNSAFE_TODO(SkSpan(static_cast<const uint8_t*>(void_buffer), len)));
+}
+
+bool SkDeflateWStream::write(SkSpan<const uint8_t> input) {
     TRACE_EVENT0("skia", TRACE_FUNC);
     if (!fImpl->fOut) {
         return false;
     }
-    const char* buffer = (const char*)void_buffer;
-    while (len > 0) {
-        size_t tocopy =
-                std::min(len, sizeof(fImpl->fInBuffer) - fImpl->fInBufferIndex);
-        memcpy(fImpl->fInBuffer + fImpl->fInBufferIndex, buffer, tocopy);
-        len -= tocopy;
-        buffer += tocopy;
+    while (!input.empty()) {
+        size_t tocopy = std::min(input.size(), fImpl->fInBuffer.size() - fImpl->fInBufferIndex);
+        SkSpan<unsigned char> dst = SkSpan(fImpl->fInBuffer).subspan(fImpl->fInBufferIndex, tocopy);
+        SkSpan<const uint8_t> src = input.first(tocopy);
+        std::copy(src.begin(), src.end(), dst.begin());
+        input = input.subspan(tocopy);
         fImpl->fInBufferIndex += tocopy;
-        SkASSERT(fImpl->fInBufferIndex <= sizeof(fImpl->fInBuffer));
+        SkASSERT(fImpl->fInBufferIndex <= fImpl->fInBuffer.size());
 
         // if the buffer isn't filled, don't call into zlib yet.
-        if (sizeof(fImpl->fInBuffer) == fImpl->fInBufferIndex) {
-            do_deflate(Z_NO_FLUSH, &fImpl->fZStream, fImpl->fOut,
-                       fImpl->fInBuffer, fImpl->fInBufferIndex);
+        if (fImpl->fInBuffer.size() == fImpl->fInBufferIndex) {
+            do_deflate(Z_NO_FLUSH,
+                       &fImpl->fZStream,
+                       fImpl->fOut,
+                       SkSpan(fImpl->fInBuffer).first(fImpl->fInBufferIndex));
             fImpl->fInBufferIndex = 0;
         }
     }

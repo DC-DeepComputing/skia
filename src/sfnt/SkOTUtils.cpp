@@ -5,10 +5,6 @@
  * found in the LICENSE file.
  */
 
-#include <array>
-#include <cstdint>
-#include <limits>
-
 #include "src/sfnt/SkOTUtils.h"
 
 #include "include/core/SkData.h"
@@ -20,6 +16,10 @@
 #include "src/sfnt/SkOTTable_head.h"
 #include "src/sfnt/SkOTTable_name.h"
 #include "src/sfnt/SkSFNTHeader.h"
+
+#include <array>
+#include <cstdint>
+#include <limits>
 
 uint32_t SkOTUtils::CalcTableChecksum(SK_OT_ULONG *data, size_t length) {
     uint32_t sum = 0;
