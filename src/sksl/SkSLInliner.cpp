@@ -6,6 +6,7 @@
  */
 
 #include "src/sksl/SkSLInliner.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #ifndef SK_ENABLE_OPTIMIZE_SIZE
 
@@ -706,7 +707,7 @@ struct InlineCandidate {
     RAW_PTR_EXCLUSION std::unique_ptr<Statement>* fParentStmt;  // parent of fEnclosingStmt
     RAW_PTR_EXCLUSION std::unique_ptr<Statement>* fEnclosingStmt;   // stmt containing the candidate
     RAW_PTR_EXCLUSION std::unique_ptr<Expression>* fCandidateExpr;  // the FunctionCall to inline
-    RAW_PTR_EXCLUSION FunctionDefinition* fEnclosingFunction;       // the enclosing Function
+    raw_ptr<FunctionDefinition> fEnclosingFunction;  // the enclosing Function
 };
 
 struct InlineCandidateList {
