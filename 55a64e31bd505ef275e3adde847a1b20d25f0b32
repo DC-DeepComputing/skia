@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbb41f0a_3872a887",
+        "filename": "src/xml/SkDOM.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-11T16:41:49Z",
+      "side": 1,
+      "message": "nit: could use `sk_careful_memcpy` instead.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 5
+      },
+      "revId": "55a64e31bd505ef275e3adde847a1b20d25f0b32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

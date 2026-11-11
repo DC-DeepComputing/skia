@@ -16,6 +16,24 @@
       "message": "Note: Gemini coded most of this; I don\u0027t 100% agree with its decision here, but there is some precedent, and I can\u0027t obviously say it\u0027s wrong either.\n\n(It does potentially avoid some allocations, but requires more state maintenance, e.g. calling `clear()` in `onStartElement()`. Let me know if you feel strongly about this either way)",
       "revId": "2b953755a73b3e7cb43112e79b705c3ca7614290",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa216b89_cfc8e4f6",
+        "filename": "src/xml/SkXMLParser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-11T16:41:49Z",
+      "side": 1,
+      "message": "Yeah I think something like a local `STArray\u003c16, Attribute\u003e` would work just as well while avoiding global state.  I don\u0027t feel strongly either, up to you if you want to update.",
+      "parentUuid": "6c42403d_991b8e9b",
+      "revId": "2b953755a73b3e7cb43112e79b705c3ca7614290",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
