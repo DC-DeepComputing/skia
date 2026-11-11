@@ -16,6 +16,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
@@ -29,13 +30,12 @@ int dash3[] = { 1, 1, 3, 3 };
 int dash4[] = { 1, 3, 2, 4 };
 
 struct DashExample {
-    int* pattern;
-    int length;
+    SkSpan<const int> pattern;
 } dashExamples[] = {
-    { dash1, std::size(dash1) },
-    { dash2, std::size(dash2) },
-    { dash3, std::size(dash3) },
-    { dash4, std::size(dash4) }
+    { dash1 },
+    { dash2 },
+    { dash3 },
+    { dash4 }
 };
 
 
@@ -66,13 +66,13 @@ protected:
             for (const DashExample& dashExample : dashExamples) {
                 SkPathBuilder refPath;
                 int dashUnits = 0;
-                for (int index = 0; index < dashExample.length; ++index) {
-                    dashUnits += dashExample.pattern[index];
+                for (int unit : dashExample.pattern) {
+                    dashUnits += unit;
                 }
                 SkScalar unitLength = arcLength / dashUnits;
                 SkScalar angle = 0;
                 for (int index = 0; index < wedge; ++index) {
-                    for (int i2 = 0; i2 < dashExample.length; i2 += 2) {
+                    for (size_t i2 = 0; i2 + 1 < dashExample.pattern.size(); i2 += 2) {
                         SkScalar span = dashExample.pattern[i2] * unitLength;
                         refPath.moveTo(0, 0);
                         refPath.arcTo(oval, angle, span, false);
@@ -88,13 +88,14 @@ protected:
                 p.setAntiAlias(true);
                 p.setStroke(true);
                 p.setStrokeWidth(10);
-                SkScalar intervals[4];
-                size_t intervalCount = dashExample.length;
+                std::array<SkScalar, 4> intervals;
+                SkASSERT_RELEASE(dashExample.pattern.size() <= intervals.size());
                 SkScalar dashLength = circumference / wedge / dashUnits;
-                for (int index = 0; index < dashExample.length; ++index) {
+                for (size_t index = 0; index < dashExample.pattern.size(); ++index) {
                     intervals[index] = dashExample.pattern[index] * dashLength;
                 }
-                p.setPathEffect(SkDashPathEffect::Make({intervals, intervalCount}, 0));
+                p.setPathEffect(SkDashPathEffect::Make(
+                        SkSpan(intervals).first(dashExample.pattern.size()), 0));
                 canvas->save();
                 canvas->rotate(fRotation);
                 canvas->drawPath(circle, p);

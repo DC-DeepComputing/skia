@@ -27,6 +27,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypeface.h"
@@ -211,8 +212,12 @@ public:
     //
     // The edgeAA order matches that of clip, so it refers to top, right, bottom, left.
     // Return draw count
-    virtual int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4],
-                          const bool edgeAA[4], int tileID, int quadID) = 0;
+    virtual int drawTile(SkCanvas* canvas,
+                         const SkRect& rect,
+                         SkSpan<const SkPoint> clip,
+                         SkSpan<const bool, 4> edgeAA,
+                         int tileID,
+                         int quadID) = 0;
 
     virtual void drawBanner(SkCanvas* canvas) = 0;
 
@@ -241,7 +246,7 @@ public:
                 // Now clip against the 3 lines formed by kClipPx and split into general purpose
                 // quads as needed.
                 int quadCount = 0;
-                drawCount += this->clipTile(canvas, tileID, tile, nullptr, edgeAA, lines, 3,
+                drawCount += this->clipTile(canvas, tileID, tile, {}, edgeAA, lines,
                                             &quadCount);
                 tileID++;
             }
@@ -251,7 +256,7 @@ public:
     }
 
 protected:
-    SkCanvas::QuadAAFlags maskToFlags(const bool edgeAA[4]) const {
+    SkCanvas::QuadAAFlags maskToFlags(SkSpan<const bool, 4> edgeAA) const {
         unsigned flags = (edgeAA[0] * SkCanvas::kTop_QuadAAFlag) |
                          (edgeAA[1] * SkCanvas::kRight_QuadAAFlag) |
                          (edgeAA[2] * SkCanvas::kBottom_QuadAAFlag) |
@@ -259,14 +264,20 @@ protected:
         return static_cast<SkCanvas::QuadAAFlags>(flags);
     }
 
-    // Recursively splits the quadrilateral against the segments stored in 'lines', which must be
-    // 2 * lineCount long. Increments 'quadCount' for each split quadrilateral, and invokes the
+    // Recursively splits the quadrilateral against the segments stored in 'lines', which holds
+    // pairs of endpoints (so its size must be even). 'quad' is either empty (unsplit tile) or
+    // exactly 4 points. Increments 'quadCount' for each split quadrilateral, and invokes the
     // drawTile at leaves.
-    int clipTile(SkCanvas* canvas, int tileID, const SkRect& baseRect, const SkPoint quad[4],
-                  const bool edgeAA[4], const SkPoint lines[], int lineCount, int* quadCount) {
-        if (lineCount == 0) {
+    int clipTile(SkCanvas* canvas,
+                 int tileID,
+                 const SkRect& baseRect,
+                 SkSpan<const SkPoint> quad,
+                 SkSpan<const bool, 4> edgeAA,
+                 SkSpan<const SkPoint> lines,
+                 int* quadCount) {
+        if (lines.empty()) {
             // No lines, so end recursion by drawing the tile. If the tile was never split then
-            // 'quad' remains null so that drawTile() can differentiate how it should draw.
+            // 'quad' remains empty so that drawTile() can differentiate how it should draw.
             int draws = this->drawTile(canvas, baseRect, quad, edgeAA, tileID, *quadCount);
             *quadCount = *quadCount + 1;
             return draws;
@@ -280,7 +291,8 @@ protected:
         static constexpr int kS1 = 5; // Second split point index in points array
 
         std::array<SkPoint, 6> points;
-        if (quad) {
+        SkASSERT_RELEASE(quad.empty() || quad.size() == 4);
+        if (!quad.empty()) {
             // Copy the original 4 points into set of points to consider
             for (int i = 0; i < 4; ++i) {
                 points[i] = quad[i];
@@ -319,7 +331,7 @@ protected:
             // Either the first line never intersected the quad (count == 0), or it intersected at a
             // single vertex without going through quad area (count == 1), so check next line
             return this->clipTile(
-                    canvas, tileID, baseRect, quad, edgeAA, lines + 2, lineCount - 1, quadCount);
+                    canvas, tileID, baseRect, quad, edgeAA, lines.subspan(2), quadCount);
         }
 
         SkASSERT(intersectionCount == 2);
@@ -385,7 +397,7 @@ protected:
             }
         }
 
-        SkPoint sub[4];
+        std::array<SkPoint, 4> sub;
         std::array<bool, 4> subAA;
         int draws = 0;
         for (int i = 0; i < subtiles.size(); ++i) {
@@ -410,14 +422,8 @@ protected:
             }
 
             // Split the sub quad with the next line
-            draws += this->clipTile(canvas,
-                                    tileID,
-                                    baseRect,
-                                    sub,
-                                    subAA.data(),
-                                    lines + 2,
-                                    lineCount - 1,
-                                    quadCount);
+            draws += this->clipTile(
+                    canvas, tileID, baseRect, sub, subAA, lines.subspan(2), quadCount);
         }
         return draws;
     }
@@ -573,8 +579,13 @@ public:
         return sk_sp<ClipTileRenderer>(new DebugTileRenderer(SkCanvas::kNone_QuadAAFlags, true));
     }
 
-    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], const bool edgeAA[4],
-                  int tileID, int quadID) override {
+    int drawTile(SkCanvas* canvas,
+                 const SkRect& rect,
+                 SkSpan<const SkPoint> clip,
+                 SkSpan<const bool, 4> edgeAA,
+                 int tileID,
+                 int quadID) override {
+        SkASSERT_RELEASE(clip.empty() || clip.size() == 4);
         // Colorize the tile based on its grid position and quad ID
         int i = tileID / kColCount;
         int j = tileID % kColCount;
@@ -587,8 +598,11 @@ public:
         c.fA = c.fA * (1 - alpha) + alpha;
 
         SkCanvas::QuadAAFlags aaFlags = fEnableAAOverride ? fAAOverride : this->maskToFlags(edgeAA);
-        canvas->experimental_DrawEdgeAAQuad(
-                rect, clip, aaFlags, c.toSkColor(), SkBlendMode::kSrcOver);
+        canvas->experimental_DrawEdgeAAQuad(rect,
+                                            clip.empty() ? nullptr : clip.data(),
+                                            aaFlags,
+                                            c.toSkColor(),
+                                            SkBlendMode::kSrcOver);
         return 1;
     }
 
@@ -631,10 +645,18 @@ public:
         return sk_sp<ClipTileRenderer>(new SolidColorRenderer(color));
     }
 
-    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], const bool edgeAA[4],
-                  int tileID, int quadID) override {
-        canvas->experimental_DrawEdgeAAQuad(rect, clip, this->maskToFlags(edgeAA),
-                                            fColor.toSkColor(), SkBlendMode::kSrcOver);
+    int drawTile(SkCanvas* canvas,
+                 const SkRect& rect,
+                 SkSpan<const SkPoint> clip,
+                 SkSpan<const bool, 4> edgeAA,
+                 int tileID,
+                 int quadID) override {
+        SkASSERT_RELEASE(clip.empty() || clip.size() == 4);
+        canvas->experimental_DrawEdgeAAQuad(rect,
+                                            clip.empty() ? nullptr : clip.data(),
+                                            this->maskToFlags(edgeAA),
+                                            fColor.toSkColor(),
+                                            SkBlendMode::kSrcOver);
         return 1;
     }
 
@@ -712,13 +734,18 @@ public:
         return draws;
     }
 
-    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], const bool edgeAA[4],
-                  int tileID, int quadID) override {
+    int drawTile(SkCanvas* canvas,
+                 const SkRect& rect,
+                 SkSpan<const SkPoint> clip,
+                 SkSpan<const bool, 4> edgeAA,
+                 int tileID,
+                 int quadID) override {
+        SkASSERT_RELEASE(clip.empty() || clip.size() == 4);
         // Now don't actually draw the tile, accumulate it in the growing entry set
         bool hasClip = false;
-        if (clip) {
+        if (!clip.empty()) {
             // Record the four points into fDstClips
-            fDstClips.push_back_n(4, clip);
+            fDstClips.push_back_n(4, clip.data());
             hasClip = true;
         }
 
@@ -922,14 +949,19 @@ public:
         return draws;
     }
 
-    int drawTile(SkCanvas* canvas, const SkRect& rect, const SkPoint clip[4], const bool edgeAA[4],
-                  int tileID, int quadID) override {
+    int drawTile(SkCanvas* canvas,
+                 const SkRect& rect,
+                 SkSpan<const SkPoint> clip,
+                 SkSpan<const bool, 4> edgeAA,
+                 int tileID,
+                 int quadID) override {
+        SkASSERT_RELEASE(clip.empty() || clip.size() == 4);
         SkASSERT(fImage);
         // Now don't actually draw the tile, accumulate it in the growing entry set
         bool hasClip = false;
-        if (clip) {
+        if (!clip.empty()) {
             // Record the four points into fDstClips
-            fDstClips.push_back_n(4, clip);
+            fDstClips.push_back_n(4, clip.data());
             hasClip = true;
         }
 
