@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "86a2d9e7_d277504f",
+        "filename": "toolchain/windows_toolchain_config.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2026-11-11T15:45:49Z",
+      "side": 1,
+      "message": "Okay, so I did some investigating and discussing with @borenet@google.com. It looks like our Bazel builds for windows (like `BazelBuild-viewer-for_windows_x64_release-windows_x64`) are pulling in `windows-toolchain` when they probably shouldn\u0027t. This is most likely what the Bazel builds were quietly depending on. I\u0027ll write up a bug report tracking this. After landing this, we\u0027ll watch the tree and make sure everything is good. Then we can work on making sure our Bazel builds are truly hermetic.",
+      "parentUuid": "6c516948_7ff05638",
+      "range": {
+        "startLine": 357,
+        "startChar": 20,
+        "endLine": 358,
+        "endChar": 42
+      },
+      "revId": "96772cf676f25397d38957e87abb476c5b1ec2e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4960f6b_8892d4ce",
         "filename": "toolchain/windows_toolchain_config.bzl",
         "patchSetId": 3
