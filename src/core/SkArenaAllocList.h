@@ -9,7 +9,8 @@
 #define SkArenaAllocList_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "src/core/SkArenaAlloc.h" // IWYU pragma: keep
+#include "src/core/SkArenaAlloc.h"
+#include "src/partition_alloc/raw_ptr.h" // IWYU pragma: keep
 
 #include <utility>
 
@@ -56,7 +57,7 @@ private:
         T fT;
         Node* fNext = nullptr;
     };
-    Node* fHead = nullptr;
+    raw_ptr<Node, DanglingUntriaged> fHead = nullptr;
     Node* fTail = nullptr;
 };
 
