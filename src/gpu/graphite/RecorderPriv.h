@@ -11,6 +11,7 @@
 #include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkOnlyStackAllocatable.h"
 #include "src/gpu/graphite/DebugUtils.h"
@@ -62,6 +63,30 @@ public:
     void flushTrackedDevices(SK_DUMP_TASKS_CODE(const char* flushSource));
     // Flush tracked devices that have pending reads from `dependency`.
     void flushTrackedDevices(const TextureProxy* dependency);
+
+    // Marks a scope in which `fTrackedDevices` is being iterated; does not flush anything itself.
+    // While any instance is alive (`fFlushingTrackedDevicesDepth > 0`), `deregisterDevice()` nulls
+    // entries instead of removing them so active iteration indices remain valid.
+    class TrackedDevicesFlushScope {
+    public:
+        SK_ONLY_STACK_ALLOCATABLE;
+
+        explicit TrackedDevicesFlushScope(Recorder* recorder) : fRecorder(recorder) {
+            SkASSERT(fRecorder);
+            SkASSERT(fRecorder->fFlushingTrackedDevicesDepth >= 0);
+            ++fRecorder->fFlushingTrackedDevicesDepth;
+        }
+        ~TrackedDevicesFlushScope() {
+            SkASSERT(fRecorder->fFlushingTrackedDevicesDepth > 0);
+            --fRecorder->fFlushingTrackedDevicesDepth;
+        }
+
+        TrackedDevicesFlushScope(const TrackedDevicesFlushScope&) = delete;
+        TrackedDevicesFlushScope& operator=(const TrackedDevicesFlushScope&) = delete;
+
+    private:
+        Recorder* const fRecorder;
+    };
 
     std::unique_ptr<KeyAndDataBuilder> popOrCreateKeyAndDataBuilder();
     void pushKeyAndDataBuilder(std::unique_ptr<KeyAndDataBuilder> keyDB);
@@ -115,6 +140,10 @@ public:
 #endif
 
     size_t getResourceCacheLimit() const;
+
+    // Inspection accessors for unit tests.
+    int trackedDevicesCount() const { return fRecorder->fTrackedDevices.size(); }
+    int flushingTrackedDevicesDepth() const { return fRecorder->fFlushingTrackedDevicesDepth; }
 
 #if defined(GPU_TEST_UTILS)
     bool deviceIsRegistered(Device*) const;
