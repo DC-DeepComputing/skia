@@ -12,6 +12,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkSL { class TraceHook; }
 // state shared by stack_checkpoint and stack_rewind
@@ -287,25 +288,25 @@ struct CaseOpCtx {
 
 struct TraceFuncCtx {
     const int* traceMask;
-    SkSL::TraceHook* traceHook;
+    raw_ptr<SkSL::TraceHook, DanglingUntriaged> traceHook;
     int funcIdx;
 };
 
 struct TraceScopeCtx {
     const int* traceMask;
-    SkSL::TraceHook* traceHook;
+    raw_ptr<SkSL::TraceHook, DanglingUntriaged> traceHook;
     int delta;
 };
 
 struct TraceLineCtx {
     const int* traceMask;
-    SkSL::TraceHook* traceHook;
+    raw_ptr<SkSL::TraceHook, DanglingUntriaged> traceHook;
     int lineNumber;
 };
 
 struct TraceVarCtx {
     const int* traceMask;
-    SkSL::TraceHook* traceHook;
+    raw_ptr<SkSL::TraceHook, DanglingUntriaged> traceHook;
     int slotIdx, numSlots;
     const int* data;
     const uint32_t *indirectOffset;  // can be null; if set, an offset applied to `data`
