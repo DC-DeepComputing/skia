@@ -421,7 +421,7 @@ size_t SkTypeface::textToGlyphs(const void* text, size_t byteLength, SkTextEncod
     SkASSERT(text);
 
     size_t count = SkFontPriv::CountTextElements(text, byteLength, encoding);
-    if (count > glyphs.size()) {
+    if (count == 0 || count > glyphs.size()) {
         return count;
     }
 
