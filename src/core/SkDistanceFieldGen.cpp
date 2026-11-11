@@ -10,6 +10,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkMalloc.h"
+#include "include/private/SkOnlyStackAllocatable.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
@@ -391,6 +392,8 @@ public:
     }
 
     explicit operator bool() const { return fStorage != nullptr; }
+
+    SK_ONLY_STACK_ALLOCATABLE;
 
     DFData* data() const { return fData; }
     unsigned char* edge() const { return fEdge; }
