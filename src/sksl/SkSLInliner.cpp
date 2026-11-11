@@ -6,6 +6,7 @@
  */
 
 #include "src/sksl/SkSLInliner.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #ifndef SK_ENABLE_OPTIMIZE_SIZE
 
@@ -703,7 +704,7 @@ bool Inliner::isSafeToInline(const FunctionDefinition* functionDef, const Progra
 // RAW_PTR_EXCLUSION: Performance: up to +1.5% each on sksl_* benchmarks.
 struct InlineCandidate {
     RAW_PTR_EXCLUSION SymbolTable* fSymbols;                    // the SymbolTable of the candidate
-    RAW_PTR_EXCLUSION std::unique_ptr<Statement>* fParentStmt;  // parent of fEnclosingStmt
+    raw_ptr<std::unique_ptr<Statement>> fParentStmt;  // parent of fEnclosingStmt
     RAW_PTR_EXCLUSION std::unique_ptr<Statement>* fEnclosingStmt;   // stmt containing the candidate
     RAW_PTR_EXCLUSION std::unique_ptr<Expression>* fCandidateExpr;  // the FunctionCall to inline
     RAW_PTR_EXCLUSION FunctionDefinition* fEnclosingFunction;       // the enclosing Function
