@@ -218,12 +218,14 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
     // because the params will likely no longer be on the same cache line for successor render
     // steps. We should test whether it is faster for each step to hold a copy of the params except
     // in the case of clipped draws (which must share a copy because they are mutated later).
-    DrawParams* drawParams = fStorage.make<DrawParams>(this->deduplicateTransform(localToDevice),
-                                                       geometry,
-                                                       clip,
-                                                       ordering,
-                                                       stroke,
-                                                       barrierBeforeDraws);
+    DrawParams* drawParams =
+            fStorage.make<DrawParams>(this->deduplicateTransform(localToDevice),
+                                      geometry,
+                                      clip,
+                                      ordering,
+                                      stroke,
+                                      barrierBeforeDraws,
+                                      SkToBool(dstUsage & DstUsage::kDstReadRequired));
 
     Layer* insertionLayer = nullptr;
     BindingList* lastStepBinding = nullptr;
@@ -392,7 +394,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
         drawPass->fPipelineDrawAreas[key.fPipelineIndex] += drawParams.drawBounds().area();
 
         std::optional<SkIRect> newScissor =
-                renderStep->getScissor(drawParams, lastScissor, targetBounds);
+                renderStep->getScissor(drawParams, lastScissor, targetBounds, dstReadStrategy);
 
         if (pipelineChange) {
             drawWriter.newPipelineState(renderStep->primitiveType(),

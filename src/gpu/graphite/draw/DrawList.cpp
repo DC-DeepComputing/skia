@@ -50,6 +50,7 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
                                            clip,
                                            ordering,
                                            barrierBeforeDraws,
+                                           SkToBool(dstUsage & DstUsage::kDstReadRequired),
                                            stroke);
 
     fRenderStepCount += renderer->numRenderSteps();
@@ -196,8 +197,8 @@ std::unique_ptr<DrawPass> DrawList::snapDrawPass(Recorder* recorder,
                 (rebindTexturesOnPipelineChange && pipelineChange &&
                  key.textureBindingIndex() != TextureDataCache::kInvalidIndex);
 
-        std::optional<SkIRect> newScissor =
-                renderStep.getScissor(draw.drawParams(), lastScissor, targetBounds);
+        std::optional<SkIRect> newScissor = renderStep.getScissor(
+                draw.drawParams(), lastScissor, targetBounds, dstReadStrategy);
 
         const bool stateChange = uniformBindingChange  || textureBindingsChange ||
                                  newScissor.has_value();
