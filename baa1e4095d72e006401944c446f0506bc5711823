@@ -16,6 +16,24 @@
       "message": "Note for follow up CLs touching benching and tooling: We are trying to move to Bazel and off of GN. Make sure when you touch gni files and gn files, we also touch related Bazel files. There might be growing pains until we get a single source of truth for these file lists (exporting from Bazel -\u003e gni), but in the meantime please be on the lookout.",
       "revId": "baa1e4095d72e006401944c446f0506bc5711823",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d64f10d3_d5033bac",
+        "filename": "gn/bench.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-11T18:56:10Z",
+      "side": 0,
+      "message": "Thanks for the heads-up! When I uploaded this CL, bench/BUILD.bazel was not on main yet — CL 1389796 landed 57 minutes before this one submitted, so the rebase had no conflict. I prepared https://skia-review.googlesource.com/c/skia/+/1424996 (currently WIP) to wire modules/skparagraph/bench/ParagraphBench.cpp into modules/skparagraph/bench/BUILD.bazel and //bench:nanobench, and will rebase and mark it ready once Sarah\u0027s https://skia-review.googlesource.com/c/skia/+/1422158 lands so we do not create a merge conflict for her.",
+      "parentUuid": "d1827fa1_dc28b090",
+      "revId": "baa1e4095d72e006401944c446f0506bc5711823",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
