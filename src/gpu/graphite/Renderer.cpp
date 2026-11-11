@@ -77,15 +77,18 @@ RenderStep::RenderStep(Layout layout,
 
 std::optional<SkIRect> RenderStep::getScissor(const DrawParams& params,
                                               SkIRect currentScissor,
-                                              SkIRect deviceBounds) const {
-    if (currentScissor == params.scissor()) {
+                                              SkIRect deviceBounds,
+                                              DstReadStrategy dstReadStrategy) const {
+    const bool mustClipToDrawBounds =
+            dstReadStrategy == DstReadStrategy::kTextureCopy && params.readsDst();
+    if (!mustClipToDrawBounds && currentScissor == params.scissor()) {
         return {}; // Trivially no change in scissor state is required
     }
 
     Rect drawBounds = params.drawBounds();
     if (params.geometry().isShape() && params.geometry().shape().inverted()) {
         // For inverse filled shapes, the scissor is able to be handled in unique ways.
-        if (fFlags & Flags::kInverseFillsScissor) {
+        if (!mustClipToDrawBounds && (fFlags & Flags::kInverseFillsScissor)) {
             // In this case, the RenderStep geometrically respects the scissor so as long as the
             // current scissor doesn't interfere, we don't need a state change.
             if (currentScissor.contains(params.scissor())) {
@@ -108,6 +111,20 @@ std::optional<SkIRect> RenderStep::getScissor(const DrawParams& params,
         } // Else leave drawBounds filling the original scissor
 
         // Fall through to regular scissor state checking with the possibly-updated bounds
+    }
+
+    if (mustClipToDrawBounds) {
+        // When reading from an approximate-fit dstCopy texture, enforce a hardware scissor matching
+        // the rounded-out CPU drawBounds (which sized its dstReadBounds contribution, or restricted
+        // an inverse-fill stencil step to the shape). We cannot elide this scissor using
+        // transformedShapeBounds below because GPU-side vertex evaluation (e.g. tessellation or
+        // FMA) can rasterize fragments past CPU bounds into uninitialized dstCopy padding.
+        SkIRect dstCopyScissor = drawBounds.isEmptyNegativeOrNaN()
+                                         ? SkIRect::MakeEmpty()
+                                         : drawBounds.makeRoundOut().asSkIRect();
+        SkASSERT(dstCopyScissor.isEmpty() || params.scissor().contains(dstCopyScissor));
+        return currentScissor == dstCopyScissor ? std::nullopt
+                                                : std::optional<SkIRect>(dstCopyScissor);
     }
 
     // Draws that are unaffected by a clip stack will have a scissor matching the device's bounds.
