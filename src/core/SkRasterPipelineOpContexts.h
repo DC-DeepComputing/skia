@@ -12,6 +12,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkSL { class TraceHook; }
 // state shared by stack_checkpoint and stack_rewind
@@ -272,7 +273,7 @@ struct BranchCtx {
 };
 
 struct BranchIfAllLanesActiveCtx : public BranchCtx {
-    uint8_t* tail = nullptr;  // lanes past the tail are _never_ active, so we need to exclude them
+    raw_ptr<uint8_t, DanglingUntriaged> tail = nullptr;  // lanes past the tail are _never_ active, so we need to exclude them
 };
 
 struct BranchIfEqualCtx : public BranchCtx {
