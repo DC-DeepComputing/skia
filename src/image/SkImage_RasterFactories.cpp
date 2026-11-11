@@ -130,4 +130,50 @@ sk_sp<SkImage> RasterFromPixmap(const SkPixmap& pmap, RasterReleaseProc proc, Re
             pmap.info(), std::move(data), pmap.rowBytes(), /*mips=*/nullptr, kNeedNewImageUniqueID);
 }
 
+sk_sp<SkImage> FromBitmap(SkRecorder* recorder, const SkBitmap& bitmap) {
+    if (!recorder || !bitmap.pixelRef()) {
+        return nullptr;
+    }
+
+    SkCopyPixelsMode cpm;
+    if (recorder->type() == SkRecorder::Type::kCPU) {
+        cpm = SkCopyPixelsMode::kIfMutable;
+    } else {
+        cpm = SkCopyPixelsMode::kNever;
+    }
+
+    return SkImage_Base::MakeRecorderBackedImage(recorder,
+                                                 SkImage_Raster::MakeFromBitmap(bitmap, cpm));
+}
+
+sk_sp<SkImage> FromPixmap(SkRecorder* recorder,
+                          const SkPixmap& pmap,
+                          RasterReleaseProc proc,
+                          ReleaseContext ctx) {
+    if (!recorder) {
+        return nullptr;
+    }
+
+    sk_sp<SkImage> image;
+    if (recorder->type() == SkRecorder::Type::kCPU && !proc && !ctx) {
+        image = RasterFromPixmapCopy(pmap);
+    } else {
+        image = RasterFromPixmap(pmap, proc, ctx);
+    }
+
+    return SkImage_Base::MakeRecorderBackedImage(recorder, std::move(image));
+}
+
+sk_sp<SkImage> FromData(SkRecorder* recorder,
+                        const SkImageInfo& info,
+                        sk_sp<SkData> data,
+                        size_t rowBytes) {
+    if (!recorder) {
+        return nullptr;
+    }
+
+    return SkImage_Base::MakeRecorderBackedImage(recorder,
+                                                 RasterFromData(info, std::move(data), rowBytes));
+}
+
 }  // namespace SkImages

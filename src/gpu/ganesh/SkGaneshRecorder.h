@@ -37,10 +37,8 @@ private:
     void createCaptureBreakpoint(SkSurface*) override { }
     void deregisterCaptureCanvas(SkCanvas*) override { }
 
-    sk_sp<SkImage> makeBitmapImage(const SkBitmap& bm) override {
-        return SkImages::TextureFromImage(
-                this->directContext(),
-                SkImage_Raster::MakeFromBitmap(bm, SkCopyPixelsMode::kNever).get());
+    sk_sp<SkImage> makeImage(sk_sp<SkImage> image) override {
+        return SkImages::TextureFromImage(this->directContext(), image.get());
     }
 };
 

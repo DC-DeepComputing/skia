@@ -15,6 +15,7 @@
 #include "include/core/SkContextOptions.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
@@ -26,6 +27,7 @@
 #include "include/encode/SkPngEncoder.h"
 #include "src/capture/SkCapture.h"
 #include "src/core/SkResourceCache.h"
+#include "src/image/SkImageGeneratorPriv.h"
 #include "tests/Test.h"
 
 #include <memory>
@@ -104,6 +106,13 @@ DEF_TEST(CPURecorder_RasterImageOperations_UseCpuRecorder, reporter) {
     REPORTER_ASSERT(reporter, !encodedImg->isTextureBacked());
     REPORTER_ASSERT(reporter, encodedImg->isValid(recorder.get()));
 
+    std::unique_ptr<SkImageGenerator> gen = SkImageGenerators::MakeFromEncoded(std::move(pngData));
+    REPORTER_ASSERT(reporter, gen != nullptr);
+    sk_sp<SkImage> genImg = SkImages::FromGenerator(recorder.get(), std::move(gen));
+    REPORTER_ASSERT(reporter, genImg != nullptr);
+    REPORTER_ASSERT(reporter, !genImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, genImg->isValid(recorder.get()));
+
     sk_sp<SkImage> scaled =
             img->makeScaled(recorder.get(),
                             SkImageInfo::Make(50, 50, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
@@ -154,8 +163,6 @@ DEF_TEST(ImageMakeScaled_UsesCPURecorderToMakeImage_Success, reporter) {
     REPORTER_ASSERT(reporter, !legacyAPI->isTextureBacked());
 }
 
-// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
-#if 0
 DEF_TEST(CPURecorder_FromCanvasBaseRecorder_MakesOffscreenSurface, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
@@ -181,6 +188,8 @@ DEF_TEST(CPURecorder_FromCanvasBaseRecorder_MakesOffscreenSurface, reporter) {
     REPORTER_ASSERT(reporter, pmap.getColor(25, 25) == SK_ColorBLUE);
 }
 
+// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
+#if 0
 DEF_TEST(CPUSurface_UsesCPUContextAndRecorderToDraw_DrawsPixels, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);

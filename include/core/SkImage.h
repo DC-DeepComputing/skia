@@ -297,6 +297,16 @@ SK_API sk_sp<SkImage> FromData(SkRecorder* recorder,
                                sk_sp<const SkData> encoded,
                                std::optional<SkAlphaType> alphaType = std::nullopt);
 
+/** Creates an SkImage from data returned by imageGenerator for the target backend associated
+    with recorder.
+
+    @param recorder        recorder determining the target backend
+    @param imageGenerator  stock or custom routines to retrieve SkImage
+    @return                created SkImage
+*/
+SK_API sk_sp<SkImage> FromGenerator(SkRecorder* recorder,
+                                    std::unique_ptr<SkImageGenerator> imageGenerator);
+
 }  // namespace SkImages
 
 /** \class SkImage

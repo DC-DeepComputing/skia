@@ -15,6 +15,7 @@
 #include "include/core/SkContextOptions.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
@@ -25,6 +26,7 @@
 #include "src/core/SkContextPriv.h"
 #include "src/gpu/ganesh/SkGaneshGPUContextAdapter.h"
 #include "src/gpu/ganesh/SkGaneshRecorder.h"
+#include "src/image/SkImageGeneratorPriv.h"
 #include "tests/Test.h"
 
 #include <memory>
@@ -198,6 +200,13 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(GaneshRecorder_UnifiedImageFactories_MakeTextur
     REPORTER_ASSERT(reporter, encodedImg != nullptr);
     REPORTER_ASSERT(reporter, encodedImg->isTextureBacked());
     REPORTER_ASSERT(reporter, encodedImg->isValid(recorder.get()));
+
+    std::unique_ptr<SkImageGenerator> gen = SkImageGenerators::MakeFromEncoded(std::move(pngData));
+    REPORTER_ASSERT(reporter, gen != nullptr);
+    sk_sp<SkImage> genImg = SkImages::FromGenerator(recorder.get(), std::move(gen));
+    REPORTER_ASSERT(reporter, genImg != nullptr);
+    REPORTER_ASSERT(reporter, genImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, genImg->isValid(recorder.get()));
 }
 
 #endif  // defined(SK_GANESH)

@@ -63,26 +63,11 @@ sk_sp<SkImage> DeferredFromEncodedData(sk_sp<const SkData> encoded,
 sk_sp<SkImage> FromData(SkRecorder* recorder,
                         sk_sp<const SkData> encoded,
                         std::optional<SkAlphaType> alphaType) {
-    if (!recorder || !encoded || encoded->empty()) {
+    if (!recorder || nullptr == encoded || encoded->empty()) {
         return nullptr;
     }
-
-    std::unique_ptr<SkImageGenerator> generator =
-            SkImageGenerators::MakeFromEncoded(std::move(encoded), alphaType);
-    if (!generator) {
-        return nullptr;
-    }
-
-    SkBitmap bitmap;
-    if (!bitmap.tryAllocPixels(generator->getInfo())) {
-        return nullptr;
-    }
-    if (!generator->getPixels(bitmap.pixmap())) {
-        return nullptr;
-    }
-    bitmap.setImmutable();
-
-    return SkImage_Base::MakeBitmapImage(recorder, bitmap);
+    return FromGenerator(recorder,
+                         SkImageGenerators::MakeFromEncoded(std::move(encoded), alphaType));
 }
 
 }  // namespace SkImages

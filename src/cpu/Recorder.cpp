@@ -26,4 +26,6 @@ sk_sp<SkImage> Recorder::makeBitmapImage(const SkBitmap& bm) {
     return SkImages::RasterFromBitmap(bm);
 }
 
+sk_sp<SkImage> Recorder::makeImage(sk_sp<SkImage> image) { return image; };
+
 }  // namespace skcpu

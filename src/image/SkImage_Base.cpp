@@ -119,54 +119,9 @@ sk_sp<SkImage> SkImage_Base::makeColorSpace(SkRecorder* recorder,
     return this->makeColorTypeAndColorSpace(recorder, this->colorType(), std::move(target), props);
 }
 
-sk_sp<SkImage> SkImage_Base::MakeBitmapImage(SkRecorder* recorder, const SkBitmap& bitmap) {
-    if (!recorder) {
+sk_sp<SkImage> SkImage_Base::MakeRecorderBackedImage(SkRecorder* recorder, sk_sp<SkImage> image) {
+    if (!recorder || !image) {
         return nullptr;
     }
-    return recorder->makeBitmapImage(bitmap);
-}
-
-bool SkImage_Base::ValidArgs(const SkImageInfo& info, size_t rowBytes, size_t* minSize) {
-    const int maxDimension = SK_MaxS32 >> 2;
-
-    // TODO(mtklein): eliminate anything here that setInfo() has already checked.
-    SkBitmap b;
-    if (!b.setInfo(info, rowBytes)) {
-        return false;
-    }
-
-    if (info.width() <= 0 || info.height() <= 0) {
-        return false;
-    }
-    if (info.width() > maxDimension || info.height() > maxDimension) {
-        return false;
-    }
-    if ((unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType) {
-        return false;
-    }
-    if ((unsigned)info.alphaType() > (unsigned)kLastEnum_SkAlphaType) {
-        return false;
-    }
-
-    if (kUnknown_SkColorType == info.colorType()) {
-        return false;
-    }
-    if (!info.validRowBytes(rowBytes)) {
-        return false;
-    }
-
-    size_t size = info.computeByteSize(rowBytes);
-    if (SkImageInfo::ByteSizeOverflowed(size)) {
-        return false;
-    }
-
-    if (minSize) {
-        *minSize = size;
-    }
-    return true;
-}
-
-void SkImage_Base::ReleaseData(void* addr, void* context) {
-    SkData* data = static_cast<SkData*>(context);
-    data->unref();
+    return recorder->makeImage(std::move(image));
 }

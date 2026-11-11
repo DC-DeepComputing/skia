@@ -641,3 +641,11 @@ sk_sp<SkImage> TextureFromYUVAImages(Recorder* recorder,
 }
 
 }  // namespace SkImages
+
+namespace skgpu::graphite {
+
+sk_sp<SkImage> Recorder::makeImage(sk_sp<SkImage> image) {
+    return SkImages::TextureFromImage(this, image.get());
+}
+
+}  // namespace skgpu::graphite
