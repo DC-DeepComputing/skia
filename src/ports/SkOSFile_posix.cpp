@@ -5,12 +5,14 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkOSFile.h"
 
+#include <algorithm>
 #include <dirent.h>
 #include <stdio.h>
 #include <string.h>
@@ -170,12 +172,15 @@ void SkOSFile::Iter::reset(const char path[], const char suffix[]) {
 }
 
 // returns true if suffix is empty, or if str ends with suffix
-static bool issuffixfor(const SkString& suffix, const char str[]) {
-    size_t  suffixLen = suffix.size();
-    size_t  strLen = strlen(str);
-
-    return  strLen >= suffixLen &&
-            memcmp(suffix.c_str(), str + strLen - suffixLen, suffixLen) == 0;
+static bool issuffixfor(const SkString& suffix, SkSpan<const char> str) {
+    const size_t suffixLen = suffix.size();
+    // Bound the scan by the span so a missing terminator can't run off the buffer.
+    const size_t strLen = strnlen(str.data(), str.size());
+    if (strLen < suffixLen) {
+        return false;
+    }
+    SkSpan<const char> tail = str.subspan(strLen - suffixLen, suffixLen);
+    return std::equal(tail.begin(), tail.end(), suffix.c_str());
 }
 
 bool SkOSFile::Iter::next(SkString* name, bool getDir) {
