@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include "src/partition_alloc/raw_ptr.h"
 
 class SkColorInfo;
 struct SkIRect;
@@ -168,7 +169,7 @@ private:
                    sk_sp<TextureProxy>,
                    std::unique_ptr<ConditionalUploadContext> = nullptr);
 
-    const Buffer* fBuffer;
+    raw_ptr<const Buffer> fBuffer;
     sk_sp<TextureProxy> fTextureProxy;
     skia_private::STArray<1, BufferTextureCopyData> fCopyData;
     std::unique_ptr<ConditionalUploadContext> fConditionalContext;
