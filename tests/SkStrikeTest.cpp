@@ -56,6 +56,7 @@
 #include <memory>
 #include <optional>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 using namespace skia_private;
@@ -757,5 +758,65 @@ DEF_TEST(SkScalerContext_GetImageFromPathDivergence, reporter) {
             hasNonZero |= (bytes[i] != 0);
         }
         REPORTER_ASSERT(reporter, hasNonZero);
+    }
+}
+
+DEF_TEST(SkScalerContext_GetImageEntryGuards, reporter) {
+    constexpr uint8_t kSentinel = 0x5A;
+
+    for (bool withMaskFilter : {false, true}) {
+        auto makeSpec = [&](SkRect firstBounds) {
+            sk_sp<SkTypeface> tf = make_sequenced_typeface(
+                    firstBounds, SkMask::kA8_Format, SkRect::MakeWH(10, 10), SkMask::kA8_Format);
+            SkFont font(tf, 16.0f);
+            SkPaint paint;
+            if (withMaskFilter) {
+                paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0f));
+            }
+            return SkStrikeSpec::MakeMask(font,
+                                          paint,
+                                          SkSurfaceProps(0, kUnknown_SkPixelGeometry),
+                                          SkScalerContextFlags::kNone,
+                                          SkMatrix::I());
+        };
+
+        SkArenaAlloc alloc{256};
+
+        // 1. Empty glyph (with and without an attached buffer pointer).
+        {
+            SkStrikeSpec spec = makeSpec(SkRect::MakeEmpty());
+            std::unique_ptr<SkScalerContext> ctx = spec.createScalerContext();
+            SkGlyph emptyGlyph = ctx->makeGlyph(SkPackedGlyphID((SkGlyphID)1), &alloc);
+            REPORTER_ASSERT(reporter, emptyGlyph.isEmpty());
+            ctx->getImage(emptyGlyph);
+
+            uint8_t sentinel = kSentinel;
+            emptyGlyph.setImage(&sentinel);
+            ctx->getImage(emptyGlyph);
+            REPORTER_ASSERT(reporter, sentinel == kSentinel);
+        }
+
+        // 2. Non-empty glyph whose image buffer has not been allocated (fImage == nullptr).
+        {
+            SkStrikeSpec spec = makeSpec(SkRect::MakeWH(10, 10));
+            std::unique_ptr<SkScalerContext> ctx = spec.createScalerContext();
+            SkGlyph nullBufGlyph = ctx->makeGlyph(SkPackedGlyphID((SkGlyphID)1), &alloc);
+            REPORTER_ASSERT(reporter, !nullBufGlyph.isEmpty() && !nullBufGlyph.imageTooLarge());
+            ctx->getImage(nullBufGlyph);
+        }
+
+        // 3. Oversized glyph (imageTooLarge() == true, so imageSize() == 0 while rowBytes() > 0).
+        {
+            SkStrikeSpec spec = makeSpec(SkRect::MakeWH(1 << 14, 10));
+            std::unique_ptr<SkScalerContext> ctx = spec.createScalerContext();
+            SkGlyph oversizedGlyph = ctx->makeGlyph(SkPackedGlyphID((SkGlyphID)1), &alloc);
+            REPORTER_ASSERT(reporter, oversizedGlyph.imageTooLarge());
+            ctx->getImage(oversizedGlyph);
+
+            uint8_t sentinel = kSentinel;
+            oversizedGlyph.setImage(&sentinel);
+            ctx->getImage(oversizedGlyph);
+            REPORTER_ASSERT(reporter, sentinel == kSentinel);
+        }
     }
 }
