@@ -18,6 +18,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace SkSL {
 
@@ -135,7 +136,7 @@ public:
 
 private:
     // RAW_PTR_EXCLUSION: Performance: +7% on sksl_large.
-    RAW_PTR_EXCLUSION const Type* fType;
+    raw_ptr<const Type> fType;
 
     using INHERITED = IRNode;
 };
