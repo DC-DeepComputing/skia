@@ -77,7 +77,22 @@ RenderStep::RenderStep(Layout layout,
 
 std::optional<SkIRect> RenderStep::getScissor(const DrawParams& params,
                                               SkIRect currentScissor,
-                                              SkIRect deviceBounds) const {
+                                              SkIRect deviceBounds,
+                                              DstReadStrategy dstReadStrategy) const {
+    if (dstReadStrategy == DstReadStrategy::kTextureCopy && params.readsDst()) {
+        // When reading from an approximate-fit dstCopy texture, enforce a hardware scissor matching
+        // the draw's rounded-out CPU drawBounds (which sized its dstReadBounds contribution). We
+        // cannot elide this scissor using transformedShapeBounds below because GPU-side vertex
+        // evaluation (e.g. tessellation or FMA) can rasterize fragments past CPU bounds into
+        // uninitialized dstCopy padding.
+        SkIRect dstCopyScissor = params.drawBounds().makeRoundOut().asSkIRect();
+        if (!dstCopyScissor.intersect(params.scissor())) {
+            dstCopyScissor.setEmpty();
+        }
+        return currentScissor == dstCopyScissor ? std::nullopt
+                                                : std::optional<SkIRect>(dstCopyScissor);
+    }
+
     if (currentScissor == params.scissor()) {
         return {}; // Trivially no change in scissor state is required
     }
