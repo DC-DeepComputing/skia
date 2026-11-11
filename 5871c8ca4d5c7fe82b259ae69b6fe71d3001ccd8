@@ -98,6 +98,30 @@
       },
       "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f229a450_e7f219d8",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-11T22:52:20Z",
+      "side": 1,
+      "message": "Generically (so not taking into account specifics of text), the decomposition of the `localToDevice` into `maskToDevice` and the remaining matrix will push perspective into one side or the other (i.e. `maskToDevice` will have perspective or `invert(localToDevice)*maskToDevice` will have perspective).\n\nIf `maskToDevice` ends up being the source of perspective, then the float2 is sufficient and `stepLocalCoords` division in the vertex shader works. If it\u0027s coming from the remaining matrix, then `position.w` remains 1 and there won\u0027t actually be in HW perspective interpolation.\n\nThere are three sources of this sort of `maskToDevice` decomposition in Skia: image filters (although it names Local\u003d\u003eParam and Mask\u003d\u003eLayer in its nomenclature), text rendering, and coverage mask rendering.\n\nDepending on the source, the `maskToDevice` is going to be the perspective source or not. In image filtering, `maskToDevice` will typically have the perspective distortion so that the image filtering can operate on a regular pixel grid. When mask filters are converted to image filters, their resulting alpha image output is reinterpreted as a coverage mask, so coverage masks can also have `maskToDevice` with perspective.\n\nFor regular coverage masks, they are produced by CPU rasterization that applies the full transform up to an integer translation. In their case, `maskToDevice` will not have perspective and the remaining matrix would, which would then requires the float3 interpolation.  Coverage masks therefore have to handle both possible sources of perspective in the same shader.\n\nNow for text, I think you are right. The source transform used to render into the glyph atlas is always going to be a 2D transform, and so `maskToDevice` is the only possible source of perspective distortion.  Can you add a comment after the current comment on line 1117 that justifies the perspective division in the vertex shader as being sufficient?",
+      "parentUuid": "22f1b1c2_83d33172",
+      "range": {
+        "startLine": 1119,
+        "startChar": 0,
+        "endLine": 1119,
+        "endChar": 53
+      },
+      "revId": "5871c8ca4d5c7fe82b259ae69b6fe71d3001ccd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
