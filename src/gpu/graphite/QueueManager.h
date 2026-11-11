@@ -16,6 +16,7 @@
 
 #include <memory>
 #include <vector>
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu {
 class MutableTextureState;
@@ -95,7 +96,7 @@ protected:
 
     using OutstandingSubmission = std::unique_ptr<GpuWorkSubmission>;
 
-    const SharedContext* fSharedContext;
+    raw_ptr<const SharedContext> fSharedContext;
     std::unique_ptr<CommandBuffer> fCurrentCommandBuffer;
     std::unique_ptr<CommandBuffer> fCurrentProtectedCommandBuffer;
 
