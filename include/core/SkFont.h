@@ -284,8 +284,8 @@ public:
         If byteLength equals zero, returns zero.
         If byteLength includes a partial character, the partial character is ignored.
 
-        If encoding is SkTextEncoding::kUTF8 and text contains an invalid UTF-8 sequence,
-        zero is returned.
+        If encoding is SkTextEncoding::kUTF8 or SkTextEncoding::kUTF16 and text contains an
+        invalid UTF-8 or UTF-16 sequence, zero is returned.
 
         When encoding is SkTextEncoding::kUTF8, SkTextEncoding::kUTF16, or
         SkTextEncoding::kUTF32; then each Unicode codepoint is mapped to a

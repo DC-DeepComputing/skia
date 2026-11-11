@@ -7,6 +7,7 @@
 
 #include "include/core/SkFont.h"
 #include "include/core/SkFontTypes.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
@@ -21,6 +22,7 @@
 #include "tools/fonts/FontToolUtils.h"
 
 #include <cstddef>
+#include <cstring>
 
 static SkFont serialize_deserialize(const SkFont& font, skiatest::Reporter* reporter) {
     sk_sp<SkRefCntSet> typefaces = sk_make_sp<SkRefCntSet>();
@@ -112,5 +114,58 @@ DEF_TEST(Font_flatten, reporter) {
                 }
             }
         }
+    }
+}
+
+namespace {
+struct MalformedText {
+    const void* data;
+    size_t byteLength;
+    SkTextEncoding encoding;
+};
+
+const uint16_t kLoneHigh[] = {0xD835};
+const uint16_t kLoneLow[] = {0xDC00};
+const uint16_t kValidThenLoneHigh[] = {'a', 0xD835};
+const uint16_t kOddLength[] = {'a', 'b'};
+const char kTruncated4Byte[] = "\xF0\x9F";
+const char kStrayContinuation[] = "\x80";
+const char kValidThenTruncated[] = "a\xC3";
+
+// Each entry fails SkUTF validation: unpaired surrogates, odd UTF-16 byte length, and UTF-8
+// sequences that are truncated or start with a continuation byte
+const MalformedText kMalformed[] = {
+        {kLoneHigh, sizeof(kLoneHigh), SkTextEncoding::kUTF16},
+        {kLoneLow, sizeof(kLoneLow), SkTextEncoding::kUTF16},
+        {kValidThenLoneHigh, sizeof(kValidThenLoneHigh), SkTextEncoding::kUTF16},
+        {kOddLength, 3, SkTextEncoding::kUTF16},
+        {kTruncated4Byte, 2, SkTextEncoding::kUTF8},
+        {kStrayContinuation, 1, SkTextEncoding::kUTF8},
+        {kValidThenTruncated, 2, SkTextEncoding::kUTF8},
+};
+}  // namespace
+
+// Malformed UTF-8/UTF-16 has no glyph count; countText and textToGlyphs must report 0 and
+// leave the buffer alone instead of returning a wrapped error code that callers allocate
+DEF_TEST(Font_MalformedUTF_textToGlyphs, reporter) {
+    const SkFont font = ToolUtils::DefaultPortableFont();
+    for (const MalformedText& t : kMalformed) {
+        REPORTER_ASSERT(reporter, font.countText(t.data, t.byteLength, t.encoding) == 0);
+
+        const SkGlyphID kUntouched[4] = {7, 7, 7, 7};
+        SkGlyphID glyphs[4] = {7, 7, 7, 7};
+        REPORTER_ASSERT(reporter, font.textToGlyphs(t.data, t.byteLength, t.encoding, glyphs) == 0);
+        REPORTER_ASSERT(reporter, memcmp(glyphs, kUntouched, sizeof(glyphs)) == 0);
+    }
+}
+
+// measureText sizes its glyph storage from countText, so malformed input must measure as
+// empty text instead of aborting in the allocator
+DEF_TEST(Font_MalformedUTF_measureText, reporter) {
+    const SkFont font = ToolUtils::DefaultPortableFont();
+    for (const MalformedText& t : kMalformed) {
+        SkRect bounds = SkRect::MakeXYWH(1, 2, 3, 4);
+        REPORTER_ASSERT(reporter, font.measureText(t.data, t.byteLength, t.encoding, &bounds) == 0);
+        REPORTER_ASSERT(reporter, bounds.isEmpty());
     }
 }
