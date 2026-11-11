@@ -137,6 +137,23 @@
       "message": "jlavrova@, friendly ping",
       "revId": "88e441accc9f79a82d696b78d339aadfadf3d8ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6335c28b_5a6dd33a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5283275
+      },
+      "writtenOn": "2026-11-11T09:37:22Z",
+      "side": 1,
+      "message": "jlavrova@ and alexisdavidc@, I don\u0027t have permission to land this patch. If it has sufficient review points, could you please land it for me?\nThanks in advance for your help!",
+      "revId": "88e441accc9f79a82d696b78d339aadfadf3d8ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
