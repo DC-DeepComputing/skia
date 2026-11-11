@@ -143,6 +143,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "51c0ddb2_2cdf3397",
+        "filename": "include/README.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2026-11-11T20:21:57Z",
+      "side": 1,
+      "message": "ugh, `c` hotkey in rich diff mode picked the wrong place.  I don\u0027t think we have `include/cpu` anymore",
+      "parentUuid": "d6d5de95_fc01937d",
+      "revId": "f31c462ec0da65ca398ce3d3eb5b924d72144a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1016be48_676b6605",
         "filename": "src/core/README.md",
         "patchSetId": 4
