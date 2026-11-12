@@ -224,7 +224,11 @@ mod ffi {
         // Embedded JPEG scanner (for Multi-Picture / gainmap images).
         type EmbeddedJpegScanner;
         fn scan_embedded_jpeg(data: &[u8]) -> Box<EmbeddedJpegScanner>;
+        /// Read and scan one complete MPF image. Invalid or unavailable ranges
+        /// are reported through embedded_had_error.
+        fn scan_mpf_image(self: &mut Reader, index: u32) -> Box<EmbeddedJpegScanner>;
         fn embedded_had_error(self: &EmbeddedJpegScanner) -> bool;
+        fn embedded_image_data(self: &EmbeddedJpegScanner) -> &[u8];
         fn embedded_segment_count(self: &EmbeddedJpegScanner) -> u32;
         fn embedded_segment_info(self: &EmbeddedJpegScanner, index: u32) -> JpegSegmentInfo;
         fn embedded_segment_data(self: &EmbeddedJpegScanner, index: u32) -> Vec<u8>;
@@ -403,10 +407,8 @@ fn scanned_segment_data(data: &[u8], segments: &[ScannedSegment], index: u32) ->
 /// methods with similar names.
 pub struct EmbeddedJpegScanner {
     scanner: SegmentScanner,
-    // TODO: this copies the embedded image bytes so segment_data() can
-    // reference them.  Consider having C++ pass the data slice on each
-    // call instead, to avoid the allocation.
     data: Vec<u8>,
+    range_valid: bool,
 }
 
 pub fn scan_embedded_jpeg(data: &[u8]) -> Box<EmbeddedJpegScanner> {
@@ -415,12 +417,25 @@ pub fn scan_embedded_jpeg(data: &[u8]) -> Box<EmbeddedJpegScanner> {
     Box::new(EmbeddedJpegScanner {
         scanner,
         data: data.to_vec(),
+        range_valid: true,
     })
 }
 
 impl EmbeddedJpegScanner {
+    fn invalid_range() -> Box<Self> {
+        Box::new(Self {
+            scanner: SegmentScanner::new(jpeg_marker::SOS),
+            data: Vec::new(),
+            range_valid: false,
+        })
+    }
+
     pub fn embedded_had_error(&self) -> bool {
-        self.scanner.had_error()
+        !self.range_valid || self.scanner.had_error()
+    }
+
+    pub fn embedded_image_data(&self) -> &[u8] {
+        &self.data
     }
 
     pub fn embedded_segment_count(&self) -> u32 {
@@ -1789,6 +1804,61 @@ impl Reader {
     pub fn mpf_segment_offset(&self) -> u32 {
         self.mpf().map_or(0, |m| m.segment_offset)
     }
+
+    fn mpf_image_range(&self, index: u32) -> Option<std::ops::Range<usize>> {
+        let mpf = self.mpf()?;
+        let image = mpf.images.get(index as usize)?;
+        // Secondary offsets are relative to the TIFF endian field, after
+        // the marker, length, and "MPF\0". The primary image starts at zero.
+        let start = if index == 0 {
+            0
+        } else {
+            (mpf.segment_offset as usize)
+                .checked_add(8)?
+                .checked_add(image.data_offset as usize)?
+        };
+        let end = start.checked_add(image.size as usize)?;
+        (image.size != 0 && end <= MAX_DECODE_IMAGE_BYTES).then_some(start..end)
+    }
+
+    pub fn scan_mpf_image(&mut self, index: u32) -> Box<EmbeddedJpegScanner> {
+        let Some(range) = self.mpf_image_range(index) else {
+            return EmbeddedJpegScanner::invalid_range();
+        };
+        if !self.read_through(range.end) {
+            return EmbeddedJpegScanner::invalid_range();
+        }
+        scan_embedded_jpeg(&self.raw_data.borrow()[range])
+    }
+
+    fn read_through(&mut self, end: usize) -> bool {
+        if self.raw_data.borrow().len() >= end {
+            return true;
+        }
+        let Some(input) = self.stream.as_mut() else {
+            return false;
+        };
+        let Some(mut stream) = input.as_mut() else {
+            return false;
+        };
+        // A previous zero-byte read may have been temporary exhaustion.
+        self.stream_exhausted = false;
+        let mut data = self.raw_data.borrow_mut();
+        let mut buffer = [0u8; 8192];
+        while data.len() < end {
+            let requested = (end - data.len()).min(buffer.len());
+            if data.try_reserve(requested).is_err() {
+                return false;
+            }
+            let count = stream.as_mut().read(&mut buffer[..requested]);
+            if count == 0 {
+                self.stream_exhausted = true;
+                return false;
+            }
+            data.extend_from_slice(&buffer[..count]);
+        }
+        true
+    }
 }
 
 fn new_reader(
@@ -2495,8 +2565,8 @@ mod tests {
             EncodingResult::Success
         );
 
-        let options =
-            zune_core::options::DecoderOptions::default().jpeg_set_out_colorspace(ZuneColorSpace::Luma);
+        let options = zune_core::options::DecoderOptions::default()
+            .jpeg_set_out_colorspace(ZuneColorSpace::Luma);
         let mut decoder = zune_jpeg::JpegDecoder::new_with_options(
             zune_core::bytestream::ZCursor::new(&encoded),
             options,
@@ -2622,6 +2692,100 @@ mod tests {
 
     fn make_minimal_jpeg_with_app0() -> Vec<u8> {
         jpeg_segment_scan::tests::make_minimal_jpeg_with_app0()
+    }
+
+    fn reader_with_mpf_images() -> (Box<Reader>, Vec<u8>, Vec<u8>) {
+        let primary = dc_only_jpeg();
+        let embedded = make_minimal_jpeg_with_app0();
+        let mut bytes = primary.clone();
+        bytes.extend_from_slice(&[0x55; 23]);
+        let embedded_start = bytes.len();
+        bytes.extend_from_slice(&embedded);
+        let mut reader = reader_with_bytes(&bytes, false);
+        let segment_offset = 12;
+        reader.cached_mpf = Some(Some(MpfResult {
+            segment_offset,
+            images: vec![
+                jpeg_multipicture::MpfImage {
+                    size: primary.len() as u32,
+                    data_offset: 0,
+                },
+                jpeg_multipicture::MpfImage {
+                    size: embedded.len() as u32,
+                    data_offset: embedded_start as u32 - segment_offset - 8,
+                },
+            ],
+        }));
+        (reader, primary, embedded)
+    }
+
+    #[test]
+    fn test_scan_mpf_image_offsets_and_ownership() {
+        let (mut reader, primary, embedded) = reader_with_mpf_images();
+        let first = reader.scan_mpf_image(0);
+        assert!(!first.embedded_had_error());
+        assert_eq!(first.embedded_image_data(), primary);
+        let second = reader.scan_mpf_image(1);
+        assert!(!second.embedded_had_error());
+        assert_eq!(second.embedded_image_data(), embedded);
+        assert_eq!(second.embedded_segment_data(1), b"Hi\x00\x00");
+        assert!(reader.scan_mpf_image(2).embedded_had_error());
+        assert!(reader.scan_mpf_image(u32::MAX).embedded_had_error());
+        reader.raw_data.borrow_mut().clear();
+        drop(reader);
+        assert_eq!(second.embedded_image_data(), embedded);
+    }
+
+    #[test]
+    fn test_scan_mpf_image_invalid_ranges() {
+        let (mut reader, _, _) = reader_with_mpf_images();
+        let invalid = [
+            (12, 0, 0),
+            (u32::MAX, u32::MAX, u32::MAX),
+            (0, MAX_DECODE_IMAGE_BYTES as u32, 1),
+            (u32::MAX, 0, 1),
+            (0, 0, u32::MAX),
+        ];
+        for (segment_offset, data_offset, size) in invalid {
+            let mpf = reader.cached_mpf.as_mut().unwrap().as_mut().unwrap();
+            mpf.segment_offset = segment_offset;
+            mpf.images[1] = jpeg_multipicture::MpfImage { size, data_offset };
+            assert!(reader.mpf_image_range(1).is_none());
+            let scanner = reader.scan_mpf_image(1);
+            assert!(scanner.embedded_had_error());
+            assert!(scanner.embedded_image_data().is_empty());
+        }
+        reader.cached_mpf = Some(None);
+        assert!(reader.scan_mpf_image(0).embedded_had_error());
+    }
+
+    #[test]
+    fn test_scan_mpf_image_size_limit() {
+        let (mut reader, _, _) = reader_with_mpf_images();
+        let limit = MAX_DECODE_IMAGE_BYTES as u32;
+        let mpf = reader.cached_mpf.as_mut().unwrap().as_mut().unwrap();
+        mpf.segment_offset = 0;
+        mpf.images[0].size = limit;
+        mpf.images[1] = jpeg_multipicture::MpfImage {
+            data_offset: 1,
+            size: limit - 9,
+        };
+        assert_eq!(reader.mpf_image_range(0), Some(0..MAX_DECODE_IMAGE_BYTES));
+        assert_eq!(reader.mpf_image_range(1), Some(9..MAX_DECODE_IMAGE_BYTES));
+        reader.cached_mpf.as_mut().unwrap().as_mut().unwrap().images[1].size += 1;
+        assert!(reader.mpf_image_range(1).is_none());
+    }
+
+    #[test]
+    fn test_scan_mpf_image_retry() {
+        let (mut reader, _, embedded) = reader_with_mpf_images();
+        let last = reader.raw_data.borrow_mut().pop().unwrap();
+        assert!(reader.scan_mpf_image(1).embedded_had_error());
+        reader.raw_data.borrow_mut().push(last);
+        let scanner = reader.scan_mpf_image(1);
+        assert!(!scanner.embedded_had_error());
+        assert_eq!(scanner.embedded_image_data(), embedded);
+        assert!(!reader.input_complete());
     }
 
     #[test]

@@ -235,6 +235,53 @@ DEF_TEST(RustJpegCodec_SourceMCUMetadata, r) {
     REPORTER_ASSERT(r, metadata.fMCUSize == SkISize::Make(31, 29));
 }
 
+DEF_TEST(RustJpegCodec_ExifMetadataOwnership, r) {
+    constexpr uint8_t kTiff[] = {
+            'I', 'I', 42, 0, 8, 0, 0, 0, 1, 0, 0x12, 0x01, 3, 0, 1, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0,
+    };
+    auto plain = make_sampling_jpeg({8, 8}, {0x11}, false);
+    std::vector<uint8_t> bytes = {
+            0xFF, 0xD8, 0xFF, 0xE1, 0, 2 + 6 + sizeof(kTiff), 'E', 'x', 'i', 'f', 0, 0};
+    bytes.insert(bytes.end(), std::begin(kTiff), std::end(kTiff));
+    bytes.insert(bytes.end(), plain->bytes() + 2, plain->bytes() + plain->size());
+    auto data = SkData::MakeWithCopy(bytes.data(), bytes.size());
+    SkJpegRustDecoder::Metadata metadata;
+    SkCodec::Result result;
+    auto codec = SkJpegRustDecoder::Decode(std::make_unique<NonseekableStream>(data),
+                                           &result,
+                                           SkJpegRustDecoder::InputState::kGrowing,
+                                           &metadata);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, codec && codec->getOrigin() == kRightTop_SkEncodedOrigin);
+    codec.reset();
+    data.reset();
+    bytes.clear();
+    REPORTER_ASSERT(r, metadata.fExifData && metadata.fExifData->size() == sizeof(kTiff));
+    if (metadata.fExifData && metadata.fExifData->size() == sizeof(kTiff)) {
+        REPORTER_ASSERT(r, !memcmp(metadata.fExifData->data(), kTiff, sizeof(kTiff)));
+    }
+
+    auto savedExif = metadata.fExifData;
+    metadata.fHasMpf = true;
+    metadata.fMCUSize = {31, 29};
+    codec = SkJpegRustDecoder::Decode(SkMemoryStream::MakeCopy("bad", 3),
+                                      &result,
+                                      SkJpegRustDecoder::InputState::kComplete,
+                                      &metadata);
+    REPORTER_ASSERT(r, !codec && result != SkCodec::kSuccess);
+    REPORTER_ASSERT(r, metadata.fExifData == savedExif);
+    REPORTER_ASSERT(r, metadata.fHasMpf);
+    REPORTER_ASSERT(r, metadata.fMCUSize == SkISize::Make(31, 29));
+
+    codec = SkJpegRustDecoder::Decode(SkMemoryStream::Make(plain),
+                                      &result,
+                                      SkJpegRustDecoder::InputState::kComplete,
+                                      &metadata);
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, result);
+    REPORTER_ASSERT(r, codec);
+    REPORTER_ASSERT(r, !metadata.fExifData && !metadata.fHasMpf);
+}
+
 static sk_sp<SkData> make_dc_only_jpeg(bool eoi = false, bool truncatedScan = false) {
     // Three independent 8x8 DC scans encoding Y=128, Cb=128, Cr=192.
     // Without EOI, the short Cr scan cannot satisfy native Huffman prefetch.
@@ -3258,6 +3305,116 @@ DEF_TEST(RustJpegEncode_matches_cpp_encoder, r) {
 // ========== Gainmap / MPF Tests ==========
 
 #if defined(SK_CODEC_DECODES_JPEG_GAINMAPS)
+
+DEF_TEST(RustJpeg_gainmap_nonduplicable_stream, r) {
+    for (const char* path :
+         {"images/gainmap_iso21496_1.jpg", "images/gainmap_iso21496_1_adobe_gcontainer.jpg"}) {
+        skiatest::ReporterContext ctx(r, path);
+        auto data = GetResourceAsData(path);
+        REPORTER_ASSERT(r, data);
+        if (!data) {
+            continue;
+        }
+        SkJpegRustDecoder::Metadata metadata;
+        auto codec = SkJpegRustDecoder::Decode(std::make_unique<NonseekableStream>(data),
+                                               nullptr,
+                                               SkJpegRustDecoder::InputState::kGrowing,
+                                               &metadata);
+        REPORTER_ASSERT(r, codec);
+        if (!codec) {
+            continue;
+        }
+        REPORTER_ASSERT(r, metadata.fHasMpf);
+        auto androidCodec = SkAndroidCodec::MakeFromCodec(std::move(codec));
+        REPORTER_ASSERT(r, androidCodec);
+        if (!androidCodec) {
+            continue;
+        }
+        SkGainmapInfo info;
+        std::unique_ptr<SkStream> gainmap;
+        const bool found = androidCodec->getAndroidGainmap(&info, &gainmap);
+        REPORTER_ASSERT(r, found);
+        if (!found) {
+            continue;
+        }
+        androidCodec.reset();
+        REPORTER_ASSERT(r, data->unique());
+        std::unique_ptr<SkStream> foundImage;
+        REPORTER_ASSERT(r,
+                        SkJpegRustDecoder::FindGainmapImage(
+                                std::make_unique<NonseekableStream>(data), &info, &foundImage));
+        REPORTER_ASSERT(r, foundImage && foundImage->getLength() == gainmap->getLength());
+        REPORTER_ASSERT(r, data->unique());
+        data.reset();
+        auto gainmapCodec = SkJpegRustDecoder::Decode(std::move(foundImage), nullptr);
+        REPORTER_ASSERT(r, gainmapCodec);
+        if (!gainmapCodec) {
+            continue;
+        }
+        SkBitmap bitmap;
+        if (!bitmap.tryAllocPixels(gainmapCodec->getInfo())) {
+            ERRORF(r, "Could not allocate gainmap pixels");
+            continue;
+        }
+        REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(
+                r, gainmapCodec->getPixels(bitmap.info(), bitmap.getPixels(), bitmap.rowBytes()));
+    }
+}
+
+DEF_TEST(RustJpeg_gainmap_growing_stream, r) {
+    auto data = GetResourceAsData("images/gainmap_iso21496_1.jpg");
+    REPORTER_ASSERT(r, data);
+    if (!data) {
+        return;
+    }
+    const size_t imageEnd = data->size();
+    std::vector<uint8_t> bytes(data->bytes(), data->bytes() + data->size());
+    bytes.resize(bytes.size() + 8192, 0x55);
+    data = SkData::MakeWithCopy(bytes.data(), bytes.size());
+    RustJpegReaderForTest reader(std::make_unique<NonseekableStream>(data), 0);
+    REPORTER_ASSERT(r, reader.fReader->read_metadata() == rust_jpeg::DecodingResult::Success);
+    const size_t primarySize = reader.fReader->mpf_image_entry(0).size;
+    REPORTER_ASSERT(r, primarySize > 0 && primarySize + 1 < data->size());
+    if (!primarySize || primarySize + 1 >= data->size()) {
+        return;
+    }
+    auto stream = std::make_unique<HaltingStream>(data, primarySize);
+    auto* growing = stream.get();
+    auto codec = SkJpegRustCodec::MakeFromStream(std::move(stream), nullptr);
+    REPORTER_ASSERT(r, codec);
+    if (!codec) {
+        return;
+    }
+    SkGainmapInfo info;
+    info.fDisplayRatioHdr = 13;
+    std::unique_ptr<SkStream> gainmap = std::make_unique<SkMemoryStream>();
+    auto* unchanged = gainmap.get();
+    for (int attempt = 0; attempt < 2; ++attempt) {
+        REPORTER_ASSERT(r, !codec->getGainmapImage(&info, &gainmap));
+        REPORTER_ASSERT(r, info.fDisplayRatioHdr == 13 && gainmap.get() == unchanged);
+    }
+    growing->addNewData(imageEnd - primarySize - 1);
+    REPORTER_ASSERT(r, !codec->getGainmapImage(&info, &gainmap));
+    REPORTER_ASSERT(r, info.fDisplayRatioHdr == 13 && gainmap.get() == unchanged);
+    growing->addNewData(data->size());
+    REPORTER_ASSERT(r, codec->getGainmapImage(&info, &gainmap));
+    REPORTER_ASSERT(r, growing->getPosition() == imageEnd);
+    REPORTER_ASSERT(r, codec->getGainmapImage(&info, &gainmap));
+    SkBitmap bitmap;
+    if (!bitmap.tryAllocPixels(codec->getInfo())) {
+        ERRORF(r, "Could not allocate primary pixels");
+        return;
+    }
+    REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(
+            r, codec->getPixels(bitmap.info(), bitmap.getPixels(), bitmap.rowBytes()));
+
+    info.fDisplayRatioHdr = 13;
+    unchanged = gainmap.get();
+    REPORTER_ASSERT(r,
+                    !SkJpegRustDecoder::FindGainmapImage(
+                            std::make_unique<HaltingStream>(data, primarySize), &info, &gainmap));
+    REPORTER_ASSERT(r, info.fDisplayRatioHdr == 13 && gainmap.get() == unchanged);
+}
 
 // Verify the Rust codec's gainmap pipeline: Rust segment scanning → MPF parsing
 // → C++ metadata interpretation → gainmap codec extraction.  This exercises the

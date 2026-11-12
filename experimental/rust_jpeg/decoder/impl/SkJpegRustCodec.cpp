@@ -258,10 +258,11 @@ std::unique_ptr<SkJpegRustCodec> SkJpegRustCodec::MakeFromStream(
 
     // Parse orientation from EXIF data using SkExif::Parse (shared with C++ codec).
     SkEncodedOrigin orientation = kDefault_SkEncodedOrigin;
+    sk_sp<SkData> exifData;
     {
         rust::Vec<uint8_t> exifBytes = reader->exif_data();
         if (!exifBytes.empty()) {
-            auto exifData = SkData::MakeWithCopy(exifBytes.data(), exifBytes.size());
+            exifData = SkData::MakeWithCopy(exifBytes.data(), exifBytes.size());
             SkExif::Metadata exif;
             SkExif::Parse(exif, exifData.get());
             if (exif.fOrigin.has_value()) {
@@ -300,6 +301,8 @@ std::unique_ptr<SkJpegRustCodec> SkJpegRustCodec::MakeFromStream(
 
     if (metadata) {
         metadata->fMCUSize = SkISize::Make(reader->mcu_width(), reader->mcu_height());
+        metadata->fExifData = std::move(exifData);
+        metadata->fHasMpf = reader->has_mpf();
     }
     *result = kSuccess;
     return std::unique_ptr<SkJpegRustCodec>(new SkJpegRustCodec(
@@ -462,32 +465,12 @@ bool SkJpegRustCodec::onGetGainmapInfo(SkGainmapInfo* info,
 
     bool adobeGainmapPresent = baseXmp && baseXmp->getGainmapInfoAdobe(nullptr);
 
-    sk_sp<const SkData> encodedData = this->getEncodedData();
-    if (!encodedData) {
-        return false;
-    }
-
-    const uint32_t mpfSegOff = fReader->mpf_segment_offset();
     const uint32_t mpfCount = fReader->mpf_image_count();
 
     // MPF entries are zero-based. Entry 0 is the primary image, so inspect
     // secondary images in [1, mpfCount).
     for (uint32_t mpIdx = 1; mpIdx < mpfCount; ++mpIdx) {
-        rust_jpeg::MpfImageEntry entry = fReader->mpf_image_entry(mpIdx);
-
-        // 2 (marker) + 2 (param length) + 4 (MPF signature).
-        constexpr size_t kMpfHeaderSize = 8;
-        SkSafeMath safe;
-        size_t imageOffset = safe.add(safe.add(static_cast<size_t>(mpfSegOff), kMpfHeaderSize),
-                                      static_cast<size_t>(entry.data_offset));
-        size_t imageSize = entry.size;
-        size_t imageEnd = safe.add(imageOffset, imageSize);
-        if (!safe.ok() || imageEnd > encodedData->size()) {
-            continue;
-        }
-
-        rust::Slice<const uint8_t> embSlice(encodedData->bytes() + imageOffset, imageSize);
-        auto embScanner = rust_jpeg::scan_embedded_jpeg(embSlice);
+        auto embScanner = fReader->scan_mpf_image(mpIdx);
         if (embScanner->embedded_had_error()) {
             continue;
         }
@@ -541,9 +524,10 @@ bool SkJpegRustCodec::onGetGainmapInfo(SkGainmapInfo* info,
         }
 
         if (foundGainmap) {
+            const auto imageData = embScanner->embedded_image_data();
             *info = gainmapInfo;
-            *gainmapImageStream = SkMemoryStream::Make(
-                    SkData::MakeWithCopy(encodedData->bytes() + imageOffset, imageSize));
+            *gainmapImageStream =
+                    SkMemoryStream::Make(SkData::MakeWithCopy(imageData.data(), imageData.size()));
             return true;
         }
     }

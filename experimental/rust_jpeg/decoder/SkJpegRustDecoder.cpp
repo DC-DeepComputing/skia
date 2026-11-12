@@ -46,4 +46,12 @@ std::unique_ptr<SkCodec> Decode(sk_sp<const SkData> data,
     return Decode(SkMemoryStream::Make(std::move(data)), result, InputState::kComplete);
 }
 
+bool FindGainmapImage(std::unique_ptr<SkStream> stream,
+                      SkGainmapInfo* info,
+                      std::unique_ptr<SkStream>* gainmapImageStream) {
+    SkASSERT(info && gainmapImageStream);
+    auto codec = SkJpegRustCodec::MakeFromStream(std::move(stream), nullptr);
+    return codec && codec->getGainmapImage(info, gainmapImageStream);
+}
+
 }  // namespace SkJpegRustDecoder
