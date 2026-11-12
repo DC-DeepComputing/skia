@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48c1dcee_3e5ef3a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6490
+      },
+      "writtenOn": "2026-11-12T18:50:43Z",
+      "side": 1,
+      "message": "Not sure if it matters, but this is what I did for Tizen builds and it works. So +1 I suppose?",
+      "revId": "0b9c8b75b307c4f24ba6beee7af822ca1cbcb31c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
