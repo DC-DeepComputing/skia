@@ -416,6 +416,13 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
     auto end = start + span.size() - 1;
     InternalLineMetrics maxRunMetrics;
     bool needEllipsis = false;
+    bool hasBaselineShift = false;
+    for (const auto& run : parent->runs()) {
+        if (run.baselineShift() != 0) {
+            hasBaselineShift = true;
+            break;
+        }
+    }
     while (fEndLine.endCluster() != end) {
 
         auto lastLine = (hasEllipsis && unlimitedLines) || fLineNumber >= maxLines;
@@ -430,6 +437,7 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         this->lookAhead(maxWidth, end, parent->getApplyRoundingHack(), softHyphen, needEllipsis);
 
         this->moveForward(needEllipsis);
+        const Cluster* lastMeasured = fEndLine.endCluster();
         needEllipsis &= fEndLine.endCluster() < end - 1; // Only if we have some text to ellipsize
 
         // Do not trim end spaces on the naturally last line of the left aligned text
@@ -450,6 +458,19 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
         // If the line is empty with the hard line break, let's take the paragraph font (flutter???)
         if (fEndLine.metrics().isClean()) {
             fEndLine.setMetrics(parent->getEmptyMetrics());
+        } else if (hasBaselineShift) {
+            // Match TextStretch::startFrom/extend before trimEndSpaces shrank fEndLine; runs
+            // before placeholders below so placeholders align to the final text metrics
+            const Run* lastRun = nullptr;
+            for (const Cluster* cluster = fEndLine.startCluster(); cluster <= lastMeasured;
+                 ++cluster) {
+                const Run* r = cluster->runOrNull();
+                if (r != lastRun && r != nullptr && !r->isPlaceholder() &&
+                    (cluster == fEndLine.startCluster() || !cluster->isHardBreak())) {
+                    fEndLine.metrics().addUnshiftedBox(r);
+                }
+                lastRun = r;
+            }
         }
 
         // Deal with placeholder clusters == runs[@size==1]

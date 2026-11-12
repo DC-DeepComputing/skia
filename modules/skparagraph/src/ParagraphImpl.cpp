@@ -720,6 +720,7 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
         auto textExcludingSpaces = TextRange(0, fTrailingSpaces);
         InternalLineMetrics metrics(this->strutForceHeight());
         metrics.add(&run);
+        metrics.addUnshiftedBox(&run);
         auto disableFirstAscent = this->paragraphStyle().getTextHeightBehavior() &
                                   TextHeightBehavior::kDisableFirstAscent;
         auto disableLastDescent = this->paragraphStyle().getTextHeightBehavior() &

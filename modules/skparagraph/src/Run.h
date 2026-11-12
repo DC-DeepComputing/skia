@@ -106,6 +106,10 @@ public:
     SkScalar correctAscent() const { return fCorrectAscent + fBaselineShift; }
     SkScalar correctDescent() const { return fCorrectDescent + fBaselineShift; }
     SkScalar correctLeading() const { return fCorrectLeading; }
+    // The run reserves both its shifted and unshifted boxes on the line: the shift is measured
+    // from the unshifted baseline, which must hold even when every run on the line is shifted
+    SkScalar lineAscent() const { return std::min(correctAscent(), fCorrectAscent); }
+    SkScalar lineDescent() const { return std::max(correctDescent(), fCorrectDescent); }
     const SkFont& font() const { return fFont; }
     bool leftToRight() const { return fBidiLevel % 2 == 0; }
     uint8_t bidiLevel() const { return fBidiLevel; }
@@ -449,6 +453,19 @@ public:
         fRawAscent = std::min(fRawAscent, run->ascent());
         fRawDescent = std::max(fRawDescent, run->descent());
         fRawLeading = std::max(fRawLeading, run->leading());
+    }
+
+    // A shifted run also reserves its unshifted box (see Run::lineAscent()). Called once per
+    // run when a line is closed, not from per-cluster add(): add() is inlined into the line
+    // breaker, where any extra code costs up to 30% on layout benchmarks
+    void addUnshiftedBox(const Run* run) {
+        if (fForceStrut || run->fBaselineShift == 0) {
+            return;
+        }
+        fAscent = std::min(fAscent, run->lineAscent());
+        fDescent = std::max(fDescent, run->lineDescent());
+        fRawAscent = std::min(fRawAscent, run->fFontMetrics.fAscent);
+        fRawDescent = std::max(fRawDescent, run->fFontMetrics.fDescent);
     }
 
     void add(InternalLineMetrics other) {

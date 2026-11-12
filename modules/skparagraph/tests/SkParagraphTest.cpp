@@ -1763,6 +1763,63 @@ DEF_TEST(SkParagraph_BaselineShiftLineHeightWithHeightOverride, reporter) {
     }
 }
 
+// A line where every run is shifted keeps its unshifted baseline as the reference, so the
+// glyphs still move by the shift and the line grows by it, same as next to unshifted text
+DEF_TEST(SkParagraph_BaselineShiftWholeLine, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    fontCollection->getParagraphCache()->turnOn(false);
+
+    auto layoutShifted = [&](const char* shiftedText, const char* trailingLine, SkScalar shift) {
+        TextStyle baseStyle;
+        baseStyle.setFontSize(50.0f);
+        TextStyle shiftedStyle = baseStyle;
+        shiftedStyle.setBaselineShift(shift);
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextStyle(baseStyle);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(shiftedStyle);
+        builder.addText(shiftedText);
+        builder.pop();
+        if (trailingLine != nullptr) {
+            builder.addText(trailingLine);
+        }
+        auto paragraph = builder.Build();
+        paragraph->layout(500.0f);
+        return paragraph;
+    };
+
+    // "x" takes the single-run fast path; "x x", "x\n" + "y", and "\n" + "y" go through the
+    // line breaker (including an empty shifted line starting on a hard break)
+    struct Case {
+        const char* shiftedText;
+        const char* trailingLine;
+    };
+    for (const Case& c :
+         {Case{"x", nullptr}, Case{"x x", nullptr}, Case{"x\n", "y"}, Case{"\n", "y"}}) {
+        auto unshifted = layoutShifted(c.shiftedText, c.trailingLine, 0.0f);
+        for (SkScalar shift : {-20.0f, 20.0f}) {
+            auto shifted = layoutShifted(c.shiftedText, c.trailingLine, shift);
+            const SkScalar growth = shifted->getHeight() - unshifted->getHeight();
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(growth, std::abs(shift), 1.0f),
+                            "'%s' shift %g growth %g",
+                            c.shiftedText,
+                            shift,
+                            growth);
+            // Glyphs are drawn at baseline + shift: a superscript needs the baseline to move down
+            const SkScalar baselineDelta =
+                    shifted->getAlphabeticBaseline() - unshifted->getAlphabeticBaseline();
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(baselineDelta, std::max(0.0f, -shift), 1.0f),
+                            "'%s' shift %g baseline delta %g",
+                            c.shiftedText,
+                            shift,
+                            baselineDelta);
+        }
+    }
+}
+
 UNIX_ONLY_TEST(SkParagraph_BasicHalfLeading, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)

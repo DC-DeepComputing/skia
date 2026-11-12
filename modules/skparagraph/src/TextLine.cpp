@@ -190,8 +190,8 @@ TextLine::TextLine(ParagraphImpl* owner,
     for (auto runIndex = start.runIndex(); runIndex <= end.runIndex(); ++runIndex) {
         auto& run = fOwner->run(runIndex);
         runLevels[runLevelsIndex++] = run.fBidiLevel;
-        fMaxRunMetrics.add(
-            InternalLineMetrics(run.correctAscent(), run.correctDescent(), run.fFontMetrics.fLeading));
+        fMaxRunMetrics.add(InternalLineMetrics(
+                run.lineAscent(), run.lineDescent(), run.fFontMetrics.fLeading));
     }
     SkASSERT(runLevelsIndex == numRuns);
 
