@@ -11,6 +11,7 @@
 #include <windows.h>
 #include <io.h>
 
+#include <cerrno>
 #include <cstdio>
 #include <cstring>
 #include <mutex>
@@ -23,9 +24,13 @@ static void* win_mmap(const wchar_t* dataFile) {
         return nullptr;
     }
     struct FCloseWrapper { void operator()(FILE* f) { fclose(f); } };
+    errno = 0;
     std::unique_ptr<FILE, FCloseWrapper> stream(_wfopen(dataFile, L"rb"));
     if (!stream) {
-        fprintf(stderr, "SkIcuLoader: datafile missing: %ls.\n", dataFile);
+        // Missing files are expected while SkLoadICU probes candidate directories
+        if (errno != ENOENT) {
+            fprintf(stderr, "SkIcuLoader: datafile open error: %ls.\n", dataFile);
+        }
         return nullptr;
     }
     int fileno = _fileno(stream.get());
@@ -113,7 +118,24 @@ bool SkLoadICU() {
     static bool good = false;
     static std::once_flag flag;
     std::call_once(flag, []() {
-        good = load_from(executable_directory()) || load_from(library_directory());
+        const std::wstring exeDir = executable_directory();
+        good = load_from(exeDir);
+        if (good) {
+            return;
+        }
+        // Statically linked Skia (or a side-by-side DLL) shares the executable directory
+        const std::wstring libDir = library_directory();
+        if (libDir == exeDir) {
+            fprintf(stderr, "SkLoadICU: cannot load icudtl.dat from %ls.\n", exeDir.c_str());
+            return;
+        }
+        good = load_from(libDir);
+        if (!good) {
+            fprintf(stderr,
+                    "SkLoadICU: cannot load icudtl.dat from %ls or %ls.\n",
+                    exeDir.c_str(),
+                    libDir.c_str());
+        }
     });
     return good;
 }
