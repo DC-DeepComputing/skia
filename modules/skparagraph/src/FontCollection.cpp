@@ -9,12 +9,45 @@
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkTHash.h"
 
+#include <array>
+
 namespace {
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
     const char* kColorEmojiFontMac = "Apple Color Emoji";
 #else
     const char* kColorEmojiLocale = "und-Zsye";
 #endif
+
+// The best face of one family from each app font manager, in manager priority order. A family
+// can be split between managers (an asset regular and a dynamic italic), so the style is matched
+// across them; matchStyleCSS3 keeps the first of equal scores, so priority breaks ties.
+// Lives on the stack: matchStyleCSS3 never refs the set
+class ManagerMatches final : public SkFontStyleSet {
+public:
+    void add(sk_sp<SkTypeface> face) {
+        SkASSERT(fCount < kMaxMatches);
+        fFaces[fCount++] = std::move(face);
+    }
+    int count() override { return fCount; }
+    void getStyle(int index, SkFontStyle* style, SkString* name) override {
+        if (style) {
+            *style = fFaces[index]->fontStyle();
+        }
+        if (name) {
+            name->reset();
+        }
+    }
+    sk_sp<SkTypeface> createTypeface(int index) override { return fFaces[index]; }
+    sk_sp<SkTypeface> matchStyle(const SkFontStyle& pattern) override {
+        return this->matchStyleCSS3(pattern);
+    }
+
+private:
+    // Dynamic and asset matches; a test or default match only goes into an empty set
+    static constexpr int kMaxMatches = 2;
+    std::array<sk_sp<SkTypeface>, kMaxMatches> fFaces;
+    int fCount = 0;
+};
 }
 namespace skia {
 namespace textlayout {
@@ -297,19 +330,35 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
 }
 
 sk_sp<SkTypeface> FontCollection::matchTypeface(const SkString& familyName, SkFontStyle fontStyle) {
-    for (const auto& manager : this->getFontManagerOrder()) {
-        sk_sp<SkFontStyleSet> set(manager->matchFamily(familyName.c_str()));
+    ManagerMatches candidates;
+    const std::vector<sk_sp<SkFontMgr>> managers = this->getFontManagerOrder();
+    // getFontManagerOrder puts the app managers first. Count their slots, not pointers: one
+    // manager can fill several slots
+    const size_t appManagers = (fDynamicFontManager != nullptr) + (fAssetFontManager != nullptr);
+    for (size_t i = 0; i < managers.size(); ++i) {
+        // Only the app font managers share a family. App fonts shadow a test or system family
+        // with the same name, as CSS @font-face does; Flutter's test manager also maps every
+        // unknown name to its own family, so its faces must not compete with the app faces
+        if (i >= appManagers && candidates.count() > 0) {
+            break;
+        }
+        sk_sp<SkFontStyleSet> set(managers[i]->matchFamily(familyName.c_str()));
         if (!set || set->count() == 0) {
             continue;
         }
 
         sk_sp<SkTypeface> match(set->matchStyle(fontStyle));
-        if (match) {
+        if (!match) {
+            continue;
+        }
+        // An exact style has the top CSS3 score and earlier managers win ties
+        if (match->fontStyle() == fontStyle) {
             return match;
         }
+        candidates.add(std::move(match));
     }
 
-    return nullptr;
+    return candidates.count() > 0 ? candidates.matchStyle(fontStyle) : nullptr;
 }
 
 // Find ANY font in available font managers that resolves the unicode codepoint
