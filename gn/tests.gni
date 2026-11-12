@@ -15,6 +15,7 @@ tests_sources = [
   "$_tests/ArenaAllocTest.cpp",
   "$_tests/AsADashTest.cpp",
   "$_tests/AvifTest.cpp",
+  "$_tests/BGR888xTest.cpp",
   "$_tests/BRDTest.cpp",
   "$_tests/BadIcoTest.cpp",
   "$_tests/BezierCurveTest.cpp",

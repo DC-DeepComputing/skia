@@ -70,6 +70,7 @@ const char* colortype_name(SkColorType ct) {
         case kRGBA_8888_SkColorType:          return "RGBA_8888";
         case kSRGBA_8888_SkColorType:         return "SRGBA_8888";
         case kRGB_888x_SkColorType:           return "RGB_888x";
+        case kBGR_888x_SkColorType:           return "BGR_888x";
         case kBGRA_8888_SkColorType:          return "BGRA_8888";
         case kRGBA_1010102_SkColorType:       return "RGBA_1010102";
         case kBGRA_1010102_SkColorType:       return "BGRA_1010102";
@@ -105,6 +106,7 @@ const char* colortype_depth(SkColorType ct) {
         case kRGBA_8888_SkColorType:          return "8888";
         case kSRGBA_8888_SkColorType:         return "8888";
         case kRGB_888x_SkColorType:           return "888";
+        case kBGR_888x_SkColorType:           return "888";
         case kBGRA_8888_SkColorType:          return "8888";
         case kRGBA_1010102_SkColorType:       return "1010102";
         case kBGRA_1010102_SkColorType:       return "1010102";
