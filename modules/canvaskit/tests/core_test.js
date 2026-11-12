@@ -991,6 +991,61 @@ describe('Core canvas behavior', () => {
         p.delete();
     });
 
+    // makeWithLocalMatrix maps sample points through the matrix (3x3 or 4x4) and leaves the
+    // original shader untouched, so one gradient can be fitted to many path bounds
+    it('can make a shader with a local matrix', () => {
+        const surface = CanvasKit.MakeSurface(100, 1);
+        expect(surface).toBeTruthy('Could not make surface');
+        const canvas = surface.getCanvas();
+        const readRow = () => canvas.readPixels(0, 0, {
+            width: 100,
+            height: 1,
+            colorType: CanvasKit.ColorType.RGBA_8888,
+            alphaType: CanvasKit.AlphaType.Unpremul,
+            colorSpace: CanvasKit.ColorSpace.SRGB,
+        });
+        const pixelAt = (row, x) => Array.from(row.slice(4 * x, 4 * x + 4));
+        const red = [255, 0, 0, 255];
+        const blue = [0, 0, 255, 255];
+
+        // Red at x <= 0, blue at x >= 10
+        const gradient = CanvasKit.Shader.MakeLinearGradient(
+            [0, 0], [10, 0], [CanvasKit.RED, CanvasKit.BLUE], null, CanvasKit.TileMode.Clamp);
+        const paint = new CanvasKit.Paint();
+
+        // Stretch the gradient 4x, then move it to start at x = 50: red up to 50, blue from 90
+        const m44 = CanvasKit.M44.multiply(CanvasKit.M44.translated([50, 0, 0]),
+                                           CanvasKit.M44.scaled([4, 1, 1]));
+        const fitted = gradient.makeWithLocalMatrix(m44);
+        expect(fitted).toBeTruthy();
+        paint.setShader(fitted);
+        canvas.drawPaint(paint);
+        let row = readRow();
+        expect(pixelAt(row, 30)).toEqual(red);
+        expect(pixelAt(row, 49)).toEqual(red);
+        expect(pixelAt(row, 91)).toEqual(blue);
+
+        const shifted = gradient.makeWithLocalMatrix(CanvasKit.Matrix.translated(50, 0));
+        expect(shifted).toBeTruthy();
+        paint.setShader(shifted);
+        canvas.drawPaint(paint);
+        row = readRow();
+        expect(pixelAt(row, 30)).toEqual(red);
+        expect(pixelAt(row, 61)).toEqual(blue);
+
+        paint.setShader(gradient);
+        canvas.drawPaint(paint);
+        row = readRow();
+        expect(pixelAt(row, 11)).toEqual(blue);
+        expect(pixelAt(row, 30)).toEqual(blue);
+
+        fitted.delete();
+        shifted.delete();
+        gradient.delete();
+        paint.delete();
+        surface.delete();
+    });
+
     it('exports consts correctly', () => {
         expect(CanvasKit.TRANSPARENT).toEqual(Float32Array.of(0, 0, 0, 0));
         expect(CanvasKit.RED).toEqual(Float32Array.of(1, 0, 0, 1));
