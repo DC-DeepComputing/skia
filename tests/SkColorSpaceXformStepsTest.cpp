@@ -11,6 +11,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
 
 #if defined(SK_GANESH)
@@ -71,7 +72,7 @@ static skcms_TransferFunction trfn_hlg_203() {
   return trfn;
 }
 
-static bool rgba_close(const float* expected, const float* actual) {
+static bool rgba_close(SkSpan<const float, 4> expected, SkSpan<const float, 4> actual) {
     // Allow 1% relative error.
     constexpr float kEpsilon = 0.01f;
     constexpr float kMinDenom = 0.001f;
@@ -79,6 +80,12 @@ static bool rgba_close(const float* expected, const float* actual) {
            std::abs(expected[1] - actual[1]) / std::max(expected[1], kMinDenom) < kEpsilon &&
            std::abs(expected[2] - actual[2]) / std::max(expected[2], kMinDenom) < kEpsilon &&
            std::abs(expected[3] - actual[3]) / std::max(expected[3], kMinDenom) < kEpsilon;
+}
+
+// DEPRECATED: use the SkSpan overload.
+// TODO(crbug.com/582862856): Remove once the readback pixel is exposed as a bounded view.
+static bool rgba_close(const float* expected, SkSpan<const float, 4> actual) {
+    return rgba_close(SK_UNSAFE_TODO(SkSpan<const float, 4>(expected, 4)), actual);
 }
 
 DEF_TEST(SkColorSpaceXformSteps, r) {
@@ -350,7 +357,7 @@ static void run_color_space_xform_test(
             std::array<float, 4> xform_rgba = {
                 rec.src_rgba[0], rec.src_rgba[1], rec.src_rgba[2], rec.src_rgba[3]};
             steps.apply(xform_rgba.data());
-            REPORTER_ASSERT(reporter, rgba_close(xform_rgba.data(),  rec.expected_rgba.data()));
+            REPORTER_ASSERT(reporter, rgba_close(xform_rgba, rec.expected_rgba));
             continue;
         }
 
@@ -408,7 +415,7 @@ static void run_color_space_xform_test(
         REPORTER_ASSERT(reporter, rb_result);
 
         const float* rb_rgba = reinterpret_cast<const float*>(rb_bm.pixmap().addr(0, 0));
-        REPORTER_ASSERT(reporter, rgba_close(rb_rgba, rec.expected_rgba.data()));
+        REPORTER_ASSERT(reporter, rgba_close(rb_rgba, rec.expected_rgba));
     }
 }
 
