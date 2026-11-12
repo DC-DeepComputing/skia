@@ -42,6 +42,7 @@
 #include "src/core/SkOSFile.h"
 #include "src/core/SkTSort.h"
 #include "src/core/SkTaskGroup.h"
+#include "src/core/SkUTF.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
 #include "tools/Resources.h"

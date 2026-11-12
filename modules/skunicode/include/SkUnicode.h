@@ -12,7 +12,6 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
-#include "src/core/SkUTF.h"
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -206,7 +205,7 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
             while (ptr < end) {
 
                 size_t index = SkToSizeT(ptr - utf8.data());
-                SkUnichar u = SkUTF::NextUTF8(&ptr, end);
+                SkUnichar u = nextUTF8(&ptr, end);
 
                 // All UTF8 code units refer to the same codepoint
                 size_t next = SkToSizeT(ptr - utf8.data());
@@ -223,7 +222,7 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
 
                 // One or two UTF16 code units refer to the same codepoint
                 uint16_t buffer[2];
-                size_t count = SkUTF::ToUTF16(u, buffer);
+                size_t count = toUTF16(u, buffer);
                 //fUTF8IndexForUTF16Index.emplace_back(index);
                 appender8(index);
                 ++size8;
@@ -249,13 +248,13 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
             const char* end = utf8 + utf8Units;
             while (current < end) {
                 auto before = current - utf8;
-                SkUnichar unichar = SkUTF::NextUTF8(&current, end);
-                // SkUTF::NextUTF8 returns -1 on ill-formed byte sequences; substitute U+FFFD so
-                // SkUTF::ToUTF16 and caller property queries always receive a valid scalar value
+                SkUnichar unichar = nextUTF8(&current, end);
+                // nextUTF8 returns -1 on ill-formed byte sequences; substitute U+FFFD so
+                // toUTF16 and caller property queries always receive a valid scalar value
                 if (unichar < 0) unichar = 0xFFFD;
                 auto after = current - utf8;
                 uint16_t buffer[2];
-                size_t count = SkUTF::ToUTF16(unichar, buffer);
+                size_t count = toUTF16(unichar, buffer);
                 callback(unichar, before, after, count);
             }
         }
@@ -266,8 +265,8 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
             const char16_t* end = utf16 + utf16Units;
             while (current < end) {
                 auto before = current - utf16;
-                SkUnichar unichar = SkUTF::NextUTF16((const uint16_t**)&current, (const uint16_t*)end);
-                // SkUTF::NextUTF16 returns -1 on unpaired surrogates; substitute U+FFFD (matching
+                SkUnichar unichar = nextUTF16((const uint16_t**)&current, (const uint16_t*)end);
+                // nextUTF16 returns -1 on unpaired surrogates; substitute U+FFFD (matching
                 // the UTF-8 overload above) so caller property queries receive a valid scalar value
                 if (unichar < 0) unichar = 0xFFFD;
                 auto after = current - utf16;
@@ -302,7 +301,7 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
                     }
                     return;
                 }
-                SkUTF::NextUTF16(&start16, end16);
+                nextUTF16(&start16, end16);
             }
         }
 
@@ -318,6 +317,13 @@ class SKUNICODE_API SkUnicode : public SkRefCnt {
         }
 
         virtual void reorderVisual(const BidiLevel runLevels[], int levelsCount, int32_t logicalFromVisual[]) = 0;
+
+    private:
+        // Out-of-line forwards to SkUTF for the templates above, so this public header does not
+        // include src/core/SkUTF.h. Same contract as SkUTF::NextUTF8, NextUTF16 and ToUTF16
+        static SkUnichar nextUTF8(const char** ptr, const char* end);
+        static SkUnichar nextUTF16(const uint16_t** ptr, const uint16_t* end);
+        static size_t toUTF16(SkUnichar uni, uint16_t utf16[2]);
 };
 
 namespace sknonstd {

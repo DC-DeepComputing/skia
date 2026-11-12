@@ -26,6 +26,7 @@
 #include "modules/skshaper/include/SkShaper_harfbuzz.h"
 #include "modules/skshaper/include/SkShaper_skunicode.h"
 #include "modules/skunicode/include/SkUnicode.h"
+#include "src/core/SkUTF.h"
 
 #include <algorithm>
 #include <iterator>

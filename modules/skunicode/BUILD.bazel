@@ -15,13 +15,14 @@ skia_cc_library(
     defines = [
         "SK_UNICODE_AVAILABLE",
     ],
+    features = ["layering_check"],
+    implementation_deps = ["//src/core:core_priv"],
     visibility = [
         "//:__pkg__",
         "//modules:__subpackages__",
     ],
     deps = [
         "//:core",
-        "//src/core:core_priv",
     ],
 )
 
@@ -51,6 +52,7 @@ skia_cc_library(
         "//conditions:default": [],
     }),
     features = ["layering_check"],
+    implementation_deps = ["//src/core:core_priv"],
     visibility = [
         "//:__pkg__",
         "//modules:__subpackages__",
@@ -58,7 +60,6 @@ skia_cc_library(
     deps = [
         ":skunicode_core",
         "//:core",
-        "//src/core:core_priv",
     ] + select({
         "@platforms//os:android": ["@icu//:icu_headers"],
         "//conditions:default": ["@icu"],

@@ -7,6 +7,7 @@
 #include "include/private/SkDebug.h"
 #include "modules/skunicode/include/SkUnicode.h"
 #include "src/core/SkBitmaskEnum.h"
+#include "src/core/SkUTF.h"
 
 using namespace skia_private;
 
@@ -66,4 +67,16 @@ bool SkUnicode::hasControlFlag(SkUnicode::CodeUnitFlags flags) {
 
 bool SkUnicode::hasPartOfWhiteSpaceBreakFlag(SkUnicode::CodeUnitFlags flags) {
     return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
+}
+
+SkUnichar SkUnicode::nextUTF8(const char** ptr, const char* end) {
+    return SkUTF::NextUTF8(ptr, end);
+}
+
+SkUnichar SkUnicode::nextUTF16(const uint16_t** ptr, const uint16_t* end) {
+    return SkUTF::NextUTF16(ptr, end);
+}
+
+size_t SkUnicode::toUTF16(SkUnichar uni, uint16_t utf16[2]) {
+    return SkUTF::ToUTF16(uni, utf16);
 }
