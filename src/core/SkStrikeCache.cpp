@@ -30,16 +30,24 @@ using namespace sktext;
 
 SkStrikeCache* SkStrikeCache::GlobalStrikeCache() {
 #if defined(SK_ENABLE_THREADLOCAL_STRIKECACHE)
-    static thread_local auto* cache = new SkStrikeCache;
+    static thread_local auto* cache = new SkStrikeCache(SharedStrikeCache());
     return cache;
 #else
-    return SkContexts::GetGlobalSkContext()->priv().sharedState()->strikeCache();
+    return SharedStrikeCache();
 #endif
+}
+
+SkStrikeCache* SkStrikeCache::SharedStrikeCache() {
+    return SkContexts::GetGlobalSkContext()->priv().sharedState()->strikeCache();
 }
 
 auto SkStrikeCache::findOrCreateStrike(const SkStrikeSpec& strikeSpec) -> sk_sp<SkStrike> {
     SkAutoMutexExclusive ac(fLock);
     sk_sp<SkStrike> strike = this->internalFindStrikeOrNull(strikeSpec.descriptor());
+    // Strikes pinned by SkStrikeClient exist only in the shared cache; never duplicate them here
+    if (strike == nullptr && fSharedCache != nullptr) {
+        strike = fSharedCache->findStrike(strikeSpec.descriptor());
+    }
     if (strike == nullptr) {
         strike = this->internalCreateStrike(strikeSpec);
     }
@@ -93,6 +101,10 @@ sk_sp<SkStrike> SkStrikeCache::findStrike(const SkDescriptor& desc) {
     SkAutoMutexExclusive ac(fLock);
     sk_sp<SkStrike> result = this->internalFindStrikeOrNull(desc);
     this->internalPurge();
+    // Shared strikes are returned as is, not copied into this cache
+    if (result == nullptr && fSharedCache != nullptr) {
+        result = fSharedCache->findStrike(desc);
+    }
     return result;
 }
 
