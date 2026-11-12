@@ -5,13 +5,19 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkCanvas.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkRasterHandleAllocator.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkTypeTraits.h"
 #include "src/partition_alloc/raw_ptr.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 #include "src/partition_alloc/raw_ref.h"
 #include "tests/Test.h"
 
+#include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <set>
 #include <tuple>
@@ -386,3 +392,52 @@ DEF_TEST(RawPtr_RefCnt, reporter) {
 }
 
 static_assert(sizeof(raw_ptr<int>) == sizeof(int*));
+
+// Regression test for crbug.com/584716838: SkRasterHandleAllocator::Handle is an opaque client
+// handle (such as a Windows GDI HDC) rather than a heap pointer. Simulate an OS handle whose
+// numeric value collides with an unallocated slot inside a PartitionAlloc BRP superpage, which
+// would trigger PA_CHECK in InSlotMetadata::AcquireCommon if fRasterHandle were wrapped in raw_ptr.
+DEF_TEST(RawPtr_RasterHandleOpaqueValue, reporter) {
+    uintptr_t unallocatedSlotValue = 0;
+    {
+        // Exceed PartitionAlloc's 32 KB thread-cache threshold (while staying within the 1 MB
+        // bucketed BRP pool) so freeing immediately clears kMemoryHeldByAllocatorBit.
+        auto temp = std::make_unique<char[]>(40 * 1024);
+        unallocatedSlotValue = reinterpret_cast<uintptr_t>(temp.get());
+    }
+    const SkRasterHandleAllocator::Handle opaqueHandle =
+            reinterpret_cast<SkRasterHandleAllocator::Handle>(unallocatedSlotValue);
+
+    class OpaqueHandleAllocator final : public SkRasterHandleAllocator {
+    public:
+        explicit OpaqueHandleAllocator(Handle handle) : fHandle(handle) {}
+
+        bool allocHandle(const SkImageInfo& info, Rec* rec) override {
+            const size_t rowBytes = info.minRowBytes();
+            rec->fPixels = new char[info.computeByteSize(rowBytes)]();
+            rec->fRowBytes = rowBytes;
+            rec->fReleaseProc = [](void* pixels, void*) { delete[] static_cast<char*>(pixels); };
+            rec->fReleaseCtx = nullptr;
+            rec->fHandle = fHandle;
+            return true;
+        }
+
+        void updateHandle(Handle, const SkMatrix&, const SkIRect&) override {}
+
+    private:
+        RAW_PTR_EXCLUSION Handle fHandle;
+    };
+
+    const SkImageInfo info = SkImageInfo::MakeN32Premul(4, 4);
+    SkRasterHandleAllocator::Rec baseRec{};
+    OpaqueHandleAllocator(opaqueHandle).allocHandle(info, &baseRec);
+
+    std::unique_ptr<SkCanvas> canvas = SkRasterHandleAllocator::MakeCanvas(
+            std::make_unique<OpaqueHandleAllocator>(opaqueHandle), info, &baseRec);
+    REPORTER_ASSERT(reporter, canvas != nullptr);
+    REPORTER_ASSERT(reporter, canvas->accessTopRasterHandle() == opaqueHandle);
+
+    canvas->saveLayer(nullptr, nullptr);
+    REPORTER_ASSERT(reporter, canvas->accessTopRasterHandle() == opaqueHandle);
+    canvas->restore();
+}
