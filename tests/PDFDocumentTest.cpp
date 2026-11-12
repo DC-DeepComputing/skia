@@ -15,16 +15,20 @@
 #include "include/core/SkDocument.h"
 #include "include/core/SkExecutor.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontMgr.h"
 #include "include/core/SkImage.h" // IWYU pragma: keep
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/core/SkTypeface.h"
 #include "include/docs/SkPDFDocument.h"
 #include "include/docs/SkPDFJpegHelpers.h"
 #include "src/core/SkExecutors.h"
+#include "src/sfnt/SkOTUtils.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
+#include "tools/Resources.h"
 #include "tools/fonts/FontToolUtils.h"
 
 #include <cstdint>
@@ -276,6 +280,57 @@ DEF_TEST(SkPDF_abort_jobs, rep) {
     auto doc = SkPDF::MakeDocument(&dst, metadata);
     doc->beginPage(612, 792)->drawImage(b.asImage(), 0, 0);
     doc->abort();
+}
+
+static sk_sp<SkData> pdf_with_text(sk_sp<SkTypeface> typeface) {
+    SkDynamicMemoryWStream stream;
+    auto doc = SkPDF::MakeDocument(&stream, SkPDF::JPEG::MetadataWithCallbacks());
+    SkCanvas* canvas = doc->beginPage(100, 100);
+    canvas->drawString("Hi", 10, 50, SkFont(std::move(typeface), 20), SkPaint());
+    doc->close();
+    return stream.detachAsData();
+}
+
+// PDF bytes must depend only on the drawing commands and font data. Fonts whose 'name' table has
+// no valid PostScript name (obfuscated web fonts) must still get the same /BaseFont each time
+DEF_TEST(SkPDF_FontWithInvalidPostScriptNameIsDeterministic, r) {
+    REQUIRE_PDF_DOCUMENT(SkPDF_FontWithInvalidPostScriptNameIsDeterministic, r);
+    sk_sp<SkData> original = GetResourceAsData("fonts/Roboto-Regular.ttf");
+    if (!original) {
+        return;
+    }
+    SkMemoryStream originalStream(original);
+    sk_sp<SkData> renamed(SkOTUtils::RenameFont(&originalStream, "x", 1));
+    REPORTER_ASSERT(r, renamed && renamed->size() >= 2);
+    if (!renamed || renamed->size() < 2) {
+        return;
+    }
+    // RenameFont stores the single UTF-16BE name last; make it U+5F7F, which is not printable
+    // ASCII and so not a valid PostScript name
+    sk_sp<SkData> fontData = SkData::MakeWithCopy(renamed->data(), renamed->size());
+    uint8_t* name = static_cast<uint8_t*>(fontData->writable_data()) + fontData->size() - 2;
+    REPORTER_ASSERT(r, name[0] == 0x00 && name[1] == 'x');
+    name[0] = 0x5F;
+    name[1] = 0x7F;
+
+    sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+    sk_sp<SkTypeface> first = mgr->makeFromData(fontData);
+    sk_sp<SkTypeface> second = mgr->makeFromData(fontData);
+    if (!first || !second) {
+        return;
+    }
+    sk_sp<SkData> firstPdf = pdf_with_text(first);
+    sk_sp<SkData> secondPdf = pdf_with_text(second);
+    if (!firstPdf->equals(secondPdf.get())) {
+        SkString firstName, secondName, firstFamily, secondFamily;
+        first->getPostScriptName(&firstName);
+        second->getPostScriptName(&secondName);
+        first->getFamilyName(&firstFamily);
+        second->getFamilyName(&secondFamily);
+        ERRORF(r, "PDFs differ for identical font data; PostScript names '%s' and '%s', "
+               "family names '%s' and '%s'", firstName.c_str(), secondName.c_str(),
+               firstFamily.c_str(), secondFamily.c_str());
+    }
 }
 
 #endif // SK_SUPPORT_PDF
