@@ -217,7 +217,6 @@ echo "Compiling"
   skia_use_dng_sdk=false \
   skia_use_dawn=${ENABLE_WEBGPU} \
   skia_use_webgl=${ENABLE_WEBGL} \
-  skia_use_webgpu=${ENABLE_WEBGPU} \
   skia_use_expat=${USE_EXPAT} \
   skia_use_fontconfig=false \
   skia_use_freetype=true \

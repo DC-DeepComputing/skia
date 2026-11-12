@@ -29,7 +29,6 @@ mkdir -p $BUILD_DIR
   skia_use_angle=false \
   skia_use_dawn=false \
   skia_use_webgl=false \
-  skia_use_webgpu=false \
   skia_use_expat=false \
   skia_use_fontconfig=false \
   skia_use_freetype=false \
