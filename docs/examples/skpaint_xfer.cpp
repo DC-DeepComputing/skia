@@ -8,7 +8,7 @@ static void draw_utf8_string(SkCanvas* c, const char* t, SkScalar x, SkScalar y,
 }
 
 void draw(SkCanvas* canvas) {
-    SkBlendMode modes[] = {
+    static constexpr auto modes = std::to_array<SkBlendMode>({
         SkBlendMode::kClear,
         SkBlendMode::kSrc,
         SkBlendMode::kDst,
@@ -38,7 +38,7 @@ void draw(SkCanvas* canvas) {
         SkBlendMode::kSaturation,
         SkBlendMode::kColor,
         SkBlendMode::kLuminosity,
-    };
+    });
     SkRect rect = SkRect::MakeWH(64.0f, 64.0f);
     SkPaint stroke, src, dst;
     stroke.setStyle(SkPaint::kStroke_Style);
@@ -63,7 +63,7 @@ void draw(SkCanvas* canvas) {
     dst.setShader(SkShaders::LinearGradient(
                 dstPoints, {{dstColors, {}, SkTileMode::kClamp}, {}}));
     canvas->clear(SK_ColorWHITE);
-    size_t N = sizeof(modes) / sizeof(modes[0]);
+    size_t N = modes.size();
     size_t K = (N - 1) / 3 + 1;
     SkASSERT(K * 64 == 640);  // tall enough
     for (size_t i = 0; i < N; ++i) {
