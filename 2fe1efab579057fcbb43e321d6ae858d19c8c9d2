@@ -16,6 +16,24 @@
       "message": "Thanks for putting this together! The FreeType `generateGlyphImage` fixes in `src/ports/SkFontHost_FreeType_common.cpp` (converting `kLCD16_Format` bounds to pixel coordinates, scaling `topDiff`/`leftDiff` by `ftVertScale`/`ftHoriScale`, and guarding `SkFDot6` overflow before `FT_Outline_Translate`) and `tests/FontHostFreeTypeTest.cpp` look solid, and both `NativeFonts_FreeType_ASAN_Upload` and Mac `NativeFonts_Fontations` are green on PS3.\n\nTwo things to clean up before landing:\n\n1. `src/core/SkScalerContext.cpp:712-714` and `tests/SkStrikeTest.cpp:764-822`: `SkScalerContext` is an internal `src/core/` class whose contract (`src/core/SkScalerContext.h:420-427`) requires `origGlyph.fImage` to point to a pre-allocated buffer of `origGlyph.imageSize()`. Its caller `SkGlyph::setImage(SkArenaAlloc*, SkScalerContext*)` (`src/core/SkGlyph.cpp:184-195`, via `setImageHasBeenCalled()` at `src/core/SkGlyph.h:468-471`) already returns early when `isEmpty() || fImage !\u003d nullptr || imageTooLarge()` before allocating `fImage` and calling `scalerContext-\u003egetImage(*this)`. A silent `if (...) return;` here masks internal contract bugs instead of catching them, and `SkScalerContext_GetImageEntryGuards` (`tests/SkStrikeTest.cpp:794, 817`) has to call deprecated `SkGlyph::setImage(void*)` (`src/core/SkGlyph.h:540-541`) to attach a non-null `fImage` to empty and oversized glyphs (violating `src/core/SkGlyph.h:630`). Please replace lines 712-714 with `SkASSERT(!origGlyph.isEmpty() \u0026\u0026 !origGlyph.imageTooLarge() \u0026\u0026 origGlyph.fImage !\u003d nullptr);` and drop `SkScalerContext_GetImageEntryGuards` (and unused `#include \u003cutility\u003e`) from `tests/SkStrikeTest.cpp`.\n\n2. Commit message:\n   - The second paragraph still describes the PS1 test (\"and add a TrueType 0x92 stack-persistence regression test covering mask-filtered and LCD16 rasterization\") rather than `FreeType_GenerateGlyphImageDivergentOutline` in `tests/FontHostFreeTypeTest.cpp`, and does not mention the non-LCD `SkFDot6` subpixel translation overflow guards in `src/ports/SkFontHost_FreeType_common.cpp:1760-1782`.\n   - `Fixed: b/:576955738` has an extra colon after `b/` (`Fixed: b/576955738`).\n\nMinor nit in `tests/FontHostFreeTypeTest.cpp:282`:\n- Prefer `REPORTER_ASSERT(reporter, face-\u003eglyph-\u003eoutline.n_points \u003e\u003d 2);` before indexing `points[0]` instead of `if (face-\u003eglyph-\u003eoutline.n_points \u003e\u003d 2)` so the `spanOverflowBuf` sub-case cannot pass vacuously.",
       "revId": "2fe1efab579057fcbb43e321d6ae858d19c8c9d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5176c335_27621501",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-12T18:06:17Z",
+      "side": 1,
+      "message": "Done in PS5 — thanks for the thorough review!\n\n    1. Replaced the silent early return in `SkScalerContext::getImage` with\n    `SkASSERT(!origGlyph.isEmpty() \u0026\u0026 !origGlyph.imageTooLarge() \u0026\u0026 origGlyph.fImage !\u003d nullptr);`\n    and dropped `SkScalerContext_GetImageEntryGuards` (and `\u003cutility\u003e`) from\n    `tests/SkStrikeTest.cpp`.\n    2. Updated the commit message to describe `FreeType_GenerateGlyphImageDivergentOutline`, the\n    non-LCD `SkFDot6` overflow guards, and `Fixed: b/576955738`.\n    3. Changed `n_points \u003e\u003d 2` in `tests/FontHostFreeTypeTest.cpp` to `REPORTER_ASSERT`.\n\n    (Also simplified the `kLCD16_Format` cropping block in `SkFontHost_FreeType_common.cpp` to use\n    `overlap.intersect(ftBounds)` and a local `FT_Bitmap` copy instead of the 8 manual `if`\n    adjustments and `static_cast`s.)",
+      "parentUuid": "d76fb09e_3f3c5e80",
+      "revId": "2fe1efab579057fcbb43e321d6ae858d19c8c9d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
