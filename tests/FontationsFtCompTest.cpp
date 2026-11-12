@@ -5,8 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMgr.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkStream.h"
@@ -16,6 +19,7 @@
 #include "modules/skshaper/include/SkShaper.h"
 #include "src/ports/SkTypeface_FreeType.h"
 #include "tests/Test.h"
+#include "tools/Resources.h"
 #include "tools/TestFontDataProvider.h"
 
 #include <memory>
@@ -186,7 +190,75 @@ private:
     TestFontDataProvider fTestDataIterator;
 };
 
+// Integer origin puts both backends' masks on the same pixel grid
+SkBitmap drawBWGlyph(const SkFont& font, SkGlyphID glyph) {
+    SkBitmap bitmap;
+    bitmap.allocPixels(SkImageInfo::MakeA8(48, 48));
+    bitmap.eraseColor(SK_ColorTRANSPARENT);
+    SkPaint paint;
+    paint.setAntiAlias(false);
+    SkCanvas(bitmap).drawSimpleText(
+            &glyph, sizeof(glyph), SkTextEncoding::kGlyphID, 8, 32, font, paint);
+    return bitmap;
+}
+
 }  // namespace
+
+// BW glyphs must keep the pixels FreeType's mono rasterizer adds by drop-out control (applied to
+// unhinted outlines too); without it, stems thinner than a pixel vanish at small sizes
+DEF_TEST(Fontations_BWGlyphsKeepDropoutPixels, reporter) {
+    constexpr char kFontResource[] = "fonts/Roboto-Regular.ttf";
+    sk_sp<SkTypeface> fontationsTypeface =
+            SkTypeface_Make_Fontations(GetResourceAsStream(kFontResource), SkFontArguments());
+    sk_sp<SkTypeface> freetypeTypeface =
+            SkTypeface_FreeType::MakeFromStream(GetResourceAsStream(kFontResource),
+                                                SkFontArguments());
+    REPORTER_ASSERT(reporter, fontationsTypeface && freetypeTypeface);
+    if (!fontationsTypeface || !freetypeTypeface) {
+        return;
+    }
+
+    constexpr char kText[] = "Hamburgefonstiv1lwxyzAMW";
+    int comparedGlyphs = 0, lostGlyphs = 0, lostPixels = 0;
+    for (int size = 6; size <= 14; ++size) {
+        SkFont fontationsFont(fontationsTypeface, size);
+        SkFont freetypeFont(freetypeTypeface, size);
+        for (SkFont* font : {&fontationsFont, &freetypeFont}) {
+            font->setEdging(SkFont::Edging::kAlias);
+            font->setHinting(SkFontHinting::kNone);
+        }
+        for (const char* c = kText; *c; ++c) {
+            SkGlyphID glyph = fontationsFont.unicharToGlyph(*c);
+            // Mask differences only mean something when both backends rasterize the same outline
+            SkPath fontationsPath = fontationsFont.getPath(glyph).value_or(SkPath());
+            SkPath freetypePath = freetypeFont.getPath(glyph).value_or(SkPath());
+            if (!fuzzy_path_equal(fontationsPath, freetypePath)) {
+                continue;
+            }
+            SkBitmap fontationsMask = drawBWGlyph(fontationsFont, glyph);
+            SkBitmap freetypeMask = drawBWGlyph(freetypeFont, glyph);
+            int lost = 0;
+            for (int y = 0; y < freetypeMask.height(); ++y) {
+                for (int x = 0; x < freetypeMask.width(); ++x) {
+                    lost += *freetypeMask.getAddr8(x, y) && !*fontationsMask.getAddr8(x, y);
+                }
+            }
+            if (lost) {
+                SkDebugf("Fontations BW glyph '%c' at size %d lost %d pixels\n", *c, size, lost);
+                ++lostGlyphs;
+                lostPixels += lost;
+            }
+            ++comparedGlyphs;
+        }
+    }
+    REPORTER_ASSERT(reporter, comparedGlyphs > 0, "No glyph had matching outlines");
+    REPORTER_ASSERT(reporter,
+                    lostPixels == 0,
+                    "Fontations BW glyphs lost %d drop-out pixels in %d of %d glyphs",
+                    lostPixels,
+                    lostGlyphs,
+                    comparedGlyphs);
+}
 
 DEF_TEST(Fontations_NotoSans, reporter) {
     FontationsFtComparison("Noto Sans",
