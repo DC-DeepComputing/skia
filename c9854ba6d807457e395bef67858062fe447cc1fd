@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be04e85d_9d33073e",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2026-11-12T19:35:43Z",
+      "side": 1,
+      "message": "Please add a relnotes entry to announce this to customers.",
+      "revId": "c9854ba6d807457e395bef67858062fe447cc1fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
