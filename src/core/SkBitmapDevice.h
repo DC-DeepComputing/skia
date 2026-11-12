@@ -18,6 +18,7 @@
 #include "src/core/SkDevice.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkRasterClipStack.h"
+#include "src/partition_alloc/raw_ptr_exclusion.h"
 
 class SkBlender;
 class SkImage;
@@ -157,7 +158,9 @@ private:
                     const SkPaint&,
                     sk_sp<SkMipmap>);
 
-    void* fRasterHandle = nullptr;
+    // RAW_PTR_EXCLUSION: Holds an opaque SkRasterHandleAllocator::Handle (e.g. a Windows GDI HDC),
+    // not necessarily a heap pointer.
+    RAW_PTR_EXCLUSION void* fRasterHandle = nullptr;
     skcpu::Recorder* fRecorder = nullptr;
     SkBitmap fBitmap;
     SkRasterClipStack fRCStack;
