@@ -13204,3 +13204,103 @@ DEF_TEST(SkParagraph_EllipsisAfterHardLineBreak, reporter) {
     }
 #endif
 }
+
+// A hit test returns a UTF-16 caret offset, not a glyph index: sweeping x across a line must give
+// grapheme boundaries only (never inside a surrogate pair or a base + mark cluster), moving
+// monotonically from one end of the text to the other, and switching across the middle of a
+// single-grapheme cluster even when shaping emits separate base and mark glyphs (crbug.com/40042404)
+UNIX_ONLY_TEST(SkParagraph_GlyphPositionAtCoordinateIsGraphemeBoundary, reporter) {
+    auto fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    auto unicode = get_unicode();
+
+    const std::vector<SkString> families = {
+            SkString("Google Sans"),
+            SkString("Noto Naskh Arabic"),
+            SkString("Noto Color Emoji"),
+    };
+    struct Case {
+        std::u16string text;
+        TextDirection direction;
+    };
+    const Case cases[] = {
+            {u"ggg", TextDirection::kLtr},
+            {u"\u0436\u0436\u0436", TextDirection::kLtr},
+            {u"\U0001F469\U0001F469", TextDirection::kLtr},
+            {u"ggg\U0001F469\U0001F469\U0001F469", TextDirection::kLtr},
+            {u"\U0001F469\u200D\U0001F469\u200D\U0001F467\u200D\U0001F467", TextDirection::kLtr},
+            // Decomposed base + combining mark: 1 grapheme of 2 UTF-16 units, 2 cluster glyphs
+            {u"g\u0308", TextDirection::kLtr},
+            {u"g\u0308g\u0308", TextDirection::kLtr},
+            // Multi-grapheme "ff" ligature whose second grapheme carries a combining mark
+            {u"ff\u0301", TextDirection::kLtr},
+            // RTL base + harakat clusters, RTL emoji surrogate pair, and Arabic Lam-Alef ligatures
+            {u"\u0628\u0650", TextDirection::kRtl},
+            {u"\u0628\u0650\u0633\u0652\u0645\u0650", TextDirection::kRtl},
+            {u"\u0628\u0650\U0001F469", TextDirection::kRtl},
+            {u"\u0644\u0627", TextDirection::kRtl},
+            {u"\u0644\u064E\u0627", TextDirection::kRtl},
+    };
+    for (const Case& c : cases) {
+        TArray<SkUnicode::CodeUnitFlags, true> flags;
+        std::u16string copy = c.text;
+        REPORTER_ASSERT(
+                reporter,
+                unicode->computeCodeUnitFlags(copy.data(), SkToInt(copy.size()), false, &flags));
+        const int length = SkToInt(c.text.size());
+        int graphemeCount = 0;
+        for (int i = 0; i < length; ++i) {
+            if (flags[i] & SkUnicode::CodeUnitFlags::kGraphemeStart) {
+                ++graphemeCount;
+            }
+        }
+        auto isBoundary = [&](int pos) {
+            return pos == length || (flags[pos] & SkUnicode::CodeUnitFlags::kGraphemeStart);
+        };
+
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextDirection(c.direction);
+        TextStyle textStyle;
+        textStyle.setFontFamilies(families);
+        textStyle.setFontSize(13);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, unicode);
+        builder.pushStyle(textStyle);
+        builder.addText(c.text);
+        auto paragraph = builder.Build();
+        paragraph->layout(c.direction == TextDirection::kLtr ? SK_ScalarInfinity : 1000);
+        REPORTER_ASSERT(reporter, paragraph->unresolvedGlyphs() == 0);
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        REPORTER_ASSERT(reporter, metrics.size() == 1);
+        if (metrics.size() != 1) {
+            continue;
+        }
+        const SkScalar left = metrics[0].fLeft;
+        const SkScalar width = metrics[0].fWidth;
+        const SkScalar y = metrics[0].fBaseline;
+
+        const int firstEdge = c.direction == TextDirection::kLtr ? 0 : length;
+        const int lastEdge = c.direction == TextDirection::kLtr ? length : 0;
+        REPORTER_ASSERT(reporter,
+                        paragraph->getGlyphPositionAtCoordinate(left - 5, y).position == firstEdge);
+        int previous = firstEdge;
+        for (SkScalar dx = left - 5; dx <= left + width + 5; dx += 0.25f) {
+            PositionWithAffinity hit = paragraph->getGlyphPositionAtCoordinate(dx, y);
+            int pos = hit.position;
+            REPORTER_ASSERT(reporter, pos >= 0 && pos <= length, "%g: %d", dx, pos);
+            REPORTER_ASSERT(reporter, pos != 0 || hit.affinity != Affinity::kUpstream);
+            REPORTER_ASSERT(reporter, isBoundary(pos), "dx=%g: %d inside a grapheme", dx, pos);
+            bool ordered = c.direction == TextDirection::kLtr ? pos >= previous : pos <= previous;
+            REPORTER_ASSERT(reporter, ordered, "dx=%g: %d after %d", dx, pos, previous);
+            previous = pos;
+        }
+        REPORTER_ASSERT(reporter, previous == lastEdge);
+
+        if (graphemeCount == 1) {
+            auto quarter = paragraph->getGlyphPositionAtCoordinate(left + width * 0.25f, y);
+            auto threeQuarter = paragraph->getGlyphPositionAtCoordinate(left + width * 0.75f, y);
+            REPORTER_ASSERT(reporter, quarter.position == firstEdge);
+            REPORTER_ASSERT(reporter, threeQuarter.position == lastEdge);
+        }
+    }
+}
