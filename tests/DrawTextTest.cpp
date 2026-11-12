@@ -184,3 +184,43 @@ DEF_TEST(DrawText_noglyphs, r) {
             "\x0d\xf3\xf2\xf2\xe9\x0d\x0d\x0d\x05\x0d\x0d\xe3\xe3\xe3\xe3\xe3\xe3\xe3\xe3\xe3",
             10, 20, font, SkPaint());
 }
+
+// Sums the ink (darkness) of "Ho" drawn black on white with a thin stroke
+static double stroked_text_ink(SkScalar textSize, bool fakeBold) {
+    const int w = SkScalarCeilToInt(textSize * 3);
+    const int h = SkScalarCeilToInt(textSize * 1.5f);
+    SkBitmap bm;
+    bm.allocN32Pixels(w, h);
+    SkCanvas canvas(bm);
+    canvas.clear(SK_ColorWHITE);
+
+    SkFont font(ToolUtils::DefaultPortableTypeface(), textSize);
+    font.setEmbolden(fakeBold);
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setStyle(SkPaint::kStroke_Style);
+    paint.setStrokeWidth(0.5f);
+    canvas.drawString("Ho", textSize * 0.25f, textSize * 1.2f, font, paint);
+
+    double ink = 0;
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            ink += 255 - SkColorGetR(bm.getColor(x, y));
+        }
+    }
+    return ink;
+}
+
+// A stroke on fake bold text outlines the emboldened glyph with the paint's stroke width, so its
+// ink stays close to the same stroke on regular text. Covers both the glyph-mask route and the
+// path route used for text above 256px
+DEF_TEST(DrawText_strokedFakeBoldKeepsStrokeWidth, r) {
+    for (SkScalar textSize : {36.f, 300.f}) {
+        const double regular = stroked_text_ink(textSize, false);
+        const double bold = stroked_text_ink(textSize, true);
+        REPORTER_ASSERT(r, regular > 0);
+        REPORTER_ASSERT(r, bold < regular * 1.5,
+                        "size %g: fake bold stroke ink %g vs regular %g",
+                        textSize, bold, regular);
+    }
+}
