@@ -171,11 +171,6 @@ void TextWrapper::lookAhead(SkScalar maxWidth,
                 if (further->isHardBreak() || further->isWhitespaceBreak()) {
                     break;
                 }
-                if (further->isSoftBreak() && !further->isSoftHyphen()) {
-                    // Other soft breaks, such as the end of the text, end the word before this
-                    // cluster; only a soft hyphen's own (letter-spaced) width counts here
-                    break;
-                }
                 if (further->run().isPlaceholder()) {
                   // Placeholder ends the word
                   break;
@@ -189,9 +184,13 @@ void TextWrapper::lookAhead(SkScalar maxWidth,
                 }
 
                 nextWordLength = addWidth(nextWordLength, further);
-                if (maxWidth > 0 && further->isSoftBreak()) {
-                    // Include further->width() before stopping so letter-spaced soft hyphens count
-                    nextWordHyphenWidth = softHyphenWidth(softHyphen, further);
+                if (further->isSoftBreak()) {
+                    // A soft break ends the word after this cluster (at the end of the text, a
+                    // hyphen or a CJK character), so its width counts: a word one cluster too
+                    // long must split here, not move to the next line and split there
+                    if (maxWidth > 0) {
+                        nextWordHyphenWidth = softHyphenWidth(softHyphen, further);
+                    }
                     break;
                 }
             }
