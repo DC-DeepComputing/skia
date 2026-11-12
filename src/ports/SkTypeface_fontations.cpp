@@ -49,21 +49,6 @@ bool embeddedBitmapStrikeCloseEnough(float strikePpem, float requestedPpem) {
 
 [[maybe_unused]] static inline const constexpr bool kSkShowTextBlitCoverage = false;
 
-sk_sp<const SkData> streamToData(const std::unique_ptr<SkStreamAsset>& font_data) {
-    if (!font_data) {
-        return SkData::MakeEmpty();
-    }
-    // TODO(drott): Remove this once SkData::MakeFromStream is able to do this itself.
-    if (font_data->getData()) {
-        return font_data->getData();
-    }
-    if (font_data->getMemoryBase() && font_data->getLength()) {
-        return SkData::MakeWithCopy(font_data->getMemoryBase(), font_data->getLength());
-    }
-    font_data->rewind();
-    return SkData::MakeFromStream(font_data.get(), font_data->getLength());
-}
-
 rust::Box<::fontations_ffi::BridgeFontRef> make_bridge_font_ref(sk_sp<const SkData> fontData,
                                                                 uint32_t index) {
     rust::Slice<const uint8_t> slice{fontData->bytes(), fontData->size()};
@@ -157,7 +142,11 @@ SkTypeface_Fontations::SkTypeface_Fontations(
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                         const SkFontArguments& args) {
-    return MakeFromData(streamToData(stream), args);
+    sk_sp<const SkData> data = SkData::MakeFromStreamAsset(std::move(stream));
+    if (!data) {
+        return nullptr;
+    }
+    return MakeFromData(std::move(data), args);
 }
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<const SkData> data,

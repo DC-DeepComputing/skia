@@ -16,10 +16,12 @@
 #include "src/core/SkOSFile.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
+#include "tools/Resources.h"
 
 #include <array>
 #include <cstdio>
 #include <cstring>
+#include <memory>
 
 static void test_is_equal(skiatest::Reporter* reporter,
                           const SkDataTable* a, const SkDataTable* b) {
@@ -303,4 +305,50 @@ DEF_TEST(Data_empty, reporter) {
             REPORTER_ASSERT(reporter, array[i]->equals(array[j].get()));
         }
     }
+}
+
+// Assets that already hold their bytes in memory must be shared, not copied. The single-block
+// stream has a memory base but no getData(), so the result must keep the block alive itself
+DEF_TEST(Data_MakeFromStreamAsset_SharesMemory, reporter) {
+    const char s[] = "abcdefghijklmnopqrstuvwxyz";
+    sk_sp<SkData> src = SkData::MakeWithCopy(s, 26);
+    sk_sp<const SkData> fromMemory =
+            SkData::MakeFromStreamAsset(std::make_unique<SkMemoryStream>(src));
+    REPORTER_ASSERT(reporter, fromMemory && fromMemory->data() == src->data());
+
+    std::unique_ptr<SkStreamAsset> blockStream;
+    {
+        SkDynamicMemoryWStream writer;
+        writer.write(s, 26);
+        blockStream = writer.detachAsStream();
+    }
+    const void* base = blockStream->getMemoryBase();
+    REPORTER_ASSERT(reporter, base && !blockStream->getData());
+    sk_sp<const SkData> fromBlock = SkData::MakeFromStreamAsset(std::move(blockStream));
+    REPORTER_ASSERT(reporter, fromBlock && fromBlock->data() == base);
+    REPORTER_ASSERT(reporter, fromBlock && fromBlock->size() == 26);
+    REPORTER_ASSERT(reporter, fromBlock && memcmp(fromBlock->data(), s, 26) == 0);
+}
+
+// The result covers the whole asset even after the caller advanced the stream, so the shared
+// and the copied paths agree; a file stream has no memory base and takes the copy path
+DEF_TEST(Data_MakeFromStreamAsset_ReadsWholeAsset, reporter) {
+    REPORTER_ASSERT(reporter, !SkData::MakeFromStreamAsset(nullptr));
+
+    sk_sp<SkData> expected = GetResourceAsData("fonts/Em.ttf");
+    std::unique_ptr<SkStreamAsset> file =
+            SkFILEStream::Make(GetResourcePath("fonts/Em.ttf").c_str());
+    if (!expected || !file) {
+        ERRORF(reporter, "Missing resource fonts/Em.ttf");
+        return;
+    }
+    REPORTER_ASSERT(reporter, !file->getMemoryBase());
+    file->skip(4);
+    sk_sp<const SkData> fromFile = SkData::MakeFromStreamAsset(std::move(file));
+    REPORTER_ASSERT(reporter, fromFile && fromFile->equals(expected.get()));
+
+    auto memory = std::make_unique<SkMemoryStream>(expected);
+    memory->skip(4);
+    sk_sp<const SkData> fromMemory = SkData::MakeFromStreamAsset(std::move(memory));
+    REPORTER_ASSERT(reporter, fromMemory && fromMemory->equals(expected.get()));
 }

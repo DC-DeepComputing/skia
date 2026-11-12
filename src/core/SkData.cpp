@@ -224,3 +224,23 @@ sk_sp<SkData> SkData::MakeFromStream(SkStream* stream, size_t size) {
     }
     return data;
 }
+
+sk_sp<const SkData> SkData::MakeFromStreamAsset(std::unique_ptr<SkStreamAsset> stream) {
+    if (!stream) {
+        return nullptr;
+    }
+    if (sk_sp<const SkData> data = stream->getData()) {
+        return data;
+    }
+    const size_t size = stream->getLength();
+    // The memory base is valid only while the stream lives, so the data takes ownership of it
+    if (const void* base = stream->getMemoryBase()) {
+        return MakeWithProc(base, size, [](const void*, void* ctx) {
+            delete static_cast<SkStreamAsset*>(ctx);
+        }, stream.release());
+    }
+    if (!stream->rewind()) {
+        return nullptr;
+    }
+    return MakeFromStream(stream.get(), size);
+}
