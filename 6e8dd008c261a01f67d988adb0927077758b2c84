@@ -16,6 +16,23 @@
       "message": "Thanks for the rebase! PS6 is the same change as PS5 on top of current main, and the conflict resolution looks right.\n\nI also checked that the first-line indent works together with the soft hyphen justification fix that landed meanwhile (https://skia-review.googlesource.com/c/skia/+/1406297): a justified, indented first line that breaks at a soft hyphen fits the text and the hyphen into the indented width, in both LTR and RTL.\n\nThe SkParagraph tests, the ASAN bot, the Flutter framework test corpus and our google3 tests all pass on PS6. LGTM.",
       "revId": "6e8dd008c261a01f67d988adb0927077758b2c84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6fc152c_91e863ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-12T17:18:49Z",
+      "side": 1,
+      "message": "Could you please rebase onto current `main` again and add `Bug: chromium:40044065` above `Change-Id:` in the commit message?\n\nRecent `skparagraph` tests added at the end of `modules/skparagraph/tests/SkParagraphTest.cpp` conflict with the new tests here; all production files still merge cleanly. Once rebased, we will re-vote and run the try jobs to land it.",
+      "revId": "6e8dd008c261a01f67d988adb0927077758b2c84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
