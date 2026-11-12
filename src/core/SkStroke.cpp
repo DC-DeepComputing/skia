@@ -1451,6 +1451,30 @@ void SkStroke::setJoin(SkPaint::Join join) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+// Signed area of all control polygons (positive is kCW), like FreeType's
+// FT_Outline_Get_Orientation. Unlike the y-max test in ComputeFirstDirection, a tiny
+// self-intersection loop wound against the body cannot decide the result
+static double signed_area(const SkPathRaw& raw) {
+    double area = 0;
+    SkPoint first = {0, 0};
+    SkPoint prev = {0, 0};
+    size_t index = 0;
+    for (SkPathVerb verb : raw.verbs()) {
+        for (int k = 0; k < SkPathPriv::PtsInVerb(verb); ++k) {
+            const SkPoint p = raw.points()[index++];
+            if (verb == SkPathVerb::kMove) {
+                // Close the previous contour; a no-op for the first one
+                area += (double)prev.fX * first.fY - (double)first.fX * prev.fY;
+                first = p;
+            } else {
+                area += (double)prev.fX * p.fY - (double)p.fX * prev.fY;
+            }
+            prev = p;
+        }
+    }
+    return area + ((double)prev.fX * first.fY - (double)first.fX * prev.fY);
+}
+
 void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
     SkASSERT(dst);
 
@@ -1538,8 +1562,9 @@ void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
     stroker.done(dst, lastSegment == SkPathVerb::kLine);
 
     if (fDoFill && !ignoreCenter) {
-        auto d = SkPathPriv::ComputeFirstDirection(*raw);
-        if (d == SkPathFirstDirection::kCCW) {
+        // Every stroke ring winds the same way, so the fill must follow the orientation of
+        // most of the area, or the inner half of the stroke cancels it
+        if (signed_area(*raw) < 0) {
             dst->privateReverseAddPath(src);
         } else {
             dst->addPath(src);
