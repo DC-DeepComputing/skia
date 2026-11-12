@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f39c456d_a140822d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4457216
+      },
+      "writtenOn": "2026-11-12T00:04:47Z",
+      "side": 1,
+      "message": "Context on this CL \u0026 the automated code review knowledge base project:\n\n- **What this is:** These Markdown rules are distilled from historical code review comments in Skia to help Google\u0027s automated Gerrit code review agent surface repo-specific invariants, API conventions, and common pitfalls during review.\n- **Opt-in only (no immediate behavior change):** Landing files under `knowledge_base/` does not turn on automated review comments by itself. Rules only take effect for directories whose `DIR_METADATA` opts in via `agentic_review` / `mixins` (and can be scoped by `path_expression` / `content_patterns` or suppressed per directory via `exclude_rules: \"\u003crepo-relative-path\u003e\"`).\n- **Rule format \u0026 frontmatter:** Each rule uses YAML frontmatter (`name`, 1-line `description`, plus informational `rubric` and `severity` tags from extraction) followed by `**Rule.**`, `**Why.**`, and `## Examples`. The review agent uses the 1-line `description` to selectively load only relevant rules into context.\n- **Ownership \u0026 sizing:** These Tier-1 starter rules come from \u003e\u003d2 historical CLs as an initial seed for owners to trim, edit, relocate, or drop as you see fit.\n\n**References:**\n- User guide (Googler-only): http://go/chai-codereview\n- Submitted Chromium base rules: https://chromium.googlesource.com/chromium/src/+/main/agents/knowledge_base/rules/\n- Example team opt-ins / rules: https://crrev.com/c/8691451 (Autofill `DIR_METADATA` mixin), https://crrev.com/c/8641149 (`components/sync`), https://crrev.com/c/8618672 (DevTools `.agents/rules`)\n\n**Skia CL status:** Updated `Bug: b:568026769` in PS8 and scheduled our alignment meeting for **Mon Nov 16, 10:30–11:00 AM PST (1:30–2:00 PM EST)** to discuss directory layout, `COMMON_METADATA` vs. self-discovery, and chunking before taking this out of WIP.",
+      "revId": "b5c5dad3c5aa29d0505994d4274c36e6eb9e68b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
