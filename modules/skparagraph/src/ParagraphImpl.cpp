@@ -1595,24 +1595,25 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
           [&](TextRange textRange,
               const TextStyle& style,
               const TextLine::ClipContext& context) {
-              // 0-glyph runs have no glyph or position entries to convert to paths
-              if (context.size == 0) {
+              // 0-glyph runs have no glyph or position entries to convert to paths;
+              // placeholders are painted by the client, as in buildTextBlob()
+              if (context.size == 0 || run->isPlaceholder()) {
                   return;
               }
               const SkFont& font = run->font();
               SkScalar correctedBaseline = SkScalarFloorToScalar(
                 line.baseline() + style.getBaselineShift() + 0.5);
+              // Same origin buildTextBlob() draws the glyphs at: fTextShift already holds
+              // the run offset, and glyph positions are relative to the baseline
               SkPoint offset =
                   SkPoint::Make(line.offset().fX + context.fTextShift,
                                 line.offset().fY + correctedBaseline);
-              SkRect rect = context.clip.makeOffset(offset);
               struct Rec {
                   SkPathBuilder* fBuilder;
                   SkPoint fOffset;
                   const SkPoint* fPos;
                   int fNotConverted;
-              } rec =
-                  {&builder, SkPoint::Make(rect.left(), rect.top()), &run->positions()[context.pos], 0};
+              } rec = {&builder, offset, &run->positions()[context.pos], 0};
               font.getPaths({&run->glyphs()[context.pos], context.size},
                     [](const SkPath* path, const SkMatrix& mx, void* ctx) {
                         Rec* rec = reinterpret_cast<Rec*>(ctx);
@@ -1628,9 +1629,10 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
                     }, &rec);
               notConverted += rec.fNotConverted;
           });
-        *dest = builder.detach();
         return true;
     });
+    // Detach once: every visual run of the line accumulates into the same path
+    *dest = builder.detach();
 
     return notConverted;
 }

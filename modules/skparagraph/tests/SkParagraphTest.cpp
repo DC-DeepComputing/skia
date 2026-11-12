@@ -11,6 +11,7 @@
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -13203,4 +13204,72 @@ DEF_TEST(SkParagraph_EllipsisAfterHardLineBreak, reporter) {
                         "%g: %d", dx, rtlHit.position);
     }
 #endif
+}
+
+// getPath() must return the outlines of every glyph on the line exactly where paint() draws
+// them; runs of different sizes on one line check both the run offset and the baseline
+DEF_TEST(SkParagraph_GetPathMatchesPaintedGlyphs, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    ParagraphStyle paragraphStyle;
+    TextStyle large;
+    large.setFontSize(20);
+    TextStyle small = large;
+    small.setFontSize(10);
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    builder.pushStyle(large);
+    builder.addText("Hello ");
+    builder.pushStyle(small);
+    builder.addText("world\nagain");
+    builder.pop();
+    builder.addText(" big");
+    // paint() draws nothing for a placeholder, so getPath() must not either
+    builder.addPlaceholder(PlaceholderStyle(30, 30, PlaceholderAlignment::kBaseline,
+                                            TextBaseline::kAlphabetic, 0));
+    builder.addText("!");
+    auto paragraph = builder.Build();
+    paragraph->layout(1000);
+    REPORTER_ASSERT(reporter, paragraph->lineNumber() == 2);
+
+    // visit() reports the glyph runs and the origins paint() draws them at
+    std::vector<SkPathBuilder> expected(paragraph->lineNumber());
+    paragraph->visit([&](int lineNumber, const Paragraph::VisitorInfo* info) {
+        if (!info) {
+            return;
+        }
+        struct Rec {
+            SkPathBuilder* fBuilder;
+            SkPoint fOrigin;
+            const SkPoint* fPos;
+        } rec = {&expected[lineNumber], info->origin, info->positions};
+        info->font.getPaths({info->glyphs, SkToSizeT(info->count)},
+                            [](const SkPath* path, const SkMatrix& mx, void* ctx) {
+                                Rec* rec = static_cast<Rec*>(ctx);
+                                if (path) {
+                                    SkMatrix total = mx;
+                                    total.postTranslate(rec->fPos->fX + rec->fOrigin.fX,
+                                                        rec->fPos->fY + rec->fOrigin.fY);
+                                    rec->fBuilder->addPath(*path, total);
+                                }
+                                rec->fPos += 1;
+                            }, &rec);
+    });
+
+    for (int lineNumber = 0; lineNumber < SkToInt(paragraph->lineNumber()); ++lineNumber) {
+        SkPath actual;
+        REPORTER_ASSERT(reporter, paragraph->getPath(lineNumber, &actual) == 0);
+        SkPath want = expected[lineNumber].detach();
+        REPORTER_ASSERT(reporter, actual.countPoints() == want.countPoints(),
+                        "line %d: %d points, want %d", lineNumber, actual.countPoints(),
+                        want.countPoints());
+        SkRect a = actual.getBounds();
+        SkRect w = want.getBounds();
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(a.fLeft, w.fLeft) &&
+                        SkScalarNearlyEqual(a.fTop, w.fTop) &&
+                        SkScalarNearlyEqual(a.fRight, w.fRight) &&
+                        SkScalarNearlyEqual(a.fBottom, w.fBottom),
+                        "line %d: [%g %g %g %g], want [%g %g %g %g]", lineNumber, a.fLeft,
+                        a.fTop, a.fRight, a.fBottom, w.fLeft, w.fTop, w.fRight, w.fBottom);
+    }
 }
