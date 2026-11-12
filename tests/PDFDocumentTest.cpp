@@ -15,11 +15,14 @@
 #include "include/core/SkDocument.h"
 #include "include/core/SkExecutor.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontMgr.h"
+#include "include/core/SkFontStyle.h"
 #include "include/core/SkImage.h" // IWYU pragma: keep
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
+#include "include/core/SkTypeface.h"
 #include "include/docs/SkPDFDocument.h"
 #include "include/docs/SkPDFJpegHelpers.h"
 #include "src/core/SkExecutors.h"
@@ -27,10 +30,16 @@
 #include "tests/Test.h"
 #include "tools/fonts/FontToolUtils.h"
 
+#if defined(SK_BUILD_FOR_WIN) && defined(SK_FONTMGR_GDI_AVAILABLE)
+#include "include/ports/SkTypeface_win.h"
+#endif
+
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <memory>
+#include <string_view>
 
 static void test_empty(skiatest::Reporter* reporter) {
     SkDynamicMemoryWStream stream;
@@ -277,5 +286,62 @@ DEF_TEST(SkPDF_abort_jobs, rep) {
     doc->beginPage(612, 792)->drawImage(b.asImage(), 0, 0);
     doc->abort();
 }
+
+// Returns the union of every FontDescriptor /Flags value in a PDF that draws one glyph of
+// typeface, or -1 if no /Flags entry was written
+static int pdf_font_descriptor_flags(sk_sp<SkTypeface> typeface) {
+    SkDynamicMemoryWStream stream;
+    auto doc = SkPDF::MakeDocument(&stream, SkPDF::JPEG::MetadataWithCallbacks());
+    SkFont font(std::move(typeface), 20);
+    doc->beginPage(100, 100)->drawString("A", 10, 50, font, SkPaint());
+    doc->close();
+    sk_sp<SkData> data = stream.detachAsData();
+    std::string_view pdf(static_cast<const char*>(data->data()), data->size());
+    constexpr std::string_view kKey = "/Flags ";
+    bool found = false;
+    int flags = 0;
+    for (size_t pos = pdf.find(kKey); pos != std::string_view::npos;
+         pos = pdf.find(kKey, pos + 1)) {
+        found = true;
+        flags |= (int)std::strtol(pdf.data() + pos + kKey.size(), nullptr, 10);
+    }
+    return found ? flags : -1;
+}
+
+// PDF FontDescriptor flag bits (PDF 32000-1:2008, Table 123)
+static constexpr int kPdfSerifFlag = 1 << 1;
+static constexpr int kPdfScriptFlag = 1 << 3;
+
+// ReallyBigA.ttf has OS/2 sFamilyClass 8 (sans serif), so no backend may mark it serif or
+// script. CoreText exposes this class as a sequential value that shares bits with the script class
+DEF_TEST(SkPDF_FontDescriptorFlags_SansSerif, r) {
+    REQUIRE_PDF_DOCUMENT(SkPDF_FontDescriptorFlags_SansSerif, r);
+    sk_sp<SkTypeface> typeface = ToolUtils::CreateTypefaceFromResource("fonts/ReallyBigA.ttf");
+    if (!typeface) {
+        return;
+    }
+    const int flags = pdf_font_descriptor_flags(std::move(typeface));
+    REPORTER_ASSERT(r, flags >= 0);
+    REPORTER_ASSERT(r, !(flags & kPdfSerifFlag), "flags %d", flags);
+    REPORTER_ASSERT(r, !(flags & kPdfScriptFlag), "flags %d", flags);
+}
+
+#if defined(SK_BUILD_FOR_WIN) && defined(SK_FONTMGR_GDI_AVAILABLE)
+// GDI font families are a sequential nibble: FF_MODERN (0x30) contains the FF_ROMAN bit (0x10),
+// yet Consolas, an FF_MODERN sans-serif monospace font, must not be marked serif
+DEF_TEST(SkPDF_FontDescriptorFlags_GdiModern, r) {
+    REQUIRE_PDF_DOCUMENT(SkPDF_FontDescriptorFlags_GdiModern, r);
+    sk_sp<SkFontMgr> fontMgr = SkFontMgr_New_GDI();
+    sk_sp<SkTypeface> typeface = fontMgr->legacyMakeTypeface("Consolas", SkFontStyle());
+    SkString family;
+    if (!typeface || (typeface->getFamilyName(&family), !family.equals("Consolas"))) {
+        return;
+    }
+    const int flags = pdf_font_descriptor_flags(std::move(typeface));
+    REPORTER_ASSERT(r, flags >= 0);
+    REPORTER_ASSERT(r, !(flags & kPdfSerifFlag), "flags %d", flags);
+    REPORTER_ASSERT(r, !(flags & kPdfScriptFlag), "flags %d", flags);
+}
+#endif
 
 #endif // SK_SUPPORT_PDF
