@@ -77,6 +77,7 @@
 #include <initializer_list>
 #include <memory>
 #include <optional>
+#include <thread>
 #include <vector>
 #include <type_traits>
 using namespace skia_private;
@@ -837,6 +838,42 @@ DEF_TEST(SkRemoteGlyphCache_ClientMemoryAccounting, reporter) {
                     client.readStrikeData(serverStrikeData.data(), serverStrikeData.size()));
 
     // Must unlock everything on termination, otherwise memory leaks can be reported.
+    discardableManager->unlockAndDeleteAll();
+}
+
+// Strikes pinned by SkStrikeClient must be visible on every thread, including threads started
+// later: the client may ingest strike data on one thread and replay slugs on another. This
+// must hold with skia_enable_threadlocal_strikecache too
+DEF_TEST(SkRemoteGlyphCache_SlugDeserializationOnAnotherThread, reporter) {
+    sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
+    SkStrikeServer server(discardableManager.get());
+    SkStrikeClient client(discardableManager, false);
+    const SkPaint paint;
+
+    // Server
+    auto serverTypeface = ToolUtils::CreateTestTypeface("monospace", SkFontStyle());
+    auto serverBlob = buildTextBlob(serverTypeface, /*glyphCount=*/10);
+    const SkSurfaceProps props;
+    std::unique_ptr<SkCanvas> analysisCanvas =
+            server.makeAnalysisCanvas(10, 10, props, nullptr, false, false);
+    auto srcSlug = Slug::ConvertBlob(analysisCanvas.get(), *serverBlob, {0, 0}, paint);
+    REPORTER_ASSERT(reporter, srcSlug != nullptr);
+    auto slugData = srcSlug->serialize();
+
+    std::vector<uint8_t> serverStrikeData;
+    server.writeStrikeData(&serverStrikeData);
+
+    // Client
+    REPORTER_ASSERT(reporter,
+                    client.readStrikeData(serverStrikeData.data(), serverStrikeData.size()));
+    sk_sp<Slug> dstSlug;
+    std::thread replay([&] {
+        dstSlug = client.deserializeSlugForTest(slugData->data(), slugData->size());
+    });
+    replay.join();
+    REPORTER_ASSERT(reporter, dstSlug != nullptr);
+
+    // Must unlock everything on termination, otherwise memory leaks can be reported
     discardableManager->unlockAndDeleteAll();
 }
 

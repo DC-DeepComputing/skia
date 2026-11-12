@@ -84,6 +84,8 @@ int SkGraphics::GetFontCacheCountUsed() {
 void SkGraphics::PurgeFontCache() {
 #if defined(SK_ENABLE_THREADLOCAL_STRIKECACHE)
     SkStrikeCache::GlobalStrikeCache()->purgeAll();
+    // Strikes from SkStrikeClient live in the shared cache, not in the thread-local one
+    SkStrikeCache::SharedStrikeCache()->purgeAll();
 #else
     SkContexts::GetGlobalSkContext()->purgeFontCache();
 #endif
@@ -93,6 +95,7 @@ void SkGraphics::PurgeFontCache() {
 void SkGraphics::PurgePinnedFontCache() {
 #if defined(SK_ENABLE_THREADLOCAL_STRIKECACHE)
     SkStrikeCache::GlobalStrikeCache()->purgePinned();
+    SkStrikeCache::SharedStrikeCache()->purgePinned();
 #else
     SkContexts::GetGlobalSkContext()->purgePinnedFontCache();
 #endif

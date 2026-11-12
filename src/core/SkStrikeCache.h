@@ -41,8 +41,13 @@ struct SkFontMetrics;
 class SkStrikeCache final : public sktext::StrikeForGPUCacheInterface {
 public:
     SkStrikeCache() = default;
+    // Strikes missing here are looked up in sharedCache, which must outlive this cache
+    explicit SkStrikeCache(SkStrikeCache* sharedCache) : fSharedCache(sharedCache) {}
 
+    // The calling thread's cache with SK_ENABLE_THREADLOCAL_STRIKECACHE, else SharedStrikeCache
     static SkStrikeCache* GlobalStrikeCache();
+    // The process-wide cache: strikes pinned here are found from every thread
+    static SkStrikeCache* SharedStrikeCache();
 
     sk_sp<SkStrike> findStrike(const SkDescriptor& desc) SK_EXCLUDES(fLock);
 
@@ -99,6 +104,8 @@ private:
 
     void forEachStrike(std::function<void(const SkStrike&)> visitor) const SK_EXCLUDES(fLock);
 
+    // Lock order is this cache, then fSharedCache; the shared cache has no fallback of its own
+    SkStrikeCache* const fSharedCache = nullptr;
     mutable SkMutex fLock;
     SkStrike* fHead SK_GUARDED_BY(fLock){nullptr};
     SkStrike* fTail SK_GUARDED_BY(fLock){nullptr};

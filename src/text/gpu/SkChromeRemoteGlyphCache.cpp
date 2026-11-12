@@ -628,7 +628,8 @@ SkStrikeClientImpl::SkStrikeClientImpl(
         bool isLogging,
         SkStrikeCache* strikeCache)
     : fDiscardableHandleManager(std::move(discardableManager)),
-      fStrikeCache{strikeCache ? strikeCache : SkStrikeCache::GlobalStrikeCache()},
+      // Pinned strikes must be visible to every thread, so never use a thread-local cache
+      fStrikeCache{strikeCache ? strikeCache : SkStrikeCache::SharedStrikeCache()},
       fIsLogging{isLogging} {}
 
 bool SkStrikeClientImpl::readStrikeData(const volatile void* memory, size_t memorySize) {
