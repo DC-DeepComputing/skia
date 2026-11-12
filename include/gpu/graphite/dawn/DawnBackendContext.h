@@ -46,6 +46,7 @@ struct ContextOptions;
  *
  * Using a non-yielding Context makes it possible to build and run Graphite/Dawn on WebGPU without
  * -s ASYNCIFY.
+ * These restrictions apply to both the legacy Emscripten bindings and emdawnwebgpu.
  */
 using DawnTickFunction = void(const wgpu::Instance& device);
 
