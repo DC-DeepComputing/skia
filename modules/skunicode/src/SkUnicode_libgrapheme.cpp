@@ -16,6 +16,7 @@
 #include "modules/skunicode/src/SkUnicode_hardcoded.h"
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 #include "src/core/SkBitmaskEnum.h"
+#include "src/core/SkUTF.h"
 
 extern "C" {
 #include <grapheme.h>

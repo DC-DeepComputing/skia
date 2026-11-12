@@ -4,6 +4,7 @@
 
 #include "include/private/SkMutex.h"
 #include <functional>  // std::function
+#include <memory>
 
 #define PARAGRAPH_CACHE_STATS
 

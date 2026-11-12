@@ -356,6 +356,28 @@ genrule(
 )
 
 skia_cc_library(
+    name = "module_public_headers_check",
+    testonly = True,
+    srcs = [
+        "//modules/skparagraph/include:headers_to_compile",
+        "//modules/skshaper/include:headers_to_compile",
+        "//modules/skunicode/include:headers_to_compile",
+    ],
+    copts = ["-Wno-error"],
+    # Public module headers must compile against public deps only. layering_check turns an
+    # include of a private header, such as src/core/SkUTF.h, into -Wprivate-header or
+    # -fmodules-strict-decluse errors; full_build does not catch it, since //:core exports src/
+    features = ["layering_check"],
+    visibility = ["//visibility:private"],
+    deps = [
+        "//:core",
+        "//:skparagraph_harfbuzz_skunicode",
+        "//:skshaper_core",
+        "//:skunicode_core",
+    ],
+)
+
+skia_cc_library(
     name = "full_build",
     testonly = True,
     srcs = [
@@ -391,6 +413,7 @@ skia_cc_library(
     # This is not intended to be used for tests or anything, just for a smoke test build
     visibility = ["//visibility:private"],
     deps = [
+        ":module_public_headers_check",
         "//:bmp_decode_codec",
         "//:core",
         "//:fontmgr_data_freetype",
