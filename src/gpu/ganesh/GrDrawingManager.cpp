@@ -181,6 +181,8 @@ GrDirectContext::FlushResult GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> pro
 
     GrRenderTask::ExecutionResult executionResult { /* fAnyTaskExecuted= */false,
                                                     /* fAllTasksSuccessful= */false };
+    // Set if the flush failed only because one or more promise images could not be fulfilled.
+    bool onlyPromiseInstantiationFailed = false;
 
     if (preFlushSuccessful) {
         bool usingReorderedDAG = false;
@@ -213,6 +215,8 @@ GrDirectContext::FlushResult GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> pro
 
         if (!resourceAllocator.failedInstantiation()) {
             executionResult = this->executeRenderTasks(&flushState);
+        } else {
+            onlyPromiseInstantiationFailed = resourceAllocator.failedOnlyPromiseInstantiation();
         }
     }
     this->removeRenderTasks();
@@ -229,6 +233,17 @@ GrDirectContext::FlushResult GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> pro
         fContext->priv().threadSafeCache()->dropUniqueRefs(/*resourceCache=*/nullptr);
         for (GrOnFlushCallbackObject* onFlushCBObject : fOnFlushCBObjects) {
             onFlushCBObject->onFlushFailed();
+        }
+    }
+
+    // A promise image whose fulfill proc fails is an expected condition for clients (e.g., Chrome's
+    // compositor can race with the deletion of the promise image's backing texture). In that case
+    // instantiation failed before any render task was executed, so no surface has been partially
+    // rendered. We drop the flush's work but, rather than abandoning the context, we fall through
+    // to the normal (non-fatal) path below so that the flush info's requests are still honored.
+    SkASSERT(!onlyPromiseInstantiationFailed || !executionResult.fAnyTaskExecuted);
+    if (!executionResult.fAllTasksSuccessful && !onlyPromiseInstantiationFailed) {
+        for (GrOnFlushCallbackObject* onFlushCBObject : fOnFlushCBObjects) {
             onFlushCBObject->postFlush(fTokenTracker.nextFlushToken());
         }
         fFlushing = false;
@@ -279,9 +294,9 @@ GrDirectContext::FlushResult GrDrawingManager::flush(SkSpan<GrSurfaceProxy*> pro
         resourceCache->purgeAsNeeded();
     }
     fFlushing = false;
-    // Any rendering failure has already returned above, so only the flush info's result matters.
-    SkASSERT(executionResult.fAllTasksSuccessful);
-    return flushResult;
+    // Any rendering failure other than an unfulfilled promise image has already returned above.
+    SkASSERT(executionResult.fAllTasksSuccessful || onlyPromiseInstantiationFailed);
+    return {executionResult.fAllTasksSuccessful && flushResult.fSuccess, flushResult.fSubmitted};
 }
 
 bool GrDrawingManager::submitToGpu() {
