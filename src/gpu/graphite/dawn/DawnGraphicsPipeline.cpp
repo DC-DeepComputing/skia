@@ -173,7 +173,7 @@ size_t create_vertex_attributes(SkSpan<const Attribute> attrs,
 
 // TODO: share this w/ Ganesh dawn backend?
 static wgpu::BlendFactor blend_coeff_to_dawn_blend(const DawnCaps& caps, skgpu::BlendCoeff coeff) {
-#if defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
 #define VALUE_IF_DSB_OR_ZERO(VALUE) wgpu::BlendFactor::Zero
 #else
 #define VALUE_IF_DSB_OR_ZERO(VALUE) \
@@ -628,7 +628,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
             layout.attributes = staticDataAttributes.data();
         } else {
             layout.arrayStride = 0;
-#if defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
             layout.stepMode = wgpu::VertexStepMode::VertexBufferNotUsed;
 #else
             layout.stepMode = wgpu::VertexStepMode::Undefined;
@@ -654,7 +654,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
             layout.attributes = appendDataAttributes.data();
         } else {
             layout.arrayStride = 0;
-#if defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
             layout.stepMode = wgpu::VertexStepMode::VertexBufferNotUsed;
 #else
             layout.stepMode = wgpu::VertexStepMode::Undefined;
