@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf1d098_9e06ad6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-12T20:34:33Z",
+      "side": 1,
+      "message": "BazelBuild-full_library-for_windows_x64_release-windows_x64 is red for a reason unrelated to this change: Bazel fails while fetching @libjxl, because its patch command \"del /f /q lib\\BUILD tools\\BUILD\" runs under PowerShell, where Remove-Item rejects \"/q\". Analysis stops before it reaches @icu. The same builder failed on every recent tryjob of unrelated CLs (for example https://skia-review.googlesource.com/c/skia/+/1422158/6 and https://skia-review.googlesource.com/c/skia/+/1391476/3). The Windows Clang/MSVC DLL builds and both Test-Win11 dm runs are green, and the dm log now shows one \"SkLoadICU: cannot load icudtl.dat from ...\" line instead of two \"SkIcuLoader: datafile missing\" lines.",
+      "revId": "150fed548b50e8db016d69d22d14ef5fa5a65903",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
