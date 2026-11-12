@@ -4890,6 +4890,56 @@ UNIX_ONLY_TEST(SkParagraph_UnbreakableTextParagraph, reporter) {
     }
 }
 
+// A word too long for the line breaks after its no-break space, which hangs past the line end
+// like a trailing space: the line width must match the trimmed text in both directions
+UNIX_ONLY_TEST(SkParagraph_NoBreakSpaceHangsAtWordBreak, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+    auto layout = [&](const char* text, TextDirection direction, SkScalar width) {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.setTextDirection(direction);
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Roboto")});
+        textStyle.setColor(SK_ColorBLACK);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText(text);
+        auto paragraph = builder.Build();
+        paragraph->layout(width);
+        return paragraph;
+    };
+    SkScalar letterWidth = layout("A", TextDirection::kLtr, 1000)->getMaxIntrinsicWidth();
+    SkScalar spaceWidth =
+            layout("A\xC2\xA0", TextDirection::kLtr, 1000)->getMaxIntrinsicWidth() - letterWidth;
+    REPORTER_ASSERT(reporter, spaceWidth > 0);
+    // "A" fits the line, "A" with the no-break space does not
+    SkScalar width = letterWidth + spaceWidth / 2;
+
+    for (auto direction : {TextDirection::kLtr, TextDirection::kRtl}) {
+        auto paragraph = layout("A\xC2\xA0" "B", direction, width);
+        std::vector<LineMetrics> lines;
+        paragraph->getLineMetrics(lines);
+        REPORTER_ASSERT(reporter, lines.size() == 2);
+        for (auto& line : lines) {
+            auto boxes = paragraph->getRectsForRange(line.fStartIndex,
+                                                     line.fEndExcludingWhitespaces,
+                                                     RectHeightStyle::kTight,
+                                                     RectWidthStyle::kTight);
+            SkRect bounds = SkRect::MakeEmpty();
+            for (auto& box : boxes) {
+                bounds.join(box.rect);
+            }
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(bounds.width(), line.fWidth, EPSILON100),
+                            "line %zu: %f != %f",
+                            line.fLineNumber,
+                            bounds.width(),
+                            line.fWidth);
+            REPORTER_ASSERT(reporter, line.fWidth <= width, "%f > %f", line.fWidth, width);
+        }
+    }
+}
+
 // The time to break a word into lines grows with the length of the word, not with its square
 UNIX_ONLY_TEST(SkParagraph_VeryLongWordParagraph, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
