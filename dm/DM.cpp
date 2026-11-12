@@ -51,6 +51,7 @@
 #include <algorithm>
 #include <cstring>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include <stdlib.h>
@@ -1199,6 +1200,33 @@ static SkTaskGroup* gDefinitelyThreadSafeWork = new SkTaskGroup;
 
 // The finest-grained unit of work we can run: draw a single Src into a single Sink,
 // report any errors, and perhaps write out the output: a .png of the bitmap, or a raw stream.
+
+// DO NOT SUBMIT: chromium:492570477 diagnostics
+static void pdf_diag_dump(const SkString& name, SkStreamAsset* data) {
+    if (!strstr(name.c_str(), "mobi_techcrunch") || !data->getLength()) {
+        return;
+    }
+    sk_sp<SkData> blob = SkData::MakeFromStream(data, data->getLength());
+    data->rewind();
+    const char* b = static_cast<const char*>(blob->data());
+    size_t n = blob->size();
+    std::string all(b, n);
+    size_t pos = 0;
+    while ((pos = all.find(" 0 obj", pos)) != std::string::npos) {
+        size_t start = pos;
+        while (start > 0 && all[start - 1] >= '0' && all[start - 1] <= '9') { --start; }
+        size_t end = all.find("endobj", pos);
+        if (end == std::string::npos) { end = n; }
+        SkMD5 h;
+        h.write(b + start, end - start);
+        std::string head = all.substr(start, std::min<size_t>(end - start, 400));
+        for (char& c : head) { if (c < 32 || c > 126) { c = '.'; } }
+        SkDebugf("PDFDIAG %s len=%zu md5=%s head=%s\n", name.c_str(), end - start,
+                 h.finish().toLowercaseHexString().c_str(), head.c_str());
+        pos = end;
+    }
+}
+
 struct Task {
     Task(const TaggedSrc& src, const TaggedSink& sink) : src(src), sink(sink) {}
     const TaggedSrc&  src;
@@ -1243,6 +1271,7 @@ struct Task {
 
                 std::unique_ptr<HashAndEncode> hashAndEncode;
 
+                pdf_diag_dump(name, data);
                 SkString md5;
                 if (!FLAGS_writePath.isEmpty() || !FLAGS_readPath.isEmpty()) {
                     SkMD5 hash;

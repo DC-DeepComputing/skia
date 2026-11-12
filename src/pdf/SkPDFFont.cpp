@@ -303,6 +303,14 @@ const SkAdvancedTypefaceMetrics* SkPDFFont::GetMetrics(const SkTypeface& typefac
         }
     }
     // Fonts are always subset, so always prepend the subset tag.
+    {  // DO NOT SUBMIT: chromium:492570477 diagnostics
+        SkString fam, ps;
+        typeface.getFamilyName(&fam);
+        bool hasPs = typeface.getPostScriptName(&ps);
+        SkDebugf("PDFDIAG font uid=%u type=%d flags=%d ps=%d'%s' family='%s' metricsPs='%s'\n",
+                 typeface.uniqueID(), (int)metrics->fType, (int)metrics->fFlags, hasPs,
+                 ps.c_str(), fam.c_str(), metrics->fPostScriptName.c_str());
+    }
     metrics->fPostScriptName.prepend(canon->nextFontSubsetTag());
     return canon->fTypefaceMetrics.set(id, std::move(metrics))->get();
 }
