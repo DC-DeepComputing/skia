@@ -225,6 +225,26 @@ DEF_TEST(FreeType_GenerateGlyphImageDivergentOutline, reporter) {
 
             REPORTER_ASSERT(reporter, buf.canariesIntact());
             REPORTER_ASSERT(reporter, buf.hasNonZeroPayload() == tc.expectNonZero);
+
+            // Clipping must keep every pixel at its own position: pixels inside the shifted
+            // Ahem square are covered and pixels more than 1 px (LCD filter reach) outside it
+            // stay empty, so a 1x pixel offset applied to the 3x subpixel buffer shows up here
+            const SkIRect ink = SkIRect::MakeXYWH(tc.dxPx, -tc.dyPx, 10, 10);
+            const SkIRect covered = ink.makeInset(1, 1);
+            const SkIRect reach = ink.makeOutset(1, 1);
+            for (int y = 0; y < glyph.height(); ++y) {
+                const auto* row =
+                        reinterpret_cast<const uint16_t*>(buf.data() + y * glyph.rowBytes());
+                for (int x = 0; x < glyph.width(); ++x) {
+                    if (covered.contains(x, y)) {
+                        REPORTER_ASSERT(reporter, row[x] != 0, "vert %d shift (%d, %d) at (%d, %d)",
+                                        doVert, tc.dxPx, tc.dyPx, x, y);
+                    } else if (!reach.contains(x, y)) {
+                        REPORTER_ASSERT(reporter, row[x] == 0, "vert %d shift (%d, %d) at (%d, %d)",
+                                        doVert, tc.dxPx, tc.dyPx, x, y);
+                    }
+                }
+            }
         }
     }
 
