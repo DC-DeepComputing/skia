@@ -546,3 +546,4 @@ DEF_GM( return new CubicPathShaderGM; )
 DEF_GM( return new CubicClosePathGM; )
 DEF_GM( return new ClippedCubicGM; )
 DEF_GM( return new ClippedCubic2GM; )
+
