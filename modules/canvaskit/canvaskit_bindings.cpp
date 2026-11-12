@@ -2558,6 +2558,12 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
     class_<SkShader>("Shader")
             .smart_ptr<sk_sp<SkShader>>("sk_sp<Shader>")
+            .function("_makeWithLocalMatrix",
+                      optional_override([](const SkShader& self,
+                                           WASMPointerF32 mPtr) -> sk_sp<SkShader> {
+                          return self.makeWithLocalMatrix(OptionalMatrix(mPtr));
+                      }),
+                      allow_raw_pointers())
             .class_function(
                     "MakeBlend",
                     select_overload<sk_sp<SkShader>(SkBlendMode, sk_sp<SkShader>, sk_sp<SkShader>)>(

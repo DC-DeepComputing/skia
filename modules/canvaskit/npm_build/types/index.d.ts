@@ -3018,9 +3018,16 @@ export interface RuntimeEffect extends EmbindObject<"RuntimeEffect"> {
 }
 
 /**
- * See SkShader.h for more on this class. The objects are opaque.
+ * See SkShader.h for more on this class.
  */
-export type Shader = EmbindObject<"Shader">;
+export interface Shader extends EmbindObject<"Shader"> {
+    /**
+     * Returns a new shader whose content is transformed by the given local matrix. This
+     * shader is not modified, so it can be reused with different matrices.
+     * @param localMatrix - 3x3 or 4x4 matrix, the same as SkShader::makeWithLocalMatrix.
+     */
+    makeWithLocalMatrix(localMatrix: InputMatrix): Shader;
+}
 
 export interface Surface extends EmbindObject<"Surface"> {
     /**

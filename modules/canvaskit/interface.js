@@ -1105,6 +1105,11 @@ CanvasKit.onRuntimeInitialized = function() {
   CanvasKit.Shader.Blend = CanvasKit.Shader.MakeBlend;
   CanvasKit.Shader.Color = CanvasKit.Shader.MakeColor;
 
+  CanvasKit.Shader.prototype.makeWithLocalMatrix = function(localMatrix) {
+    var localMatrixPtr = copy3x3MatrixToWasm(localMatrix);
+    return this._makeWithLocalMatrix(localMatrixPtr);
+  };
+
   CanvasKit.Shader.MakeLinearGradient = function(start, end, colors, pos, mode, localMatrix, flags, colorSpace) {
     colorSpace = colorSpace || null;
     var cPtrInfo = copyFlexibleColorArray(colors);

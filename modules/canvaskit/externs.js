@@ -777,7 +777,12 @@ var CanvasKit = {
     MakeTurbulence: function() {},
     MakeTwoPointConicalGradient: function() {},
 
+    prototype: {
+      makeWithLocalMatrix: function() {},
+    },
+
     // private API (from C++ bindings)
+    _makeWithLocalMatrix: function() {},
     _MakeColor: function() {},
     _MakeLinearGradient: function() {},
     _MakeRadialGradient: function() {},

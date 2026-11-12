@@ -896,6 +896,8 @@ function shaderTests(CK: CanvasKit) {
     );
     const s12 = CK.Shader.MakeFractalNoise(0.1, 0.05, 2, 0, 80, 80); // $ExpectType Shader
     const s13 = CK.Shader.MakeTurbulence(0.1, 0.05, 2, 0, 80, 80); // $ExpectType Shader
+    const s14 = s4.makeWithLocalMatrix(CK.Matrix.scaled(2, 3)); // $ExpectType Shader
+    const s15 = s4.makeWithLocalMatrix(CK.M44.translated([10, 20, 0])); // $ExpectType Shader
 }
 
 function surfaceTests(CK: CanvasKit, gl?: WebGLRenderingContext) {

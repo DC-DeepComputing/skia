@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    soft hyphen (U+00AD). Defaults to false.
  - `ParagraphStyle.softHyphenString` sets the string drawn at those line breaks.
    Defaults to "-". An empty string draws nothing.
+ - `Shader.makeWithLocalMatrix` returns a new shader that applies a local matrix to this one,
+   so one shader can be fitted to different bounds without being rebuilt.
 
 ## [0.42.0] - 2026-08-18
 
