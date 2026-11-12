@@ -15,8 +15,10 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
+#include <memory>
 
 class SkStream;
+class SkStreamAsset;
 
 /**
  *  SkData holds a data buffer. It can be created to allocate its own buffer
@@ -184,6 +186,14 @@ public:
      *  of calling read().
      */
     static sk_sp<SkData> MakeFromStream(SkStream*, size_t size);
+
+    /**
+     *  Returns the entire contents of the asset, independent of its current position.
+     *  Shares the asset's memory without copying when it exposes getData() or
+     *  getMemoryBase(); the returned data then keeps the asset alive. Otherwise rewinds
+     *  and copies. Returns nullptr if the asset is null or cannot be read.
+     */
+    static sk_sp<const SkData> MakeFromStreamAsset(std::unique_ptr<SkStreamAsset>);
 
     /**
      *  DEPRECATED variant of src->shareSubset(offset, length)
