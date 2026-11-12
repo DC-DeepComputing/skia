@@ -50,6 +50,7 @@
 
 #include <string.h>
 #include <algorithm>
+#include <atomic>
 #include <chrono>
 #include <limits>
 #include <memory>
@@ -12300,6 +12301,35 @@ DEF_TEST(SkParagraph_FallbackCacheConcurrently, reporter) {
     for (int count : mismatches) {
         REPORTER_ASSERT(reporter, count == 0);
     }
+}
+
+// Paragraphs that share one FontCollection must lay out in parallel, with the ParagraphCache on
+// Uses the default test font manager so it also runs on sanitizer bots without --paragraph_fonts
+DEF_TEST(SkParagraph_ParagraphCacheConcurrently, reporter) {
+    constexpr int kThreadCount = 8;
+    constexpr int kRounds = 20;
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    const SkScalar expectedWidth = layoutWith(fontCollection, "Hello")->getMaxIntrinsicWidth();
+    REPORTER_ASSERT(reporter, expectedWidth > 0);
+
+    std::atomic<int> mismatches = 0;
+    auto executor = SkFunctionalExecutors::MakeFIFOThreadPool(kThreadCount, false);
+    SkTaskGroup tasks(*executor);
+    for (int thread = 0; thread < kThreadCount; ++thread) {
+        tasks.add([&, thread] {
+            for (int round = 0; round < kRounds; ++round) {
+                // Same text hits the cache, unique text misses it and adds an entry
+                SkString unique = SkStringPrintf("Text %d %d", thread, round);
+                layoutWith(fontCollection, unique.c_str());
+                if (layoutWith(fontCollection, "Hello")->getMaxIntrinsicWidth() != expectedWidth) {
+                    ++mismatches;
+                }
+            }
+        });
+    }
+    tasks.wait();
+    REPORTER_ASSERT(reporter, mismatches == 0);
 }
 
 // Changing how fonts are resolved must not leave typefaces or paragraphs cached from before
