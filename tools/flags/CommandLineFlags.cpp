@@ -5,9 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "tools/flags/CommandLineFlags.h"
+
+#include "include/core/SkSpan.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkTSort.h"
-#include "tools/flags/CommandLineFlags.h"
 
 #include <stdlib.h>
 
@@ -58,9 +60,9 @@ void SkFlagInfo::SetDefaultStrings(CommandLineFlags::StringArray* pStrings,
     }
 }
 
-static bool string_is_in(const char* target, const char* set[], size_t len) {
-    for (size_t i = 0; i < len; i++) {
-        if (0 == strcmp(target, set[i])) {
+static bool string_is_in(const char* target, SkSpan<const char* const> set) {
+    for (const char* s : set) {
+        if (0 == strcmp(target, s)) {
             return true;
         }
     }
@@ -76,12 +78,12 @@ static bool string_is_in(const char* target, const char* set[], size_t len) {
  */
 static bool parse_bool_arg(const char* string, bool* result) {
     static const char* trueValues[] = {"1", "TRUE", "true"};
-    if (string_is_in(string, trueValues, std::size(trueValues))) {
+    if (string_is_in(string, trueValues)) {
         *result = true;
         return true;
     }
     static const char* falseValues[] = {"0", "FALSE", "false"};
-    if (string_is_in(string, falseValues, std::size(falseValues))) {
+    if (string_is_in(string, falseValues)) {
         *result = false;
         return true;
     }

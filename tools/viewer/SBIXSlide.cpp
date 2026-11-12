@@ -10,6 +10,7 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkGraphics.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkTime.h"
@@ -409,7 +410,10 @@ private:
         }
 
         int numberOfFullMetrics = SkEndian_SwapBE16(hheaTable->numberOfHMetrics);
-        SkOTTableHorizontalMetrics::FullMetric* fullMetrics = hmtxTable->longHorMetric;
+        // TODO(crbug.com/582862856): longHorMetric is a [1] flexible-array member; its real length
+        // is hhea::numberOfHMetrics, which is not yet validated against the hmtx table size.
+        SkSpan<SkOTTableHorizontalMetrics::FullMetric> fullMetrics = SK_UNSAFE_TODO(
+                SkSpan(hmtxTable->longHorMetric, numberOfFullMetrics));
         SK_OT_SHORT lsb = SkEndian_SwapBE16(sk_float_saturate2int16(fPts[kGlyfLSB].location.x()*toEm));
         if (kGlyphID < numberOfFullMetrics) {
             if (setPts) {
@@ -419,7 +423,8 @@ private:
             }
         } else {
             SkOTTableHorizontalMetrics::ShortMetric* shortMetrics =
-                    SkTAfter<SkOTTableHorizontalMetrics::ShortMetric>(fullMetrics, numberOfFullMetrics);
+                    SkTAfter<SkOTTableHorizontalMetrics::ShortMetric>(fullMetrics.data(),
+                                                                      numberOfFullMetrics);
             int shortMetricIndex = kGlyphID - numberOfFullMetrics;
             if (setPts) {
                 fPts[kGlyfLSB].location.fX = (int16_t)SkEndian_SwapBE16(shortMetrics[shortMetricIndex].lsb) / toEm;
