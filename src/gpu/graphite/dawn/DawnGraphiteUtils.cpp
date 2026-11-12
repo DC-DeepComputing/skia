@@ -18,8 +18,13 @@
 #include "src/core/SkContextPriv.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/TextureFormat.h"
+#include "src/gpu/graphite/dawn/DawnAsyncWait.h"
 #include "src/gpu/graphite/dawn/DawnQueueManager.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
+
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
+#include <emscripten/version.h>
+#endif
 
 using namespace skia_private;
 
@@ -87,6 +92,11 @@ public:
                 fFormatFeatures[(int) DawnFormatToTextureFormat(format)];
         SkEnumBitMask<DawnFormatFlag> supported;
         for (const ExtensionLimitedFlags& featureSet : features) {
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
+            if (featureSet.first == wgpu::FeatureName::Undefined) {
+                continue;
+            }
+#endif
             if (!featureSet.first.has_value() || device.HasFeature(*featureSet.first)) {
                 supported |= featureSet.second;
             }
@@ -134,9 +144,19 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
     // Alias some commonly used feature names
     using F = wgpu::FeatureName;
     static constexpr std::optional<F> Compat = std::nullopt; // The baseline
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
+    // The legacy bindings only expose core WebGPU, and cannot query these newer features.
+    // Undefined marks an unavailable feature, distinct from nullopt (unconditional support).
+    static constexpr std::optional<F> Core = std::nullopt;
+    static constexpr F Tier1 = F::Undefined;
+    static constexpr F Tier2 = F::Undefined;
+    static constexpr F Float32Blendable = F::Undefined;
+#else
     static constexpr F Core = F::CoreFeaturesAndLimits;
     static constexpr F Tier1 = F::TextureFormatsTier1;
     static constexpr F Tier2 = F::TextureFormatsTier2;
+    static constexpr F Float32Blendable = F::Float32Blendable;
+#endif
 
     // To read this table with the HTML table in the links below, each format corresponds to a row
     // in the original document. For a format, the first extension listed is the "Required feature"
@@ -147,6 +167,7 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
     // includes "float". The other sample types ("unfilterable-float", "uint", and "sint") are
     // implicitly defined by the data type of the format, having "filterable-float" capabilities is
     // the bit we care about.
+    // clang-format off
     static const DawnFormatCapabilityMap kSingleton{{
         // Plain color formats: https://gpuweb.github.io/gpuweb/#plain-color-formats
         // 8 bits per component
@@ -203,9 +224,11 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
         {BGRA8UnormSrgb, {Core   >> Filter | Render | Blend | MSAA | Resolve}},
 
         // 16 bits per component
+#if !defined(__EMSCRIPTEN__) || defined(SK_USE_EMDAWNWEBGPU)
         {R16Unorm,       {Tier1  >> Render | Blend | MSAA | WriteOnly | ReadOnly}},
 
         {R16Snorm,       {Tier1  >> Render | Blend | MSAA | WriteOnly | ReadOnly}},
+#endif
 
         {R16Uint,        {Compat >> Render,
                           Core   >> MSAA,
@@ -221,9 +244,11 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
                           Tier1  >> WriteOnly | ReadOnly,
                           Tier2  >> ReadWrite}},
 
+#if !defined(__EMSCRIPTEN__) || defined(SK_USE_EMDAWNWEBGPU)
         {RG16Unorm,      {Tier1 >> Render | Blend | MSAA | WriteOnly | ReadOnly}},
 
         {RG16Snorm,      {Tier1 >> Render | Blend | MSAA | WriteOnly | ReadOnly}},
+#endif
 
         {RG16Uint,       {Compat >> Render,
                           Core   >> MSAA,
@@ -236,9 +261,11 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
         {RG16Float,      {Compat >> Filter | Render | Blend | MSAA | Resolve,
                           Tier1  >> WriteOnly | ReadOnly}},
 
+#if !defined(__EMSCRIPTEN__) || defined(SK_USE_EMDAWNWEBGPU)
         {RGBA16Unorm,    {Tier1  >> Render | Blend | MSAA | WriteOnly | ReadOnly}},
 
         {RGBA16Snorm,    {Tier1  >> Render | Blend | MSAA | WriteOnly | ReadOnly}},
+#endif
 
         {RGBA16Uint,     {Compat >> Render | WriteOnly | ReadOnly,
                           Core   >> MSAA,
@@ -260,7 +287,7 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
         {R32Float,       {Compat >> Render | WriteOnly | ReadOnly | ReadWrite,
                           Core   >> MSAA,
                           F::Float32Filterable >> Filter,
-                          F::Float32Blendable  >> Blend}},
+                          Float32Blendable >> Blend}},
 
         {RG32Uint,       {Compat >> Render,
                           Core   >> WriteOnly | ReadOnly}},
@@ -271,7 +298,7 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
         {RG32Float,      {Compat >> Render,
                           Core   >> WriteOnly | ReadOnly,
                           F::Float32Filterable >> Filter,
-                          F::Float32Blendable  >>  Blend}},
+                          Float32Blendable >> Blend}},
 
         {RGBA32Uint,     {Compat >> Render | WriteOnly | ReadOnly,
                           Tier2  >> ReadWrite}},
@@ -282,7 +309,7 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
         {RGBA32Float,    {Compat >> Render|  WriteOnly | ReadOnly,
                           Tier2  >> ReadWrite,
                           F::Float32Filterable >> Filter,
-                          F::Float32Blendable  >> Blend}},
+                          Float32Blendable >> Blend}},
 
         // mixed component width, 32 bits per texel
         {RGB10A2Uint,    {Compat >> Render,
@@ -332,6 +359,7 @@ const DawnFormatCapabilityMap& DawnFormatCapabilityMap::Get() {
         {OpaqueYCbCrAndroid,          {F::YCbCrVulkanSamplers >> Filter}},
 #endif
     }};
+    // clang-format on
     return kSingleton;
 }
 
@@ -344,14 +372,13 @@ SkEnumBitMask<DawnFormatFlag> DawnTextureFormatSupport(wgpu::Device device,
 
 // *** Ground truth bidirectional map between TextureFormat and wgpu::TextureFormat ***
 
+// clang-format off
 #define DAWN_FORMAT_MAPPING(M) \
         M(TextureFormat::kR8,             wgpu::TextureFormat::R8Unorm)                     \
-        M(TextureFormat::kR16,            wgpu::TextureFormat::R16Unorm)                    \
         M(TextureFormat::kR16F,           wgpu::TextureFormat::R16Float)                    \
         M(TextureFormat::kR32F,           wgpu::TextureFormat::R32Float)                    \
         /*TextureFormat::kA8,             unsupported */                                    \
         M(TextureFormat::kRG8,            wgpu::TextureFormat::RG8Unorm)                    \
-        M(TextureFormat::kRG16,           wgpu::TextureFormat::RG16Unorm)                   \
         M(TextureFormat::kRG16F,          wgpu::TextureFormat::RG16Float)                   \
         M(TextureFormat::kRG32F,          wgpu::TextureFormat::RG32Float)                   \
         /*TextureFormat::kRGB8,           unsupported */                                    \
@@ -364,7 +391,6 @@ SkEnumBitMask<DawnFormatFlag> DawnTextureFormatSupport(wgpu::Device device,
         /*TextureFormat::kRGB8_sRGB,      unsupported */                                    \
         /*TextureFormat::kBGR10_XR,       unsupported */                                    \
         M(TextureFormat::kRGBA8,          wgpu::TextureFormat::RGBA8Unorm)                  \
-        M(TextureFormat::kRGBA16,         wgpu::TextureFormat::RGBA16Unorm)                 \
         M(TextureFormat::kRGBA16F,        wgpu::TextureFormat::RGBA16Float)                 \
         M(TextureFormat::kRGBA32F,        wgpu::TextureFormat::RGBA32Float)                 \
         M(TextureFormat::kRGB10_A2,       wgpu::TextureFormat::RGB10A2Unorm)                \
@@ -395,7 +421,17 @@ SkEnumBitMask<DawnFormatFlag> DawnTextureFormatSupport(wgpu::Device device,
         M(TextureFormat::kD16,            wgpu::TextureFormat::Depth16Unorm)                \
         M(TextureFormat::kD32F,           wgpu::TextureFormat::Depth32Float)                \
         M(TextureFormat::kD24_S8,         wgpu::TextureFormat::Depth24PlusStencil8)         \
-        M(TextureFormat::kD32F_S8,        wgpu::TextureFormat::Depth32FloatStencil8)        \
+        M(TextureFormat::kD32F_S8,        wgpu::TextureFormat::Depth32FloatStencil8)
+// clang-format on
+
+#if !defined(__EMSCRIPTEN__) || defined(SK_USE_EMDAWNWEBGPU)
+#define DAWN_FORMAT_MAPPING_MODERN_ONLY(M)                  \
+    M(TextureFormat::kR16, wgpu::TextureFormat::R16Unorm)   \
+    M(TextureFormat::kRG16, wgpu::TextureFormat::RG16Unorm) \
+    M(TextureFormat::kRGBA16, wgpu::TextureFormat::RGBA16Unorm)
+#else
+#define DAWN_FORMAT_MAPPING_MODERN_ONLY(M)
+#endif
 
 #if !defined(__EMSCRIPTEN__)
 #define DAWN_FORMAT_MAPPING_NATIVE_ONLY(M) \
@@ -414,6 +450,7 @@ TextureFormat DawnFormatToTextureFormat(wgpu::TextureFormat format) {
 #define M(TF, WGPU) case WGPU: return TF;
     switch(format) {
         DAWN_FORMAT_MAPPING(M)
+        DAWN_FORMAT_MAPPING_MODERN_ONLY(M)
         DAWN_FORMAT_MAPPING_NATIVE_ONLY(M)
         default: return TextureFormat::kUnsupported;
     }
@@ -423,6 +460,7 @@ wgpu::TextureFormat TextureFormatToDawnFormat(TextureFormat format) {
 #define M(TF, WGPU) case TF: return WGPU;
     switch(format) {
         DAWN_FORMAT_MAPPING(M)
+        DAWN_FORMAT_MAPPING_MODERN_ONLY(M)
         DAWN_FORMAT_MAPPING_NATIVE_ONLY(M)
         default: return wgpu::TextureFormat::Undefined;
     }
@@ -433,11 +471,17 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
                                 wgpu::ShaderModule* module,
                                 const char* shaderText,
                                 ShaderErrorHandler* errorHandler) {
+#if defined(__EMSCRIPTEN__)
+    // Compilation info is asynchronous in browsers. A non-yielding client cannot wait here,
+    // and the callback must not outlive the stack-allocated handler.
+    if (!sharedContext->hasTick()) {
+        return true;
+    }
+#endif
     // Prior to emsdk 3.1.51 wgpu::ShaderModule::GetCompilationInfo is unimplemented.
-#if defined(__EMSCRIPTEN__)                                      &&  \
-        ((__EMSCRIPTEN_major__ <  3                               || \
-         (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ <  1) || \
-         (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ == 1 && __EMSCRIPTEN_tiny__ < 51)))
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU) &&                                  \
+        ((__EMSCRIPTEN_major__ < 3 || (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ < 1) || \
+          (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ == 1 && __EMSCRIPTEN_tiny__ < 51)))
     return true;
 #else
     struct Handler {
@@ -463,7 +507,11 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
                 std::string errors;
                 for (size_t index = 0; index < info->messageCount; ++index) {
                     const WGPUCompilationMessage& entry = SK_UNSAFE_TODO(info->messages[index]);
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
+                    std::string messageString(entry.message);
+#else
                     std::string messageString(entry.message.data, entry.message.length);
+#endif
                     errors += "line " + std::to_string(entry.lineNum) + ':' +
                               std::to_string(entry.linePos) + ' ' + messageString + '\n';
                 }
@@ -475,14 +523,42 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
         const char* fShaderText;
         ShaderErrorHandler* fErrorHandler;
         bool fSuccess = false;
+#if defined(__EMSCRIPTEN__)
+        DawnAsyncWait* fWait;
+#endif
     };
 
     Handler handler;
     handler.fShaderText = shaderText;
     handler.fErrorHandler = errorHandler;
 #if defined(__EMSCRIPTEN__)
+    DawnAsyncWait wait(sharedContext);
+    handler.fWait = &wait;
+#if defined(SK_USE_EMDAWNWEBGPU)
+    module->GetCompilationInfo(
+            wgpu::CallbackMode::AllowSpontaneous,
+            [](wgpu::CompilationInfoRequestStatus status,
+               const wgpu::CompilationInfo* info,
+               Handler* handler) {
+                Handler::Fn(static_cast<WGPUCompilationInfoRequestStatus>(status),
+                            reinterpret_cast<const WGPUCompilationInfo*>(info),
+                            handler);
+                handler->fWait->signal();
+            },
+            &handler);
+#else
     // Deprecated function.
-    module->GetCompilationInfo(&Handler::Fn, &handler);
+    module->GetCompilationInfo(
+            [](WGPUCompilationInfoRequestStatus status,
+               const WGPUCompilationInfo* info,
+               void* userdata) {
+                Handler* handler = static_cast<Handler*>(userdata);
+                Handler::Fn(status, info, handler);
+                handler->fWait->signal();
+            },
+            &handler);
+#endif
+    wait.busyWait();
 #else
     // New API.
     wgpu::FutureWaitInfo waitInfo{};
@@ -510,7 +586,7 @@ bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
                                  const SkSL::NativeShader& wgsl,
                                  wgpu::ShaderModule* module,
                                  ShaderErrorHandler* errorHandler) {
-#if defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
     wgpu::ShaderModuleWGSLDescriptor wgslDesc;
 #else
     wgpu::ShaderSourceWGSL wgslDesc;
