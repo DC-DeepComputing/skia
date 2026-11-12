@@ -40,6 +40,7 @@
 #endif
 
 #include <algorithm>
+#include <array>
 #include <climits>
 #include <cmath>
 #include <cstdint>
@@ -488,4 +489,56 @@ DEF_TEST_SCANNERS(FontMgrAndroidSystemFallbackFor, reporter) {
         "sans-serif", SkFontStyle(), nullptr, 0, '!'));
 
     REPORTER_ASSERT(reporter, typeface->fontStyle() == SkFontStyle::Bold());
+}
+
+// Language matching in matchFamilyStyleCharacter compares whole BCP 47 subtags, and an "und-Xxxx"
+// family serves any language written in script Xxxx. A bare "und" carries no language, so it must
+// not pick the first "und-*" family; "ko" must not match "kok"
+DEF_TEST_SCANNERS(FontMgrAndroidMatchCharacterLanguage, reporter) {
+    SkString basePath = GetResourcePath("fonts/");
+    SkString fontsXml = GetResourcePath("android_fonts/lang/fonts.xml");
+    if (!sk_exists(fontsXml.c_str())) {
+        ERRORF(reporter, "file missing: %s\n", fontsXml.c_str());
+        return;
+    }
+
+    SkFontMgr_Android_CustomFonts custom;
+    custom.fSystemFontUse = SkFontMgr_Android_CustomFonts::kOnlyCustom;
+    custom.fBasePath = basePath.c_str();
+    custom.fFontsXml = fontsXml.c_str();
+    custom.fFallbackFontsXml = nullptr;
+    custom.fIsolated = false;
+    sk_sp<SkFontMgr> fontMgr(SkFontMgr_New_Android(&custom, std::move(fs)));
+
+    struct Case {
+        std::vector<const char*> bcp47;
+        const char* expectedFont;
+    };
+    // Not const: matchFamilyStyleCharacter takes a non-const array of tags
+    std::array<Case, 6> kCases = {{
+            {{"und-Arab"}, "hintgasp"},
+            {{"zh"}, "ReallyBigA"},
+            {{"km-Khmr"}, "ReallyBigA"},
+            {{"km-khmr"}, "ReallyBigA"},
+            {{"ja", "und-Latn"}, "ReallyBigA"},
+            {{"ko"}, "ReallyBigA"},
+    }};
+    for (Case& c : kCases) {
+        sk_sp<SkTypeface> typeface(fontMgr->matchFamilyStyleCharacter(
+                nullptr, SkFontStyle(), c.bcp47.data(), SkToInt(c.bcp47.size()), 'A'));
+        if (!typeface) {
+            ERRORF(reporter, "%s: no typeface", c.bcp47.back());
+            continue;
+        }
+        // Unnamed fallback families get synthetic family names, so identify the font file
+        SkString psName;
+        typeface->getPostScriptName(&psName);
+        if (!psName.equals(c.expectedFont)) {
+            ERRORF(reporter,
+                   "%s: expected %s, got %s",
+                   c.bcp47.back(),
+                   c.expectedFont,
+                   psName.c_str());
+        }
+    }
 }

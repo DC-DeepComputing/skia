@@ -32,6 +32,7 @@
 #include <algorithm>
 #include <array>
 #include <limits>
+#include <string_view>
 
 using namespace skia_private;
 
@@ -237,6 +238,57 @@ struct NameToFamily {
     raw_ptr<SkFontStyleSet_Android> styleSet;
 };
 
+// Language, script and region subtags of a BCP 47 tag; "und" is an empty language. Variants and
+// extensions are ignored since no known fonts.xml uses them
+struct LangSubtags {
+    std::string_view language, script, region;
+};
+
+static bool ascii_equal_icase(std::string_view a, std::string_view b) {
+    auto lower = [](char c) { return ('A' <= c && c <= 'Z') ? char(c + ('a' - 'A')) : c; };
+    return std::equal(a.begin(), a.end(), b.begin(), b.end(), [&](char x, char y) {
+        return lower(x) == lower(y);
+    });
+}
+
+static LangSubtags parse_lang_subtags(std::string_view tag) {
+    auto next = [&tag]() {
+        size_t end = tag.find('-');
+        std::string_view subtag = tag.substr(0, end);
+        tag = end == std::string_view::npos ? std::string_view() : tag.substr(end + 1);
+        return subtag;
+    };
+    LangSubtags subtags;
+    subtags.language = next();
+    if (ascii_equal_icase(subtags.language, "und")) {
+        subtags.language = {};
+    }
+    std::string_view subtag = next();
+    // Scripts have 4 letters, regions 2 letters or 3 digits ("zh-TW" has no script)
+    if (subtag.size() == 4) {
+        subtags.script = subtag;
+        subtag = next();
+    }
+    if (subtag.size() == 2 || subtag.size() == 3) {
+        subtags.region = subtag;
+    }
+    return subtags;
+}
+
+// Compares subtag by subtag, so "ko" does not match "kok". Empty request subtags match anything,
+// and AOSP "und-Xxxx" families serve every language in script Xxxx. A bare "und" names neither
+// language nor script, so it prefers no family
+static bool family_serves_language(const LangSubtags& family, const LangSubtags& request) {
+    if (request.language.empty() && request.script.empty()) {
+        return false;
+    }
+    bool scriptOnlyFamily = family.language.empty() && !family.script.empty();
+    return (request.language.empty() || ascii_equal_icase(request.language, family.language) ||
+            (scriptOnlyFamily && ascii_equal_icase(request.script, family.script))) &&
+           (request.script.empty() || ascii_equal_icase(request.script, family.script)) &&
+           (request.region.empty() || ascii_equal_icase(request.region, family.region));
+}
+
 class SkFontMgr_Android : public SkFontMgr {
 public:
     SkFontMgr_Android(const SkFontMgr_Android_CustomFonts* custom,
@@ -318,6 +370,7 @@ protected:
             const SkString& langTag, SkUnichar character,
             Matcher matcher)
     {
+        const LangSubtags request = parse_lang_subtags({langTag.c_str(), langTag.size()});
         for (auto&& nameToFamily : nameToFamilyMap) {
             if (!matcher(familyName, nameToFamily)) {
                 continue;
@@ -325,10 +378,11 @@ protected:
             sk_sp<SkTypeface_AndroidSystem> face(nameToFamily.styleSet->matchAStyle(style));
 
             if (!langTag.isEmpty() &&
-                std::none_of(face->fLang.begin(), face->fLang.end(), [&](const SkLanguage& lang){
-                    return lang.getTag().startsWith(langTag.c_str());
-                }))
-            {
+                std::none_of(face->fLang.begin(), face->fLang.end(), [&](const SkLanguage& lang) {
+                    const SkString& tag = lang.getTag();
+                    return family_serves_language(parse_lang_subtags({tag.c_str(), tag.size()}),
+                                                  request);
+                })) {
                 continue;
             }
 
