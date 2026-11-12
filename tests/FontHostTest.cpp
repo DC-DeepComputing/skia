@@ -5,14 +5,23 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkFontArguments.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontTypes.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkSurface.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
@@ -23,6 +32,10 @@
 #include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/fonts/FontToolUtils.h"
+
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
+#include "src/ports/SkTypeface_FreeType.h"
+#endif
 
 #include <array>
 #include <cstdint>
@@ -291,5 +304,43 @@ DEF_TEST(FontHost, reporter) {
     test_advances(reporter);
     test_symbolfont(reporter);
 }
+
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
+// COLRv0 layers are outlines filled into an ARGB32 glyph image, so they must stay anti-aliased for
+// every non-mono FreeType load target. Full hinting with an LCD rec picks FT_LOAD_TARGET_LCD,
+// whose bits overlap FT_LOAD_TARGET_MONO
+DEF_TEST(FontHost_FreeType_COLRv0AntiAliasedWithLCDTarget, reporter) {
+    sk_sp<SkTypeface> typeface = SkTypeface_FreeType::MakeFromStream(
+            GetResourceAsStream("fonts/colr.ttf"), SkFontArguments());
+    if (!typeface) {
+        return;
+    }
+    SkFont font(typeface, 40);
+    font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
+    font.setHinting(SkFontHinting::kFull);
+    const SkGlyphID glyph = font.unicharToGlyph(0x1F600);
+    REPORTER_ASSERT(reporter, glyph != 0);
+
+    const SkSurfaceProps props(0, kRGB_H_SkPixelGeometry);
+    sk_sp<SkSurface> surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(64, 64), &props);
+    REPORTER_ASSERT(reporter, surface);
+    const SkPoint origin = {10, 50};
+    surface->getCanvas()->drawGlyphs({&glyph, 1}, {&origin, 1}, {0, 0}, font, SkPaint());
+
+    SkPixmap pixmap;
+    REPORTER_ASSERT(reporter, surface->peekPixels(&pixmap));
+    int opaque = 0;
+    int partial = 0;
+    for (int y = 0; y < pixmap.height(); ++y) {
+        for (int x = 0; x < pixmap.width(); ++x) {
+            const SkAlpha alpha = SkColorGetA(pixmap.getColor(x, y));
+            opaque += alpha == 0xFF;
+            partial += alpha != 0 && alpha != 0xFF;
+        }
+    }
+    REPORTER_ASSERT(reporter, opaque > 0, "opaque %d", opaque);
+    REPORTER_ASSERT(reporter, partial > 0, "partial %d opaque %d", partial, opaque);
+}
+#endif
 
 // need tests for SkStrSearch
