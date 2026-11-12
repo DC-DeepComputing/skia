@@ -13204,3 +13204,67 @@ DEF_TEST(SkParagraph_EllipsisAfterHardLineBreak, reporter) {
     }
 #endif
 }
+
+// Every emoji in a run of system-fallback emoji must get a visible glyph, including those before
+// a text-default emoji with VS16. The primary font has no emoji, so each one goes through the
+// native font manager fallback (DirectWrite on Windows NativeFonts bots)
+DEF_TEST(SkParagraph_SystemEmojiFallbackDrawsEveryEmoji, reporter) {
+    sk_sp<SkFontMgr> fontMgr = ToolUtils::TestFontMgr();
+    const char* emojiLocale[] = {"und-Zsye"};
+    sk_sp<SkTypeface> emojiFace =
+            fontMgr->matchFamilyStyleCharacter(nullptr, SkFontStyle(), emojiLocale, 1, 0x1F600);
+    sk_sp<SkTypeface> roboto =
+            fontMgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), 0);
+    if (!emojiFace || emojiFace->unicharToGlyph(0x1F600) == 0 || !roboto) {
+        return;  // No system emoji font to fall back to, or the portable font manager
+    }
+
+    auto fontProvider = sk_make_sp<TypefaceFontProvider>();
+    fontProvider->registerTypeface(roboto, SkString("Roboto"));
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setAssetFontManager(fontProvider);
+    fontCollection->setDefaultFontManager(fontMgr);
+
+    const char* text = "😀 😃 😄 😁 😆 😅 😂 ☺️ 😇 😍";
+    ParagraphStyle paragraphStyle;
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    TextStyle textStyle;
+    textStyle.setFontFamilies({SkString("Roboto")});
+    textStyle.setFontSize(20);
+    builder.pushStyle(textStyle);
+    builder.addText(text);
+    auto paragraph = builder.Build();
+    paragraph->layout(10000);
+
+    std::vector<uint32_t> emojiStarts;
+    const char* ptr = text;
+    const char* end = text + strlen(text);
+    while (ptr < end) {
+        uint32_t start = SkToU32(ptr - text);
+        SkUnichar unichar = SkUTF::NextUTF8(&ptr, end);
+        if (unichar != ' ' && unichar != 0xFE0F) {
+            emojiStarts.push_back(start);
+        }
+    }
+
+    std::vector<uint32_t> visibleStarts;
+    paragraph->visit([&](int, const Paragraph::VisitorInfo* info) {
+        if (!info) {
+            return;
+        }
+        for (int i = 0; i < info->count; ++i) {
+            SkRect bounds;
+            info->font.getBounds({&info->glyphs[i], 1}, {&bounds, 1}, nullptr);
+            if (info->glyphs[i] != 0 && !bounds.isEmpty()) {
+                visibleStarts.push_back(info->utf8Starts[i]);
+            }
+        }
+    });
+    REPORTER_ASSERT(reporter, paragraph->lineNumber() == 1);
+    REPORTER_ASSERT(reporter, emojiStarts.size() == 10);
+    for (uint32_t start : emojiStarts) {
+        bool visible = std::find(visibleStarts.begin(), visibleStarts.end(), start) !=
+                       visibleStarts.end();
+        REPORTER_ASSERT(reporter, visible, "emoji at utf8 offset %u is not drawn", start);
+    }
+}
