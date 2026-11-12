@@ -100,6 +100,8 @@ static bool preprocess_webp_picture(WebPPicture* pic,
         const SkPixmap* src = &pixmap;
         if (ct == kRGB_888x_SkColorType) {
             importProc = WebPPictureImportRGBX;
+        } else if (ct == kBGR_888x_SkColorType) {
+            importProc = WebPPictureImportBGRX;
         } else if (!premul && ct == kRGBA_8888_SkColorType) {
             importProc = WebPPictureImportRGBA;
         }

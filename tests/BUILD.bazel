@@ -76,6 +76,7 @@ filegroup(
         "AsADashTest.cpp",
         "AvifTest.cpp",
         "BadIcoTest.cpp",
+        "BGR888xTest.cpp",
         "BezierCurveTest.cpp",
         "BigImageTest.cpp",
         "BitmapCopyTest.cpp",

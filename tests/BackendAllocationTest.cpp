@@ -645,6 +645,8 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
         { kR16G16_float_SkColorType,      { .25f, .75f, 0, 1 }     },
         { kR16G16B16A16_unorm_SkColorType,{ .25f, .5f, .75f, 1 }   },
         { kR8_unorm_SkColorType,          { .25f, 0, 0, 1 }        },
+        // The 0.5 alpha should be ignored and read back as 1.
+        { kBGR_888x_SkColorType,          { 0.25f, 0.5f, 0.75f, 0.5f }},
     };
 
     static_assert(kLastEnum_SkColorType == std::size(combinations));
@@ -678,6 +680,7 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
 
                 if (GrRenderable::kYes == renderable) {
                     if (kRGB_888x_SkColorType == combo.fColorType ||
+                        kBGR_888x_SkColorType == combo.fColorType ||
                         kRGB_F16F16F16x_SkColorType == combo.fColorType ||
                         kRGB_101010x_SkColorType == combo.fColorType) {
                         // Ganesh can't perform the blends correctly when rendering this format
@@ -832,6 +835,9 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLBackendAllocationTest,
 
         { GrColorType::kBGRA_8888,        GR_GL_RGBA8,                SkColors::kBlue      },
         { GrColorType::kBGRA_8888,        GR_GL_BGRA8,                SkColors::kBlue      },
+
+        { GrColorType::kBGR_888x,         GR_GL_RGBA8,                { 1, 0.5f, 0, 1 }    },
+        { GrColorType::kBGR_888x,         GR_GL_BGRA8,                { 1, 0.5f, 0, 1 }    },
         // TODO: readback is busted when alpha = 0.5f (perhaps premul vs. unpremul)
         { GrColorType::kRGBA_1010102,     GR_GL_RGB10_A2,             { 0.25f, 0.5f, 0.75f, 1.f }},
         { GrColorType::kBGRA_1010102,     GR_GL_RGB10_A2,             { 0.25f, 0.5f, 0.75f, 1.f }},
@@ -875,6 +881,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLBackendAllocationTest,
             }
 
             if (GrColorType::kBGRA_8888 == combo.fColorType ||
+                GrColorType::kBGR_888x == combo.fColorType ||
                 GrColorType::kBGRA_1010102 == combo.fColorType) {
                 // We allow using a GL_RGBA8 or GR_GL_RGB10_A2 texture as BGRA on desktop GL but not
                 // ES
@@ -997,6 +1004,10 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest,
         { GrColorType::kRGB_888x,         VK_FORMAT_R8G8B8_UNORM,             SkColors::kCyan     },
 
         { GrColorType::kBGRA_8888,        VK_FORMAT_B8G8R8A8_UNORM,           SkColors::kBlue     },
+
+        // As with RGB_888x/RGBA8 above, clients must provide an opaque initialization color.
+        { GrColorType::kBGR_888x,         VK_FORMAT_B8G8R8A8_UNORM,           { 1, 0.5f, 0, 1 }   },
+        { GrColorType::kRGB_888x,         VK_FORMAT_B8G8R8A8_UNORM,           { 0, 0.5f, 1, 1 }   },
 
         { GrColorType::kRGBA_1010102,     VK_FORMAT_A2B10G10R10_UNORM_PACK32,
                                                                       { 0.25f, 0.5f, 0.75f, 1.0f }},
