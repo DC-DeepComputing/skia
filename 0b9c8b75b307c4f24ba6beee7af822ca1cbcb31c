@@ -16,6 +16,23 @@
       "message": "Not sure if it matters, but this is what I did for Tizen builds and it works. So +1 I suppose?",
       "revId": "0b9c8b75b307c4f24ba6beee7af822ca1cbcb31c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b9f8dca_0a057151",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2026-11-12T19:21:32Z",
+      "side": 1,
+      "message": "What do you think about",
+      "revId": "0b9c8b75b307c4f24ba6beee7af822ca1cbcb31c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
