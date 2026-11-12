@@ -466,6 +466,8 @@ SkSpan<const TextureFormat> PreferredTextureFormats(SkColorType ct) {
         CASE(kRGBA_8888_SkColorType,          TF::kRGBA8,      TF::kBGRA8)
         CASE(kRGB_888x_SkColorType,           TF::kRGB8,       TF::kRGBA8,      TF::kBGRA8)
         CASE(kBGRA_8888_SkColorType,          TF::kBGRA8,      TF::kRGBA8)
+        CASE(kBGR_888x_SkColorType,           TF::kBGR8,       TF::kBGRA8,      TF::kRGBA8,
+                                              TF::kRGB8)
         CASE(kRGBA_1010102_SkColorType,       TF::kRGB10_A2,   TF::kBGR10_A2)
         CASE(kBGRA_1010102_SkColorType,       TF::kBGR10_A2,   TF::kRGB10_A2)
         CASE(kRGB_101010x_SkColorType,        TF::kRGB10_A2,   TF::kBGR10_A2)
@@ -588,6 +590,11 @@ bool AreColorTypeAndFormatCompatible(SkColorType targetColorType, TextureFormat 
     // and compressed formats those two functions aren't quite descriptive enough.
     if (targetColorType == kRGB_888x_SkColorType &&
         AreColorTypeAndFormatCompatible(kRGBA_8888_SkColorType, format)) {
+        return true;
+    }
+    // And likewise for kBGR_888x and kBGRA_8888.
+    if (targetColorType == kBGR_888x_SkColorType &&
+        AreColorTypeAndFormatCompatible(kBGRA_8888_SkColorType, format)) {
         return true;
     }
 
