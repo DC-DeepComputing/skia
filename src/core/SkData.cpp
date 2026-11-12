@@ -224,3 +224,12 @@ sk_sp<SkData> SkData::MakeFromStream(SkStream* stream, size_t size) {
     }
     return data;
 }
+
+// KEEPER-DEBT: placeholder that copies from the current position like MakeFromStream;
+// replaced by the zero-copy implementation in the next patchset
+sk_sp<const SkData> SkData::MakeFromStreamAsset(std::unique_ptr<SkStreamAsset> stream) {
+    if (!stream) {
+        return nullptr;
+    }
+    return MakeFromStream(stream.get(), stream->getLength());
+}
