@@ -17,6 +17,8 @@
 #include "src/gpu/graphite/vk/VulkanComputePipeline.h"
 #include "src/gpu/graphite/vk/VulkanGraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanResourceProvider.h"
+#include "src/gpu/graphite/vk/VulkanTexture.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 namespace skgpu::graphite {
 
@@ -194,8 +196,8 @@ private:
 
     VkCommandPool fPool;
     VkCommandBuffer fPrimaryCommandBuffer;
-    const VulkanSharedContext* fSharedContext;
-    VulkanResourceProvider* fResourceProvider;
+    raw_ptr<const VulkanSharedContext> fSharedContext;
+    raw_ptr<VulkanResourceProvider>    fResourceProvider;
 
     // begin() has been called, but not end()
     bool fActive = false;
@@ -208,9 +210,9 @@ private:
     //
     // WARNING: If this is an MSAA color attachment, its dimensions may be larger than the
     // framebuffer's dimensions.
-    VulkanTexture* fTargetTexture = nullptr;
-    const VulkanGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
-    const VulkanComputePipeline* fActiveComputePipeline = nullptr;
+    raw_ptr<VulkanTexture>                fTargetTexture;
+    raw_ptr<const VulkanGraphicsPipeline> fActiveGraphicsPipeline;
+    raw_ptr<const VulkanComputePipeline>  fActiveComputePipeline;
 
     VkFence fSubmitFence = VK_NULL_HANDLE;
 
@@ -230,7 +232,7 @@ private:
     bool fBindTextureSamplers = false;
 
     std::array<BindBufferInfo, VulkanGraphicsPipeline::kMaxNumUniformBuffers> fUniformBuffersToBind;
-    const Texture* fBoundStorageFallbackTexture = nullptr;
+    raw_ptr<const Texture> fBoundStorageFallbackTexture;
     VkDescriptorSet fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
 
     int fNumTextureSamplers = 0;

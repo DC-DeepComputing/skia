@@ -13,6 +13,7 @@
 #include "include/private/SkDeque.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkTHash.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <memory>
 #include <vector>
@@ -95,7 +96,7 @@ protected:
 
     using OutstandingSubmission = std::unique_ptr<GpuWorkSubmission>;
 
-    const SharedContext* fSharedContext;
+    raw_ptr<const SharedContext> fSharedContext;
     std::unique_ptr<CommandBuffer> fCurrentCommandBuffer;
     std::unique_ptr<CommandBuffer> fCurrentProtectedCommandBuffer;
 

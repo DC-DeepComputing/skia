@@ -1335,7 +1335,7 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
     // only dynamic state has changed.  In that case, since the pipeline doesn't change, this call
     // can be avoided.  The logic after this would then have to move to another place; for example
     // setting dynamic states should move to a separate VulkanCommandBuffer call.
-    const auto* previousGraphicsPipeline = fActiveGraphicsPipeline;
+    const auto* previousGraphicsPipeline = fActiveGraphicsPipeline.get();
     fActiveGraphicsPipeline = static_cast<const VulkanGraphicsPipeline*>(graphicsPipeline);
     VULKAN_CALL(fSharedContext->interface(), CmdBindPipeline(fPrimaryCommandBuffer,
                                                              VK_PIPELINE_BIND_POINT_GRAPHICS,

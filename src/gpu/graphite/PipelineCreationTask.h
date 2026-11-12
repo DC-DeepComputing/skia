@@ -12,6 +12,7 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/partition_alloc/raw_ptr.h"
 
 #include <atomic>
 
@@ -65,7 +66,7 @@ private:
     // to finish in its destructor. Thus, we can hold a raw SharedContext pointer here.
     // Note that, once the Pipeline has been created, this field will be set to null so
     // it should not be relied upon for SharedContext access.
-    SharedContext* fSharedContext;
+    raw_ptr<SharedContext> fSharedContext;
     const sk_sp<const RuntimeEffectDictionary> fRuntimeDict;
     const UniqueKey fPipelineKey;  // used to track this task in the PipelineManager
     const GraphicsPipelineDesc fGraphicsPipelineDesc;

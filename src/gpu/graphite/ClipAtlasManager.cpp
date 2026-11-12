@@ -330,7 +330,7 @@ void ClipAtlasManager::DrawAtlasMgr::evict(DrawAtlas::PlotLocator plotLocator) {
                     delete currHashEntry;
                     --fHashEntryCount;
                 } else if (currHashEntry->fNext) {
-                    MaskHashEntry* next = currHashEntry->fNext;
+                    MaskHashEntry* next = currHashEntry->fNext.get();
                     currHashEntry->fBounds = next->fBounds;
                     currHashEntry->fLocator = next->fLocator;
                     currHashEntry->fNext = next->fNext;
@@ -344,7 +344,7 @@ void ClipAtlasManager::DrawAtlasMgr::evict(DrawAtlas::PlotLocator plotLocator) {
                 break;
             }
             prevHashEntry = currHashEntry;
-            currHashEntry = currHashEntry->fNext;
+            currHashEntry = currHashEntry->fNext.get();
         }
 
         fKeyLists[index].remove(currKeyEntry);

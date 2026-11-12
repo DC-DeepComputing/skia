@@ -217,7 +217,7 @@ private:
         SkASSERT(fMappedPtr);
         SkASSERT(fBuffer);
         SkASSERT(fOffset >= size && fOffset - size >= offset);
-        return BufferWriter(SkTAddOffset<void>(fMappedPtr, offset), size);
+        return BufferWriter(SkTAddOffset<void>(fMappedPtr.get(), offset), size);
     }
 
     std::pair<BufferWriter, BindBufferInfo> getWriterAndBinding(
@@ -236,7 +236,7 @@ private:
      // buffer is returned to the DrawBufferManager, only the bytes after fOffset can be reused.
      // If there is no mapped buffer pointer, it's assumed the GPU buffer is reusable for another
      // BufferSubAllocator instance (this default reuse policy can be revisited if needed).
-    void* fMappedPtr = nullptr;
+    raw_ptr<void> fMappedPtr;
     uint32_t fOffset = 0;    // Next suballocation can start at fOffset at the earliest
     uint32_t fStride = 1;    // The byte count of blocks for the optimized append() function
     uint32_t fRemaining = 0; // The number of `fStride` contiguous blocks fitting after fOffset
