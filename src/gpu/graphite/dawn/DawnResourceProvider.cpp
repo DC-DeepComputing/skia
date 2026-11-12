@@ -35,7 +35,7 @@ namespace {
 constexpr uint32_t kBufferBindingSizeAlignment = 16;
 
 wgpu::ShaderModule create_shader_module(const wgpu::Device& device, const char* source) {
-#if defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
     wgpu::ShaderModuleWGSLDescriptor wgslDesc;
 #else
     wgpu::ShaderSourceWGSL wgslDesc;
