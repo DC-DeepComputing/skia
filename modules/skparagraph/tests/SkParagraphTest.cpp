@@ -3015,6 +3015,83 @@ DEF_TEST(SkParagraph_UnderlineGapsWithoutIntersections, reporter) {
                                                   paragraph->getLongestLine(), EPSILON100));
 }
 
+// TextDecoration is a bitmask: each decoration of a combined style must be drawn exactly as
+// when it is the only one, so gaps, thickness and origin must not depend on the other bits
+DEF_TEST(SkParagraph_CombinedDecorationsMatchSingleOnes, reporter) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+
+    // Absolute bounds, stroke width and point count of everything a decoration draws
+    struct Stroke {
+        SkRect fBounds;
+        SkScalar fWidth;
+        int fPoints;
+    };
+    auto paint = [&](int decoration) {
+        ParagraphStyle paragraphStyle;
+        TextStyle textStyle;
+        textStyle.setFontSize(50.0f);
+        textStyle.setColor(SK_ColorBLACK);
+        textStyle.setDecoration(static_cast<TextDecoration>(decoration));
+        textStyle.setDecorationMode(TextDecorationMode::kGaps);
+        textStyle.setDecorationStyle(TextDecorationStyle::kSolid);
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        // The second line starts inside the shaped run, so it is decorated with a text shift
+        builder.addText("gjpqy gjpqy");
+        builder.pop();
+        auto paragraph = builder.Build();
+        paragraph->layout(200.0f);
+        REPORTER_ASSERT(reporter, paragraph->lineNumber() == 2);
+        GapsRecordingPainter painter;
+        paragraph->paint(&painter, 0, 0);
+
+        std::vector<Stroke> strokes;
+        for (const auto& path : painter.fPaths) {
+            strokes.push_back({path.fPath.getBounds().makeOffset(path.fOrigin),
+                               path.fPaint.getStrokeWidth(), path.fPath.countPoints()});
+        }
+        for (const auto& rect : painter.fFilledRects) {
+            strokes.push_back({rect, 0, 0});
+        }
+        return strokes;
+    };
+
+    std::vector<Stroke> expected;
+    for (auto decoration : {TextDecoration::kUnderline, TextDecoration::kOverline,
+                            TextDecoration::kLineThrough}) {
+        auto single = paint(decoration);
+        expected.insert(expected.end(), single.begin(), single.end());
+    }
+    auto combined = paint(TextDecoration::kUnderline | TextDecoration::kOverline |
+                          TextDecoration::kLineThrough);
+
+    auto byPosition = [](const Stroke& a, const Stroke& b) {
+        return a.fBounds.fTop != b.fBounds.fTop ? a.fBounds.fTop < b.fBounds.fTop
+                                                : a.fBounds.fLeft < b.fBounds.fLeft;
+    };
+    std::sort(expected.begin(), expected.end(), byPosition);
+    std::sort(combined.begin(), combined.end(), byPosition);
+    REPORTER_ASSERT(reporter, combined.size() == expected.size(),
+                    "combined %zu vs single %zu", combined.size(), expected.size());
+    for (size_t i = 0; i < std::min(combined.size(), expected.size()); ++i) {
+        const auto& c = combined[i];
+        const auto& e = expected[i];
+        REPORTER_ASSERT(reporter,
+                        SkScalarNearlyEqual(c.fBounds.fLeft, e.fBounds.fLeft, EPSILON100) &&
+                        SkScalarNearlyEqual(c.fBounds.fTop, e.fBounds.fTop, EPSILON100) &&
+                        SkScalarNearlyEqual(c.fBounds.fRight, e.fBounds.fRight, EPSILON100) &&
+                        SkScalarNearlyEqual(c.fBounds.fBottom, e.fBounds.fBottom, EPSILON100) &&
+                        SkScalarNearlyEqual(c.fWidth, e.fWidth, EPSILON100) &&
+                        c.fPoints == e.fPoints,
+                        "stroke %zu: combined [%g %g %g %g] w=%g n=%d, "
+                        "single [%g %g %g %g] w=%g n=%d",
+                        i, c.fBounds.fLeft, c.fBounds.fTop, c.fBounds.fRight, c.fBounds.fBottom,
+                        c.fWidth, c.fPoints, e.fBounds.fLeft, e.fBounds.fTop, e.fBounds.fRight,
+                        e.fBounds.fBottom, e.fWidth, e.fPoints);
+    }
+}
+
 // Overline, underline, and line-through must shift vertically by exactly baselineShift,
 // maintaining a constant offset from the drawn glyphs
 DEF_TEST(SkParagraph_DecorationsFollowBaselineShift, reporter) {
