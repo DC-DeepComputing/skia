@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ade41b2_e9b9c25c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2026-11-12T04:02:00Z",
+      "side": 1,
+      "message": "LGTM. In an RTL run the hard break sits at the lowest glyph index, so dropping it from the\nleft edge matches the paint path, and the split-grapheme path stays consistent with the main\npath. Placing the empty break box at the visual left edge also puts the caret on the logical\nend of the line.\n\nI also checked a few RTL edge cases locally on top of PS1, and all of them pass (they fail on\nthe parent): a hard break after a mark inside a grapheme (dal + fatha), after a lam-alef\nligature (including a range that cuts the ligature), after RTL trailing spaces, CRLF, empty RTL\nlines, mixed BiDi, letter and word spacing, and all text aligns with RectWidthStyle::kMax.\n\nTested: dm SkParagraph 236/236, Flutter framework corpus and web CanvasKit suite with no\nregressions, google3 paragraph tests with no regressions, txt_benchmarks neutral, ASAN bot green.",
+      "revId": "56a2cf84eeb6ea0308af51b7bb9adfb2c7902132",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
