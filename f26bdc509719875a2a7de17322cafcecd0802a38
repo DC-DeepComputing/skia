@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "255da7d5_692b422e",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1335,
+      "author": {
+        "id": 4623515
+      },
+      "writtenOn": "2026-11-12T15:11:01Z",
+      "side": 1,
+      "message": "could we reduce indentation here",
+      "range": {
+        "startLine": 1297,
+        "startChar": 12,
+        "endLine": 1335,
+        "endChar": 9
+      },
+      "revId": "f26bdc509719875a2a7de17322cafcecd0802a38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
