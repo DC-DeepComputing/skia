@@ -10,10 +10,13 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkContext.h"
 #include "include/core/SkContextOptions.h"
+#include "include/core/SkData.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRecorder.h"
 #include "include/core/SkSurface.h"
+#include "include/encode/SkPngEncoder.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
@@ -148,4 +151,42 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(
     std::unique_ptr<SkRecorder> cpuRecorder = ctx->makeRecorder(SkContext::BackendSelection::kCPU);
     REPORTER_ASSERT(reporter, cpuRecorder != nullptr);
     REPORTER_ASSERT(reporter, cpuRecorder->type() == SkRecorder::Type::kCPU);
+}
+
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteRecorder_UnifiedImageFactories_MakeTextureBackedImages,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kApiLevel_202604) {
+    std::unique_ptr<skgpu::graphite::Recorder> recorder = context->makeRecorder();
+    REPORTER_ASSERT(reporter, recorder != nullptr);
+
+    SkImageInfo info = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkBitmap bm;
+    bm.setInfo(info);
+    bm.allocPixels();
+    bm.eraseColor(SK_ColorRED);
+
+    sk_sp<SkImage> bitmapImg = SkImages::FromBitmap(recorder.get(), bm);
+    REPORTER_ASSERT(reporter, bitmapImg != nullptr);
+    REPORTER_ASSERT(reporter, bitmapImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, bitmapImg->isValid(recorder.get()));
+
+    sk_sp<SkImage> pixmapImg = SkImages::FromPixmap(recorder.get(), bm.pixmap());
+    REPORTER_ASSERT(reporter, pixmapImg != nullptr);
+    REPORTER_ASSERT(reporter, pixmapImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, pixmapImg->isValid(recorder.get()));
+
+    sk_sp<SkData> rawData = SkData::MakeWithCopy(bm.getPixels(), bm.computeByteSize());
+    sk_sp<SkImage> rawDataImg =
+            SkImages::FromData(recorder.get(), info, std::move(rawData), bm.rowBytes());
+    REPORTER_ASSERT(reporter, rawDataImg != nullptr);
+    REPORTER_ASSERT(reporter, rawDataImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, rawDataImg->isValid(recorder.get()));
+
+    sk_sp<SkData> pngData = SkPngEncoder::Encode(bm.pixmap(), {});
+    REPORTER_ASSERT(reporter, pngData != nullptr);
+    sk_sp<SkImage> encodedImg = SkImages::FromData(recorder.get(), pngData);
+    REPORTER_ASSERT(reporter, encodedImg != nullptr);
+    REPORTER_ASSERT(reporter, encodedImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, encodedImg->isValid(recorder.get()));
 }

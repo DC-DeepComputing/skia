@@ -12,6 +12,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkMath.h"
 #include "src/core/SkCompressedDataUtils.h"
@@ -29,46 +30,6 @@ struct SkIPoint;
 struct SkIRect;
 enum class SkTextureCompressionType;
 
-static bool valid_args(const SkImageInfo& info, size_t rowBytes, size_t* minSize) {
-    const int maxDimension = SK_MaxS32 >> 2;
-
-    // TODO(mtklein): eliminate anything here that setInfo() has already checked.
-    SkBitmap b;
-    if (!b.setInfo(info, rowBytes)) {
-        return false;
-    }
-
-    if (info.width() <= 0 || info.height() <= 0) {
-        return false;
-    }
-    if (info.width() > maxDimension || info.height() > maxDimension) {
-        return false;
-    }
-    if ((unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType) {
-        return false;
-    }
-    if ((unsigned)info.alphaType() > (unsigned)kLastEnum_SkAlphaType) {
-        return false;
-    }
-
-    if (kUnknown_SkColorType == info.colorType()) {
-        return false;
-    }
-    if (!info.validRowBytes(rowBytes)) {
-        return false;
-    }
-
-    size_t size = info.computeByteSize(rowBytes);
-    if (SkImageInfo::ByteSizeOverflowed(size)) {
-        return false;
-    }
-
-    if (minSize) {
-        *minSize = size;
-    }
-    return true;
-}
-
 namespace SkImages {
 sk_sp<SkImage> RasterFromBitmap(const SkBitmap& bm) {
     if (!bm.pixelRef()) {
@@ -80,7 +41,7 @@ sk_sp<SkImage> RasterFromBitmap(const SkBitmap& bm) {
 
 sk_sp<SkImage> RasterFromPixmapCopy(const SkPixmap& pmap) {
     size_t size;
-    if (!valid_args(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
+    if (!SkImage_Base::ValidArgs(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
         return nullptr;
     }
 
@@ -92,7 +53,7 @@ sk_sp<SkImage> RasterFromPixmapCopy(const SkPixmap& pmap) {
 
 sk_sp<SkImage> RasterFromData(const SkImageInfo& info, sk_sp<SkData> data, size_t rowBytes) {
     size_t size;
-    if (!valid_args(info, rowBytes, &size) || !data) {
+    if (!SkImage_Base::ValidArgs(info, rowBytes, &size) || !data) {
         return nullptr;
     }
 
@@ -141,7 +102,7 @@ sk_sp<SkImage> RasterFromCompressedTextureData(sk_sp<SkData> data,
 
     SkImageInfo ii = SkImageInfo::MakeN32(width, height, at);
 
-    if (!valid_args(ii, ii.minRowBytes(), nullptr)) {
+    if (!SkImage_Base::ValidArgs(ii, ii.minRowBytes(), nullptr)) {
         return nullptr;
     }
 
@@ -160,7 +121,7 @@ sk_sp<SkImage> RasterFromCompressedTextureData(sk_sp<SkData> data,
 
 sk_sp<SkImage> RasterFromPixmap(const SkPixmap& pmap, RasterReleaseProc proc, ReleaseContext ctx) {
     size_t size;
-    if (!valid_args(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
+    if (!SkImage_Base::ValidArgs(pmap.info(), pmap.rowBytes(), &size) || !pmap.addr()) {
         return nullptr;
     }
 

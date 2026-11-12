@@ -13,6 +13,8 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkContext.h"
 #include "include/core/SkContextOptions.h"
+#include "include/core/SkData.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
@@ -21,6 +23,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
+#include "include/encode/SkPngEncoder.h"
 #include "src/capture/SkCapture.h"
 #include "src/core/SkResourceCache.h"
 #include "tests/Test.h"
@@ -64,21 +67,42 @@ DEF_TEST(SkContext_MakeRecorder_RasterBackendSelection, reporter) {
     REPORTER_ASSERT(reporter, gpuRecorder == nullptr);
 }
 
-// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
-#if 0
 DEF_TEST(CPURecorder_RasterImageOperations_UseCpuRecorder, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
-    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder();
+    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder(SkContext::BackendSelection::kCPU);
+
+    SkImageInfo info = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.setInfo(info);
     bm.allocPixels();
     bm.eraseColor(SK_ColorGREEN);
-    sk_sp<SkImage> img = SkImages::FromBitmap(recorder.get(), bm);
+
+    REPORTER_ASSERT(reporter, SkImages::FromBitmap(nullptr, bm) == nullptr);
+    sk_sp<SkImage> bmImg = SkImages::FromBitmap(recorder.get(), bm);
+    REPORTER_ASSERT(reporter, bmImg != nullptr);
+    REPORTER_ASSERT(reporter, !bmImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, bmImg->isValid(recorder.get()));
+
+    REPORTER_ASSERT(reporter, SkImages::FromPixmap(nullptr, bm.pixmap()) == nullptr);
+    sk_sp<SkImage> img = SkImages::FromPixmap(recorder.get(), bm.pixmap());
     REPORTER_ASSERT(reporter, img != nullptr);
     REPORTER_ASSERT(reporter, !img->isTextureBacked());
-
     REPORTER_ASSERT(reporter, img->isValid(recorder.get()));
+
+    sk_sp<SkData> rawData = SkData::MakeWithCopy(bm.getPixels(), bm.computeByteSize());
+    sk_sp<SkImage> rawDataImg =
+            SkImages::FromData(recorder.get(), info, std::move(rawData), bm.rowBytes());
+    REPORTER_ASSERT(reporter, rawDataImg != nullptr);
+    REPORTER_ASSERT(reporter, !rawDataImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, rawDataImg->isValid(recorder.get()));
+
+    sk_sp<SkData> pngData = SkPngEncoder::Encode(bm.pixmap(), {});
+    REPORTER_ASSERT(reporter, pngData != nullptr);
+    sk_sp<SkImage> encodedImg = SkImages::FromData(recorder.get(), pngData);
+    REPORTER_ASSERT(reporter, encodedImg != nullptr);
+    REPORTER_ASSERT(reporter, !encodedImg->isTextureBacked());
+    REPORTER_ASSERT(reporter, encodedImg->isValid(recorder.get()));
 
     sk_sp<SkImage> scaled =
             img->makeScaled(recorder.get(),
@@ -90,10 +114,50 @@ DEF_TEST(CPURecorder_RasterImageOperations_UseCpuRecorder, reporter) {
     REPORTER_ASSERT(reporter, !scaled->isTextureBacked());
 }
 
+DEF_TEST(ImageMakeColorSpace_UsesCPURecorderToMakeImage_Success, reporter) {
+    SkContextOptions opts;
+    std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
+    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder(SkContext::BackendSelection::kCPU);
+    SkBitmap bm;
+    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.allocPixels();
+    auto img = SkImages::FromBitmap(recorder.get(), bm);
+    SkASSERT(img);
+    REPORTER_ASSERT(reporter, img->isValid(recorder.get()));
+    auto newImg = img->makeColorSpace(recorder.get(), SkColorSpace::MakeSRGBLinear(), {});
+    REPORTER_ASSERT(reporter, newImg);
+    REPORTER_ASSERT(reporter, newImg->width() == 100);
+    REPORTER_ASSERT(reporter, !newImg->isTextureBacked());
+}
+
+DEF_TEST(ImageMakeScaled_UsesCPURecorderToMakeImage_Success, reporter) {
+    SkContextOptions opts;
+    std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
+    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder(SkContext::BackendSelection::kCPU);
+    SkBitmap bm;
+    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.allocPixels();
+    auto img = SkImages::FromBitmap(recorder.get(), bm);
+    SkASSERT(img);
+    auto newImg =
+            img->makeScaled(recorder.get(),
+                            SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+                            {SkCubicResampler::Mitchell()});
+    REPORTER_ASSERT(reporter, newImg);
+    REPORTER_ASSERT(reporter, newImg->width() == 70);
+    REPORTER_ASSERT(reporter, !newImg->isTextureBacked());
+    auto legacyAPI =
+            img->makeScaled(SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+                            {SkCubicResampler::Mitchell()});
+    REPORTER_ASSERT(reporter, legacyAPI);
+    REPORTER_ASSERT(reporter, legacyAPI->width() == 70);
+    REPORTER_ASSERT(reporter, !legacyAPI->isTextureBacked());
+}
+
 DEF_TEST(CPURecorder_FromCanvasBaseRecorder_MakesOffscreenSurface, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
-    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder();
+    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder(SkContext::BackendSelection::kCPU);
     SkImageInfo imageInfo =
             SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     sk_sp<SkSurface> mainSurface = recorder->makeSurface(imageInfo);
@@ -115,6 +179,8 @@ DEF_TEST(CPURecorder_FromCanvasBaseRecorder_MakesOffscreenSurface, reporter) {
     REPORTER_ASSERT(reporter, pmap.getColor(25, 25) == SK_ColorBLUE);
 }
 
+// TODO(alexisdavidc) Re-enable once the new SkContext / CPU Context & Recorder API is implemented.
+#if 0
 DEF_TEST(CPUSurface_UsesCPUContextAndRecorderToDraw_DrawsPixels, reporter) {
     SkContextOptions opts;
     std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
@@ -145,46 +211,6 @@ DEF_TEST(CPUSurface_UsesTODORecorder_DrawsPixels, reporter) {
     REPORTER_ASSERT(reporter, surface->peekPixels(&pmap));
     REPORTER_ASSERT(reporter, pmap.getColor(25, 25) == SK_ColorRED);
     REPORTER_ASSERT(reporter, surface->getCanvas()->baseRecorder() == SkRecorder::TODO());
-}
-
-DEF_TEST(ImageMakeColorSpace_UsesCPURecorderToMakeImage_Success, reporter) {
-    SkContextOptions opts;
-    std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
-    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder();
-    SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
-    bm.allocPixels();
-    auto img = SkImages::FromBitmap(recorder.get(), bm);
-    SkASSERT(img);
-    REPORTER_ASSERT(reporter, img->isValid(recorder.get()));
-    auto newImg = img->makeColorSpace(recorder.get(), SkColorSpace::MakeSRGBLinear(), {});
-    REPORTER_ASSERT(reporter, newImg);
-    REPORTER_ASSERT(reporter, newImg->width() == 100);
-    REPORTER_ASSERT(reporter, !newImg->isTextureBacked());
-}
-
-DEF_TEST(ImageMakeScaled_UsesCPURecorderToMakeImage_Success, reporter) {
-    SkContextOptions opts;
-    std::unique_ptr<SkContext> ctx = SkContexts::MakeRaster(opts);
-    std::unique_ptr<SkRecorder> recorder = ctx->makeRecorder();
-    SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
-    bm.allocPixels();
-    auto img = SkImages::FromBitmap(recorder.get(), bm);
-    SkASSERT(img);
-    auto newImg =
-            img->makeScaled(recorder.get(),
-                            SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
-                            {SkCubicResampler::Mitchell()});
-    REPORTER_ASSERT(reporter, newImg);
-    REPORTER_ASSERT(reporter, newImg->width() == 70);
-    REPORTER_ASSERT(reporter, !newImg->isTextureBacked());
-    auto legacyAPI =
-            img->makeScaled(SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
-                            {SkCubicResampler::Mitchell()});
-    REPORTER_ASSERT(reporter, legacyAPI);
-    REPORTER_ASSERT(reporter, legacyAPI->width() == 70);
-    REPORTER_ASSERT(reporter, !legacyAPI->isTextureBacked());
 }
 
 #endif  // 0
