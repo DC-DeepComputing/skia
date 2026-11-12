@@ -316,7 +316,10 @@ GrRenderTask::ExecutionResult GrDrawingManager::executeRenderTasks(GrOpFlushStat
 
         SkASSERT(renderTask->deferredProxiesAreInstantiated());
 
-        renderTask->prepare(flushState);
+        if (!renderTask->prepare(flushState)) {
+            flushState->reset();
+            return { /* fAnyTaskExecuted= */false, /* fAllTasksSuccessful= */false };
+        }
     }
 
     // Upload all data to the GPU
