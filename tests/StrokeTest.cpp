@@ -188,6 +188,39 @@ static void test_big_stroke(skiatest::Reporter* reporter) {
     (void)skpathutils::FillPathWithPaint(builder.detach(), paint);
 }
 
+// Stroke-and-fill (also used for fake bold glyphs) must cover the plain fill. A tiny reversed
+// self-intersection loop holding the y-max point must not flip the fill against the stroke
+DEF_TEST(StrokeAndFill_ReversedLoopAtYMaxKeepsFill, reporter) {
+    SkPathBuilder builder;
+    builder.moveTo(0, 0);
+    builder.lineTo(100, 0);
+    builder.lineTo(100, 100);
+    builder.lineTo(52, 100);
+    // These two edges cross, so the bottom-most points form a loop wound against the body
+    builder.lineTo(49, 102);
+    builder.lineTo(51, 102);
+    builder.lineTo(48, 100);
+    builder.lineTo(0, 100);
+    builder.close();
+    const SkPath src = builder.detach();
+
+    SkPaint paint;
+    paint.setStyle(SkPaint::kStrokeAndFill_Style);
+    paint.setStrokeWidth(10);
+    const SkPath dst = skpathutils::FillPathWithPaint(src, paint);
+
+    // Sample the body only; the loop is too thin to matter for the contract
+    int missing = 0;
+    for (float y = 0.5f; y < 100; y += 1) {
+        for (float x = 0.5f; x < 100; x += 1) {
+            if (src.contains(x, y) && !dst.contains(x, y)) {
+                ++missing;
+            }
+        }
+    }
+    REPORTER_ASSERT(reporter, missing == 0, "%d filled samples lost by stroke-and-fill", missing);
+}
+
 DEF_TEST(Stroke, reporter) {
     test_strokecubic(reporter);
     test_strokerect(reporter);
