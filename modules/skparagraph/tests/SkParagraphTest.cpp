@@ -13204,3 +13204,178 @@ DEF_TEST(SkParagraph_EllipsisAfterHardLineBreak, reporter) {
     }
 #endif
 }
+
+// Checks that a trailing empty line after a hard line break has empty text ranges at the end of the
+// paragraph, no style metrics, and vertical metrics matching the break style (crbug.com/40042695)
+DEF_TEST(SkParagraph_EmptyLineMetrics, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    auto build = [&](const char* text) {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.turnHintingOff();
+        TextStyle defaultStyle;
+        defaultStyle.setFontFamilies({SkString("Roboto")});
+        defaultStyle.setFontSize(20);
+        paragraphStyle.setTextStyle(defaultStyle);
+
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Roboto")});
+        textStyle.setFontSize(8);
+
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText(text);
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        SkCanvas canvas(TestCanvasWidth, TestCanvasHeight);
+        paragraph->paint(&canvas, 0, 0);
+        return paragraph;
+    };
+
+    // UTF-16 boundaries of one line; a line that owns no visible text has no width or style runs
+    struct Expected {
+        size_t start, endExcludingWhitespaces, end, endIncludingNewline;
+        bool empty;
+    };
+    auto check = [&](const char* name,
+                     const std::vector<LineMetrics>& metrics,
+                     const std::vector<Expected>& expected) {
+        skiatest::ReporterContext context(reporter, std::string(name));
+        REPORTER_ASSERT(reporter,
+                        metrics.size() == expected.size(),
+                        "lines: got %zu, want %zu",
+                        metrics.size(),
+                        expected.size());
+        for (size_t i = 0; i < std::min(metrics.size(), expected.size()); ++i) {
+            skiatest::ReporterContext lineContext(reporter, "line " + std::to_string(i));
+            const LineMetrics& m = metrics[i];
+            const Expected& e = expected[i];
+            REPORTER_ASSERT(reporter,
+                            m.fStartIndex == e.start,
+                            "start: got %zu, want %zu",
+                            m.fStartIndex,
+                            e.start);
+            REPORTER_ASSERT(reporter,
+                            m.fEndExcludingWhitespaces == e.endExcludingWhitespaces,
+                            "endExcludingWhitespaces: got %zu, want %zu",
+                            m.fEndExcludingWhitespaces,
+                            e.endExcludingWhitespaces);
+            REPORTER_ASSERT(
+                    reporter, m.fEndIndex == e.end, "end: got %zu, want %zu", m.fEndIndex, e.end);
+            REPORTER_ASSERT(reporter,
+                            m.fEndIncludingNewline == e.endIncludingNewline,
+                            "endIncludingNewline: got %zu, want %zu",
+                            m.fEndIncludingNewline,
+                            e.endIncludingNewline);
+            if (e.empty) {
+                REPORTER_ASSERT(reporter, m.fWidth == 0, "width: got %g", m.fWidth);
+                REPORTER_ASSERT(reporter,
+                                m.fLineMetrics.empty(),
+                                "style runs: got %zu",
+                                m.fLineMetrics.size());
+            }
+        }
+    };
+    // The rounded ascent + descent of an empty line is its height (no strut, no height style)
+    auto checkHeight = [&](const LineMetrics& m) {
+        REPORTER_ASSERT(
+                reporter,
+                SkScalarNearlyEqual(SkScalarRoundToScalar(m.fAscent + m.fDescent), m.fHeight),
+                "ascent %g + descent %g vs height %g",
+                m.fAscent,
+                m.fDescent,
+                m.fHeight);
+    };
+
+    {
+        auto paragraph = build("ab\n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        check("ab\\n", metrics, {{0, 2, 3, 3, false}, {3, 3, 3, 3, true}});
+        if (metrics.size() == 2) {
+            REPORTER_ASSERT(reporter, metrics[0].fHardBreak);
+            REPORTER_ASSERT(reporter, metrics[0].fWidth > 0, "width: got %g", metrics[0].fWidth);
+            REPORTER_ASSERT(reporter,
+                            metrics[0].fLineMetrics.size() == 1,
+                            "style runs: got %zu",
+                            metrics[0].fLineMetrics.size());
+            REPORTER_ASSERT(reporter, metrics[1].fHardBreak);
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(metrics[1].fAscent, metrics[0].fAscent),
+                            "ascent: got %g, want %g",
+                            metrics[1].fAscent,
+                            metrics[0].fAscent);
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(metrics[1].fDescent, metrics[0].fDescent),
+                            "descent: got %g, want %g",
+                            metrics[1].fDescent,
+                            metrics[0].fDescent);
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(metrics[1].fHeight, metrics[0].fHeight),
+                            "height: got %g, want %g",
+                            metrics[1].fHeight,
+                            metrics[0].fHeight);
+            checkHeight(metrics[1]);
+
+            TextRange range = paragraph->getActualTextRange(1, false);
+            REPORTER_ASSERT(
+                    reporter, range == TextRange(3, 3), "got [%zu, %zu)", range.start, range.end);
+            range = paragraph->getActualTextRange(1, true);
+            REPORTER_ASSERT(
+                    reporter, range == TextRange(3, 3), "got [%zu, %zu)", range.start, range.end);
+            int line = paragraph->getLineNumberAtUTF16Offset(2);
+            REPORTER_ASSERT(reporter, line == 0, "got %d", line);
+            auto hit = paragraph->getGlyphPositionAtCoordinate(0, metrics[1].fBaseline);
+            REPORTER_ASSERT(reporter,
+                            hit.position == 3 && hit.affinity == Affinity::kDownstream,
+                            "got %d, affinity %d",
+                            hit.position,
+                            (int)hit.affinity);
+        }
+        int line1GlyphRuns = 0;
+        paragraph->visit([&](int lineNumber, const Paragraph::VisitorInfo* info) {
+            if (lineNumber == 1 && info != nullptr) {
+                ++line1GlyphRuns;
+            }
+        });
+        REPORTER_ASSERT(reporter, line1GlyphRuns == 0, "got %d", line1GlyphRuns);
+    }
+
+    {
+        auto paragraph = build("ab\r\n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        check("ab\\r\\n", metrics, {{0, 2, 4, 4, false}, {4, 4, 4, 4, true}});
+    }
+
+    {
+        auto paragraph = build("   \n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        check("spaces\\n", metrics, {{0, 0, 4, 4, true}, {4, 4, 4, 4, true}});
+    }
+
+    {
+        auto paragraph = build("\n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        check("\\n", metrics, {{0, 0, 1, 1, true}, {1, 1, 1, 1, true}});
+        if (metrics.size() == 2) {
+            checkHeight(metrics[0]);
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(metrics[1].fHeight, metrics[0].fHeight),
+                            "height: got %g, want %g",
+                            metrics[1].fHeight,
+                            metrics[0].fHeight);
+        }
+    }
+
+    {
+        auto paragraph = build("\n\n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        // Middle empty lines match the trailing one: no width and no style runs
+        check("\\n\\n", metrics, {{0, 0, 0, 1, true}, {1, 1, 2, 2, true}, {2, 2, 2, 2, true}});
+    }
+}
