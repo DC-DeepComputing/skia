@@ -11,6 +11,7 @@
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/dawn/DawnGraphiteTypes.h"
+#include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtils.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
@@ -19,6 +20,44 @@ using namespace skgpu::graphite;
 
 namespace {
 const SkISize kSize = {16, 16};
+}
+
+DEF_TEST(DawnTextureFormatMapping, reporter) {
+    for (int i = 0; i < kTextureFormatCount; ++i) {
+        TextureFormat format = static_cast<TextureFormat>(i);
+        wgpu::TextureFormat dawnFormat = TextureFormatToDawnFormat(format);
+        if (dawnFormat != wgpu::TextureFormat::Undefined) {
+            REPORTER_ASSERT(reporter, DawnFormatToTextureFormat(dawnFormat) == format);
+        }
+    }
+
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
+    REPORTER_ASSERT(
+            reporter,
+            TextureFormatToDawnFormat(TextureFormat::kR16) == wgpu::TextureFormat::Undefined);
+    REPORTER_ASSERT(
+            reporter,
+            TextureFormatToDawnFormat(TextureFormat::kRG16) == wgpu::TextureFormat::Undefined);
+    REPORTER_ASSERT(
+            reporter,
+            TextureFormatToDawnFormat(TextureFormat::kRGBA16) == wgpu::TextureFormat::Undefined);
+#else
+    REPORTER_ASSERT(
+            reporter,
+            TextureFormatToDawnFormat(TextureFormat::kR16) == wgpu::TextureFormat::R16Unorm);
+    REPORTER_ASSERT(
+            reporter,
+            TextureFormatToDawnFormat(TextureFormat::kRG16) == wgpu::TextureFormat::RG16Unorm);
+    REPORTER_ASSERT(
+            reporter,
+            TextureFormatToDawnFormat(TextureFormat::kRGBA16) == wgpu::TextureFormat::RGBA16Unorm);
+#endif
+
+#if defined(__EMSCRIPTEN__)
+    REPORTER_ASSERT(reporter,
+                    TextureFormatToDawnFormat(TextureFormat::kYUV8_P2_420) ==
+                            wgpu::TextureFormat::Undefined);
+#endif
 }
 
 DEF_GRAPHITE_TEST_FOR_DAWN_CONTEXT(DawnBackendTextureSimpleCreationTest,
