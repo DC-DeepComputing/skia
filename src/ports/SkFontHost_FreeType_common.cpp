@@ -27,6 +27,8 @@
 #include "src/core/SkTHash.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -1667,13 +1669,31 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                     memset(mask.image(), 0x80, mask.fBounds.height() * mask.fRowBytes);
                 }
                 FT_GlyphSlotRec& ftGlyph = *face->glyph;
+                const int ftVertScale = (doVert ? 3 : 1);
+                const int ftHoriScale = (doVert ? 1 : 3);
+                const FT_Pixel_Mode expectedMode = doVert ? FT_PIXEL_MODE_LCD_V : FT_PIXEL_MODE_LCD;
+                if (!ftGlyph.bitmap.buffer || ftGlyph.bitmap.pixel_mode != expectedMode ||
+                    ftGlyph.bitmap.width % ftHoriScale != 0 ||
+                    ftGlyph.bitmap.rows % ftVertScale != 0) {
+                    return;
+                }
 
-                if (!SkIRect::Intersects(mask.fBounds,
-                                         SkIRect::MakeXYWH( ftGlyph.bitmap_left,
-                                                           -ftGlyph.bitmap_top,
-                                                            ftGlyph.bitmap.width,
-                                                            ftGlyph.bitmap.rows)))
-                {
+                // Convert FreeType's subpixel-scaled LCD dimensions into pixel coordinates before
+                // intersecting and aligning against mask.fBounds.
+                const int64_t ftLeft = ftGlyph.bitmap_left;
+                const int64_t ftTop = -static_cast<int64_t>(ftGlyph.bitmap_top);
+                const int64_t ftWidth = ftGlyph.bitmap.width / ftHoriScale;
+                const int64_t ftHeight = ftGlyph.bitmap.rows / ftVertScale;
+                if (!SkTFitsIn<int32_t>(ftLeft) || !SkTFitsIn<int32_t>(ftTop) ||
+                    !SkTFitsIn<int32_t>(ftWidth) || !SkTFitsIn<int32_t>(ftHeight) ||
+                    !SkTFitsIn<int32_t>(ftLeft + ftWidth) ||
+                    !SkTFitsIn<int32_t>(ftTop + ftHeight)) {
+                    return;
+                }
+
+                const SkIRect ftBounds = SkIRect::MakeXYWH(
+                        SkToS32(ftLeft), SkToS32(ftTop), SkToS32(ftWidth), SkToS32(ftHeight));
+                if (!SkIRect::Intersects(mask.fBounds, ftBounds)) {
                     return;
                 }
 
@@ -1681,40 +1701,48 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                 // If the SkMask extent is larger, shrink mask to fit bitmap (clearing discarded).
                 unsigned char* origBuffer = ftGlyph.bitmap.buffer;
                 // First align the top left (origin).
-                if (-ftGlyph.bitmap_top < mask.fBounds.fTop) {
-                    int32_t topDiff = mask.fBounds.fTop - (-ftGlyph.bitmap_top);
-                    ftGlyph.bitmap.buffer += ftGlyph.bitmap.pitch * topDiff;
-                    ftGlyph.bitmap.rows -= topDiff;
+                if (ftBounds.fTop < mask.fBounds.fTop) {
+                    const int32_t topDiff = mask.fBounds.fTop - ftBounds.fTop;
+                    const int64_t subpixelRows = static_cast<int64_t>(topDiff) * ftVertScale;
+                    ftGlyph.bitmap.buffer +=
+                            static_cast<ptrdiff_t>(ftGlyph.bitmap.pitch) * subpixelRows;
+                    ftGlyph.bitmap.rows -= SkToUInt(subpixelRows);
                     ftGlyph.bitmap_top = -mask.fBounds.fTop;
                 }
-                if (ftGlyph.bitmap_left < mask.fBounds.fLeft) {
-                    int32_t leftDiff = mask.fBounds.fLeft - ftGlyph.bitmap_left;
-                    ftGlyph.bitmap.buffer += leftDiff;
-                    ftGlyph.bitmap.width -= leftDiff;
+                if (ftBounds.fLeft < mask.fBounds.fLeft) {
+                    const int32_t leftDiff = mask.fBounds.fLeft - ftBounds.fLeft;
+                    const int64_t subpixelCols = static_cast<int64_t>(leftDiff) * ftHoriScale;
+                    ftGlyph.bitmap.buffer += subpixelCols;
+                    ftGlyph.bitmap.width -= SkToUInt(subpixelCols);
                     ftGlyph.bitmap_left = mask.fBounds.fLeft;
                 }
-                if (mask.fBounds.fTop < -ftGlyph.bitmap_top) {
-                    mask.image() += mask.fRowBytes * (-ftGlyph.bitmap_top - mask.fBounds.fTop);
-                    mask.bounds().fTop = -ftGlyph.bitmap_top;
+                if (mask.fBounds.fTop < ftBounds.fTop) {
+                    mask.image() += static_cast<size_t>(mask.fRowBytes) *
+                                    (ftBounds.fTop - mask.fBounds.fTop);
+                    mask.bounds().fTop = ftBounds.fTop;
                 }
-                if (mask.fBounds.fLeft < ftGlyph.bitmap_left) {
-                    mask.image() += sizeof(uint16_t) * (ftGlyph.bitmap_left - mask.fBounds.fLeft);
-                    mask.bounds().fLeft = ftGlyph.bitmap_left;
+                if (mask.fBounds.fLeft < ftBounds.fLeft) {
+                    mask.image() += sizeof(uint16_t) * (ftBounds.fLeft - mask.fBounds.fLeft);
+                    mask.bounds().fLeft = ftBounds.fLeft;
                 }
                 // Origins aligned, clean up the width and height.
-                int ftVertScale = (doVert ? 3 : 1);
-                int ftHoriScale = (doVert ? 1 : 3);
-                if (mask.fBounds.height() * ftVertScale < SkToInt(ftGlyph.bitmap.rows)) {
-                    ftGlyph.bitmap.rows = mask.fBounds.height() * ftVertScale;
+                if (static_cast<int64_t>(mask.fBounds.height()) * ftVertScale <
+                    ftGlyph.bitmap.rows) {
+                    ftGlyph.bitmap.rows = SkToUInt(mask.fBounds.height() * ftVertScale);
                 }
-                if (mask.fBounds.width() * ftHoriScale < SkToInt(ftGlyph.bitmap.width)) {
-                    ftGlyph.bitmap.width = mask.fBounds.width() * ftHoriScale;
+                if (static_cast<int64_t>(mask.fBounds.width()) * ftHoriScale <
+                    ftGlyph.bitmap.width) {
+                    ftGlyph.bitmap.width = SkToUInt(mask.fBounds.width() * ftHoriScale);
                 }
-                if (SkToInt(ftGlyph.bitmap.rows) < mask.fBounds.height() * ftVertScale) {
-                    mask.bounds().fBottom = mask.fBounds.fTop + ftGlyph.bitmap.rows / ftVertScale;
+                if (ftGlyph.bitmap.rows <
+                    static_cast<uint64_t>(mask.fBounds.height()) * ftVertScale) {
+                    mask.bounds().fBottom =
+                            mask.fBounds.fTop + SkToS32(ftGlyph.bitmap.rows / ftVertScale);
                 }
-                if (SkToInt(ftGlyph.bitmap.width) < mask.fBounds.width() * ftHoriScale) {
-                    mask.bounds().fRight = mask.fBounds.fLeft + ftGlyph.bitmap.width / ftHoriScale;
+                if (ftGlyph.bitmap.width <
+                    static_cast<uint64_t>(mask.fBounds.width()) * ftHoriScale) {
+                    mask.bounds().fRight =
+                            mask.fBounds.fLeft + SkToS32(ftGlyph.bitmap.width / ftHoriScale);
                 }
                 if (preBlend.isApplicable()) {
                     copyFT2LCD16<true>(ftGlyph.bitmap, &mask, doBGR,
@@ -1729,8 +1757,11 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                 FT_BBox     bbox;
                 FT_Bitmap   target;
                 FT_Outline_Get_CBox(outline, &bbox);
+                const int64_t shiftedXMin = static_cast<int64_t>(bbox.xMin) + dx;
+                const int64_t shiftedYMin = static_cast<int64_t>(bbox.yMin) + dy;
                 if (!SkTFitsIn<SkFDot6>(bbox.xMin) || !SkTFitsIn<SkFDot6>(bbox.xMax) ||
-                    !SkTFitsIn<SkFDot6>(bbox.yMin) || !SkTFitsIn<SkFDot6>(bbox.yMax)) {
+                    !SkTFitsIn<SkFDot6>(bbox.yMin) || !SkTFitsIn<SkFDot6>(bbox.yMax) ||
+                    !SkTFitsIn<SkFDot6>(shiftedXMin) || !SkTFitsIn<SkFDot6>(shiftedYMin)) {
                     return;
                 }
 
@@ -1739,9 +1770,16 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
                 // We do this by calculating the translation required to move the glyph's
                 // pixel-rounded left edge (in the destination space) to the origin which allows
                 // us to only make one call to Translate.
-                auto xShift = dx - SkIntToFDot6(SkFDot6Floor(bbox.xMin + dx));
-                auto yShift = dy - SkIntToFDot6(SkFDot6Floor(bbox.yMin + dy));
-                FT_Outline_Translate(outline, xShift, yShift);
+                const int64_t xShift =
+                        static_cast<int64_t>(dx) - SkIntToFDot6(SkFDot6Floor(SkToS32(shiftedXMin)));
+                const int64_t yShift =
+                        static_cast<int64_t>(dy) - SkIntToFDot6(SkFDot6Floor(SkToS32(shiftedYMin)));
+                if (!SkTFitsIn<SkFDot6>(xShift) || !SkTFitsIn<SkFDot6>(yShift) ||
+                    !SkTFitsIn<SkFDot6>(static_cast<int64_t>(bbox.xMax) + xShift) ||
+                    !SkTFitsIn<SkFDot6>(static_cast<int64_t>(bbox.yMax) + yShift)) {
+                    return;
+                }
+                FT_Outline_Translate(outline, SkToS32(xShift), SkToS32(yShift));
 
                 target.width = glyph.width();
                 target.rows = glyph.height();
