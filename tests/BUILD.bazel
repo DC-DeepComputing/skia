@@ -675,7 +675,10 @@ filegroup(
 filegroup(
     name = "graphite_dawn_tests_sources",
     testonly = True,
-    srcs = ["graphite/DawnBackendTextureTest.cpp"],
+    srcs = [
+        "graphite/DawnBackendTextureTest.cpp",
+        "graphite/DawnErrorTest.cpp",
+    ],
     visibility = ["//dm:__pkg__"],
 )
 
