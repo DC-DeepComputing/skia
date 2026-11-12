@@ -218,12 +218,14 @@ std::pair<DrawParams*, Layer*> DrawListLayer::recordDraw(const Renderer* rendere
     // because the params will likely no longer be on the same cache line for successor render
     // steps. We should test whether it is faster for each step to hold a copy of the params except
     // in the case of clipped draws (which must share a copy because they are mutated later).
-    DrawParams* drawParams = fStorage.make<DrawParams>(this->deduplicateTransform(localToDevice),
-                                                       geometry,
-                                                       clip,
-                                                       ordering,
-                                                       stroke,
-                                                       barrierBeforeDraws);
+    DrawParams* drawParams =
+            fStorage.make<DrawParams>(this->deduplicateTransform(localToDevice),
+                                      geometry,
+                                      clip,
+                                      ordering,
+                                      stroke,
+                                      barrierBeforeDraws,
+                                      SkToBool(dstUsage & DstUsage::kDstReadRequired));
 
     Layer* insertionLayer = nullptr;
     BindingList* lastStepBinding = nullptr;
@@ -348,6 +350,11 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
     TextureTracker textureBindingTracker(&fTextureDataCache);
 
     const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;
+    // Matches the solid target subrect blitted into the ApproxFit DstCopy texture in
+    // DrawContext::flush (only texels outside this rect in DstCopy remain uninitialized).
+    const SkIRect dstCopyBounds = dstReadStrategy == DstReadStrategy::kTextureCopy
+                                          ? fDstReadBounds.makeRoundOut().asSkIRect()
+                                          : SkIRect::MakeEmpty();
 
     if (storageContext) {
         storageContext->finalizePrecachedStorageData();
@@ -392,7 +399,7 @@ std::unique_ptr<DrawPass> DrawListLayer::snapDrawPass(Recorder* recorder,
         drawPass->fPipelineDrawAreas[key.fPipelineIndex] += drawParams.drawBounds().area();
 
         std::optional<SkIRect> newScissor =
-                renderStep->getScissor(drawParams, lastScissor, targetBounds);
+                renderStep->getScissor(drawParams, lastScissor, targetBounds, dstCopyBounds);
 
         if (pipelineChange) {
             drawWriter.newPipelineState(renderStep->primitiveType(),
