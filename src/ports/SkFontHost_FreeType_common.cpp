@@ -1578,7 +1578,8 @@ bool SkScalerContextFTUtils::drawCOLRv0Glyph(FT_Face face, const SkGlyph& glyph,
     FT_UInt layerGlyphIndex = 0;
     FT_UInt layerColorIndex = 0;
     SkPaint paint;
-    paint.setAntiAlias(!(flags & FT_LOAD_TARGET_MONO));
+    // Load targets are a 4-bit enum, so FT_LOAD_TARGET_LCD shares bits with FT_LOAD_TARGET_MONO
+    paint.setAntiAlias(FT_LOAD_TARGET_MODE(flags) != FT_RENDER_MODE_MONO);
     while (FT_Get_Color_Glyph_Layer(face, glyph.getGlyphID(), &layerGlyphIndex,
                                     &layerColorIndex, &layerIterator)) {
         haveLayers = true;

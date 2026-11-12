@@ -532,9 +532,12 @@ std::unique_ptr<SkAdvancedTypefaceMetrics> SkTypeface_Mac::onGetAdvancedMetrics(
         info->fStyle |= SkAdvancedTypefaceMetrics::kItalic_Style;
     }
     CTFontStylisticClass stylisticClass = symbolicTraits & kCTFontClassMaskTrait;
-    if (stylisticClass >= kCTFontOldStyleSerifsClass && stylisticClass <= kCTFontSlabSerifsClass) {
+    // Stylistic classes are sequential values, not bit flags; class 6 is reserved
+    if ((stylisticClass >= kCTFontOldStyleSerifsClass &&
+         stylisticClass <= kCTFontSlabSerifsClass) ||
+        stylisticClass == kCTFontFreeformSerifsClass) {
         info->fStyle |= SkAdvancedTypefaceMetrics::kSerif_Style;
-    } else if (stylisticClass & kCTFontScriptsClass) {
+    } else if (stylisticClass == kCTFontScriptsClass) {
         info->fStyle |= SkAdvancedTypefaceMetrics::kScript_Style;
     }
     info->fItalicAngle = (int16_t) CTFontGetSlantAngle(ctFont.get());

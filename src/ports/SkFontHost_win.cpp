@@ -1690,10 +1690,12 @@ std::unique_ptr<SkAdvancedTypefaceMetrics> LogFontTypeface::onGetAdvancedMetrics
     if (otm.otmTextMetrics.tmItalic) {
         info->fStyle |= SkAdvancedTypefaceMetrics::kItalic_Style;
     }
-    if (otm.otmTextMetrics.tmPitchAndFamily & FF_ROMAN) {
+    // The family is a sequential value in the high nibble: FF_MODERN contains the FF_ROMAN bit
+    const BYTE family = otm.otmTextMetrics.tmPitchAndFamily & 0xF0;
+    if (family == FF_ROMAN) {
         info->fStyle |= SkAdvancedTypefaceMetrics::kSerif_Style;
-    } else if (otm.otmTextMetrics.tmPitchAndFamily & FF_SCRIPT) {
-            info->fStyle |= SkAdvancedTypefaceMetrics::kScript_Style;
+    } else if (family == FF_SCRIPT) {
+        info->fStyle |= SkAdvancedTypefaceMetrics::kScript_Style;
     }
 
     // The main italic angle of the font, in tenths of a degree counterclockwise
