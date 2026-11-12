@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f559dff6_d97ea1cf",
+        "filename": "gm/cubicpaths.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2026-11-12T15:21:00Z",
+      "side": 1,
+      "message": "Nit: I would prefer having the DM only; GM\u0027s require triaging, and the dm covers this test case.",
+      "range": {
+        "startLine": 542,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 1
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "4e242f81_51ad6e8f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/cubicpaths.cpp",
+              "range": {
+                "startLine": 546,
+                "startChar": 0,
+                "endLine": 547,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "gm/cubicpaths.cpp",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    path.setIsVolatile(true);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "36ce7a91f2a3628e0c3ffff66fa8cf58dd86c74b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
