@@ -12338,6 +12338,42 @@ DEF_TEST(SkParagraph_FontCollectionSameSettingsKeepCaches, reporter) {
     REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 1);
 }
 
+// The faces of one family can be split between the dynamic and the asset font managers.
+// The best style match must come from all of them, not from the first manager with the
+// family, and an equally good match must still come from the higher priority manager
+DEF_TEST(SkParagraph_FontCollectionMatchesStyleAcrossManagers, reporter) {
+    sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+    auto italic = mgr->makeFromStream(GetResourceAsStream("fonts/cond-bold-italic.ttf"), {});
+    auto regular = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    auto regularCopy = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    // Portable font manager returns null for stream-backed typefaces when native fonts are disabled
+    if (!italic || !regular || !regularCopy) {
+        return;
+    }
+    REPORTER_ASSERT(reporter, italic->fontStyle() != regular->fontStyle());
+
+    const SkString family("Family");
+    auto dynamicProvider = sk_make_sp<TypefaceFontProvider>();
+    dynamicProvider->registerTypeface(italic, family);
+    auto assetProvider = sk_make_sp<TypefaceFontProvider>();
+    assetProvider->registerTypeface(regular, family);
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDynamicFontManager(dynamicProvider);
+    fontCollection->setAssetFontManager(assetProvider);
+
+    auto find = [&](SkFontStyle style) {
+        auto typefaces = fontCollection->findTypefaces({family}, style);
+        return typefaces.size() == 1 ? typefaces[0]->uniqueID() : 0;
+    };
+    REPORTER_ASSERT(reporter, find(regular->fontStyle()) == regular->uniqueID());
+    REPORTER_ASSERT(reporter, find(italic->fontStyle()) == italic->uniqueID());
+
+    // Same style in both managers: the dynamic one still overrides the asset one
+    dynamicProvider->registerTypeface(regularCopy, family);
+    fontCollection->clearCaches();
+    REPORTER_ASSERT(reporter, find(regular->fontStyle()) == regularCopy->uniqueID());
+}
+
 // Each style block resolves its text with several fonts. The runs of each block in a
 // many-block paragraph must be the same as the runs of that block shaped alone.
 DEF_TEST(SkParagraph_ManyStyleBlocksWithSeveralFonts, reporter) {
