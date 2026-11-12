@@ -15,7 +15,7 @@
 
 namespace skgpu::graphite {
 namespace {
-#if defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
 bool is_map_succeeded(WGPUBufferMapAsyncStatus status) {
     return status == WGPUBufferMapAsyncStatus_Success;
 }
@@ -55,7 +55,11 @@ void log_map_error(WGPUBufferMapAsyncStatus status, const char*) {
             statusStr = "<other>";
             break;
     }
-    SKIA_LOG(priority, "Buffer async map failed with status %s.", statusStr);
+    if (priority == SkLogPriority::kDebug) {
+        SKIA_LOG_D("Buffer async map failed with status %s.", statusStr);
+    } else {
+        SKIA_LOG_E("Buffer async map failed with status %s.", statusStr);
+    }
 }
 
 #else
@@ -241,7 +245,7 @@ void DawnBuffer::onAsyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {
     bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
     auto buffer = sk_ref_sp(this);
 
-#if defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__) && !defined(SK_USE_EMDAWNWEBGPU)
     fBuffer.MapAsync(
             isWrite ? wgpu::MapMode::Write : wgpu::MapMode::Read,
             0,

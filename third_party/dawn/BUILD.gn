@@ -10,6 +10,24 @@
 import("//gn/skia.gni")
 import("//third_party/dawn/args.gni")
 
+if (is_wasm) {
+  declare_args() {
+    # A built-in port name, or an absolute path to a local/remote emdawnwebgpu port.
+    skia_emdawnwebgpu_port = "emdawnwebgpu"
+  }
+
+  config("webgpu") {
+    if (skia_use_emdawnwebgpu) {
+      assert(skia_emdawnwebgpu_port != "")
+      defines = [ "SK_USE_EMDAWNWEBGPU" ]
+      cflags = [ "--use-port=$skia_emdawnwebgpu_port" ]
+      ldflags = cflags
+    } else {
+      ldflags = [ "-sUSE_WEBGPU=1" ]
+    }
+  }
+}
+
 if (is_win) {
   # On Windows, the normal cc/cxx variables are just "clang" and "clang++"
   # which are not found in the path. CMake needs the full path.
@@ -318,9 +336,11 @@ config("dawn_defines") {
 }
 
 group("dawn") {
-  public_deps = [ ":dawn_cmake" ]
-
-  public_configs = [ ":dawn_api_config" ]
-
-  all_dependent_configs = [ ":dawn_defines" ]
+  if (is_wasm) {
+    all_dependent_configs = [ ":webgpu" ]
+  } else {
+    public_deps = [ ":dawn_cmake" ]
+    public_configs = [ ":dawn_api_config" ]
+    all_dependent_configs = [ ":dawn_defines" ]
+  }
 }

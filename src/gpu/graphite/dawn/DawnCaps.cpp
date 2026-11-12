@@ -294,10 +294,14 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 #endif
 #endif // defined(__EMSCRIPTEN__)
 
-#if defined(__EMSCRIPTEN__)
-    wgpu::SupportedLimits supportedLimits;
-    [[maybe_unused]] wgpu::Status status = backendContext.fDevice.GetLimits(&supportedLimits);
+#if defined(__EMSCRIPTEN__) && defined(SK_USE_EMDAWNWEBGPU)
+    wgpu::Limits limits;
+    [[maybe_unused]] wgpu::Status status = backendContext.fDevice.GetLimits(&limits);
     SkASSERT(status == wgpu::Status::Success);
+#elif defined(__EMSCRIPTEN__)
+    wgpu::SupportedLimits supportedLimits;
+    [[maybe_unused]] bool limitsSucceeded = backendContext.fDevice.GetLimits(&supportedLimits);
+    SkASSERT(limitsSucceeded);
     wgpu::Limits& limits = supportedLimits.limits;
 #else
     wgpu::CompatibilityModeLimits compatLimits;
@@ -308,7 +312,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     }
     [[maybe_unused]] wgpu::Status status = backendContext.fDevice.GetLimits(&limits);
     SkASSERT(status == wgpu::Status::Success);
-#endif  // defined(__EMSCRIPTEN__)
+#endif
 
     fMaxTextureSize = limits.maxTextureDimension2D;
 
@@ -451,6 +455,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
         // compute passes is different than on current emsdk. The older API isn't correctly
         // translated to the current JS WebGPU API in emsdk. So we require 3.1.48+.
 #if !defined(__EMSCRIPTEN__)                                                                   \
+        || defined(SK_USE_EMDAWNWEBGPU)                                                        \
         || (__EMSCRIPTEN_major__ > 3)                                                          \
         || (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ > 1)                             \
         || (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ == 1 && __EMSCRIPTEN_tiny__ >= 48)
@@ -458,6 +463,10 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 #endif
     }
 
+#if defined(__EMSCRIPTEN__)
+    // DawnGraphicsPipeline has no wasm implementation of CreateRenderPipelineAsync.
+    fUseAsyncPipelineCreation = false;
+#endif
     if (!backendContext.fTick) {
         fAllowCpuSync = false;
         // This seems paradoxical. However, if we use the async pipeline creation methods (e.g
@@ -481,9 +490,11 @@ void DawnCaps::initShaderCaps(const wgpu::Device& device) {
     // discussions around enabling it using an extension in the future.
     shaderCaps->fInfinitySupport = false;
 
+#if !defined(__EMSCRIPTEN__) || defined(SK_USE_EMDAWNWEBGPU)
     if (device.HasFeature(wgpu::FeatureName::DualSourceBlending)) {
         shaderCaps->fDualSourceBlendingSupport = true;
     }
+#endif
 #if !defined(__EMSCRIPTEN__)
     if (device.HasFeature(wgpu::FeatureName::FramebufferFetch)) {
         shaderCaps->fFBFetchSupport = true;
