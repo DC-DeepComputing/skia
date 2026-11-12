@@ -15,6 +15,8 @@
 #include "tests/Test.h"
 #include "tools/Resources.h"
 
+#include <array>
+#include <iterator>
 #include <memory>
 
 namespace {
@@ -356,6 +358,46 @@ DEF_TEST(Fontations_SyntheticXHeight, reporter) {
     // xHeight falls back to ascent as well.
     const SkScalar kExpected = 11.138672;
     REPORTER_ASSERT(reporter, metrics.fXHeight == kExpected, "Metrics mismatch: %f vs. %f", kExpected, metrics.fXHeight);
+}
+
+// Metric queries carry no pixel geometry, so subpixel AA must not widen glyph bounds beyond
+// grayscale AA. Wider bounds make Blink report spurious ink overflow and take its slow
+// hit-testing path (crbug.com/404796720)
+DEF_TEST(Fontations_SubpixelAntiAliasBoundsMatchAntiAlias, reporter) {
+    sk_sp<SkTypeface> typeface(SkTypeface_Make_Fontations(
+            GetResourceAsStream("fonts/Roboto-Regular.ttf"), SkFontArguments()));
+    SkASSERT_RELEASE(typeface);
+
+    SkFont lcdFont(typeface, 16);
+    lcdFont.setSubpixel(true);
+    lcdFont.setHinting(SkFontHinting::kSlight);
+    lcdFont.setEdging(SkFont::Edging::kSubpixelAntiAlias);
+    SkFont grayFont = lcdFont;
+    grayFont.setEdging(SkFont::Edging::kAntiAlias);
+
+    constexpr SkUnichar kText[] = {'H', 'a', 'm', 'b', 'u', 'r', 'g', 'e', 'f', 'o', 'n', 's'};
+    std::array<SkGlyphID, std::size(kText)> glyphs;
+    lcdFont.unicharsToGlyphs(kText, glyphs);
+    std::array<SkRect, std::size(kText)> lcdBounds, grayBounds;
+    lcdFont.getBounds(glyphs, lcdBounds, nullptr);
+    grayFont.getBounds(glyphs, grayBounds, nullptr);
+
+    for (size_t i = 0; i < std::size(kText); ++i) {
+        // The 1px outset applies only to non-empty bounds, so an inkless glyph would pass blindly
+        REPORTER_ASSERT(reporter, !grayBounds[i].isEmpty(), "'%c' has no ink", kText[i]);
+        REPORTER_ASSERT(reporter,
+                        lcdBounds[i] == grayBounds[i],
+                        "'%c': subpixel AA [%g %g %g %g] vs AA [%g %g %g %g]",
+                        kText[i],
+                        lcdBounds[i].fLeft,
+                        lcdBounds[i].fTop,
+                        lcdBounds[i].fRight,
+                        lcdBounds[i].fBottom,
+                        grayBounds[i].fLeft,
+                        grayBounds[i].fTop,
+                        grayBounds[i].fRight,
+                        grayBounds[i].fBottom);
+    }
 }
 
 DEF_TEST(Fontations_CffLinearAdvanceWidth, reporter) {
