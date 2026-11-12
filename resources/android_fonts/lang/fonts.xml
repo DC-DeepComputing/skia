@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<familyset version="21">
+    <!-- first font is default; it has no 'A' so every 'A' request goes to a fallback -->
+    <family name="sans-serif">
+        <font weight="400" style="normal">Distortable.ttf</font>
+    </family>
+
+    <!-- fallback fonts: both have 'A', so only the language tags decide between them -->
+    <family lang="und-Arab kok">
+        <font weight="400" style="normal">hintgasp.ttf</font>
+    </family>
+    <family lang="ja und-Khmr ko zh-Hans">
+        <font weight="400" style="normal">ReallyBigA.ttf</font>
+    </family>
+</familyset>
