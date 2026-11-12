@@ -8,12 +8,13 @@
 #define SkJpegRustDecoder_DEFINED
 
 #include "include/codec/SkCodec.h"
+#include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/private/SkAPI.h"
 
-class SkData;
 class SkStream;
+struct SkGainmapInfo;
 
 #include <memory>
 
@@ -24,6 +25,10 @@ enum class InputState { kGrowing, kComplete };
 struct Metadata {
     /** Encoded maximum sampling factors times eight, independent of output scale. */
     SkISize fMCUSize = SkISize::MakeEmpty();
+    /** Owned EXIF TIFF payload, without the Exif signature; null when absent. */
+    sk_sp<const SkData> fExifData;
+    /** A parsed MPF index is present; this does not guarantee a valid gainmap. */
+    bool fHasMpf = false;
 };
 
 /** Returns true if this data claims to be a JPEG image. */
@@ -52,7 +57,8 @@ SK_API std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream>,
  *  Incremental decoding can still report incomplete
  *  input and publish only the current buffered scan's valid row prefix.
  *  Metadata is written only on successful creation
- *  and describes source MCU geometry, independently of raw YUV eligibility.
+ *  and owns its data independently of the codec and input stream.
+ *  Source MCU geometry is independent of raw YUV eligibility.
  */
 SK_API std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream>,
                                        SkCodec::Result*,
@@ -63,6 +69,15 @@ SK_API std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream>,
 SK_API std::unique_ptr<SkCodec> Decode(sk_sp<const SkData>,
                                        SkCodec::Result*,
                                        SkCodecs::DecodeContext = nullptr);
+
+/**
+ *  Finds a gainmap without decoding the primary image's pixels. The input need
+ *  not support duplication, seeking, or a known length. On success, the output
+ *  stream owns just the encoded gainmap image, independently of the input.
+ *  Both output pointers must be non-null. Returns false without modifying them
+ *  if no gainmap is available, including when its bytes have not arrived yet.
+ */
+SK_API bool FindGainmapImage(std::unique_ptr<SkStream>, SkGainmapInfo*, std::unique_ptr<SkStream>*);
 
 inline constexpr SkCodecs::Decoder Decoder() {
     return { "rust_jpeg", IsJpeg, Decode };

@@ -42,6 +42,10 @@ public:
 
     ~SkJpegRustCodec() override;
 
+    bool getGainmapImage(SkGainmapInfo* info, std::unique_ptr<SkStream>* stream) {
+        return this->onGetGainmapInfo(info, stream);
+    }
+
 protected:
     SkJpegRustCodec(SkEncodedInfo&&,
                     std::unique_ptr<SkStream>,
