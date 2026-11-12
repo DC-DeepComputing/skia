@@ -50,6 +50,24 @@
       "message": "Do we expect these matrices to be well behaved WRT alpha?\n\nIf not, we should probably `clamp_a_01` after each matrix op.  Or possibly make it a caller choice based on a `SkColorFilters::Clamp` option.  Either way, let\u0027s document the behavior.",
       "revId": "916d09b78e4c19b525d74047c1554994bae6c3be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea56c0a7_8aa469c1",
+        "filename": "src/core/SkConvertPixels.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2026-11-12T19:24:27Z",
+      "side": 1,
+      "message": "Add the clamp and documented it. In theory limited-range videos can be used to produced out-of-[0,1] signal values and we should support those (in practice, they get shaved off if there is a non-float RGB intermediate, which is often).",
+      "parentUuid": "018f2b77_26db24c7",
+      "revId": "916d09b78e4c19b525d74047c1554994bae6c3be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
