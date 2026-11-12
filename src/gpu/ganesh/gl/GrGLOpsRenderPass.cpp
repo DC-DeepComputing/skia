@@ -128,15 +128,6 @@ void GrGLOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
     fAttribArrayState = fGpu->bindInternalVertexArray(indexBuffer.get(), numAttribs,
                                                       primitiveRestart);
 
-    if (indexBuffer) {
-        if (indexBuffer->isCpuBuffer()) {
-            auto* cpuIndexBuffer = static_cast<const GrCpuBuffer*>(indexBuffer.get());
-            fIndexPointer = reinterpret_cast<const uint16_t*>(cpuIndexBuffer->data());
-        } else {
-            fIndexPointer = nullptr;
-        }
-    }
-
     // If this platform does not support baseInstance, defer binding of the instance buffer.
     if (fGpu->glCaps().baseVertexBaseInstanceSupport()) {
         this->bindInstanceBuffer(instanceBuffer.get(), 0);
@@ -154,6 +145,15 @@ void GrGLOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
     }
     fActiveVertexBuffer = std::move(vertexBuffer);
     fActiveIndexBuffer = std::move(indexBuffer);
+}
+
+const void* GrGLOpsRenderPass::offsetForBaseIndex(int baseIndex) const {
+    if (fActiveIndexBuffer && fActiveIndexBuffer->isCpuBuffer()) {
+        auto* cpuIndexBuffer = static_cast<const GrCpuBuffer*>(fActiveIndexBuffer.get());
+        return reinterpret_cast<const uint16_t*>(cpuIndexBuffer->data()) + baseIndex;
+    }
+    // nullptr != 0. Adding an offset to a nullptr is undefined.
+    return reinterpret_cast<const void*>(baseIndex * sizeof(uint16_t));
 }
 
 void GrGLOpsRenderPass::bindInstanceBuffer(const GrBuffer* instanceBuffer, int baseInstance) {

@@ -60,13 +60,9 @@ private:
     void bindInstanceBuffer(const GrBuffer*, int baseInstance);
     void bindVertexBuffer(const GrBuffer*, int baseVertex);
 
-    const void* offsetForBaseIndex(int baseIndex) const {
-        if (!fIndexPointer) {
-            // nullptr != 0. Adding an offset to a nullptr is undefined.
-            return (void*)(baseIndex * sizeof(uint16_t));
-        }
-        return fIndexPointer + baseIndex;
-    }
+    // Returns the CPU address of the indices if the active index buffer is a CPU buffer, or the
+    // byte offset into the bound GPU index buffer otherwise.
+    const void* offsetForBaseIndex(int baseIndex) const;
 
     // Ideally we load and store DMSAA only within the content bounds of our render pass, but if
     // the caps don't allow for partial framebuffer blits, we resolve the full target.
@@ -110,10 +106,6 @@ private:
     // Per-pipeline state.
     GrPrimitiveType fPrimitiveType;
     raw_ptr<GrGLAttribArrayState> fAttribArrayState;
-
-    // If using an index buffer, this gets set during onBindBuffers. It is either the CPU address of
-    // the indices, or nullptr if they reside physically in GPU memory.
-    raw_ptr<const uint16_t, AllowPtrArithmetic> fIndexPointer;
 
     // This tracks whether or not we bound the respective buffers during the bindBuffers call.
     SkDEBUGCODE(bool fDidBindVertexBuffer = false;)
