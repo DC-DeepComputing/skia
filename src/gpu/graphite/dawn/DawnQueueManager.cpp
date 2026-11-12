@@ -16,8 +16,7 @@
 namespace skgpu::graphite {
 namespace {
 #if defined(__EMSCRIPTEN__)
-// GpuWorkSubmission with AsyncWait. This is useful for wasm where wgpu::Future
-// is not available yet.
+// Browser callbacks need the event loop to run, so yield only via the client's tick function.
 class DawnWorkSubmissionWithAsyncWait final : public GpuWorkSubmission {
 public:
     DawnWorkSubmissionWithAsyncWait(std::unique_ptr<CommandBuffer> cmdBuffer,
@@ -36,12 +35,21 @@ DawnWorkSubmissionWithAsyncWait::DawnWorkSubmissionWithAsyncWait(
         DawnQueueManager* queueManager,
         const DawnSharedContext* sharedContext)
         : GpuWorkSubmission(std::move(cmdBuffer), queueManager), fAsyncWait(sharedContext) {
+#if defined(SK_USE_EMDAWNWEBGPU)
+    queueManager->dawnQueue().OnSubmittedWorkDone(
+            wgpu::CallbackMode::AllowSpontaneous,
+            [](wgpu::QueueWorkDoneStatus, wgpu::StringView, DawnAsyncWait* wait) {
+                wait->signal();
+            },
+            &fAsyncWait);
+#else
     queueManager->dawnQueue().OnSubmittedWorkDone(
             [](WGPUQueueWorkDoneStatus, void* userData) {
                 auto asyncWaitPtr = static_cast<DawnAsyncWait*>(userData);
                 asyncWaitPtr->signal();
             },
             &fAsyncWait);
+#endif
 }
 
 bool DawnWorkSubmissionWithAsyncWait::onIsFinished(const SharedContext*) {
@@ -54,8 +62,7 @@ void DawnWorkSubmissionWithAsyncWait::onWaitUntilFinished(const SharedContext*) 
 
 #else
 
-// The version with wgpu::Future. This is not available in wasm yet so we have
-// to guard behind #if
+// Native Dawn can wait without yielding to a browser event loop.
 class DawnWorkSubmissionWithFuture final : public GpuWorkSubmission {
 public:
     DawnWorkSubmissionWithFuture(std::unique_ptr<CommandBuffer> cmdBuffer,
