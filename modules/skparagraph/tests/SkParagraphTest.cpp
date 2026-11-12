@@ -12338,6 +12338,137 @@ DEF_TEST(SkParagraph_FontCollectionSameSettingsKeepCaches, reporter) {
     REPORTER_ASSERT(reporter, fontCollection->getParagraphCache()->count() == 1);
 }
 
+// The faces of one family can be split between the dynamic and the asset font managers.
+// The best style match must come from all of them, not from the first manager with the
+// family, and an equally good match must still come from the higher priority manager
+DEF_TEST(SkParagraph_FontCollectionMatchesStyleAcrossManagers, reporter) {
+    sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+    auto italic = mgr->makeFromStream(GetResourceAsStream("fonts/cond-bold-italic.ttf"), {});
+    auto regular = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    auto regularCopy = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    // Portable font manager returns null for stream-backed typefaces when native fonts are disabled
+    if (!italic || !regular || !regularCopy) {
+        return;
+    }
+    REPORTER_ASSERT(reporter, italic->fontStyle() != regular->fontStyle());
+
+    const SkString family("Family");
+    auto dynamicProvider = sk_make_sp<TypefaceFontProvider>();
+    dynamicProvider->registerTypeface(italic, family);
+    auto assetProvider = sk_make_sp<TypefaceFontProvider>();
+    assetProvider->registerTypeface(regular, family);
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDynamicFontManager(dynamicProvider);
+    fontCollection->setAssetFontManager(assetProvider);
+
+    auto find = [&](SkFontStyle style) {
+        auto typefaces = fontCollection->findTypefaces({family}, style);
+        return typefaces.size() == 1 ? typefaces[0]->uniqueID() : 0;
+    };
+    REPORTER_ASSERT(reporter, find(regular->fontStyle()) == regular->uniqueID());
+    REPORTER_ASSERT(reporter, find(italic->fontStyle()) == italic->uniqueID());
+
+    // Same style in both managers: the dynamic one still overrides the asset one
+    dynamicProvider->registerTypeface(regularCopy, family);
+    fontCollection->clearCaches();
+    REPORTER_ASSERT(reporter, find(regular->fontStyle()) == regularCopy->uniqueID());
+}
+
+// App fonts shadow a test or default family with the same name, even when only those managers
+// have the exact style: Flutter's test font manager answers every family name with its own faces
+DEF_TEST(SkParagraph_FontCollectionAppFontsShadowFallbackManagers, reporter) {
+    sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+    auto italic = mgr->makeFromStream(GetResourceAsStream("fonts/cond-bold-italic.ttf"), {});
+    auto testRegular = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    auto defaultRegular = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    // Portable font manager returns null for stream-backed typefaces when native fonts are disabled
+    if (!italic || !testRegular || !defaultRegular) {
+        return;
+    }
+    REPORTER_ASSERT(reporter, italic->fontStyle() != testRegular->fontStyle());
+
+    const SkString family("Family");
+    auto assetProvider = sk_make_sp<TypefaceFontProvider>();
+    assetProvider->registerTypeface(italic, family);
+    auto testProvider = sk_make_sp<TypefaceFontProvider>();
+    testProvider->registerTypeface(testRegular, family);
+    auto defaultProvider = sk_make_sp<TypefaceFontProvider>();
+    defaultProvider->registerTypeface(defaultRegular, family);
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setAssetFontManager(assetProvider);
+    fontCollection->setTestFontManager(testProvider);
+    fontCollection->setDefaultFontManager(defaultProvider);
+
+    auto typefaces = fontCollection->findTypefaces({family}, testRegular->fontStyle());
+    REPORTER_ASSERT(reporter,
+                    typefaces.size() == 1 && typefaces[0]->uniqueID() == italic->uniqueID());
+}
+
+// When no app font manager has the exact style, the closest style wins across the dynamic and
+// asset managers, and an equally close one still comes from the dynamic manager
+DEF_TEST(SkParagraph_FontCollectionMatchesClosestStyleAcrossManagers, reporter) {
+    sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+    auto italic = mgr->makeFromStream(GetResourceAsStream("fonts/cond-bold-italic.ttf"), {});
+    auto regular = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    auto regularCopy = mgr->makeFromStream(GetResourceAsStream("fonts/Roboto-Regular.ttf"), {});
+    // Portable font manager returns null for stream-backed typefaces when native fonts are disabled
+    if (!italic || !regular || !regularCopy) {
+        return;
+    }
+    REPORTER_ASSERT(reporter, italic->fontStyle().slant() == SkFontStyle::kItalic_Slant);
+    REPORTER_ASSERT(reporter, regular->fontStyle().slant() == SkFontStyle::kUpright_Slant);
+
+    const SkString family("Family");
+    auto dynamicProvider = sk_make_sp<TypefaceFontProvider>();
+    dynamicProvider->registerTypeface(regular, family);
+    auto assetProvider = sk_make_sp<TypefaceFontProvider>();
+    assetProvider->registerTypeface(italic, family);
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDynamicFontManager(dynamicProvider);
+    fontCollection->setAssetFontManager(assetProvider);
+
+    auto find = [&](SkFontStyle style) {
+        auto typefaces = fontCollection->findTypefaces({family}, style);
+        return typefaces.size() == 1 ? typefaces[0]->uniqueID() : 0;
+    };
+    // CSS3 matches the slant before the weight, so the asset italic beats the dynamic upright
+    const SkFontStyle lighterItalic(italic->fontStyle().weight() - 100,
+                                    italic->fontStyle().width(),
+                                    SkFontStyle::kItalic_Slant);
+    REPORTER_ASSERT(reporter, find(lighterItalic) == italic->uniqueID());
+
+    // Both managers have an equally close upright face: the dynamic one wins
+    assetProvider->registerTypeface(regularCopy, family);
+    fontCollection->clearCaches();
+    const SkFontStyle widerRegular(regular->fontStyle().weight(),
+                                   regular->fontStyle().width() + 1,
+                                   SkFontStyle::kUpright_Slant);
+    REPORTER_ASSERT(reporter, find(widerRegular) == regular->uniqueID());
+}
+
+// One font manager can fill every slot of the collection; it must count once per slot and not
+// overflow the per-manager candidates when no face has the exact style
+DEF_TEST(SkParagraph_FontCollectionSameManagerInEverySlot, reporter) {
+    sk_sp<SkFontMgr> mgr = ToolUtils::TestFontMgr();
+    auto italic = mgr->makeFromStream(GetResourceAsStream("fonts/cond-bold-italic.ttf"), {});
+    // Portable font manager returns null for stream-backed typefaces when native fonts are disabled
+    if (!italic) {
+        return;
+    }
+    const SkString family("Family");
+    auto provider = sk_make_sp<TypefaceFontProvider>();
+    provider->registerTypeface(italic, family);
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDynamicFontManager(provider);
+    fontCollection->setAssetFontManager(provider);
+    fontCollection->setTestFontManager(provider);
+    fontCollection->setDefaultFontManager(provider);
+
+    auto typefaces = fontCollection->findTypefaces({family}, SkFontStyle::Normal());
+    REPORTER_ASSERT(reporter,
+                    typefaces.size() == 1 && typefaces[0]->uniqueID() == italic->uniqueID());
+}
+
 // Each style block resolves its text with several fonts. The runs of each block in a
 // many-block paragraph must be the same as the runs of that block shaped alone.
 DEF_TEST(SkParagraph_ManyStyleBlocksWithSeveralFonts, reporter) {
