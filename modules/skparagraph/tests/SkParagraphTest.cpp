@@ -50,6 +50,7 @@
 
 #include <string.h>
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <limits>
 #include <memory>
@@ -11579,32 +11580,44 @@ UNIX_ONLY_TEST(SkParagraph_EllipsisHitIsUpstream, reporter) {
                     glyphInfo.fGraphemeClusterTextRange.end);
 }
 
-// Only a soft hyphen's own width changes how a too-long word is measured. Other soft breaks, such
-// as the end of the text, still end the word before their cluster, so a word too long for the
-// line at the end of the text moves to the next line before it's split, as it always has
-// (Flutter's DropdownMenu tests depend on this). With Ahem, every glyph is 10px wide, so each
-// 56px line holds 5 glyphs
-UNIX_ONLY_TEST(SkParagraph_TooLongWordAtEndOfTextBreaksAsBefore, reporter) {
+// A soft break ends the word after its cluster, so a too-long word is measured with its last
+// cluster whatever follows it (a space, the end of the text, a hyphen or a CJK character).
+// Measured one cluster short, a word that overflows only by that cluster moves to the next line
+// and is split there, leaving its last glyph alone (crbug/40045440). Ahem glyphs are 10px wide
+UNIX_ONLY_TEST(SkParagraph_TooLongWordMeasuredWithLastCluster, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
 
-    for (bool renderSoftHyphens : {false, true}) {
-        ParagraphStyle paragraphStyle;
-        paragraphStyle.turnHintingOff();
-        paragraphStyle.setApplyRoundingHack(false);
-        paragraphStyle.setRenderSoftHyphens(renderSoftHyphens);
-        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
-        TextStyle textStyle;
-        textStyle.setFontFamilies({SkString("Ahem")});
-        textStyle.setFontSize(10);
-        textStyle.setColor(SK_ColorBLACK);
-        builder.pushStyle(textStyle);
-        const char* text = "n twelve";
-        builder.addText(text, strlen(text));
-        builder.pop();
-        auto paragraph = builder.Build();
-        paragraph->layout(56);
-        checkLines(reporter, paragraph.get(), "n|twelv|e");
+    struct Case {
+        const char* text;
+        SkScalar width;
+        const char* lines;
+    };
+    constexpr std::array<Case, 4> kCases = {{
+            {"n twelve x", 56, "n twe|lve x"},
+            {"n twelve", 56, "n twe|lve"},
+            {"n twelve-ab", 66, "n twel|ve-ab"},
+            // U+4E00 (10px in Ahem) puts a CJK soft break after 'e'; describeLines omits non-ASCII
+            {"n twelve\xe4\xb8\x80", 56, "n twe|lve"},
+    }};
+    for (const Case& c : kCases) {
+        for (bool renderSoftHyphens : {false, true}) {
+            ParagraphStyle paragraphStyle;
+            paragraphStyle.turnHintingOff();
+            paragraphStyle.setApplyRoundingHack(false);
+            paragraphStyle.setRenderSoftHyphens(renderSoftHyphens);
+            ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+            TextStyle textStyle;
+            textStyle.setFontFamilies({SkString("Ahem")});
+            textStyle.setFontSize(10);
+            textStyle.setColor(SK_ColorBLACK);
+            builder.pushStyle(textStyle);
+            builder.addText(c.text, strlen(c.text));
+            builder.pop();
+            auto paragraph = builder.Build();
+            paragraph->layout(c.width);
+            checkLines(reporter, paragraph.get(), c.lines);
+        }
     }
 }
 
