@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71a68b2f_c851714b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2026-11-12T17:59:45Z",
+      "side": 1,
+      "message": "Hello Robert, could you please take a look?\n\n*Alternatively, we can revert the previous patch adding raw_ptr*",
+      "revId": "838c0f7570ed0722e739ae960ae7b4e60763a848",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
