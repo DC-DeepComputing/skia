@@ -1,0 +1,121 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05d62c02_6290722f",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-12T20:03:05Z",
+      "side": 1,
+      "message": "nit: I don\u0027t think anybody does this today, but `try_read_up_to(0)` would mark the stream as exhausted.  Maybe add an assert or early return?",
+      "range": {
+        "startLine": 650,
+        "startChar": 0,
+        "endLine": 652,
+        "endChar": 21
+      },
+      "revId": "507eefec912e95e841d3663ab6d24098dbd1f52f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "172542dd_f0528bd7",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-12T20:03:05Z",
+      "side": 1,
+      "message": "nit: let\u0027s use a named constant and document how the value was chosen.",
+      "range": {
+        "startLine": 721,
+        "startChar": 35,
+        "endLine": 721,
+        "endChar": 39
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8133cf13_f289fa87",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_jpeg/ffi/FFI.rs",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "const READ_CHUNK_SIZE: usize \u003d 8192;\n"
+            },
+            {
+              "path": "experimental/rust_jpeg/ffi/FFI.rs",
+              "range": {
+                "startLine": 450,
+                "startChar": 0,
+                "endLine": 451,
+                "endChar": 0
+              },
+              "replacement": "    let mut buffer \u003d [0u8; READ_CHUNK_SIZE];\n"
+            },
+            {
+              "path": "experimental/rust_jpeg/ffi/FFI.rs",
+              "range": {
+                "startLine": 721,
+                "startChar": 0,
+                "endLine": 722,
+                "endChar": 0
+              },
+              "replacement": "            if self.try_read_up_to(READ_CHUNK_SIZE) \u003d\u003d 0 {\n"
+            },
+            {
+              "path": "experimental/rust_jpeg/ffi/FFI.rs",
+              "range": {
+                "startLine": 746,
+                "startChar": 0,
+                "endLine": 747,
+                "endChar": 0
+              },
+              "replacement": "        let mut retry_read_limits \u003d [READ_CHUNK_SIZE, usize::MAX].into_iter();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "507eefec912e95e841d3663ab6d24098dbd1f52f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f2afe75_a76dc2f5",
+        "filename": "experimental/rust_jpeg/ffi/FFI.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-12T20:03:05Z",
+      "side": 1,
+      "message": "If the data is garbage (or just not JPEG), do we drain everything before checking for the signature?  If so, maybe we could check the signature on the first chunk and bail early.\n\n(not a new issue, we can look at this in a followup if it makes sense)",
+      "range": {
+        "startLine": 732,
+        "startChar": 0,
+        "endLine": 735,
+        "endChar": 9
+      },
+      "revId": "507eefec912e95e841d3663ab6d24098dbd1f52f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
