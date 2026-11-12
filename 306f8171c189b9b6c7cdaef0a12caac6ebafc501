@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14e95adf_3f4687d7",
+        "filename": "bench/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5154541
+      },
+      "writtenOn": "2026-11-12T16:31:31Z",
+      "side": 1,
+      "message": "Add to CL why this change is grouping graphite benchmarks but not adding them to the binary. If they\u0027re failing, then make a note.",
+      "range": {
+        "startLine": 212,
+        "startChar": 10,
+        "endLine": 212,
+        "endChar": 30
+      },
+      "revId": "306f8171c189b9b6c7cdaef0a12caac6ebafc501",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
