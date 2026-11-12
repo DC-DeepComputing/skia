@@ -16,6 +16,40 @@
       "message": "private API for conversion with color matrix",
       "revId": "916d09b78e4c19b525d74047c1554994bae6c3be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd96fc4b_ad2f3b71",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-12T16:59:25Z",
+      "side": 1,
+      "message": "LGTM with an alpha-clamping question.",
+      "revId": "916d09b78e4c19b525d74047c1554994bae6c3be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "018f2b77_26db24c7",
+        "filename": "src/core/SkConvertPixels.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2026-11-12T16:59:25Z",
+      "side": 1,
+      "message": "Do we expect these matrices to be well behaved WRT alpha?\n\nIf not, we should probably `clamp_a_01` after each matrix op.  Or possibly make it a caller choice based on a `SkColorFilters::Clamp` option.  Either way, let\u0027s document the behavior.",
+      "revId": "916d09b78e4c19b525d74047c1554994bae6c3be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
