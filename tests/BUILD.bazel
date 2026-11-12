@@ -694,6 +694,7 @@ filegroup(
     srcs = [
         "graphite/VulkanBackendTextureTest.cpp",
         "graphite/VulkanDstReadRenderpassReuseTest.cpp",
+        "graphite/VulkanOOMTest.cpp",
     ],
     visibility = ["//dm:__pkg__"],
 )
