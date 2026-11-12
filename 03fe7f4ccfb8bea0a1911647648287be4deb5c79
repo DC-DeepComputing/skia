@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cb1938a_64214174",
+        "filename": "src/gpu/ganesh/image/GrImageUtils.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-11-12T01:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32ce513a_361655d1",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 85
+      },
+      "revId": "03fe7f4ccfb8bea0a1911647648287be4deb5c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a226f81_6c5f7ea5",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-11-11T22:59:30Z",
       "side": 1,
       "message": "This is redundant with the `sk_collection_check_length` in `SkSpan::first(int)`, which is also a release-build check.",
+      "range": {
+        "startLine": 615,
+        "startChar": 0,
+        "endLine": 615,
+        "endChar": 58
+      },
+      "revId": "03fe7f4ccfb8bea0a1911647648287be4deb5c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd9ef8a3_54439339",
+        "filename": "src/gpu/ganesh/image/SkImage_GaneshFactories.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 4621846
+      },
+      "writtenOn": "2026-11-12T01:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a226f81_6c5f7ea5",
       "range": {
         "startLine": 615,
         "startChar": 0,
