@@ -54,9 +54,20 @@ SkEnumBitMask<DawnErrorType> DawnErrorChecker::popErrorScopes() {
                 , fWait(sharedContext) {}
     } errorState(fSharedContext);
 
+#if defined(SK_USE_EMDAWNWEBGPU)
+    auto errorCallback = [](wgpu::PopErrorScopeStatus status,
+                            wgpu::ErrorType type,
+                            wgpu::StringView message,
+                            ErrorState* errorState) {
+        SkASSERT(status == wgpu::PopErrorScopeStatus::Success);
+        std::string text(message);
+        const char* msg = text.c_str();
+#else
     wgpu::ErrorCallback errorCallback = [](WGPUErrorType status, const char* msg, void* userData) {
         ErrorState* errorState = static_cast<ErrorState*>(userData);
-        if (status != WGPUErrorType_NoError) {
+        auto type = static_cast<wgpu::ErrorType>(status);
+#endif
+        if (type != wgpu::ErrorType::NoError) {
             SkASSERT(errorState->fScopeIdx >= 0);
             const char* errorScopeName = kErrorScopeNames[errorState->fScopeIdx];
             SKIA_LOG_E("Failed in error scope (%s): %s", errorScopeName, msg);
@@ -66,19 +77,28 @@ SkEnumBitMask<DawnErrorType> DawnErrorChecker::popErrorScopes() {
         errorState->fWait.signal();
     };
 
+    auto popErrorScope = [&] {
+#if defined(SK_USE_EMDAWNWEBGPU)
+        fSharedContext->device().PopErrorScope(
+                wgpu::CallbackMode::AllowSpontaneous, errorCallback, &errorState);
+#else
+        fSharedContext->device().PopErrorScope(errorCallback, &errorState);
+#endif
+    };
+
     // Pop all three error scopes:
     // Internal
-    fSharedContext->device().PopErrorScope(errorCallback, &errorState);
+    popErrorScope();
     errorState.fWait.busyWait();
     errorState.fWait.reset();
 
     // OutOfMemory
-    fSharedContext->device().PopErrorScope(errorCallback, &errorState);
+    popErrorScope();
     errorState.fWait.busyWait();
     errorState.fWait.reset();
 
     // Validation
-    fSharedContext->device().PopErrorScope(errorCallback, &errorState);
+    popErrorScope();
     errorState.fWait.busyWait();
 #else
     struct ErrorState {
