@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "tests/PathOpsExtendedTest.h"
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -16,6 +18,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -28,7 +31,6 @@
 #include "src/pathops/SkPathOpsCommon.h"
 #include "src/pathops/SkPathOpsDebug.h"
 #include "tests/PathOpsDebug.h"
-#include "tests/PathOpsExtendedTest.h"
 #include "tests/PathOpsThreadedCommon.h"
 #include "tests/Test.h"
 
@@ -39,6 +41,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <utility>
 #include <vector>
 
 std::vector<std::string> gUniqueNames;
@@ -229,15 +232,15 @@ bool drawAsciiPaths(const SkPath& one, const SkPath& two, bool drawPaths) {
     for (int y = 0; y < bitHeight; ++y) {
         uint32_t* addr1 = bits.getAddr32(0, y);
         int x;
-        char* outPtr = out;
+        SkSpan<char> outPtr = out;
         for (x = 0; x < bitWidth; ++x) {
-            *outPtr++ = addr1[x] == (uint32_t) -1 ? '_' : 'x';
+            std::exchange(outPtr, outPtr.subspan(1u))[0] = addr1[x] == (uint32_t)-1 ? '_' : 'x';
         }
-        *outPtr++ = '|';
+        std::exchange(outPtr, outPtr.subspan(1u))[0] = '|';
         for (x = bitWidth; x < bitWidth * 2; ++x) {
-            *outPtr++ = addr1[x] == (uint32_t) -1 ? '_' : 'x';
+            std::exchange(outPtr, outPtr.subspan(1u))[0] = addr1[x] == (uint32_t)-1 ? '_' : 'x';
         }
-        *outPtr++ = '\0';
+        std::exchange(outPtr, outPtr.subspan(1u))[0] = '\0';
         SkDebugf("%s\n", out);
     }
     return true;
@@ -663,10 +666,13 @@ void PathOpsThreadState::outputProgress(const char* pathStr, SkPathOp op) {
     appendTest(pathStr, nullptr, nameSuffix, testFunction, true, fPathStr);
 }
 
-void RunTestSet(skiatest::Reporter* reporter, TestDesc tests[], size_t count,
-                void (*firstTest)(skiatest::Reporter* , const char* filename),
-                void (*skipTest)(skiatest::Reporter* , const char* filename),
-                void (*stopTest)(skiatest::Reporter* , const char* filename), bool reverse) {
+void RunTestSet(skiatest::Reporter* reporter,
+                SkSpan<TestDesc> tests,
+                size_t count,
+                void (*firstTest)(skiatest::Reporter*, const char* filename),
+                void (*skipTest)(skiatest::Reporter*, const char* filename),
+                void (*stopTest)(skiatest::Reporter*, const char* filename),
+                bool reverse) {
     size_t index;
     if (firstTest) {
         index = count - 1;
