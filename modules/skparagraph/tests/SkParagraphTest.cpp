@@ -13204,3 +13204,174 @@ DEF_TEST(SkParagraph_EllipsisAfterHardLineBreak, reporter) {
     }
 #endif
 }
+
+// Checks that a trailing empty line after a hard line break has empty text ranges at the end of the
+// paragraph, no style metrics, and vertical metrics matching the break style (crbug.com/40042695)
+DEF_TEST(SkParagraph_EmptyLineMetrics, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
+
+    auto build = [&](const char* text) {
+        ParagraphStyle paragraphStyle;
+        paragraphStyle.turnHintingOff();
+        TextStyle defaultStyle;
+        defaultStyle.setFontFamilies({SkString("Roboto")});
+        defaultStyle.setFontSize(20);
+        paragraphStyle.setTextStyle(defaultStyle);
+
+        TextStyle textStyle;
+        textStyle.setFontFamilies({SkString("Roboto")});
+        textStyle.setFontSize(8);
+
+        ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+        builder.pushStyle(textStyle);
+        builder.addText(text);
+        auto paragraph = builder.Build();
+        paragraph->layout(TestCanvasWidth);
+        SkCanvas canvas(TestCanvasWidth, TestCanvasHeight);
+        paragraph->paint(&canvas, 0, 0);
+        return paragraph;
+    };
+
+    {
+        auto paragraph = build("ab\n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        REPORTER_ASSERT(reporter, metrics.size() == 2);
+        if (metrics.size() == 2) {
+            REPORTER_ASSERT(reporter, metrics[0].fStartIndex == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fEndExcludingWhitespaces == 2);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIndex == 3);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIncludingNewline == 3);
+            REPORTER_ASSERT(reporter, metrics[0].fHardBreak);
+            REPORTER_ASSERT(reporter, metrics[0].fWidth > 0);
+            REPORTER_ASSERT(reporter, metrics[0].fLineMetrics.size() == 1);
+
+            REPORTER_ASSERT(reporter, metrics[1].fStartIndex == 3);
+            REPORTER_ASSERT(reporter, metrics[1].fEndExcludingWhitespaces == 3);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIndex == 3);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIncludingNewline == 3);
+            REPORTER_ASSERT(reporter, metrics[1].fHardBreak);
+            REPORTER_ASSERT(reporter, metrics[1].fWidth == 0);
+            REPORTER_ASSERT(reporter, metrics[1].fLineMetrics.empty());
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(metrics[1].fAscent, metrics[0].fAscent));
+            REPORTER_ASSERT(reporter,
+                            SkScalarNearlyEqual(metrics[1].fDescent, metrics[0].fDescent));
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(metrics[1].fHeight, metrics[0].fHeight));
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            SkScalarRoundToScalar(metrics[1].fAscent + metrics[1].fDescent),
+                            metrics[1].fHeight));
+
+            REPORTER_ASSERT(reporter, paragraph->getActualTextRange(1, false) == TextRange(3, 3));
+            REPORTER_ASSERT(reporter, paragraph->getActualTextRange(1, true) == TextRange(3, 3));
+            REPORTER_ASSERT(reporter, paragraph->getLineNumberAtUTF16Offset(2) == 0);
+            auto hit = paragraph->getGlyphPositionAtCoordinate(0, metrics[1].fBaseline);
+            REPORTER_ASSERT(reporter, hit.position == 3 && hit.affinity == Affinity::kDownstream);
+        }
+        int line1GlyphRuns = 0;
+        paragraph->visit([&](int lineNumber, const Paragraph::VisitorInfo* info) {
+            if (lineNumber == 1 && info != nullptr) {
+                ++line1GlyphRuns;
+            }
+        });
+        REPORTER_ASSERT(reporter, line1GlyphRuns == 0);
+    }
+
+    {
+        auto paragraph = build("ab\r\n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        REPORTER_ASSERT(reporter, metrics.size() == 2);
+        if (metrics.size() == 2) {
+            REPORTER_ASSERT(reporter, metrics[0].fStartIndex == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fEndExcludingWhitespaces == 2);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIndex == 4);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIncludingNewline == 4);
+
+            REPORTER_ASSERT(reporter, metrics[1].fStartIndex == 4);
+            REPORTER_ASSERT(reporter, metrics[1].fEndExcludingWhitespaces == 4);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIndex == 4);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIncludingNewline == 4);
+            REPORTER_ASSERT(reporter, metrics[1].fWidth == 0);
+            REPORTER_ASSERT(reporter, metrics[1].fLineMetrics.empty());
+        }
+    }
+
+    {
+        auto paragraph = build("   \n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        REPORTER_ASSERT(reporter, metrics.size() == 2);
+        if (metrics.size() == 2) {
+            REPORTER_ASSERT(reporter, metrics[0].fStartIndex == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fEndExcludingWhitespaces == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIndex == 4);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIncludingNewline == 4);
+            REPORTER_ASSERT(reporter, metrics[0].fWidth == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fLineMetrics.empty());
+
+            REPORTER_ASSERT(reporter, metrics[1].fStartIndex == 4);
+            REPORTER_ASSERT(reporter, metrics[1].fEndExcludingWhitespaces == 4);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIndex == 4);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIncludingNewline == 4);
+            REPORTER_ASSERT(reporter, metrics[1].fWidth == 0);
+            REPORTER_ASSERT(reporter, metrics[1].fLineMetrics.empty());
+        }
+    }
+
+    {
+        auto paragraph = build("\n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        REPORTER_ASSERT(reporter, metrics.size() == 2);
+        if (metrics.size() == 2) {
+            REPORTER_ASSERT(reporter, metrics[0].fStartIndex == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fEndExcludingWhitespaces == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIndex == 1);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIncludingNewline == 1);
+            REPORTER_ASSERT(reporter, metrics[0].fWidth == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fLineMetrics.empty());
+            REPORTER_ASSERT(
+                    reporter,
+                    SkScalarNearlyEqual(
+                            SkScalarRoundToScalar(metrics[0].fAscent + metrics[0].fDescent),
+                            metrics[0].fHeight));
+
+            REPORTER_ASSERT(reporter, metrics[1].fStartIndex == 1);
+            REPORTER_ASSERT(reporter, metrics[1].fEndExcludingWhitespaces == 1);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIndex == 1);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIncludingNewline == 1);
+            REPORTER_ASSERT(reporter, metrics[1].fWidth == 0);
+            REPORTER_ASSERT(reporter, metrics[1].fLineMetrics.empty());
+            REPORTER_ASSERT(reporter, SkScalarNearlyEqual(metrics[1].fHeight, metrics[0].fHeight));
+        }
+    }
+
+    {
+        auto paragraph = build("\n\n");
+        std::vector<LineMetrics> metrics;
+        paragraph->getLineMetrics(metrics);
+        REPORTER_ASSERT(reporter, metrics.size() == 3);
+        if (metrics.size() == 3) {
+            REPORTER_ASSERT(reporter, metrics[0].fStartIndex == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fEndExcludingWhitespaces == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIndex == 0);
+            REPORTER_ASSERT(reporter, metrics[0].fEndIncludingNewline == 1);
+            REPORTER_ASSERT(reporter, metrics[0].fLineMetrics.empty());
+
+            REPORTER_ASSERT(reporter, metrics[1].fStartIndex == 1);
+            REPORTER_ASSERT(reporter, metrics[1].fEndExcludingWhitespaces == 1);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIndex == 2);
+            REPORTER_ASSERT(reporter, metrics[1].fEndIncludingNewline == 2);
+            REPORTER_ASSERT(reporter, metrics[1].fLineMetrics.empty());
+
+            REPORTER_ASSERT(reporter, metrics[2].fStartIndex == 2);
+            REPORTER_ASSERT(reporter, metrics[2].fEndExcludingWhitespaces == 2);
+            REPORTER_ASSERT(reporter, metrics[2].fEndIndex == 2);
+            REPORTER_ASSERT(reporter, metrics[2].fEndIncludingNewline == 2);
+            REPORTER_ASSERT(reporter, metrics[2].fLineMetrics.empty());
+        }
+    }
+}
