@@ -1,6 +1,7 @@
 // Copyright 2020 Google LLC
 #include "include/core/SkPathBuilder.h"
 #include "modules/skparagraph/src/Decorations.h"
+#include "modules/skparagraph/src/ParagraphPainterImpl.h"
 
 using namespace skia_private;
 
@@ -26,13 +27,15 @@ void Decorations::paint(ParagraphPainter* painter, const TextStyle& textStyle, c
         return;
     }
 
-    // Get thickness and position
-    calculateThickness(textStyle, context.run->font().refTypeface());
+    calculateFontMetrics(textStyle, context.run->font().refTypeface());
 
     for (auto decoration : AllTextDecorations) {
         if ((textStyle.getDecorationType() & decoration) == 0) {
             continue;
         }
+
+        // Underline and line-through take their thickness from different font metrics
+        calculateThickness(textStyle, decoration);
 
         // TextLine::paintDecorations already shifts the origin by baselineShift, so subtract
         // the shifted run top (correctAscent) to cancel the baselineShift inside clip.top()
@@ -48,8 +51,9 @@ void Decorations::paint(ParagraphPainter* painter, const TextStyle& textStyle, c
         SkScalar x = context.clip.left();
         SkScalar y = context.clip.top() + fPosition;
 
+        // Only the underline skips descenders, even when other decorations are set as well
         bool drawGaps = textStyle.getDecorationMode() == TextDecorationMode::kGaps &&
-                        textStyle.getDecorationType() == TextDecoration::kUnderline;
+                        decoration == TextDecoration::kUnderline;
 
         switch (textStyle.getDecorationStyle()) {
           case TextDecorationStyle::kWavy: {
@@ -61,6 +65,8 @@ void Decorations::paint(ParagraphPainter* painter, const TextStyle& textStyle, c
           case TextDecorationStyle::kDouble: {
               SkScalar bottom = y + kDoubleDecorationSpacing;
               if (drawGaps) {
+                  // The text shift must not leak into the decorations drawn after this one
+                  ParagraphPainterAutoRestore ppar(painter);
                   SkScalar left = x - context.fTextShift;
                   painter->translate(context.fTextShift, 0);
                   calculateGaps(context, SkRect::MakeXYWH(left, y, width, fThickness), baseline, fThickness);
@@ -76,6 +82,7 @@ void Decorations::paint(ParagraphPainter* painter, const TextStyle& textStyle, c
           case TextDecorationStyle::kDashed:
           case TextDecorationStyle::kDotted:
               if (drawGaps) {
+                  ParagraphPainterAutoRestore ppar(painter);
                   SkScalar left = x - context.fTextShift;
                   painter->translate(context.fTextShift, 0);
                   calculateGaps(context, SkRect::MakeXYWH(left, y, width, fThickness), baseline, 0);
@@ -86,6 +93,7 @@ void Decorations::paint(ParagraphPainter* painter, const TextStyle& textStyle, c
               break;
           case TextDecorationStyle::kSolid:
               if (drawGaps) {
+                  ParagraphPainterAutoRestore ppar(painter);
                   SkScalar left = x - context.fTextShift;
                   painter->translate(context.fTextShift, 0);
                   calculateGaps(context, SkRect::MakeXYWH(left, y, width, fThickness), baseline, fThickness);
@@ -140,12 +148,13 @@ void Decorations::calculateGaps(const TextLine::ClipContext& context, const SkRe
     fPath = path.detach();
 }
 
-// This is how flutter calculates the thickness
-void Decorations::calculateThickness(TextStyle textStyle, sk_sp<SkTypeface> typeface) {
-
+void Decorations::calculateFontMetrics(TextStyle textStyle, sk_sp<SkTypeface> typeface) {
     textStyle.setTypeface(std::move(typeface));
     textStyle.getFontMetrics(&fFontMetrics);
+}
 
+// This is how flutter calculates the thickness
+void Decorations::calculateThickness(const TextStyle& textStyle, TextDecoration decoration) {
     fThickness = textStyle.getFontSize() / 14.0f;
 
     if ((fFontMetrics.fFlags & SkFontMetrics::FontMetricsFlags::kUnderlineThicknessIsValid_Flag) &&
@@ -153,7 +162,7 @@ void Decorations::calculateThickness(TextStyle textStyle, sk_sp<SkTypeface> type
         fThickness = fFontMetrics.fUnderlineThickness;
     }
 
-    if (textStyle.getDecorationType() == TextDecoration::kLineThrough) {
+    if (decoration == TextDecoration::kLineThrough) {
         if ((fFontMetrics.fFlags & SkFontMetrics::FontMetricsFlags::kStrikeoutThicknessIsValid_Flag) &&
              fFontMetrics.fStrikeoutThickness > 0) {
             fThickness = fFontMetrics.fStrikeoutThickness;

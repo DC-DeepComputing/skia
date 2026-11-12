@@ -16,7 +16,10 @@ class Decorations {
 
     private:
 
-    void calculateThickness(TextStyle textStyle, sk_sp<SkTypeface> typeface);
+    // Fills fFontMetrics for the style's size and the run's typeface, shared by all decorations
+    void calculateFontMetrics(TextStyle textStyle, sk_sp<SkTypeface> typeface);
+    // Thickness of one decoration from a combined style: the bitmask itself is not enough
+    void calculateThickness(const TextStyle& textStyle, TextDecoration decoration);
     void calculatePosition(TextDecoration decoration, SkScalar ascent);
     void calculatePaint(const TextStyle& textStyle);
     void calculateWaves(const TextStyle& textStyle, SkRect clip);
