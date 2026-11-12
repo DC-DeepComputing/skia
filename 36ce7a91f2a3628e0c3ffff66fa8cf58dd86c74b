@@ -50,6 +50,30 @@
       ],
       "revId": "36ce7a91f2a3628e0c3ffff66fa8cf58dd86c74b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "042896c7_ba51695b",
+        "filename": "gm/cubicpaths.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5220919
+      },
+      "writtenOn": "2026-11-12T18:00:50Z",
+      "side": 1,
+      "message": "Sure, I removed it.",
+      "parentUuid": "f559dff6_d97ea1cf",
+      "range": {
+        "startLine": 542,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 1
+      },
+      "revId": "36ce7a91f2a3628e0c3ffff66fa8cf58dd86c74b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
