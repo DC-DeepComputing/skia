@@ -56,6 +56,10 @@ bool Encode(SkWStream* dst, const SkPixmap& src,
         case kBGRA_8888_SkColorType:
             colorType = rust_jpeg::JpegEncodeColor::BGRA;
             break;
+        case kBGR_888x_SkColorType:
+            // Like kRGB_888x above, but with R and B swapped (same layout as BGRA_8888).
+            colorType = rust_jpeg::JpegEncodeColor::BGRA;
+            break;
         case kGray_8_SkColorType:
             colorType = rust_jpeg::JpegEncodeColor::Grayscale;
             break;

@@ -622,6 +622,11 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixR
 
             case kRGB_888x_SkColorType:     p->append(SkRasterPipelineOp::gather_8888,  ctx);
                                             p->append(SkRasterPipelineOp::force_opaque     ); break;
+            case kBGR_888x_SkColorType:
+                p->append(SkRasterPipelineOp::gather_8888, ctx);
+                p->append(SkRasterPipelineOp::force_opaque);
+                p->append(SkRasterPipelineOp::swap_rb);
+                break;
             case kRGB_F16F16F16x_SkColorType:
                 p->append(SkRasterPipelineOp::gather_f16,  ctx);
                 p->append(SkRasterPipelineOp::force_opaque);
