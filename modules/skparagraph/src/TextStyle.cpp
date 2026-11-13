@@ -62,6 +62,11 @@ bool TextStyle::equals(const TextStyle& other) const {
     if (!(fFontStyle == other.fFontStyle)) {
         return false;
     }
+    // Edging, subpixel positioning and hinting reach the shaped fonts, so styles that differ in
+    // them are not interchangeable (ParagraphBuilder reuses a block only for an equal style)
+    if (fEdging != other.fEdging || fSubpixel != other.fSubpixel || fHinting != other.fHinting) {
+        return false;
+    }
     if (fFontFamilies != other.fFontFamilies) {
         return false;
     }

@@ -6725,6 +6725,194 @@ DEF_TEST(SkParagraph_ShapingKeepsFontSettingsPerStyle, reporter) {
     }
 }
 
+namespace {
+// The font each single-style "Alpha" span actually shaped with, for spans laid out in one paragraph
+std::vector<SkFont> shaped_span_fonts(sk_sp<FontCollection> fontCollection,
+                                      const std::vector<TextStyle>& styles) {
+    ParagraphStyle paragraphStyle;
+    ParagraphBuilderImpl builder(paragraphStyle, fontCollection, get_unicode());
+    for (const TextStyle& style : styles) {
+        builder.pushStyle(style);
+        builder.addText("Alpha");
+        builder.pop();
+    }
+    auto paragraph = builder.Build();
+    paragraph->layout(1000.0f);
+
+    std::vector<SkFont> fonts;
+    auto runs = paragraph->getFonts();
+    for (size_t i = 0; i < styles.size(); ++i) {
+        const size_t offset = i * 5;
+        bool found = false;
+        for (const auto& run : runs) {
+            if (run.fTextRange.start <= offset && offset < run.fTextRange.end) {
+                fonts.push_back(run.fFont);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            fonts.emplace_back();
+        }
+    }
+    return fonts;
+}
+
+// Lays out the same text first with `first`, then `second`, then `first` again through one shared
+// FontCollection (and so one ParagraphCache), and reports each paragraph's shaped font
+template <typename Read>
+auto shaped_transition(const TextStyle& first, const TextStyle& second, Read read) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    std::vector<decltype(read(SkFont()))> result;
+    for (const TextStyle* style : {&first, &second, &first}) {
+        result.push_back(read(shaped_span_fonts(fontCollection, {*style})[0]));
+    }
+    return result;
+}
+
+// Lays out two adjacent spans of the same text that differ only in `first` and `second`
+template <typename Read>
+auto shaped_adjacent(const TextStyle& first, const TextStyle& second, Read read) {
+    auto fontCollection = sk_make_sp<FontCollection>();
+    fontCollection->setDefaultFontManager(ToolUtils::TestFontMgr());
+    std::vector<decltype(read(SkFont()))> result;
+    for (const SkFont& font : shaped_span_fonts(fontCollection, {first, second})) {
+        result.push_back(read(font));
+    }
+    return result;
+}
+
+template <typename T, typename Read>
+void check_transitions(skiatest::Reporter* reporter,
+                       const TextStyle& a,
+                       const TextStyle& b,
+                       const T& valueA,
+                       const T& valueB,
+                       Read read,
+                       const char* what) {
+    const std::vector<T> expectedAB = {valueA, valueB, valueA};
+    const std::vector<T> expectedBA = {valueB, valueA, valueB};
+    REPORTER_ASSERT(reporter, shaped_transition(a, b, read) == expectedAB, "%s A,B,A", what);
+    REPORTER_ASSERT(reporter, shaped_transition(b, a, read) == expectedBA, "%s B,A,B", what);
+}
+
+template <typename T, typename Read>
+void check_adjacent(skiatest::Reporter* reporter,
+                    const TextStyle& a,
+                    const TextStyle& b,
+                    const T& valueA,
+                    const T& valueB,
+                    Read read,
+                    const char* what) {
+    const std::vector<T> expectedAB = {valueA, valueB};
+    const std::vector<T> expectedBA = {valueB, valueA};
+    REPORTER_ASSERT(reporter, shaped_adjacent(a, b, read) == expectedAB, "%s A then B", what);
+    REPORTER_ASSERT(reporter, shaped_adjacent(b, a, read) == expectedBA, "%s B then A", what);
+}
+
+struct EdgingCase {
+    TextStyle fA, fB;
+    EdgingCase() {
+        fA.setFontEdging(SkFont::Edging::kAntiAlias);
+        fB = fA;
+        fB.setFontEdging(SkFont::Edging::kSubpixelAntiAlias);
+    }
+};
+struct SubpixelCase {
+    TextStyle fA, fB;
+    SubpixelCase() {
+        fA.setSubpixel(false);
+        fB = fA;
+        fB.setSubpixel(true);
+    }
+};
+struct HintingCase {
+    TextStyle fA, fB;
+    HintingCase() {
+        fA.setFontHinting(SkFontHinting::kSlight);
+        fB = fA;
+        fB.setFontHinting(SkFontHinting::kFull);
+    }
+};
+}  // namespace
+
+// A paragraph laid out again after a style differing only in font edging, subpixel positioning or
+// hinting must keep the font its own style asks for, in both directions
+DEF_TEST(SkParagraph_CachedParagraphKeepsEdging, reporter) {
+    EdgingCase c;
+    check_transitions(
+            reporter,
+            c.fA,
+            c.fB,
+            SkFont::Edging::kAntiAlias,
+            SkFont::Edging::kSubpixelAntiAlias,
+            [](const SkFont& f) { return f.getEdging(); },
+            "edging");
+}
+
+DEF_TEST(SkParagraph_CachedParagraphKeepsSubpixel, reporter) {
+    SubpixelCase c;
+    check_transitions(
+            reporter,
+            c.fA,
+            c.fB,
+            false,
+            true,
+            [](const SkFont& f) { return f.isSubpixel(); },
+            "subpixel");
+}
+
+DEF_TEST(SkParagraph_CachedParagraphKeepsHinting, reporter) {
+    HintingCase c;
+    check_transitions(
+            reporter,
+            c.fA,
+            c.fB,
+            SkFontHinting::kSlight,
+            SkFontHinting::kFull,
+            [](const SkFont& f) { return f.getHinting(); },
+            "hinting");
+}
+
+// Adjacent spans of the same text that differ only in edging, subpixel positioning or hinting must
+// each keep their own font, in either order
+DEF_TEST(SkParagraph_AdjacentSpansKeepEdging, reporter) {
+    EdgingCase c;
+    check_adjacent(
+            reporter,
+            c.fA,
+            c.fB,
+            SkFont::Edging::kAntiAlias,
+            SkFont::Edging::kSubpixelAntiAlias,
+            [](const SkFont& f) { return f.getEdging(); },
+            "edging");
+}
+
+DEF_TEST(SkParagraph_AdjacentSpansKeepSubpixel, reporter) {
+    SubpixelCase c;
+    check_adjacent(
+            reporter,
+            c.fA,
+            c.fB,
+            false,
+            true,
+            [](const SkFont& f) { return f.isSubpixel(); },
+            "subpixel");
+}
+
+DEF_TEST(SkParagraph_AdjacentSpansKeepHinting, reporter) {
+    HintingCase c;
+    check_adjacent(
+            reporter,
+            c.fA,
+            c.fB,
+            SkFontHinting::kSlight,
+            SkFontHinting::kFull,
+            [](const SkFont& f) { return f.getHinting(); },
+            "hinting");
+}
+
 UNIX_ONLY_TEST(SkParagraph_ParagraphWithLineBreak, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     SKIP_IF_FONTS_NOT_FOUND(reporter, fontCollection)
