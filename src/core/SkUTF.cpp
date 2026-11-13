@@ -1,8 +1,11 @@
 // Copyright 2018 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
+#include <utility>
+#include <array>
 #include "src/core/SkUTF.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkTFitsIn.h"
 
 static constexpr inline int32_t left_shift(int32_t value, int32_t shift) {
@@ -93,18 +96,18 @@ int SkUTF::CountUTF16(const uint16_t* utf16, size_t byteLength) {
     return count;
 }
 
-int SkUTF::CountUTF32(const int32_t* utf32, size_t byteLength) {
-    if (!is_align4(intptr_t(utf32)) || !is_align4(byteLength) || !SkTFitsIn<int>(byteLength >> 2)) {
+int SkUTF::CountUTF32(SkSpan<const int32_t>utf32, size_t byteLength) {
+    if (!is_align4(intptr_t(utf32.data())) || !is_align4(byteLength) || !SkTFitsIn<int>(byteLength >> 2)) {
         return -1;
     }
     const uint32_t kInvalidUnicharMask = 0xFF000000;    // unichar fits in 24 bits
-    const uint32_t* ptr = (const uint32_t*)utf32;
-    const uint32_t* stop = ptr + (byteLength >> 2);
-    while (ptr < stop) {
-        if (*ptr & kInvalidUnicharMask) {
+    SkSpan<const uint32_t> ptr(reinterpret_cast<const uint32_t*>(utf32.data()), byteLength >> 2);
+    const uint32_t* stop = ptr.subspan(byteLength >> 2).data();
+    while (ptr.data() < stop) {
+        if (ptr[0] & kInvalidUnicharMask) {
             return -1;
         }
-        ptr += 1;
+        ptr= ptr.subspan(1u);
     }
     return (int)(byteLength >> 2);
 }
@@ -221,19 +224,19 @@ size_t SkUTF::ToUTF8(SkUnichar uni, char utf8[SkUTF::kMaxBytesInUTF8Sequence]) {
         }
         return 1;
     }
-    char    tmp[4];
-    char*   p = tmp;
+    std::array<char, 4> tmp;
+    SkSpan<char>p = tmp;
     size_t  count = 1;
     while (uni > 0x7F >> count) {
-        *p++ = (char)(0x80 | (uni & 0x3F));
+        std::exchange(p, p.subspan(1u))[0] = (char)(0x80 | (uni & 0x3F));
         uni >>= 6;
         count += 1;
     }
     if (utf8) {
         p = tmp;
         utf8 += count;
-        while (p < tmp + count - 1) {
-            *--utf8 = *p++;
+        while (p.data() < SkSpan<char>(tmp).subspan(count - 1u).data()) {
+            *--utf8 = std::exchange(p, p.subspan(1u))[0];
         }
         *--utf8 = (char)(~(0xFF >> count) | uni);
     }

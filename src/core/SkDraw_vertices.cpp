@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
@@ -21,6 +22,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
@@ -133,26 +135,26 @@ static void fill_triangle_3(const VertState& state, SkBlitter* blitter, const Sk
     // Clip a triangle (based on its homogeneous W values), and return the projected polygon.
     // Since we only clip against one "edge"/plane, the max number of points in the clipped
     // polygon is 4.
-    auto clipTriangle = [&](SkPoint dst[], const int idx[3], const SkPoint3 pts[]) -> int {
-        SkPoint3 outPoints[kMaxClippedTrianglePointCount];
-        SkPoint3* outP = outPoints;
+    auto clipTriangle = [&](SkPoint dst[], SkSpan<const int, 3> idx, const SkPoint3 pts[]) -> int {
+        std::array<SkPoint3, kMaxClippedTrianglePointCount> outPoints;
+        SkSpan<SkPoint3>outP = outPoints;
 
         for (int i = 0; i < 3; ++i) {
             int curr = idx[i];
             int next = idx[(i + 1) % 3];
             if (pts[curr].fZ > tol) {
-                *outP++ = pts[curr];
+                std::exchange(outP, outP.subspan(1u))[0] = pts[curr];
                 if (pts[next].fZ <= tol) { // curr is IN, next is OUT
-                    *outP++ = clip(pts[curr], pts[next]);
+                    std::exchange(outP, outP.subspan(1u))[0] = clip(pts[curr], pts[next]);
                 }
             } else {
                 if (pts[next].fZ > tol) { // curr is OUT, next is IN
-                    *outP++ = clip(pts[curr], pts[next]);
+                    std::exchange(outP, outP.subspan(1u))[0] = clip(pts[curr], pts[next]);
                 }
             }
         }
 
-        const int count = SkTo<int>(outP - outPoints);
+        const int count = SkTo<int>(outP.data() - outPoints.data());
         SkASSERT(count == 0 || count == 3 || count == 4);
         for (int i = 0; i < count; ++i) {
             float scale = sk_ieee_float_divide(1.0f, outPoints[i].fZ);
@@ -236,10 +238,11 @@ void Draw::drawFixedVertices(const SkVertices* vertices,
     const bool usePerspective = fCTM->hasPerspective();
 
     SkTriColorShader* triColorShader = nullptr;
-    SkPMColor4f* dstColors = nullptr;
+    SkSpan<SkPMColor4f>dstColors = {};
     if (colors) {
-        dstColors =
-                convert_colors(colors, vertexCount, fDst.colorSpace(), outerAlloc, skipColorXform);
+        dstColors = SkSpan(
+                convert_colors(colors, vertexCount, fDst.colorSpace(), outerAlloc, skipColorXform),
+                vertexCount);
         triColorShader = outerAlloc->make<SkTriColorShader>(compute_is_opaque(colors, vertexCount),
                                                             usePerspective);
     }

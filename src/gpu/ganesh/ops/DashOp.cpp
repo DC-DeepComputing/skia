@@ -11,6 +11,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
@@ -129,7 +130,7 @@ void align_to_x_axis(const SkPoint pts[2], SkMatrix* rotMatrix, SkPoint ptsRot[2
 }
 
 // Assumes phase < sum of all intervals
-SkScalar calc_start_adjustment(const SkScalar intervals[2], SkScalar phase) {
+SkScalar calc_start_adjustment(SkSpan<const SkScalar, 2> intervals, SkScalar phase) {
     SkASSERT(phase < intervals[0] + intervals[1]);
     if (phase >= intervals[0] && phase != 0) {
         SkScalar srcIntervalLen = intervals[0] + intervals[1];
@@ -138,7 +139,7 @@ SkScalar calc_start_adjustment(const SkScalar intervals[2], SkScalar phase) {
     return 0;
 }
 
-SkScalar calc_end_adjustment(const SkScalar intervals[2], const SkPoint pts[2],
+SkScalar calc_end_adjustment(SkSpan<const SkScalar, 2> intervals, SkSpan<const SkPoint, 2> pts,
                              SkScalar phase, SkScalar* endingInt) {
     if (pts[1].fX <= pts[0].fX) {
         return 0;
@@ -504,7 +505,7 @@ private:
             }
 
             // Change the dashing info from src space into device space
-            SkScalar* devIntervals = draw.fIntervals;
+            SkSpan<SkScalar>devIntervals = draw.fIntervals;
             devIntervals[0] = draw.fIntervals[0] * args.fParallelScale;
             devIntervals[1] = draw.fIntervals[1] * args.fParallelScale;
             SkScalar devPhase = draw.fPhase * args.fParallelScale;

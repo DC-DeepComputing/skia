@@ -82,10 +82,10 @@ static int contains_edge(const SkPoint pts[4], SkPathVerb verb, SkScalar weight,
         return 0;
     }
     int winding = 0;
-    double tVals[3];
+    std::array<double, 3> tVals;
     std::array<Contour::Direction, 3> directions;
     // must intersect horz ray with curve in case it intersects more than once
-    int count = (*CurveIntercept[(int)verb * 2])(pts, weight, edge.fY, tVals);
+    int count = (*CurveIntercept[(int)verb * 2])(pts, weight, edge.fY, tVals.data());
     SkASSERT(between(0, count, 3));
     // remove results to the right of edge
     for (int index = 0; index < count; ) {

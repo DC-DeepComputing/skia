@@ -100,8 +100,8 @@ constexpr BlendFormula MakeCoverageDstCoeffZeroFormula(skgpu::BlendCoeff srcCoef
  * with and without an opaque input color. Optimization properties are deduced at compile time so we
  * can make runtime decisions quickly. RGB coverage is not supported.
  */
-constexpr BlendFormula gBlendTable[2][2][(int)SkBlendMode::kLastCoeffMode + 1] = {
-                     /*>> No coverage, input color unknown <<*/ {{
+constexpr std::array<std::array<std::array<BlendFormula, (int)SkBlendMode::kLastCoeffMode + 1>, 2>, 2> gBlendTable = {{
+                     /*>> No coverage, input color unknown <<*/ {{ {{
 
     /* clear */      MakeCoeffFormula(skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kZero),
     /* src */        MakeCoeffFormula(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kZero),
@@ -119,7 +119,7 @@ constexpr BlendFormula gBlendTable[2][2][(int)SkBlendMode::kLastCoeffMode + 1] =
     /* modulate */   MakeCoeffFormula(skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kSC),
     /* screen */     MakeCoeffFormula(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kISC),
 
-                     }, /*>> Has coverage, input color unknown <<*/ {
+                     }}, /*>> Has coverage, input color unknown <<*/ {{
 
     /* clear */      MakeCoverageSrcCoeffZeroFormula(BlendFormula::kCoverage_OutputType),
     /* src */        MakeCoverageDstCoeffZeroFormula(skgpu::BlendCoeff::kOne),
@@ -138,7 +138,7 @@ constexpr BlendFormula gBlendTable[2][2][(int)SkBlendMode::kLastCoeffMode + 1] =
     /* modulate */   MakeCoverageSrcCoeffZeroFormula(BlendFormula::kISCModulate_OutputType),
     /* screen */     MakeCoeffFormula(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kISC),
 
-                     }}, /*>> No coverage, input color opaque <<*/ {{
+                     }} }}, /*>> No coverage, input color opaque <<*/ {{ {{
 
     /* clear */      MakeCoeffFormula(skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kZero),
     /* src */        MakeCoeffFormula(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kZero),
@@ -157,7 +157,7 @@ constexpr BlendFormula gBlendTable[2][2][(int)SkBlendMode::kLastCoeffMode + 1] =
     /* modulate */   MakeCoeffFormula(skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kSC),
     /* screen */     MakeCoeffFormula(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kISC),
 
-                     }, /*>> Has coverage, input color opaque <<*/ {
+                     }}, /*>> Has coverage, input color opaque <<*/ {{
 
     /* clear */      MakeCoverageSrcCoeffZeroFormula(BlendFormula::kCoverage_OutputType),
     /* src */        MakeCoeffFormula(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kISA),
@@ -174,7 +174,7 @@ constexpr BlendFormula gBlendTable[2][2][(int)SkBlendMode::kLastCoeffMode + 1] =
     /* plus */       MakeCoeffFormula(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kOne),
     /* modulate */   MakeCoverageSrcCoeffZeroFormula(BlendFormula::kISCModulate_OutputType),
     /* screen */     MakeCoeffFormula(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kISC),
-}}};
+}} }} }};
 // In the above table src-over is not optimized to src mode when the color is opaque because we
 // found no advantage to doing so. Also, we are using a global src-over blend in most cases which is
 // not specialized for opaque input. For GPUs where dropping to src (and thus able to disable

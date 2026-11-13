@@ -8,6 +8,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkTSort.h"
@@ -450,8 +451,8 @@ recomputeSector:
 }
 
 int SkOpAngle::convexHullOverlaps(const SkOpAngle* rh) {
-    const SkDVector* sweep = this->fPart.fSweep;
-    const SkDVector* tweep = rh->fPart.fSweep;
+    SkSpan<const SkDVector>sweep = this->fPart.fSweep;
+    SkSpan<const SkDVector>tweep = rh->fPart.fSweep;
     double s0xs1 = sweep[0].crossCheck(sweep[1]);
     double s0xt0 = sweep[0].crossCheck(tweep[0]);
     double s1xt0 = sweep[1].crossCheck(tweep[0]);
@@ -728,13 +729,13 @@ int SkOpAngle::findSector(SkPath::Verb verb, double x, double y) const {
     // If there are four quadrants and eight octants, and since the Latin for sixteen is sedecim,
     // one could coin the term sedecimant for a space divided into 16 sections.
    // http://english.stackexchange.com/questions/133688/word-for-something-partitioned-into-16-parts
-    static const int sedecimant[3][3][3] = {
+    static const std::array<std::array<std::array<const int, 3>, 3>, 3> sedecimant = {{
     //       y<0           y==0           y>0
     //   x<0 x==0 x>0  x<0 x==0 x>0  x<0 x==0 x>0
-        {{ 4,  3,  2}, { 7, -1, 15}, {10, 11, 12}},  // abs(x) <  abs(y)
-        {{ 5, -1,  1}, {-1, -1, -1}, { 9, -1, 13}},  // abs(x) == abs(y)
-        {{ 6,  3,  0}, { 7, -1, 15}, { 8, 11, 14}},  // abs(x) >  abs(y)
-    };
+        {{ {{ 4,  3,  2}}, {{ 7, -1, 15}}, {{10, 11, 12}} }},  // abs(x) <  abs(y)
+        {{ {{ 5, -1,  1}}, {{-1, -1, -1}}, {{ 9, -1, 13}} }},  // abs(x) == abs(y)
+        {{ {{ 6,  3,  0}}, {{ 7, -1, 15}}, {{ 8, 11, 14}} }},  // abs(x) >  abs(y)
+    }};
     int sector = sedecimant[(xy >= 0) + (xy > 0)][(y >= 0) + (y > 0)][(x >= 0) + (x > 0)] * 2 + 1;
 //    SkASSERT(SkPath::kLine_Verb == verb || sector >= 0);
     return sector;
@@ -1140,8 +1141,8 @@ bool SkOpAngle::tangentsDiverge(const SkOpAngle* rh, double s0xt0) {
     // - m * (v2.x * v1.x + v2.y * v1.y) == v2.x * v1.y - v2.y * v1.x
     // m = (v2.y * v1.x - v2.x * v1.y) / (v2.x * v1.x + v2.y * v1.y)
     // m = v1.cross(v2) / v1.dot(v2)
-    const SkDVector* sweep = fPart.fSweep;
-    const SkDVector* tweep = rh->fPart.fSweep;
+    SkSpan<const SkDVector>sweep = fPart.fSweep;
+    SkSpan<const SkDVector>tweep = rh->fPart.fSweep;
     double s0dt0 = sweep[0].dot(tweep[0]);
     if (!s0dt0) {
         return true;

@@ -95,7 +95,7 @@ protected:
                     }
                     SkTDArray<uint16_t> triangleIndices;
                     for (int i = 0; i < loops; i++) {
-                        SkTriangulateSimplePolygon(poly.begin(), indexMap, poly.size(),
+                        SkTriangulateSimplePolygon(poly.begin(), SkSpan(indexMap.get(), poly.size()), poly.size(),
                                                    &triangleIndices);
                     }
                 }

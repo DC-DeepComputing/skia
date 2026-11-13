@@ -11,6 +11,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFourByteTag.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -431,7 +432,7 @@ sk_sp<SkData> write_trc_tag(const skcms_Curve& trc) {
     return s.detachAsData();
 }
 
-sk_sp<SkData> write_clut(const uint8_t* grid_points, const uint8_t* grid_16) {
+sk_sp<SkData> write_clut(SkSpan<const uint8_t>grid_points, SkSpan<const uint8_t>grid_16) {
     SkDynamicMemoryWStream s;
     for (size_t i = 0; i < 16; ++i) {
         s.write8(i < kNumChannels ? grid_points[i] : 0);  // Grid size
@@ -446,7 +447,7 @@ sk_sp<SkData> write_clut(const uint8_t* grid_points, const uint8_t* grid_16) {
         value_count *= grid_points[i];
     }
     for (uint32_t i = 0; i < value_count; ++i) {
-        uint16_t value = reinterpret_cast<const uint16_t*>(grid_16)[i];
+        uint16_t value = reinterpret_cast<const uint16_t*>(grid_16.data())[i];
         s.write16(value);
     }
     s.padToAlign4();
@@ -455,18 +456,18 @@ sk_sp<SkData> write_clut(const uint8_t* grid_points, const uint8_t* grid_16) {
 
 // Write an A2B or B2A tag.
 sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
-                                   const skcms_Curve* b_curves,
-                                   const skcms_Curve* a_curves,
-                                   const uint8_t* grid_points,
-                                   const uint8_t* grid_16,
-                                   const skcms_Curve* m_curves,
+                                   SkSpan<const skcms_Curve>b_curves,
+                                   SkSpan<const skcms_Curve>a_curves,
+                                   SkSpan<const uint8_t>grid_points,
+                                   SkSpan<const uint8_t>grid_16,
+                                   SkSpan<const skcms_Curve>m_curves,
                                    const skcms_Matrix3x4* matrix) {
     size_t offset = 32;
 
     // The "B" curve is required.
     size_t b_curves_offset = offset;
     std::array<sk_sp<SkData>, kNumChannels> b_curves_data;
-    SkASSERT(b_curves);
+    SkASSERT(!b_curves.empty());
     for (size_t i = 0; i < kNumChannels; ++i) {
         b_curves_data[i] = write_trc_tag(b_curves[i]);
         SkASSERT(b_curves_data[i]);
@@ -476,8 +477,8 @@ sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
     // The CLUT.
     size_t clut_offset = 0;
     sk_sp<SkData> clut;
-    if (grid_points) {
-        SkASSERT(grid_16);
+    if (!grid_points.empty()) {
+        SkASSERT(!grid_16.empty());
         clut_offset = offset;
         clut = write_clut(grid_points, grid_16);
         SkASSERT(clut);
@@ -487,9 +488,9 @@ sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
     // The "A" curves.
     size_t a_curves_offset = 0;
     std::array<sk_sp<SkData>, kNumChannels> a_curves_data;
-    if (a_curves) {
-        SkASSERT(grid_points);
-        SkASSERT(grid_16);
+    if (!a_curves.empty()) {
+        SkASSERT(!grid_points.empty());
+        SkASSERT(!grid_16.empty());
         a_curves_offset = offset;
         for (size_t i = 0; i < kNumChannels; ++i) {
             a_curves_data[i] = write_trc_tag(a_curves[i]);
@@ -502,7 +503,7 @@ sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
     size_t matrix_offset = 0;
     sk_sp<SkData> matrix_data;
     if (matrix) {
-        SkASSERT(m_curves);
+        SkASSERT(!m_curves.empty());
         matrix_offset = offset;
         matrix_data = write_matrix(matrix);
         offset += matrix_data->size();
@@ -511,7 +512,7 @@ sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
     // The "M" curves.
     size_t m_curves_offset = 0;
     std::array<sk_sp<SkData>, kNumChannels> m_curves_data;
-    if (m_curves) {
+    if (!m_curves.empty()) {
         SkASSERT(matrix);
         m_curves_offset = offset;
         for (size_t i = 0; i < kNumChannels; ++i) {
@@ -540,7 +541,7 @@ sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
         SkASSERT(s.bytesWritten() == clut_offset);
         s.write(clut->data(), clut->size());
     }
-    if (a_curves) {
+    if (!a_curves.empty()) {
         SkASSERT(s.bytesWritten() == a_curves_offset);
         for (size_t i = 0; i < kNumChannels; ++i) {
             s.write(a_curves_data[i]->data(), a_curves_data[i]->size());
@@ -550,7 +551,7 @@ sk_sp<SkData> write_mAB_or_mBA_tag(uint32_t type,
         SkASSERT(s.bytesWritten() == matrix_offset);
         s.write(matrix_data->data(), matrix_data->size());
     }
-    if (m_curves) {
+    if (!m_curves.empty()) {
         SkASSERT(s.bytesWritten() == m_curves_offset);
         for (size_t i = 0; i < kNumChannels; ++i) {
             s.write(m_curves_data[i]->data(), m_curves_data[i]->size());
@@ -615,10 +616,10 @@ sk_sp<SkData> SkWriteICCProfile(const skcms_ICCProfile* profile, const char* des
         SkASSERT(a2b.output_channels == kNumChannels);
         auto a2b_data = write_mAB_or_mBA_tag(kTAG_mABType,
                                              a2b.output_curves,
-                                             a2b.input_channels ? a2b.input_curves : nullptr,
-                                             a2b.input_channels ? a2b.grid_points : nullptr,
-                                             a2b.input_channels ? a2b.grid_16 : nullptr,
-                                             a2b.matrix_channels ? a2b.matrix_curves : nullptr,
+                                             a2b.input_channels ? SkSpan<const skcms_Curve>(a2b.input_curves) : SkSpan<const skcms_Curve>{},
+                                             a2b.input_channels ? SkSpan<const uint8_t>(a2b.grid_points) : SkSpan<const uint8_t>{},
+                                             a2b.input_channels ? SkSpan<const uint8_t>(a2b.grid_16, 2 * kNumChannels * a2b.grid_points[0] * a2b.grid_points[1] * a2b.grid_points[2]) : SkSpan<const uint8_t>{},
+                                             a2b.matrix_channels ? SkSpan<const skcms_Curve>(a2b.matrix_curves) : SkSpan<const skcms_Curve>{},
                                              a2b.matrix_channels ? &a2b.matrix : nullptr);
         tags.emplace_back(kTAG_A2B0, std::move(a2b_data));
     }
@@ -629,10 +630,10 @@ sk_sp<SkData> SkWriteICCProfile(const skcms_ICCProfile* profile, const char* des
         SkASSERT(b2a.input_channels == kNumChannels);
         auto b2a_data = write_mAB_or_mBA_tag(kTAG_mBAType,
                                              b2a.input_curves,
-                                             b2a.output_channels ? b2a.input_curves : nullptr,
-                                             b2a.output_channels ? b2a.grid_points : nullptr,
-                                             b2a.output_channels ? b2a.grid_16 : nullptr,
-                                             b2a.matrix_channels ? b2a.matrix_curves : nullptr,
+                                             b2a.output_channels ? SkSpan<const skcms_Curve>(b2a.input_curves) : SkSpan<const skcms_Curve>{},
+                                             b2a.output_channels ? SkSpan<const uint8_t>(b2a.grid_points) : SkSpan<const uint8_t>{},
+                                             b2a.output_channels ? SkSpan<const uint8_t>(b2a.grid_16, 2 * kNumChannels * b2a.grid_points[0] * b2a.grid_points[1] * b2a.grid_points[2]) : SkSpan<const uint8_t>{},
+                                             b2a.matrix_channels ? SkSpan<const skcms_Curve>(b2a.matrix_curves) : SkSpan<const skcms_Curve>{},
                                              b2a.matrix_channels ? &b2a.matrix : nullptr);
         tags.emplace_back(kTAG_B2A0, std::move(b2a_data));
     }

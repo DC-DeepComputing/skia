@@ -11,6 +11,7 @@
 #include "include/core/SkRSXform.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
@@ -68,7 +69,7 @@ public:
 
     DrawAtlasOpImpl(GrProcessorSet*, const SkPMColor4f& color,
                     const SkMatrix& viewMatrix, GrAAType, int spriteCount, const SkRSXform* xforms,
-                    const SkRect* rects, const SkColor* colors);
+                    const SkRect* rects, SkSpan<const SkColor>colors);
 
     const char* name() const override { return "DrawAtlasOp"; }
 
@@ -142,7 +143,7 @@ GrGeometryProcessor* make_gp(SkArenaAlloc* arena,
 DrawAtlasOpImpl::DrawAtlasOpImpl(GrProcessorSet* processorSet, const SkPMColor4f& color,
                                  const SkMatrix& viewMatrix, GrAAType aaType, int spriteCount,
                                  const SkRSXform* xforms, const SkRect* rects,
-                                 const SkColor* colors)
+                                 SkSpan<const SkColor>colors)
         : GrMeshDrawOp(ClassID()), fHelper(processorSet, aaType), fColor(color) {
     SkASSERT(xforms);
     SkASSERT(rects);
@@ -156,8 +157,8 @@ DrawAtlasOpImpl::DrawAtlasOpImpl(GrProcessorSet* processorSet, const SkPMColor4f
     // Order within the vertex is: position [color] texCoord
     size_t texOffset = sizeof(SkPoint);
     size_t vertexStride = 2 * sizeof(SkPoint);
-    fHasColors = SkToBool(colors);
-    if (colors) {
+    fHasColors = !colors.empty();
+    if (!colors.empty()) {
         texOffset += sizeof(GrColor);
         vertexStride += sizeof(GrColor);
     }
@@ -183,7 +184,7 @@ DrawAtlasOpImpl::DrawAtlasOpImpl(GrProcessorSet* processorSet, const SkPMColor4f
         xforms[spriteIndex].toTriStrip(currRect.width(), currRect.height(), strip);
 
         // Copy colors if necessary
-        if (colors) {
+        if (!colors.empty()) {
             // convert to GrColor
             SkColor spriteColor = colors[spriteIndex];
             if (paintAlpha != 255) {
@@ -369,7 +370,7 @@ GrOp::Owner Make(GrRecordingContext* context,
     return GrSimpleMeshDrawOpHelper::FactoryHelper<DrawAtlasOpImpl>(context, std::move(paint),
                                                                     viewMatrix, aaType,
                                                                     spriteCount, xforms,
-                                                                    rects, colors);
+                                                                    rects, SkSpan(colors, colors ? spriteCount : 0));
 }
 
 }  // namespace skgpu::ganesh::DrawAtlasOp

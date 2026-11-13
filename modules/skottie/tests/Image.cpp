@@ -5,7 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include <utility>
 #include "include/core/SkCanvas.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "modules/skottie/include/Skottie.h"
@@ -65,7 +67,7 @@ DEF_TEST(Skottie_Image_CustomTransform, r) {
 
     class TestImageAsset final : public ImageAsset {
     public:
-        TestImageAsset(const TestData* tst, skiatest::Reporter* r)
+        TestImageAsset(SkSpan<const TestData>tst, skiatest::Reporter* r)
             : fTest(tst)
             , fReporter(r) {
             auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(200, 100));
@@ -77,13 +79,13 @@ DEF_TEST(Skottie_Image_CustomTransform, r) {
         bool isMultiFrame() override { return true; }
 
         FrameData getFrameData(float t) override {
-            REPORTER_ASSERT(fReporter, t == fTest->t);
+            REPORTER_ASSERT(fReporter, t == fTest[0].t);
 
-            return { fImage, SkSamplingOptions(), fTest++->m };
+            return { fImage, SkSamplingOptions(), std::exchange(fTest, fTest.subspan(1u))[0].m };
         }
 
         sk_sp<SkImage>      fImage;
-        const TestData*     fTest;
+        SkSpan<const TestData>fTest;
         skiatest::Reporter* fReporter;
     };
 
@@ -95,7 +97,7 @@ DEF_TEST(Skottie_Image_CustomTransform, r) {
 
     private:
         sk_sp<ImageAsset> loadImageAsset(const char[], const char[], const char[]) const override {
-            return sk_make_sp<TestImageAsset>(fTest, fReporter);
+            return sk_make_sp<TestImageAsset>(SkSpan(fTest, 3), fReporter);
         }
 
         const TestData*      fTest;

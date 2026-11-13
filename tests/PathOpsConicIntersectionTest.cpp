@@ -1,4 +1,6 @@
 /*
+#include "include/core/SkSpan.h"
+
  * Copyright 2015 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -58,7 +60,7 @@ static constexpr auto testSet = std::to_array<ConicPts>({
 
 const int testSetCount = (int) std::size(testSet);
 
-static void chopCompare(const SkConic chopped[2], const SkDConic dChopped[2]) {
+static void chopCompare(SkSpan<const SkConic, 2> chopped, const SkDConic dChopped[2]) {
     SkASSERT(roughly_equal(chopped[0].fW, dChopped[0].fWeight));
     SkASSERT(roughly_equal(chopped[1].fW, dChopped[1].fWeight));
     for (int cIndex = 0; cIndex < 2; ++cIndex) {

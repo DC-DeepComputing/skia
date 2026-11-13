@@ -262,7 +262,7 @@ private:
 
     void addDegenerateLine(const SkQuadConstruct* );
     static ReductionType CheckConicLinear(const SkConic& , SkPoint* reduction);
-    static ReductionType CheckCubicLinear(const SkPoint cubic[4], SkPoint reduction[3],
+    static ReductionType CheckCubicLinear(const SkPoint cubic[4], SkSpan<SkPoint, 3> reduction,
                                    const SkPoint** tanPtPtr);
     static ReductionType CheckQuadLinear(const SkPoint quad[3], SkPoint* reduction);
     ResultType compareQuadConic(const SkConic& , SkQuadConstruct* ) const;
@@ -668,7 +668,7 @@ static bool conic_in_line(const SkConic& conic) {
 }
 
 SkPathStroker::ReductionType SkPathStroker::CheckCubicLinear(const SkPoint cubic[4],
-        SkPoint reduction[3], const SkPoint** tangentPtPtr) {
+        SkSpan<SkPoint, 3> reduction, const SkPoint** tangentPtPtr) {
     bool degenerateAB = degenerate_vector(cubic[1] - cubic[0]);
     bool degenerateBC = degenerate_vector(cubic[2] - cubic[1]);
     bool degenerateCD = degenerate_vector(cubic[3] - cubic[2]);

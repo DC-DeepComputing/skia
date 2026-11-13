@@ -10,6 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 
 #include <cstdint>
 
@@ -108,7 +109,7 @@ bool SkIsConvexPolygon(const SkPoint* polygonVerts, int polygonSize);
   * @param triangleIndices  Indices of the resulting triangulation.
   * @return true if successful, false otherwise.
   */
- bool SkTriangulateSimplePolygon(const SkPoint* polygonVerts, uint16_t* indexMap, int polygonSize,
+ bool SkTriangulateSimplePolygon(const SkPoint* polygonVerts, SkSpan<uint16_t>indexMap, int polygonSize,
                                  SkTDArray<uint16_t>* triangleIndices);
 
 #endif // !defined(SK_ENABLE_OPTIMIZE_SIZE)

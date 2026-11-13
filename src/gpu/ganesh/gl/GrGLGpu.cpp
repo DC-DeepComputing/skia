@@ -2081,14 +2081,14 @@ void GrGLGpu::flushWindowRectangles(const GrWindowRectsState& windowState,
     int numWindows = std::min(windowState.numWindows(), int(GrWindowRectangles::kMaxWindows));
     SkASSERT(windowState.numWindows() == numWindows);
 
-    GrNativeRect glwindows[GrWindowRectangles::kMaxWindows];
+    std::array<GrNativeRect, GrWindowRectangles::kMaxWindows> glwindows;
     const SkIRect* skwindows = windowState.windows().data();
     for (int i = 0; i < numWindows; ++i) {
         glwindows[i].setRelativeTo(origin, rt->height(), skwindows[i]);
     }
 
     GrGLenum glmode = (Mode::kExclusive == windowState.mode()) ? GR_GL_EXCLUSIVE : GR_GL_INCLUSIVE;
-    GL_CALL(WindowRectangles(glmode, numWindows, glwindows->asInts()));
+    GL_CALL(WindowRectangles(glmode, numWindows, glwindows[0].asInts()));
 
     fHWWindowRectsState.set(origin, rt->width(), rt->height(), windowState);
 #endif

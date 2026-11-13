@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkTriColorShader_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkTriColorShader_DEFINED
 
 #include <array>
@@ -25,7 +27,7 @@ public:
     // This gets called for each triangle, without re-calling appendStages.
     bool update(const SkMatrix& ctmInv,
                 const SkPoint pts[],
-                const SkPMColor4f colors[],
+                SkSpan<const SkPMColor4f> colors,
                 int index0,
                 int index1,
                 int index2);

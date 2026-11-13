@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkCubicClipper.h"
@@ -298,7 +299,7 @@ std::optional<SkPathPriv::RectContour> SkPathPriv::IsRectContour(SkSpan<const Sk
     }};
 }
 
-bool SkPathPriv::IsNestedFillRects(const SkPathRaw& raw, SkRect rects[2], SkPathDirection dirs[2]) {
+bool SkPathPriv::IsNestedFillRects(const SkPathRaw& raw, SkRect rects[2], SkSpan<SkPathDirection> dirs) {
     SkPathDirection testDirs[2];
     SkRect testRects[2];
 
@@ -324,7 +325,7 @@ bool SkPathPriv::IsNestedFillRects(const SkPathRaw& raw, SkRect rects[2], SkPath
                 rects[0] = testRects[0];
                 rects[1] = testRects[1];
             }
-            if (dirs) {
+            if (!dirs.empty()) {
                 dirs[0] = testDirs[0];
                 dirs[1] = testDirs[1];
             }
@@ -335,7 +336,7 @@ bool SkPathPriv::IsNestedFillRects(const SkPathRaw& raw, SkRect rects[2], SkPath
                 rects[0] = testRects[1];
                 rects[1] = testRects[0];
             }
-            if (dirs) {
+            if (!dirs.empty()) {
                 dirs[0] = testDirs[1];
                 dirs[1] = testDirs[0];
             }
@@ -683,7 +684,7 @@ static SkScalar cross_prod(const SkPoint& p0, const SkPoint& p1, const SkPoint& 
 }
 
 // Returns the first pt with the maximum Y coordinate
-static int find_max_y(const SkPoint pts[], int count) {
+static int find_max_y(SkSpan<const SkPoint> pts, int count) {
     SkASSERT(count > 0);
     SkScalar max = pts[0].fY;
     int firstIndex = 0;
@@ -697,7 +698,7 @@ static int find_max_y(const SkPoint pts[], int count) {
     return firstIndex;
 }
 
-static int find_diff_pt(const SkPoint pts[], int index, int n, int inc) {
+static int find_diff_pt(SkSpan<const SkPoint> pts, int index, int n, int inc) {
     int i = index;
     for (;;) {
         i = (i + inc) % n;
@@ -715,7 +716,7 @@ static int find_diff_pt(const SkPoint pts[], int index, int n, int inc) {
  *  Starting at index, and moving forward (incrementing), find the xmin and
  *  xmax of the contiguous points that have the same Y.
  */
-static int find_min_max_x_at_y(const SkPoint pts[], int index, int n,
+static int find_min_max_x_at_y(SkSpan<const SkPoint> pts, int index, int n,
                                int* maxIndexPtr) {
     const SkScalar y = pts[index].fY;
     SkScalar min = pts[index].fX;
@@ -837,7 +838,7 @@ SkPathFirstDirection SkPathPriv::ComputeFirstDirection(const SkPathRaw& raw) {
             continue;
         }
 
-        const SkPoint* pts = iter.pts();
+        SkSpan<const SkPoint> pts(iter.pts(), n);
         SkScalar cross = 0;
         int index = find_max_y(pts, n);
         if (pts[index].fY < ymax) {
@@ -1446,7 +1447,7 @@ SkPathConvexity SkPathPriv::TransformConvexity(const SkMatrix& matrix, SkSpan<co
 
 //////////////////////////////////////////////////////////////////////////////
 
-static int compute_quad_extremas(const SkPoint src[3], SkPoint extremas[3]) {
+static int compute_quad_extremas(const SkPoint src[3], SkSpan<SkPoint, 3> extremas) {
     std::array<SkScalar, 2> ts;
     int n  = SkFindQuadExtrema(src[0].fX, src[1].fX, src[2].fX, ts.data());
         n += SkFindQuadExtrema(src[0].fY, src[1].fY, src[2].fY, &ts[n]);
@@ -1458,7 +1459,7 @@ static int compute_quad_extremas(const SkPoint src[3], SkPoint extremas[3]) {
     return n + 1;
 }
 
-static int compute_conic_extremas(const SkPoint src[3], SkScalar w, SkPoint extremas[3]) {
+static int compute_conic_extremas(SkSpan<const SkPoint, 3> src, SkScalar w, SkSpan<SkPoint, 3> extremas) {
     SkConic conic(src[0], src[1], src[2], w);
     std::array<SkScalar, 2> ts;
     int n  = conic.findXExtrema(ts.data());
@@ -1471,7 +1472,7 @@ static int compute_conic_extremas(const SkPoint src[3], SkScalar w, SkPoint extr
     return n + 1;
 }
 
-static int compute_cubic_extremas(const SkPoint src[4], SkPoint extremas[5]) {
+static int compute_cubic_extremas(const SkPoint src[4], SkSpan<SkPoint, 5> extremas) {
     std::array<SkScalar, 4> ts;
     int n  = SkFindCubicExtrema(src[0].fX, src[1].fX, src[2].fX, src[3].fX, ts.data());
         n += SkFindCubicExtrema(src[0].fY, src[1].fY, src[2].fY, src[3].fY, &ts[n]);
@@ -1497,7 +1498,7 @@ SkRect SkPathPriv::ComputeTightBounds(SkSpan<const SkPoint> points,
           B = points[0].fY;
 
     for (auto [verb, pts, w] : SkPathPriv::Iterate(verbs, points.data(), conicWeights.data())) {
-        SkPoint extremas[5]; // big enough to hold worst-case curve type (cubic) extremas + 1
+        std::array<SkPoint, 5> extremas; // big enough to hold worst-case curve type (cubic) extremas + 1
         int count = 0;
         switch (verb) {
             case SkPathVerb::kMove:
@@ -1509,10 +1510,10 @@ SkRect SkPathPriv::ComputeTightBounds(SkSpan<const SkPoint> points,
                 count = 1;
                 break;
             case SkPathVerb::kQuad:
-                count = compute_quad_extremas(pts, extremas);
+                count = compute_quad_extremas(pts, SkSpan(extremas).first<3>());
                 break;
             case SkPathVerb::kConic:
-                count = compute_conic_extremas(pts, *w, extremas);
+                count = compute_conic_extremas(SkSpan<const SkPoint, 3>(pts, 3), *w, SkSpan(extremas).first<3>());
                 break;
             case SkPathVerb::kCubic:
                 count = compute_cubic_extremas(pts, extremas);

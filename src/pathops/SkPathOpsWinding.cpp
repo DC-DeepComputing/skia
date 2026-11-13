@@ -21,6 +21,7 @@
 
 // bestXY is initialized by caller with basePt
 
+#include <array>
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -146,9 +147,9 @@ void SkOpSegment::rayCheck(const SkOpRayHit& base, SkOpRayDir dir, SkOpRayHit** 
     if (!approximately_equal(baseXY, boundsXY) && (baseXY < boundsXY) == checkLessThan) {
         return;
     }
-    double tVals[3];
+    std::array<double, 3> tVals;
     SkScalar baseYX = pt_yx(base.fPt, dir);
-    int roots = (*CurveIntercept[fVerb * 2 + xy_index(dir)])(fPts, fWeight, baseYX, tVals);
+    int roots = (*CurveIntercept[fVerb * 2 + xy_index(dir)])(fPts, fWeight, baseYX, tVals.data());
     for (int index = 0; index < roots; ++index) {
         double t = tVals[index];
         if (base.fSpan->segment() == this && approximately_equal(base.fT, t)) {

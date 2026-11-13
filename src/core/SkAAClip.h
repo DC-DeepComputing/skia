@@ -6,6 +6,8 @@
  */
 
 #ifndef SkAAClip_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkAAClip_DEFINED
 
 #include "include/core/SkColor.h"
@@ -83,8 +85,8 @@ private:
     bool trimLeftRight();
 
     // For SkAAClipBlitter and quickContains
-    const uint8_t* findRow(int y, int* lastYForRow = nullptr) const;
-    const uint8_t* findX(const uint8_t data[], int x, int* initialCount = nullptr) const;
+    SkSpan<const uint8_t> findRow(int y, int* lastYForRow = nullptr) const;
+    SkSpan<const uint8_t> findX(SkSpan<const uint8_t> data, int x, int* initialCount = nullptr) const;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

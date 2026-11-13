@@ -54,16 +54,16 @@ static const int kNumETC1PixelIndices = 4;
 
 // The index of each row in this table is the ETC1 table codeword
 // The index of each column in this table is the ETC1 pixel index value
-static const int kETC1ModifierTables[kNumETC1ModifierTables][kNumETC1PixelIndices] = {
-    /* 0 */ { 2,    8,  -2,   -8 },
-    /* 1 */ { 5,   17,  -5,  -17 },
-    /* 2 */ { 9,   29,  -9,  -29 },
-    /* 3 */ { 13,  42, -13,  -42 },
-    /* 4 */ { 18,  60, -18,  -60 },
-    /* 5 */ { 24,  80, -24,  -80 },
-    /* 6 */ { 33, 106, -33, -106 },
-    /* 7 */ { 47, 183, -47, -183 }
-};
+static const std::array<std::array<const int, kNumETC1PixelIndices>, kNumETC1ModifierTables> kETC1ModifierTables = {{
+    /* 0 */ {{ 2,    8,  -2,   -8 }},
+    /* 1 */ {{ 5,   17,  -5,  -17 }},
+    /* 2 */ {{ 9,   29,  -9,  -29 }},
+    /* 3 */ {{ 13,  42, -13,  -42 }},
+    /* 4 */ {{ 18,  60, -18,  -60 }},
+    /* 5 */ {{ 24,  80, -24,  -80 }},
+    /* 6 */ {{ 33, 106, -33, -106 }},
+    /* 7 */ {{ 47, 183, -47, -183 }}
+}};
 
 static int num_4x4_blocks(int size) {
     return ((size + 3) & ~3) >> 2;
@@ -129,8 +129,8 @@ static bool decompress_etc1(SkISize dimensions, const uint8_t* srcData, SkBitmap
             int tableIndex0 = (high >> 5) & 0x7;
             int tableIndex1 = (high >> 2) & 0x7;
             std::array<const int *, 2> tables = {
-                kETC1ModifierTables[tableIndex0],
-                kETC1ModifierTables[tableIndex1]
+                kETC1ModifierTables[tableIndex0].data(),
+                kETC1ModifierTables[tableIndex1].data()
             };
 
             int baseShift = 0;

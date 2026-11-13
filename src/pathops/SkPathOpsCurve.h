@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 #ifndef SkPathOpsCurve_DEFINE
+#include "include/core/SkSpan.h"
+
 #define SkPathOpsCurve_DEFINE
 
 #include "include/core/SkPath.h"

@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkPoint.h"
+#include <array>
 #include "include/core/SkScalar.h"
 #include "include/private/SkTDArray.h"
 #include "src/utils/SkPolyUtils.h"
@@ -18,7 +19,7 @@ DEF_TEST(PolyUtils, reporter) {
 
     SkTDArray<SkPoint> poly;
     // init simple index map
-    uint16_t indexMap[1024];
+    std::array<uint16_t, 1024> indexMap;
     for (int i = 0; i < 1024; ++i) {
         indexMap[i] = i;
     }

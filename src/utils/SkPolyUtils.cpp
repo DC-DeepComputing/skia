@@ -6,6 +6,7 @@
  */
 
 #include <array>
+#include "include/core/SkSpan.h"
 #include "src/utils/SkPolyUtils.h"
 
 #include "include/core/SkRect.h"
@@ -1633,7 +1634,7 @@ static void reclassify_vertex(TriangulationVertex* p, const SkPoint* polygonVert
     }
 }
 
-bool SkTriangulateSimplePolygon(const SkPoint* polygonVerts, uint16_t* indexMap, int polygonSize,
+bool SkTriangulateSimplePolygon(const SkPoint* polygonVerts, SkSpan<uint16_t>indexMap, int polygonSize,
                                 SkTDArray<uint16_t>* triangleIndices) {
     if (polygonSize < 3) {
         return false;

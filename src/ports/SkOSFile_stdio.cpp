@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include <utility>
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkOSFile.h"
 
@@ -63,15 +65,15 @@ static FILE* fopen_win(const char* utf8path, const char* perm) {
 
 FILE* sk_fopen(const char path[], SkFILE_Flags flags) {
     char    perm[4] = {0, 0, 0, 0};
-    char*   p = perm;
+    SkSpan<char>p = perm;
 
     if (flags & kRead_SkFILE_Flag) {
-        *p++ = 'r';
+        std::exchange(p, p.subspan(1u))[0] = 'r';
     }
     if (flags & kWrite_SkFILE_Flag) {
-        *p++ = 'w';
+        std::exchange(p, p.subspan(1u))[0] = 'w';
     }
-    *p = 'b';
+    p[0] = 'b';
 
     FILE* file = nullptr;
 #ifdef _WIN32

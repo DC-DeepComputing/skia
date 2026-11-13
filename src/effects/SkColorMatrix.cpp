@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkSpan.h"
 #include "include/effects/SkColorMatrix.h"
 #include "src/core/SkYUVMath.h"
 
@@ -34,11 +35,11 @@ enum {
     kA_Trans = 19,
 };
 
-static void set_concat(float result[20], const float outer[20], const float inner[20]) {
+static void set_concat(SkSpan<float, 20> result, SkSpan<const float, 20> outer, SkSpan<const float, 20> inner) {
     float    tmp[20];
-    float*   target;
+    SkSpan<float>target;
 
-    if (outer == result || inner == result) {
+    if (outer.data() == result.data() || inner.data() == result.data()) {
         target = tmp;   // will memcpy answer when we're done into result
     } else {
         target = result;
@@ -59,8 +60,8 @@ static void set_concat(float result[20], const float outer[20], const float inne
                             outer[j + 4];
     }
 
-    if (target != result) {
-        std::copy_n(target, 20, result);
+    if (target.data() != result.data()) {
+        std::copy_n(target.data(), 20, result.data());
     }
 }
 
@@ -87,12 +88,12 @@ void SkColorMatrix::postTranslate(float dr, float dg, float db, float da) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void SkColorMatrix::setConcat(const SkColorMatrix& matA, const SkColorMatrix& matB) {
-    set_concat(fMat.data(), matA.fMat.data(), matB.fMat.data());
+    set_concat(fMat, matA.fMat, matB.fMat);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static void setrow(float row[], float r, float g, float b) {
+static void setrow(SkSpan<float> row, float r, float g, float b) {
     row[0] = r;
     row[1] = g;
     row[2] = b;
@@ -109,8 +110,8 @@ void SkColorMatrix::setSaturation(float sat) {
     const float G = kHueG * (1 - sat);
     const float B = kHueB * (1 - sat);
 
-    setrow(fMat.data() +  0, R + sat, G, B);
-    setrow(fMat.data() +  5, R, G + sat, B);
-    setrow(fMat.data() + 10, R, G, B + sat);
+    setrow(SkSpan(fMat).subspan(0), R + sat, G, B);
+    setrow(SkSpan(fMat).subspan(5), R, G + sat, B);
+    setrow(SkSpan(fMat).subspan(10), R, G, B + sat);
     fMat[kA_Scale] = 1;
 }

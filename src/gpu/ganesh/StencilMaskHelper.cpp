@@ -5,12 +5,14 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/gpu/ganesh/StencilMaskHelper.h"
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
+#include "include/core/SkSpan.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -164,24 +166,24 @@ static constexpr GrUserStencilSettings gZeroUserBits(
         0xffff>()
 );
 
-static constexpr const GrUserStencilSettings* gUserToClipTable[2][1 + SkRegion::kLastOp][3] = {
-    {  /* Normal fill. */
-        {&gUserToClipDiff,           nullptr,         nullptr},  // kDifference_Op.
-        {&gUserToClipIsect,          nullptr,         nullptr},  // kIntersect_Op.
-        {&gUserToClipUnion,          nullptr,         nullptr},  // kUnion_Op.
-        {&gUserToClipXorPass0,       &gZeroUserBits,  nullptr},  // kXOR_Op.
-        {&gUserToClipRDiffPass0,     &gZeroUserBits,  nullptr},  // kReverseDifference_Op.
-        {&gUserToClipReplace,        nullptr,         nullptr}   // kReplace_Op.
+static constexpr std::array<std::array<std::array<const GrUserStencilSettings *, 3>, 1 + SkRegion::kLastOp>, 2> gUserToClipTable = {{
+    {{  /* Normal fill. */
+        {{&gUserToClipDiff,           nullptr,         nullptr}},  // kDifference_Op.
+        {{&gUserToClipIsect,          nullptr,         nullptr}},  // kIntersect_Op.
+        {{&gUserToClipUnion,          nullptr,         nullptr}},  // kUnion_Op.
+        {{&gUserToClipXorPass0,       &gZeroUserBits,  nullptr}},  // kXOR_Op.
+        {{&gUserToClipRDiffPass0,     &gZeroUserBits,  nullptr}},  // kReverseDifference_Op.
+        {{&gUserToClipReplace,        nullptr,         nullptr}}   // kReplace_Op.
 
-    }, /* Inverse fill. */ {
-        {&gUserToClipIsect,          nullptr,         nullptr},  // ~diff (aka isect).
-        {&gUserToClipDiff,           nullptr,         nullptr},  // ~isect (aka diff).
-        {&gInvUserToClipUnionPass0,  &gZeroUserBits,  nullptr},  // ~union.
-        {&gInvUserToClipXorPass0,    &gZeroUserBits,  nullptr},  // ~xor.
-        {&gInvUserToClipRDiffPass0,  &gZeroUserBits,  nullptr},  // ~reverse diff.
-        {&gInvUserToClipReplace,     nullptr,         nullptr}   // ~replace.
-    }
-};
+    }}, /* Inverse fill. */ {{
+        {{&gUserToClipIsect,          nullptr,         nullptr}},  // ~diff (aka isect).
+        {{&gUserToClipDiff,           nullptr,         nullptr}},  // ~isect (aka diff).
+        {{&gInvUserToClipUnionPass0,  &gZeroUserBits,  nullptr}},  // ~union.
+        {{&gInvUserToClipXorPass0,    &gZeroUserBits,  nullptr}},  // ~xor.
+        {{&gInvUserToClipRDiffPass0,  &gZeroUserBits,  nullptr}},  // ~reverse diff.
+        {{&gInvUserToClipReplace,     nullptr,         nullptr}}   // ~replace.
+    }}
+}};
 
 ///////
 // Direct to Stencil
@@ -232,14 +234,14 @@ static constexpr GrUserStencilSettings gDiffClip(
         0x0000>()
 );
 
-static constexpr const GrUserStencilSettings* gDirectDrawTable[1 + SkRegion::kLastOp][2] = {
-    {&gDiffClip,     nullptr},  // kDifference_Op.
-    {nullptr,        nullptr},  // kIntersect_Op.
-    {&gUnionClip,    nullptr},  // kUnion_Op.
-    {&gXorClip,      nullptr},  // kXOR_Op.
-    {nullptr,        nullptr},  // kReverseDifference_Op.
-    {&gReplaceClip,  nullptr}   // kReplace_Op.
-};
+static constexpr std::array<std::array<const GrUserStencilSettings *, 2>, 1 + SkRegion::kLastOp> gDirectDrawTable = {{
+    {{&gDiffClip,     nullptr}},  // kDifference_Op.
+    {{nullptr,        nullptr}},  // kIntersect_Op.
+    {{&gUnionClip,    nullptr}},  // kUnion_Op.
+    {{&gXorClip,      nullptr}},  // kXOR_Op.
+    {{nullptr,        nullptr}},  // kReverseDifference_Op.
+    {{&gReplaceClip,  nullptr}}   // kReplace_Op.
+}};
 
 static_assert(0 == SkRegion::kDifference_Op);
 static_assert(1 == SkRegion::kIntersect_Op);
@@ -284,14 +286,14 @@ GrUserStencilSettings const* const* get_stencil_passes(
     //       none of the paths will be inverse-filled (just toggle the op instead).
     SkASSERT((unsigned)op <= SkRegion::kLastOp);
     if (canRenderDirectToStencil && !fillInverted) {
-        GrUserStencilSettings const* const* directPass = gDirectDrawTable[op];
+        GrUserStencilSettings const* const* directPass = gDirectDrawTable[op].data();
         if (directPass[0]) {
             *drawDirectToClip = true;
             return directPass;
         }
     }
     *drawDirectToClip = false;
-    return gUserToClipTable[fillInverted][op];
+    return gUserToClipTable[fillInverted][op].data();
 }
 
 void draw_stencil_rect(skgpu::ganesh::SurfaceDrawContext* sdc,
@@ -393,8 +395,8 @@ void StencilMaskHelper::drawRect(const SkRect& rect,
     }
 
     bool drawDirectToClip;
-    auto passes = get_stencil_passes(op, PathRenderer::kNoRestriction_StencilSupport,
-                                     false, &drawDirectToClip);
+    SkSpan<const GrUserStencilSettings *const> passes(get_stencil_passes(op, PathRenderer::kNoRestriction_StencilSupport,
+                                     false, &drawDirectToClip), 3);
     aa = supported_aa(fSDC, aa);
 
     if (!drawDirectToClip) {
@@ -404,11 +406,11 @@ void StencilMaskHelper::drawRect(const SkRect& rect,
 
     // Now modify the clip bit (either by rendering directly), or by covering the bounding box
     // of the clip
-    for (GrUserStencilSettings const* const* pass = passes; *pass; ++pass) {
+    for (SkSpan<const GrUserStencilSettings *const>pass = passes; pass[0]; pass = pass.subspan(1u)) {
         if (drawDirectToClip) {
-            draw_stencil_rect(fSDC, fClip, *pass, matrix, rect, aa);
+            draw_stencil_rect(fSDC, fClip, pass[0], matrix, rect, aa);
         } else {
-            draw_stencil_rect(fSDC, fClip, *pass, SkMatrix::I(),
+            draw_stencil_rect(fSDC, fClip, pass[0], SkMatrix::I(),
                               SkRect::Make(fClip.fixedClip().scissorRect()), aa);
         }
     }
@@ -461,7 +463,7 @@ bool StencilMaskHelper::drawPath(const SkPath& path,
     }
 
     bool drawDirectToClip;
-    auto passes = get_stencil_passes(op, stencilSupport, fillInverted, &drawDirectToClip);
+    SkSpan<const GrUserStencilSettings *const> passes(get_stencil_passes(op, stencilSupport, fillInverted, &drawDirectToClip), 3);
 
     // Write to client bits if necessary
     if (!drawDirectToClip) {
@@ -475,12 +477,11 @@ bool StencilMaskHelper::drawPath(const SkPath& path,
 
     // Now modify the clip bit (either by rendering directly), or by covering the bounding box
     // of the clip
-    for (GrUserStencilSettings const* const* pass = passes; *pass; ++pass) {
+    for (SkSpan<const GrUserStencilSettings *const>pass = passes; pass[0]; pass = pass.subspan(1u)) {
         if (drawDirectToClip) {
-            draw_path(fContext, fSDC, pr, fClip, fClip.fixedClip().scissorRect(),
-                      *pass, matrix, shape, aa);
+            draw_path(fContext, fSDC, pr, fClip, fClip.fixedClip().scissorRect(), pass[0], matrix, shape, aa);
         } else {
-            draw_stencil_rect(fSDC, fClip, *pass, SkMatrix::I(),
+            draw_stencil_rect(fSDC, fClip, pass[0], SkMatrix::I(),
                               SkRect::Make(fClip.fixedClip().scissorRect()), aa);
         }
     }

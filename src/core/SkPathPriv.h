@@ -319,10 +319,10 @@ public:
      @return      true if SkPath contains nested SkRect pair
      */
     static bool IsNestedFillRects(const SkPathRaw&, SkRect rect[2],
-                                  SkPathDirection dirs[2] = nullptr);
+                                  SkSpan<SkPathDirection> dirs = {});
 
     static bool IsNestedFillRects(const SkPath& path, SkRect rect[2],
-                                  SkPathDirection dirs[2] = nullptr) {
+                                  SkSpan<SkPathDirection> dirs = {}) {
         auto raw = Raw(path, SkResolveConvexity::kNo);
         return raw.has_value() && IsNestedFillRects(*raw, rect, dirs);
     }

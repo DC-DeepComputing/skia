@@ -7,6 +7,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkOnlyStackAllocatable.h"
@@ -145,10 +146,10 @@ public:
         for (int n = 0; n < 3; ++n) {
             r[n] = (fConic[n].fY - (*fLine)[0].fY) * adj - (fConic[n].fX - (*fLine)[0].fX) * opp;
         }
-        return this->validT(r.data(), 0, roots);
+        return this->validT(r, 0, roots);
     }
 
-    int validT(double r[3], double axisIntercept, double roots[2]) {
+    int validT(SkSpan<double, 3> r, double axisIntercept, double roots[2]) {
         double A = r[2];
         double B = r[1] * fConic.fWeight - axisIntercept * fConic.fWeight + axisIntercept;
         double C = r[0];

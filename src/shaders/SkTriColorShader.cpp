@@ -9,6 +9,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkEffectPriv.h"
@@ -27,7 +28,7 @@ bool SkTriColorShader::appendStages(const SkStageRec& rec, const SkShaders::Matr
 
 bool SkTriColorShader::update(const SkMatrix& ctmInv,
                               const SkPoint pts[],
-                              const SkPMColor4f colors[],
+                              SkSpan<const SkPMColor4f> colors,
                               int index0,
                               int index1,
                               int index2) {

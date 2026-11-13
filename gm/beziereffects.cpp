@@ -18,6 +18,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
@@ -283,7 +284,7 @@ protected:
 
             canvas->drawPoints(SkCanvas::kPolygon_PointMode, controlPts, polyPaint);
 
-            SkConic dst[4];
+            std::array<SkConic, 4> dst;
             SkMatrix klm;
             int cnt = ChopConic(controlPts, dst, weights[row]);
             GrPathUtils::getConicKLM(controlPts, weights[row], &klm);
@@ -310,18 +311,18 @@ private:
     // found along the curve segment it will return 1 and
     // dst[0] is the original conic. If it returns 2 the dst[0]
     // and dst[1] are the two new conics.
-    static int SplitConic(const SkPoint src[3], SkConic dst[2], const SkScalar weight) {
+    static int SplitConic(const SkPoint src[3], SkSpan<SkConic, 2> dst, const SkScalar weight) {
         SkScalar t = SkFindQuadMaxCurvature(src);
         if (t == 0 || t == 1) {
-            if (dst) {
+            if (!dst.empty()) {
                 dst[0].set(src, weight);
             }
             return 1;
         } else {
-            if (dst) {
+            if (!dst.empty()) {
                 SkConic conic;
                 conic.set(src, weight);
-                if (!conic.chopAt(t, dst)) {
+                if (!conic.chopAt(t, dst.data())) {
                     dst[0].set(src, weight);
                     return 1;
                 }
@@ -333,12 +334,12 @@ private:
     // Calls SplitConic on the entire conic and then once more on each subsection.
     // Most cases will result in either 1 conic (chop point is not within t range)
     // or 3 points (split once and then one subsection is split again).
-    static int ChopConic(const SkPoint src[3], SkConic dst[4], const SkScalar weight) {
+    static int ChopConic(const SkPoint src[3], SkSpan<SkConic, 4> dst, const SkScalar weight) {
         SkConic dstTemp[2];
         int conicCnt = SplitConic(src, dstTemp, weight);
         if (2 == conicCnt) {
-            int conicCnt2 = SplitConic(dstTemp[0].fPts, dst, dstTemp[0].fW);
-            conicCnt = conicCnt2 + SplitConic(dstTemp[1].fPts, &dst[conicCnt2], dstTemp[1].fW);
+            int conicCnt2 = SplitConic(dstTemp[0].fPts, dst.first<2>(), dstTemp[0].fW);
+            conicCnt = conicCnt2 + SplitConic(dstTemp[1].fPts, dst.subspan(conicCnt2).first<2>(), dstTemp[1].fW);
         } else {
             dst[0] = dstTemp[0];
         }

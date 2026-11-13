@@ -5,11 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include <array>
 #include "src/core/SkLineClipper.h"
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTo.h"
@@ -55,7 +57,7 @@ static SkScalar sect_with_horizontal(const SkPoint src[2], SkScalar Y) {
 }
 
 // return Y coordinate of intersection with vertical line at X
-static SkScalar sect_with_vertical(const SkPoint src[2], SkScalar X) {
+static SkScalar sect_with_vertical(SkSpan<const SkPoint, 2> src, SkScalar X) {
     SkScalar dx = src[1].fX - src[0].fX;
     if (SkScalarNearlyZero(dx)) {
         return sk_float_midpoint(src[0].fY, src[1].fY);
@@ -71,7 +73,7 @@ static SkScalar sect_with_vertical(const SkPoint src[2], SkScalar X) {
     }
 }
 
-static SkScalar sect_clamp_with_vertical(const SkPoint src[2], SkScalar x) {
+static SkScalar sect_clamp_with_vertical(SkSpan<const SkPoint, 2> src, SkScalar x) {
     SkScalar y = sect_with_vertical(src, x);
     // Our caller expects y to be between src[0].fY and src[1].fY (unsorted), but due to the
     // numerics of floats/doubles, we might have computed a value slightly outside of that,
@@ -124,8 +126,8 @@ bool SkLineClipper::IntersectLine(const SkPoint src[2], const SkRect& clip,
         index1 = 0;
     }
 
-    SkPoint tmp[2];
-    memcpy(tmp, src, sizeof(tmp));
+    std::array<SkPoint, 2> tmp;
+    memcpy(tmp.data(), src, sizeof(tmp));
 
     // now compute Y intersections
     if (tmp[index0].fY < clip.fTop) {
@@ -162,7 +164,7 @@ bool SkLineClipper::IntersectLine(const SkPoint src[2], const SkRect& clip,
     bounds.set(tmp[0], tmp[1]);
     SkASSERT(containsNoEmptyCheck(clip, bounds));
 #endif
-    memcpy(dst, tmp, sizeof(tmp));
+    memcpy(dst, tmp.data(), sizeof(tmp));
     return true;
 }
 
@@ -202,8 +204,8 @@ int SkLineClipper::ClipLine(const SkPoint pts[2], const SkRect& clip, SkPoint li
 
     // Chop in Y to produce a single segment, stored in tmp[0..1]
 
-    SkPoint tmp[2];
-    memcpy(tmp, pts, sizeof(tmp));
+    std::array<SkPoint, 2> tmp;
+    memcpy(tmp.data(), pts, sizeof(tmp));
 
     // now compute intersections
     if (pts[index0].fY < clip.fTop) {
@@ -219,7 +221,7 @@ int SkLineClipper::ClipLine(const SkPoint pts[2], const SkRect& clip, SkPoint li
 
     // temp storage for up to 3 segments
     SkPoint resultStorage[kMaxPoints];
-    SkPoint* result;    // points to our results, either tmp or resultStorage
+    SkSpan<SkPoint>result;    // points to our results, either tmp or resultStorage
     int lineCount = 1;
     bool reverse;
 
@@ -246,28 +248,28 @@ int SkLineClipper::ClipLine(const SkPoint pts[2], const SkRect& clip, SkPoint li
         reverse = false;
     } else {
         result = resultStorage;
-        SkPoint* r = result;
+        SkSpan<SkPoint>r = result;
 
         if (tmp[index0].fX < clip.fLeft) {
-            r->set(clip.fLeft, tmp[index0].fY);
-            r += 1;
-            r->set(clip.fLeft, sect_clamp_with_vertical(tmp, clip.fLeft));
-            SkASSERT(is_between_unsorted(r->fY, tmp[0].fY, tmp[1].fY));
+            r[0].set(clip.fLeft, tmp[index0].fY);
+            r= r.subspan(1u);
+            r[0].set(clip.fLeft, sect_clamp_with_vertical(tmp, clip.fLeft));
+            SkASSERT(is_between_unsorted(r[0].fY, tmp[0].fY, tmp[1].fY));
         } else {
-            *r = tmp[index0];
+            r[0] = tmp[index0];
         }
-        r += 1;
+        r= r.subspan(1u);
 
         if (tmp[index1].fX > clip.fRight) {
-            r->set(clip.fRight, sect_clamp_with_vertical(tmp, clip.fRight));
-            SkASSERT(is_between_unsorted(r->fY, tmp[0].fY, tmp[1].fY));
-            r += 1;
-            r->set(clip.fRight, tmp[index1].fY);
+            r[0].set(clip.fRight, sect_clamp_with_vertical(tmp, clip.fRight));
+            SkASSERT(is_between_unsorted(r[0].fY, tmp[0].fY, tmp[1].fY));
+            r= r.subspan(1u);
+            r[0].set(clip.fRight, tmp[index1].fY);
         } else {
-            *r = tmp[index1];
+            r[0] = tmp[index1];
         }
 
-        lineCount = SkToInt(r - result);
+        lineCount = SkToInt(r.data() - result.data());
     }
 
     // Now copy the results into the caller's lines[] parameter
@@ -277,7 +279,7 @@ int SkLineClipper::ClipLine(const SkPoint pts[2], const SkRect& clip, SkPoint li
             lines[lineCount - i] = result[i];
         }
     } else {
-        memcpy(lines, result, (lineCount + 1) * sizeof(SkPoint));
+        memcpy(lines, result.data(), (lineCount + 1) * sizeof(SkPoint));
     }
     return lineCount;
 }

@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkFixed.h"
@@ -664,20 +665,20 @@ bool SkScan::PathRequiresTiling(const SkIRect& bounds) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static int build_tri_edges(SkEdge edge[], const SkPoint pts[],
+static int build_tri_edges(SkSpan<SkEdge> edge, const SkPoint pts[],
                            const SkIRect* clipRect, SkEdge* list[]) {
     SkEdge** start = list;
 
-    if (edge->setLine(pts[0], pts[1], clipRect)) {
-        *list++ = edge;
-        edge++;
+    if (edge[0].setLine(pts[0], pts[1], clipRect)) {
+        *list++ = edge.data();
+        edge = edge.subspan(1u);
     }
-    if (edge->setLine(pts[1], pts[2], clipRect)) {
-        *list++ = edge;
-        edge++;
+    if (edge[0].setLine(pts[1], pts[2], clipRect)) {
+        *list++ = edge.data();
+        edge = edge.subspan(1u);
     }
-    if (edge->setLine(pts[2], pts[0], clipRect)) {
-        *list++ = edge;
+    if (edge[0].setLine(pts[2], pts[0], clipRect)) {
+        *list++ = edge.data();
     }
     return (int)(list - start);
 }

@@ -98,7 +98,7 @@ void SkPictureData::WriteFactories(SkWStream* stream, const SkFactorySet& rec) {
 
     AutoSTMalloc<16, SkFlattenable::Factory> storage(count);
     SkFlattenable::Factory* array = (SkFlattenable::Factory*)storage.get();
-    rec.copyToArray(array);
+    rec.copyToArray(SkSpan(array, count));
 
     size_t size = compute_chunk_size(array, count);
 
@@ -129,7 +129,7 @@ void SkPictureData::WriteTypefaces(SkWStream* stream, const SkRefCntSet& rec,
 
     AutoSTMalloc<16, SkTypeface*> storage(count);
     SkTypeface** array = (SkTypeface**)storage.get();
-    rec.copyToArray((SkRefCnt**)array);
+    rec.copyToArray(SkSpan((SkRefCnt**)array, count));
 
     for (int i = 0; i < count; i++) {
         SkTypeface* tf = array[i];

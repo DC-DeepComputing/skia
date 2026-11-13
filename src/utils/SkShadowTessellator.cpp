@@ -732,7 +732,7 @@ void SkBaseShadowTessellator::stitchConcaveRings(const SkTDArray<SkPoint>& umbra
                      fPrevUmbraIndex, currUmbraIndex);
 
     if (fTransparent) {
-        SkTriangulateSimplePolygon(umbraPolygon.begin(), indexMap, umbraPolygon.size(),
+        SkTriangulateSimplePolygon(umbraPolygon.begin(), SkSpan(indexMap.get(), umbraPolygon.size()), umbraPolygon.size(),
                                    &fIndices);
     }
 }

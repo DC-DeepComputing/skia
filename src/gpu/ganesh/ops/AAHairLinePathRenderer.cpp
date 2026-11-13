@@ -195,24 +195,24 @@ int get_float_exp(float x) {
 // found along the curve segment it will return 1 and
 // dst[0] is the original conic. If it returns 2 the dst[0]
 // and dst[1] are the two new conics.
-int split_conic(const SkPoint src[3], SkConic dst[2], const SkScalar weight) {
+int split_conic(const SkPoint src[3], SkSpan<SkConic, 2> dst, const SkScalar weight) {
     SkScalar t = SkFindQuadMaxCurvature(src);
     // SkFindQuadMaxCurvature() returns either a value in [0, 1) or NaN.
     // However, passing NaN to conic.chopAt() will assert. Checking to see if
     // t is in (0,1) will also cover the NaN case since NaN comparisons are always
     // false, so we'll drop down into the else block in that case.
     if (0 < t && t < 1) {
-        if (dst) {
+        if (!dst.empty()) {
             SkConic conic;
             conic.set(src, weight);
-            if (!conic.chopAt(t, dst)) {
+            if (!conic.chopAt(t, dst.data())) {
                 dst[0].set(src, weight);
                 return 1;
             }
         }
         return 2;
     } else {
-        if (dst) {
+        if (!dst.empty()) {
             dst[0].set(src, weight);
         }
         return 1;
@@ -222,12 +222,12 @@ int split_conic(const SkPoint src[3], SkConic dst[2], const SkScalar weight) {
 // Calls split_conic on the entire conic and then once more on each subsection.
 // Most cases will result in either 1 conic (chop point is not within t range)
 // or 3 points (split once and then one subsection is split again).
-int chop_conic(const SkPoint src[3], SkConic dst[4], const SkScalar weight) {
+int chop_conic(const SkPoint src[3], SkSpan<SkConic, 4> dst, const SkScalar weight) {
     SkConic dstTemp[2];
     int conicCnt = split_conic(src, dstTemp, weight);
     if (2 == conicCnt) {
-        int conicCnt2 = split_conic(dstTemp[0].fPts, dst, dstTemp[0].fW);
-        conicCnt = conicCnt2 + split_conic(dstTemp[1].fPts, &dst[conicCnt2], dstTemp[1].fW);
+        int conicCnt2 = split_conic(dstTemp[0].fPts, dst.first<2>(), dstTemp[0].fW);
+        conicCnt = conicCnt2 + split_conic(dstTemp[1].fPts, dst.subspan(conicCnt2).first<2>(), dstTemp[1].fW);
     } else {
         dst[0] = dstTemp[0];
     }
@@ -394,7 +394,7 @@ int gather_lines_and_quads(const SkPath& path,
                         addSrcChoppedQuad(quadPts + 2 * i, !verbsInContour && 0 == i);
                     }
                 } else {
-                    SkConic dst[4];
+                    std::array<SkConic, 4> dst;
                     // We chop the conics to create tighter clipping to hide error
                     // that appears near max curvature of very thin conics. Thin
                     // hyperbolas with high weight still show error.

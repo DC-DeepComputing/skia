@@ -6,6 +6,8 @@
  */
 
 #ifndef GrTriangulator_DEFINED
+#include "include/core/SkSpan.h"
+
 #define GrTriangulator_DEFINED
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
@@ -72,11 +74,11 @@ protected:
     // There are six stages to the basic algorithm:
     //
     // 1) Linearize the path contours into piecewise linear segments:
-    void pathToContours(float tolerance, const SkRect& clipBounds, VertexList* contours,
+    void pathToContours(float tolerance, const SkRect& clipBounds, SkSpan<VertexList>contours,
                         bool* isLinear) const;
 
     // 2) Build a mesh of edges connecting the vertices:
-    void contoursToMesh(VertexList* contours, int contourCnt, VertexList* mesh,
+    void contoursToMesh(SkSpan<VertexList>contours, int contourCnt, VertexList* mesh,
                         const Comparator&);
 
     // 3) Sort the vertices in Y (and secondarily in X):
@@ -190,11 +192,11 @@ protected:
     void computeBisector(Edge* edge1, Edge* edge2, Vertex*) const;
     BoolFail checkForIntersection(Edge* left, Edge* right, EdgeList* activeEdges, Vertex** current,
                                   VertexList* mesh, const Comparator&);
-    void sanitizeContours(VertexList* contours, int contourCnt) const;
+    void sanitizeContours(SkSpan<VertexList>contours, int contourCnt) const;
     bool mergeCoincidentVertices(VertexList* mesh, const Comparator&) const;
-    void buildEdges(VertexList* contours, int contourCnt, VertexList* mesh,
+    void buildEdges(SkSpan<VertexList>contours, int contourCnt, VertexList* mesh,
                     const Comparator&);
-    std::tuple<Poly*, bool> contoursToPolys(VertexList* contours, int contourCnt);
+    std::tuple<Poly*, bool> contoursToPolys(SkSpan<VertexList>contours, int contourCnt);
     std::tuple<Poly*, bool> pathToPolys(float tolerance, const SkRect& clipBounds,
                       bool* isLinear);
     static int64_t CountPoints(Poly* polys, SkPathFillType overrideFillType);

@@ -55,7 +55,7 @@ private:
     /*
      * Row procedure used for swizzle
      */
-    typedef void (*RowProc)(void* dstRow, const uint8_t* srcRow, int width,
+    typedef void (*RowProc)(void* dstRow, SkSpan<const uint8_t> srcRow, int width,
             SkMasks* masks, uint32_t startX, uint32_t sampleX);
 
     SkMaskSwizzler(SkMasks* masks, RowProc proc, int subsetWidth, int srcOffset);

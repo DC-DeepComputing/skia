@@ -8,6 +8,7 @@
 #include "include/core/SkYUVAInfo.h"
 
 #include "include/core/SkColor.h"
+#include "include/core/SkSpan.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkYUVAInfoLocation.h"
 
@@ -213,7 +214,7 @@ SkYUVAInfo::YUVALocations SkYUVAInfo::GetYUVALocations(PlaneConfig config,
     // A is the 0th channel of an alpha-only texture. We'll use this plus planeChannelFlags to get
     // the actual channel.
     struct PlaneAndIndex {int plane, chanIdx;};
-    const PlaneAndIndex* planesAndIndices = nullptr;
+    SkSpan<const PlaneAndIndex>planesAndIndices = {};
     switch (config) {
         case PlaneConfig::kUnknown:
             return {};
@@ -290,7 +291,7 @@ SkYUVAInfo::YUVALocations SkYUVAInfo::GetYUVALocations(PlaneConfig config,
         }
 #endif
     }
-    SkASSERT(planesAndIndices);
+    SkASSERT(!planesAndIndices.empty());
     YUVALocations yuvaLocations;
     for (int i = 0; i < SkYUVAInfo::kYUVAChannelCount; ++i) {
         auto [plane, chanIdx] = planesAndIndices[i];

@@ -1,6 +1,8 @@
 // Copyright 2018 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #ifndef SkUTF_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkUTF_DEFINED
 
 #include "include/private/SkAPI.h"
@@ -27,7 +29,7 @@ SK_SPI int CountUTF16(const uint16_t* utf16, size_t byteLength);
     return the number of unicode codepoints.  If the sequence is invalid
     UTF-32, return -1.
 */
-SK_SPI int CountUTF32(const int32_t* utf32, size_t byteLength);
+SK_SPI int CountUTF32(SkSpan<const int32_t>utf32, size_t byteLength);
 
 /** Given a sequence of UTF-8 bytes, return the first unicode codepoint.
     The pointer will be incremented to point at the next codepoint's start.  If

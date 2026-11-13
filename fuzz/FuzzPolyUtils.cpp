@@ -58,7 +58,7 @@ DEF_FUZZ(PolyUtils, fuzz) {
             fuzz->next(&indexMap[index]);
         }
         SkTDArray<uint16_t> outputIndices;
-        ignoreResult(SkTriangulateSimplePolygon(polygon, indexMap, count, &outputIndices));
+        ignoreResult(SkTriangulateSimplePolygon(polygon, SkSpan(indexMap.get(), count), count, &outputIndices));
     }
 }
 #else

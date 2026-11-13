@@ -7,6 +7,7 @@
 
 #include "src/core/SkMaskBlurFilter.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTPin.h"
@@ -276,7 +277,7 @@ bool SkMaskBlurFilter::hasNoBlur() const {
 
 // We favor A8 masks, and if we need to work with another format, we'll convert to A8 first.
 // Each of these converts width (up to 8) mask values to A8.
-static void bw_to_a8(uint8_t* a8, const uint8_t* from, int width) {
+static void bw_to_a8(SkSpan<uint8_t>a8, const uint8_t* from, int width) {
     SkASSERT(0 < width && width <= 8);
 
     uint8_t masks = *from;
@@ -285,7 +286,7 @@ static void bw_to_a8(uint8_t* a8, const uint8_t* from, int width) {
                                        : 0x00;
     }
 }
-static void lcd_to_a8(uint8_t* a8, const uint8_t* from, int width) {
+static void lcd_to_a8(SkSpan<uint8_t> a8, const uint8_t* from, int width) {
     SkASSERT(0 < width && width <= 8);
 
     for (int i = 0; i < width; ++i) {
@@ -296,7 +297,7 @@ static void lcd_to_a8(uint8_t* a8, const uint8_t* from, int width) {
         a8[i] = (r + g + b) / 3;
     }
 }
-static void argb32_to_a8(uint8_t* a8, const uint8_t* from, int width) {
+static void argb32_to_a8(SkSpan<uint8_t> a8, const uint8_t* from, int width) {
     SkASSERT(0 < width && width <= 8);
     for (int i = 0; i < width; ++i) {
         uint32_t rgba = reinterpret_cast<const uint32_t*>(from)[i];
@@ -601,7 +602,7 @@ static void blur_row(
 
 // BlurX will only be one of the functions blur_x_radius_(1|2|3|4).
 static void blur_x_rect(BlurX blur,
-                        uint16_t* gauss,
+                        SkSpan<uint16_t>gauss,
                         const uint8_t* src, size_t srcStride, int srcW,
                         uint8_t* dst, size_t dstStride, int dstW, int dstH) {
 
@@ -619,7 +620,7 @@ static void blur_x_rect(BlurX blur,
     }
 }
 
-static void direct_blur_x(int radius, uint16_t* gauss,
+static void direct_blur_x(int radius, SkSpan<uint16_t>gauss,
                           const uint8_t* src, size_t srcStride, int srcW,
                           uint8_t* dst, size_t dstStride, int dstW, int dstH) {
 
@@ -814,7 +815,7 @@ static void blur_column(
 
 // BlurY will be one of blur_y_radius_(1|2|3|4).
 static void blur_y_rect(ToA8 toA8, const int strideOf8,
-                        BlurY blur, int radius, uint16_t *gauss,
+                        BlurY blur, int radius, SkSpan<uint16_t>gauss,
                         const uint8_t *src, size_t srcRB, int srcW, int srcH,
                         uint8_t *dst, size_t dstRB) {
 
@@ -844,7 +845,7 @@ static void blur_y_rect(ToA8 toA8, const int strideOf8,
 }
 
 static void direct_blur_y(ToA8 toA8, const int strideOf8,
-                          int radius, uint16_t* gauss,
+                          int radius, SkSpan<uint16_t>gauss,
                           const uint8_t* src, size_t srcRB, int srcW, int srcH,
                           uint8_t* dst, size_t dstRB) {
 
@@ -891,7 +892,7 @@ static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMa
 
     SkASSERT(radiusX <= 4 && radiusY <= 4);
 
-    auto prepareGauss = [](const SkGaussFilter& filter, uint16_t* factors) {
+    auto prepareGauss = [](const SkGaussFilter& filter, SkSpan<uint16_t>factors) {
         int i = 0;
         for (double d : filter) {
             factors[i++] = static_cast<uint16_t>(round(d * (1 << 16)));

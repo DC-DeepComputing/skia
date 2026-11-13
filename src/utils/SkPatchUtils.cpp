@@ -15,6 +15,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
 #include "include/private/SkFloatingPoint.h"
@@ -132,7 +133,7 @@ public:
         return point;
     }
 
-    const SkPoint* getCtrlPoints() const {
+    SkSpan<const SkPoint> getCtrlPoints() const {
         return fPoints;
     }
 

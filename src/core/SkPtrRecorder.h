@@ -7,6 +7,8 @@
 
 
 #ifndef SkPtrSet_DEFINED
+#include "include/core/SkSpan.h"
+
 #define SkPtrSet_DEFINED
 
 #include "include/core/SkFlattenable.h"
@@ -51,7 +53,7 @@ public:
      *
      *  incPtr() and decPtr() are not called during this operation.
      */
-    void copyToArray(void* array[]) const;
+    void copyToArray(SkSpan<void *> array) const;
 
     /**
      *  Call decPtr() on each ptr in the set, and the reset the size of the set
@@ -114,8 +116,8 @@ public:
         return this->INHERITED::add((void*)ptr);
     }
 
-    void copyToArray(T* array) const {
-        this->INHERITED::copyToArray((void**)array);
+    void copyToArray(SkSpan<T> array) const {
+        this->INHERITED::copyToArray(SkSpan((void**)array.data(), array.size()));
     }
 
 private:

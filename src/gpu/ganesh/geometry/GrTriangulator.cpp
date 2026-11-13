@@ -9,6 +9,7 @@
 
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMath.h"
@@ -547,16 +548,16 @@ void GrTriangulator::generateCubicPoints(const SkPoint& p0, const SkPoint& p1, c
 // Stage 1: convert the input path to a set of linear contours (linked list of Vertices).
 
 void GrTriangulator::pathToContours(float tolerance, const SkRect& clipBounds,
-                                    VertexList* contours, bool* isLinear) const {
+                                    SkSpan<VertexList>contours, bool* isLinear) const {
     SkScalar toleranceSqd = tolerance * tolerance;
     *isLinear = true;
-    VertexList* contour = contours;
+    SkSpan<VertexList>contour = contours;
     if (fPath.isInverseFillType()) {
         const std::array<SkPoint, 4> quad = clipBounds.toQuad();
         for (int i = 3; i >= 0; i--) {
-            this->appendPointToContour(quad[i], contours);
+            this->appendPointToContour(quad[i], contours.data());
         }
-        contour++;
+        contour = contour.subspan(1u);
     }
     SkAutoConicToQuads converter;
     SkPath::Iter iter(fPath, false);
@@ -566,44 +567,44 @@ void GrTriangulator::pathToContours(float tolerance, const SkRect& clipBounds,
             case SkPathVerb::kConic: {
                 *isLinear = false;
                 if (toleranceSqd == 0) {
-                    this->appendPointToContour(pts[2], contour);
+                    this->appendPointToContour(pts[2], contour.data());
                     break;
                 }
                 const SkPoint* quadPts = converter.computeQuads(pts.data(), rec->conicWeight(),
                                                                 toleranceSqd);
                 for (int i = 0; i < converter.countQuads(); ++i) {
-                    this->appendQuadraticToContour(quadPts, toleranceSqd, contour);
+                    this->appendQuadraticToContour(quadPts, toleranceSqd, contour.data());
                     quadPts += 2;
                 }
                 break;
             }
             case SkPathVerb::kMove:
-                if (contour->fHead) {
-                    contour++;
+                if (contour[0].fHead) {
+                    contour = contour.subspan(1u);
                 }
-                this->appendPointToContour(pts[0], contour);
+                this->appendPointToContour(pts[0], contour.data());
                 break;
             case SkPathVerb::kLine: {
-                this->appendPointToContour(pts[1], contour);
+                this->appendPointToContour(pts[1], contour.data());
                 break;
             }
             case SkPathVerb::kQuad: {
                 *isLinear = false;
                 if (toleranceSqd == 0) {
-                    this->appendPointToContour(pts[2], contour);
+                    this->appendPointToContour(pts[2], contour.data());
                     break;
                 }
-                this->appendQuadraticToContour(pts.data(), toleranceSqd, contour);
+                this->appendQuadraticToContour(pts.data(), toleranceSqd, contour.data());
                 break;
             }
             case SkPathVerb::kCubic: {
                 *isLinear = false;
                 if (toleranceSqd == 0) {
-                    this->appendPointToContour(pts[3], contour);
+                    this->appendPointToContour(pts[3], contour.data());
                     break;
                 }
                 int pointsLeft = GrPathUtils::cubicPointCount(pts.data(), tolerance);
-                this->generateCubicPoints(pts[0], pts[1], pts[2], pts[3], toleranceSqd, contour,
+                this->generateCubicPoints(pts[0], pts[1], pts[2], pts[3], toleranceSqd, contour.data(),
                                           pointsLeft);
                 break;
             }
@@ -1372,33 +1373,33 @@ GrTriangulator::BoolFail GrTriangulator::checkForIntersection(
     return this->intersectEdgePair(left, right, activeEdges, current, c);
 }
 
-void GrTriangulator::sanitizeContours(VertexList* contours, int contourCnt) const {
-    for (VertexList* contour = contours; contourCnt > 0; --contourCnt, ++contour) {
-        SkASSERT(contour->fHead);
-        Vertex* prev = contour->fTail;
+void GrTriangulator::sanitizeContours(SkSpan<VertexList>contours, int contourCnt) const {
+    for (SkSpan<VertexList> contour = contours; contourCnt > 0; --contourCnt, contour = contour.subspan(1u)) {
+        SkASSERT(contour[0].fHead);
+        Vertex* prev = contour[0].fTail;
         prev->fPoint.fX = double_to_clamped_scalar((double) prev->fPoint.fX);
         prev->fPoint.fY = double_to_clamped_scalar((double) prev->fPoint.fY);
         if (fRoundVerticesToQuarterPixel) {
             round(&prev->fPoint);
         }
-        for (Vertex* v = contour->fHead; v;) {
+        for (Vertex* v = contour[0].fHead; v;) {
             v->fPoint.fX = double_to_clamped_scalar((double) v->fPoint.fX);
             v->fPoint.fY = double_to_clamped_scalar((double) v->fPoint.fY);
             if (fRoundVerticesToQuarterPixel) {
                 round(&v->fPoint);
             }
             Vertex* next = v->fNext;
-            Vertex* nextWrap = next ? next : contour->fHead;
+            Vertex* nextWrap = next ? next : contour[0].fHead;
             if (coincident(prev->fPoint, v->fPoint)) {
                 TESS_LOG("vertex %g,%g coincident; removing\n", v->fPoint.fX, v->fPoint.fY);
-                contour->remove(v);
+                contour[0].remove(v);
             } else if (!v->fPoint.isFinite()) {
                 TESS_LOG("vertex %g,%g non-finite; removing\n", v->fPoint.fX, v->fPoint.fY);
-                contour->remove(v);
+                contour[0].remove(v);
             } else if (!fPreserveCollinearVertices &&
                        Line(prev->fPoint, nextWrap->fPoint).dist(v->fPoint) == 0.0) {
                 TESS_LOG("vertex %g,%g collinear; removing\n", v->fPoint.fX, v->fPoint.fY);
-                contour->remove(v);
+                contour[0].remove(v);
             } else {
                 prev = v;
             }
@@ -1428,11 +1429,11 @@ bool GrTriangulator::mergeCoincidentVertices(VertexList* mesh, const Comparator&
 
 // Stage 2: convert the contours to a mesh of edges connecting the vertices.
 
-void GrTriangulator::buildEdges(VertexList* contours, int contourCnt, VertexList* mesh,
+void GrTriangulator::buildEdges(SkSpan<VertexList>contours, int contourCnt, VertexList* mesh,
                                 const Comparator& c) {
-    for (VertexList* contour = contours; contourCnt > 0; --contourCnt, ++contour) {
-        Vertex* prev = contour->fTail;
-        for (Vertex* v = contour->fHead; v;) {
+    for (SkSpan<VertexList> contour = contours; contourCnt > 0; --contourCnt, contour = contour.subspan(1u)) {
+        Vertex* prev = contour[0].fTail;
+        for (Vertex* v = contour[0].fHead; v;) {
             Vertex* next = v->fNext;
             this->makeConnectingEdge(prev, v, EdgeType::kInner, c);
             mesh->append(v);
@@ -1795,7 +1796,7 @@ std::tuple<Poly*, bool> GrTriangulator::tessellate(const VertexList& vertices, c
 
 // This is a driver function that calls stages 2-5 in turn.
 
-void GrTriangulator::contoursToMesh(VertexList* contours, int contourCnt, VertexList* mesh,
+void GrTriangulator::contoursToMesh(SkSpan<VertexList>contours, int contourCnt, VertexList* mesh,
                                     const Comparator& c) {
 #if TRIANGULATOR_LOGGING
     for (int i = 0; i < contourCnt; ++i) {
@@ -1830,7 +1831,7 @@ void GrTriangulator::SortMesh(VertexList* vertices, const Comparator& c) {
 #endif
 }
 
-std::tuple<Poly*, bool> GrTriangulator::contoursToPolys(VertexList* contours, int contourCnt) {
+std::tuple<Poly*, bool> GrTriangulator::contoursToPolys(SkSpan<VertexList>contours, int contourCnt) {
     const SkRect& pathBounds = fPath.getBounds();
     Comparator c(pathBounds.width() > pathBounds.height() ? Comparator::Direction::kHorizontal
                                                           : Comparator::Direction::kVertical);
@@ -1910,8 +1911,8 @@ std::tuple<Poly*, bool> GrTriangulator::pathToPolys(float tolerance, const SkRec
     }
     std::unique_ptr<VertexList[]> contours(new VertexList[contourCnt]);
 
-    this->pathToContours(tolerance, clipBounds, contours.get(), isLinear);
-    return this->contoursToPolys(contours.get(), contourCnt);
+    this->pathToContours(tolerance, clipBounds, SkSpan(contours.get(), contourCnt), isLinear);
+    return this->contoursToPolys(SkSpan(contours.get(), contourCnt), contourCnt);
 }
 
 int64_t GrTriangulator::CountPoints(Poly* polys, SkPathFillType overrideFillType) {

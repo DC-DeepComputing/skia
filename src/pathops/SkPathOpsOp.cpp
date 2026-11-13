@@ -1,4 +1,6 @@
 /*
+#include <array>
+
  * Copyright 2012 Google Inc.
  *
  * Use of this source code is governed by a BSD-style license that can be
@@ -217,23 +219,23 @@ static bool bridgeOp(SkOpContourHead* contourList, const SkPathOp op,
 // diagram of why this simplifcation is possible is here:
 // https://skia.org/dev/present/pathops link at bottom of the page
 // https://drive.google.com/file/d/0BwoLUwz9PYkHLWpsaXd0UDdaN00/view?usp=sharing
-static const SkPathOp gOpInverse[kReverseDifference_SkPathOp + 1][2][2] = {
+static const std::array<std::array<std::array<const SkPathOp, 2>, 2>, kReverseDifference_SkPathOp + 1> gOpInverse = {{
 //                  inside minuend                               outside minuend
 //     inside subtrahend     outside subtrahend      inside subtrahend     outside subtrahend
-{{ kDifference_SkPathOp,   kIntersect_SkPathOp }, { kUnion_SkPathOp, kReverseDifference_SkPathOp }},
-{{ kIntersect_SkPathOp,   kDifference_SkPathOp }, { kReverseDifference_SkPathOp, kUnion_SkPathOp }},
-{{ kUnion_SkPathOp, kReverseDifference_SkPathOp }, { kDifference_SkPathOp,   kIntersect_SkPathOp }},
-{{ kXOR_SkPathOp,                 kXOR_SkPathOp }, { kXOR_SkPathOp,                kXOR_SkPathOp }},
-{{ kReverseDifference_SkPathOp, kUnion_SkPathOp }, { kIntersect_SkPathOp,   kDifference_SkPathOp }},
-};
+{{ {{ kDifference_SkPathOp,   kIntersect_SkPathOp }}, {{ kUnion_SkPathOp, kReverseDifference_SkPathOp }} }},
+{{ {{ kIntersect_SkPathOp,   kDifference_SkPathOp }}, {{ kReverseDifference_SkPathOp, kUnion_SkPathOp }} }},
+{{ {{ kUnion_SkPathOp, kReverseDifference_SkPathOp }}, {{ kDifference_SkPathOp,   kIntersect_SkPathOp }} }},
+{{ {{ kXOR_SkPathOp,                 kXOR_SkPathOp }}, {{ kXOR_SkPathOp,                kXOR_SkPathOp }} }},
+{{ {{ kReverseDifference_SkPathOp, kUnion_SkPathOp }}, {{ kIntersect_SkPathOp,   kDifference_SkPathOp }} }},
+}};
 
-static const bool gOutInverse[kReverseDifference_SkPathOp + 1][2][2] = {
-    {{ false, false }, { true, false }},  // diff
-    {{ false, false }, { false, true }},  // sect
-    {{ false, true }, { true, true }},    // union
-    {{ false, true }, { true, false }},   // xor
-    {{ false, true }, { false, false }},  // rev diff
-};
+static const std::array<std::array<std::array<const bool, 2>, 2>, kReverseDifference_SkPathOp + 1> gOutInverse = {{
+    {{ {{ false, false }}, {{ true, false }} }},  // diff
+    {{ {{ false, false }}, {{ false, true }} }},  // sect
+    {{ {{ false, true }}, {{ true, true }} }},    // union
+    {{ {{ false, true }}, {{ true, false }} }},   // xor
+    {{ {{ false, true }}, {{ false, false }} }},  // rev diff
+}};
 
 #if DEBUG_T_SECT_LOOP_COUNT
 

@@ -11,6 +11,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTo.h"
@@ -547,13 +548,13 @@ SkContourMeasure::SkContourMeasure(SkTDArray<Segment>&& segs, SkTDArray<SkPoint>
     {}
 
 template <typename T, typename K>
-int SkTKSearch(const T base[], int count, const K& key) {
+int SkTKSearch(SkSpan<const T> base, int count, const K& key) {
     SkASSERT(count >= 0);
     if (count <= 0) {
         return ~0;
     }
 
-    SkASSERT(base != nullptr); // base may be nullptr if count is zero
+    SkASSERT(base.data() != nullptr); // base may be nullptr if count is zero
 
     unsigned lo = 0;
     unsigned hi = count - 1;
@@ -584,7 +585,7 @@ const SkContourMeasure::Segment* SkContourMeasure::distanceToSegment( SkScalar d
     const Segment*  seg = fSegments.begin();
     int             count = fSegments.size();
 
-    int index = SkTKSearch<Segment, SkScalar>(seg, count, distance);
+    int index = SkTKSearch<Segment, SkScalar>(SkSpan(seg, count), count, distance);
     // don't care if we hit an exact match or not, so we xor index if it is negative
     index ^= (index >> 31);
     seg = &seg[index];

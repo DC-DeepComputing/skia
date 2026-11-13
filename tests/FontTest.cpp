@@ -37,7 +37,7 @@ static SkFont serialize_deserialize(const SkFont& font, skiatest::Reporter* repo
              ( font.getTypeface() && count == 1));
     if (count) {
         SkTypeface* typeface;
-        typefaces->copyToArray((SkRefCnt**)&typeface);
+        typefaces->copyToArray(SkSpan((SkRefCnt**)&typeface, 1));
         SkASSERT(typeface == font.getTypeface());
     }
 

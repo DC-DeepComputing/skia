@@ -38,16 +38,16 @@ static constexpr std::array<std::array<bool, 2>, 2> kUnaryActiveEdge = {{
     {F, T}, {T, F},
 }};
 
-static constexpr bool kActiveEdge[kXOR_SkPathOp + 1][2][2][2][2] = {
+static constexpr std::array<std::array<std::array<std::array<std::array<bool, 2>, 2>, 2>, 2>, kXOR_SkPathOp + 1> kActiveEdge = {{
 //                 miFrom=0                              miFrom=1
 //         miTo=0             miTo=1             miTo=0             miTo=1
 //     suFrom=0    1      suFrom=0    1      suFrom=0    1      suFrom=0    1
 //   suTo=0,1 suTo=0,1  suTo=0,1 suTo=0,1  suTo=0,1 suTo=0,1  suTo=0,1 suTo=0,1
-    {{{{F, F}, {F, F}}, {{T, F}, {T, F}}}, {{{T, T}, {F, F}}, {{F, T}, {T, F}}}},  // mi - su
-    {{{{F, F}, {F, F}}, {{F, T}, {F, T}}}, {{{F, F}, {T, T}}, {{F, T}, {T, F}}}},  // mi & su
-    {{{{F, T}, {T, F}}, {{T, T}, {F, F}}}, {{{T, F}, {T, F}}, {{F, F}, {F, F}}}},  // mi | su
-    {{{{F, T}, {T, F}}, {{T, F}, {F, T}}}, {{{T, F}, {F, T}}, {{F, T}, {T, F}}}},  // mi ^ su
-};
+    {{ {{ {{ {{F, F}}, {{F, F}} }}, {{ {{T, F}}, {{T, F}} }} }}, {{ {{ {{T, T}}, {{F, F}} }}, {{ {{F, T}}, {{T, F}} }} }} }},  // mi - su
+    {{ {{ {{ {{F, F}}, {{F, F}} }}, {{ {{F, T}}, {{F, T}} }} }}, {{ {{ {{F, F}}, {{T, T}} }}, {{ {{F, T}}, {{T, F}} }} }} }},  // mi & su
+    {{ {{ {{ {{F, T}}, {{T, F}} }}, {{ {{T, T}}, {{F, F}} }} }}, {{ {{ {{T, F}}, {{T, F}} }}, {{ {{F, F}}, {{F, F}} }} }} }},  // mi | su
+    {{ {{ {{ {{F, T}}, {{T, F}} }}, {{ {{T, F}}, {{F, T}} }} }}, {{ {{ {{T, F}}, {{F, T}} }}, {{ {{F, T}}, {{T, F}} }} }} }},  // mi ^ su
+}};
 
 #undef F
 #undef T

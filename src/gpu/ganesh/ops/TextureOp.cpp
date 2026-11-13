@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkSpan.h"
 #include "src/gpu/ganesh/ops/TextureOp.h"
 
 #include "include/core/SkAlphaType.h"
@@ -311,7 +312,7 @@ public:
         SkASSERT(proxyRunCnt <= cnt);
         return GrOp::MakeWithExtraMemory<TextureOpImpl>(
                 context, sizeof(ViewCountPair) * (proxyRunCnt - 1),
-                set, cnt, proxyRunCnt, filter, mm, saturate, aaType, constraint,
+                SkSpan(set, cnt), cnt, proxyRunCnt, filter, mm, saturate, aaType, constraint,
                 viewMatrix, std::move(textureColorSpaceXform));
     }
 
@@ -528,7 +529,7 @@ private:
         fViewCountPairs[0] = {proxyView.detachProxy(), quadCount};
     }
 
-    TextureOpImpl(GrTextureSetEntry set[],
+    TextureOpImpl(SkSpan<GrTextureSetEntry> set,
                   int cnt,
                   int proxyRunCnt,
                   const GrSamplerState::Filter filter,

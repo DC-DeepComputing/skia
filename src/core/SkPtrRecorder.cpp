@@ -6,6 +6,7 @@
  */
 #include "src/core/SkPtrRecorder.h"
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
 #include "src/core/SkTSearch.h"
 
@@ -60,10 +61,10 @@ uint32_t SkPtrSet::add(void* ptr) {
     }
 }
 
-void SkPtrSet::copyToArray(void* array[]) const {
+void SkPtrSet::copyToArray(SkSpan<void *> array) const {
     int count = fList.size();
     if (count > 0) {
-        SkASSERT(array);
+        SkASSERT(!array.empty());
         const Pair* p = fList.begin();
         // p->fIndex is base-1, so we need to subtract to find its slot
         for (int i = 0; i < count; i++) {

@@ -13,6 +13,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkMalloc.h"
@@ -36,7 +37,7 @@
 
 // The rgnbuilder caller *seems* to pass short counts, possible often seens early failure, so
 // we may not want to promote this to a "std" routine just yet.
-static bool sk_memeq32(const int32_t* SK_RESTRICT a, const int32_t* SK_RESTRICT b, int count) {
+static bool sk_memeq32(SkSpan<const int32_t>a, SkSpan<const int32_t>b, int count) {
     for (int i = 0; i < count; ++i) {
         if (a[i] != b[i]) {
             return false;
@@ -55,7 +56,7 @@ public:
 
     void done() {
         if (fCurrScanline != nullptr) {
-            fCurrScanline->fXCount = (SkRegion::RunType)((int)(fCurrXPtr - fCurrScanline->firstX()));
+            fCurrScanline->fXCount = (SkRegion::RunType)((int)(fCurrXPtr.data() - fCurrScanline->firstX().data()));
             if (!this->collapsWithPrev()) { // flush the last line
                 fCurrScanline = fCurrScanline->nextScanline();
             }
@@ -103,7 +104,7 @@ private:
         SkRegion::RunType fLastY;
         SkRegion::RunType fXCount;
 
-        SkRegion::RunType* firstX() { return (SkRegion::RunType*)(this + 1); }
+        SkSpan<SkRegion::RunType> firstX() { return SkSpan((SkRegion::RunType*)(this + 1), SkTo<size_t>(fXCount + 4096)); }
         Scanline* nextScanline() {
             // add final +1 for the x-sentinel
             return (Scanline*)((SkRegion::RunType*)(this + 1) + fXCount + 1);
@@ -113,7 +114,7 @@ private:
     Scanline*           fCurrScanline;
     Scanline*           fPrevScanline;
     //  points at next avialable x[] in fCurrScanline
-    SkRegion::RunType*  fCurrXPtr;
+    SkSpan<SkRegion::RunType>fCurrXPtr;
     SkRegion::RunType   fTop;           // first Y value
 
     int fStorageCount;
@@ -189,7 +190,7 @@ void SkRgnBuilder::blitH(int x, int y, int width) {
 
         if (y > fCurrScanline->fLastY) {
             // if we get here, we're done with fCurrScanline
-            fCurrScanline->fXCount = (SkRegion::RunType)((int)(fCurrXPtr - fCurrScanline->firstX()));
+            fCurrScanline->fXCount = (SkRegion::RunType)((int)(fCurrXPtr.data() - fCurrScanline->firstX().data()));
 
             int prevLastY = fCurrScanline->fLastY;
             if (!this->collapsWithPrev()) {
@@ -208,14 +209,14 @@ void SkRgnBuilder::blitH(int x, int y, int width) {
         }
     }
     //  check if we should extend the current run, or add a new one
-    if (fCurrXPtr > fCurrScanline->firstX() && fCurrXPtr[-1] == x) {
-        fCurrXPtr[-1] = (SkRegion::RunType)(x + width);
+    if (fCurrXPtr.data() > fCurrScanline->firstX().data() && fCurrXPtr.data()[-1] == x) {
+        fCurrXPtr.data()[-1] = (SkRegion::RunType)(x + width);
     } else {
         fCurrXPtr[0] = (SkRegion::RunType)(x);
         fCurrXPtr[1] = (SkRegion::RunType)(x + width);
-        fCurrXPtr += 2;
+        fCurrXPtr = fCurrXPtr.subspan(2u);
     }
-    SkASSERT(fCurrXPtr - fStorage < fStorageCount);
+    SkASSERT(fCurrXPtr.data() - fStorage < fStorageCount);
 }
 
 int SkRgnBuilder::computeRunCount() const {
@@ -253,7 +254,7 @@ void SkRgnBuilder::copyToRgn(SkRegion::RunType runs[]) const {
         int count = line->fXCount;
         *runs++ = count >> 1;   // intervalCount
         if (count) {
-            memcpy(runs, line->firstX(), count * sizeof(SkRegion::RunType));
+            memcpy(runs, line->firstX().data(), count * sizeof(SkRegion::RunType));
             runs += count;
         }
         *runs++ = SkRegion_kRunTypeSentinel;
